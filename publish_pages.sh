@@ -3,7 +3,7 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 out="$(mktemp -d)/site"
-python build_pages.py "$out" --base /deepspot-redesign
+python build_pages.py "$out" --base deepspot-redesign  # no leading slash: Git Bash rewrites "/x" args into Windows paths
 url="$(git remote get-url origin)"
 cd "$out"
 git init -q -b gh-pages
