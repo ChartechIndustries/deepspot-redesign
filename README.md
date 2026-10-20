@@ -193,3 +193,10 @@ Open /banner-variations.html for ten independently styled banner sections beneat
 - Free-account wall: `/spot/` after 2 paragraphs, `/story/` after 3; action sheet for save/vote/poll/roadmap/comment/trip share-save/contribute submit. Member wall: gallery photos 2+ and giveaway "join now". Never gated: home, browse, map, community viewing, lists, passports, membership/FAQ/legal/app/mission/404 (crawl-verified).
 - Opus pass: NYT proportions — sheet ≈42% of a 900px viewport (top at 518px), one-line heading, email + continue on one row, 110px fade so the headline stays readable; copy "It’s free. Read full spots and stories, keep a fieldbook, plan trips and vote."
 - Keys: gate.mjs / gate.css / account.mjs / planner.mjs `gate3`, gate-state `gate1`. Backups `backups/before-gate-20261020/`, `backups/before-gate-compact-20261020/`. Not deployed.
+
+## GitHub + Pages (2026-10-20)
+- Repo (public): https://github.com/ChartechIndustries/deepspot-redesign — `main` = source + docs + QA scripts (screenshots, backups, archives, deployments, raw scrapes are gitignored).
+- Live: https://chartechindustries.github.io/deepspot-redesign/ — community `/community/`, passports `/profile/?user=<id>` (e.g. wayfarer, lampbane, preview).
+- Publish after changes: commit + push `main`, then `bash publish_pages.sh` (builds with `build_pages.py`, force-pushes the `gh-pages` branch; Pages serves gh-pages root).
+- `build_pages.py` rewrites root-absolute URLs to `/deepspot-redesign/` (regex for top-level entries + href="/" + an explicit list for navigation.js, core.mjs localURL, browse/profile home checks, vite preload base, home nav template). It exits if an expected string is missing — update the list when those files change.
+- Gotchas: pass `--base deepspot-redesign` without a leading slash in Git Bash (it rewrites "/x" into a Windows path). The gh token has no `workflow` scope, so no GitHub Action; `gh auth refresh -s workflow` would allow one.
