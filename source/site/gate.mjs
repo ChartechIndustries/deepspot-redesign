@@ -23,7 +23,7 @@ window.addEventListener('storage',e=>{if(e.key===SESSION_KEY||e.key===null)emit(
 let live;const announce=text=>{live??=Object.assign(D.createElement('p'),{className:'sr-only',id:'gt-live'});live.setAttribute('role','status');if(!live.isConnected)D.body.append(live);live.textContent='';setTimeout(()=>live.textContent=text,30);};
 
 /* ---------- stylesheet (loaded only when a gate is shown) ---------- */
-let cssP;const css=()=>cssP??=new Promise(res=>{const l=D.createElement('link');l.rel='stylesheet';l.href=new URL('./gate.css?v=gate5',import.meta.url).href;l.onload=l.onerror=()=>res();D.head.append(l);});
+let cssP;const css=()=>cssP??=new Promise(res=>{const l=D.createElement('link');l.rel='stylesheet';l.href=new URL('./gate.css?v=gate6',import.meta.url).href;l.onload=l.onerror=()=>res();D.head.append(l);});
 
 /* ---------- sheet ---------- */
 let sheet=null,opener=null,seq=0,wall=null,pageCtx=null,wallResume=null;
@@ -47,14 +47,14 @@ async function open(kind,o={}){
  sheet=d;d._o=o;D.body.append(d);
  kind==='wall'?d.show():d.showModal();
  wire(d,kind);
- const f=$('#gt-email',d)||$('[data-gt-x]',d);f?.focus({preventScroll:true});
- if(kind==='wall')layoutWall();
+ if(kind==='wall'){d._stop=rise(d);layoutWall();}
+ else{const f=$('#gt-email',d)||$('[data-gt-x]',d);f?.focus({preventScroll:true});}
  return d;
 }
-function kill(){if(!sheet)return;const d=sheet;sheet=null;try{d.close?.();}catch{}d.remove();}
+function kill(){if(!sheet)return;const d=sheet;sheet=null;d._stop?.();try{d.close?.();}catch{}d.remove();}
 function dismiss(restore=true){
  const d=sheet;if(!d)return;
- const done=()=>{if(sheet===d)sheet=null;d.remove();if(restore){(opener?.isConnected?opener:$('#page-content'))?.focus({preventScroll:true});opener=null;}if(wall)layoutWall();};
+ const done=()=>{if(sheet===d)sheet=null;d._stop?.();d.remove();if(restore){(opener?.isConnected?opener:$('#page-content'))?.focus({preventScroll:true});opener=null;}if(wall)layoutWall();};
  if(reduce()){try{d.close();}catch{}done();return;}
  d.dataset.out='1';setTimeout(()=>{try{d.close();}catch{}done();},200);
 }
@@ -108,7 +108,7 @@ export function askMember(resume){
 function nudge(text){
  const d=sheet;if(!d)return;
  const s=$('.gt-status',d);if(s)s.textContent=text;
- d.dataset.nudge='1';setTimeout(()=>delete d.dataset.nudge,600);
+ d._open?.();d.dataset.nudge='1';setTimeout(()=>delete d.dataset.nudge,600);
  $('#gt-email',d)?.focus({preventScroll:true});
 }
 let bypass=false;
@@ -149,6 +149,28 @@ D.addEventListener('keydown',e=>{
 },true);
 
 /* ---------- reading wall ---------- */
+/* the wall sheet starts as a peek and rises slowly as the reader scrolls; focus or a click on it opens it fully */
+function rise(d){
+ const peek=()=>innerWidth<=520?120:156;
+ let cur=null,force=false,raf=0;
+ const target=()=>{if(force)return 1;const range=D.documentElement.scrollHeight-innerHeight;return range<80?1:Math.min(1,Math.max(0,scrollY/(range*.9)));};
+ const frame=()=>{
+  raf=0;if(!d.isConnected)return;
+  const H=d.offsetHeight,P=Math.min(peek(),H),t=target();
+  cur=cur===null||reduce()?t:cur+(t-cur)*.08;if(Math.abs(t-cur)<.002)cur=t;
+  const y=Math.round((1-cur)*(H-P));
+  d.style.translate=`0 ${y}px`;D.documentElement.style.setProperty('--gt-v',(H-y)+'px');
+  d.toggleAttribute('data-peek',cur<.97);
+  if(cur!==t)raf=requestAnimationFrame(frame);
+ };
+ const kick=()=>{if(!raf)raf=requestAnimationFrame(frame);};
+ const full=()=>{force=true;kick();};
+ const click=e=>{if(d.hasAttribute('data-peek')&&!e.target.closest('a,button,input')){e.preventDefault();full();}};
+ d._open=full;
+ addEventListener('scroll',kick,{passive:true});addEventListener('resize',kick);d.addEventListener('focusin',full);d.addEventListener('click',click);
+ const ro=new ResizeObserver(kick);ro.observe(d);frame();
+ return()=>{cancelAnimationFrame(raf);removeEventListener('scroll',kick);removeEventListener('resize',kick);ro.disconnect();D.documentElement.style.removeProperty('--gt-v');};
+}
 function layoutWall(){
  if(!wall)return;
  const h=sheet?.dataset.mode==='wall'?sheet.offsetHeight:0;

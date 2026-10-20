@@ -41,7 +41,7 @@ html[data-theme=light] .gt-err{color:#b3261e}
 body.gt-walled{--gt-f:min(30vh,250px);padding-bottom:calc(var(--gt-h,0px) + 130px)}
 body.gt-walled #page-content{overflow:hidden}
 body.gt-walled deepspot-cta{display:none}
-.gt-fade{position:fixed;left:0;right:0;bottom:var(--gt-h,0px);height:var(--gt-f,250px);pointer-events:none;z-index:70;background:linear-gradient(to bottom,transparent,color-mix(in srgb,var(--br-bg) 55%,transparent) 50%,var(--br-bg))}
+.gt-fade{position:fixed;left:0;right:0;bottom:var(--gt-v,var(--gt-h,0px));height:var(--gt-f,250px);pointer-events:none;z-index:70;background:linear-gradient(to bottom,transparent,color-mix(in srgb,var(--br-bg) 55%,transparent) 50%,var(--br-bg))}
 @keyframes gt-up{from{transform:translateY(28px);opacity:0}to{transform:none;opacity:1}}
 @keyframes gt-down{to{transform:translateY(28px);opacity:0}}
 @keyframes gt-nudge{0%,100%{box-shadow:0 0 0 0 transparent}30%{box-shadow:0 0 0 4px var(--br-green)}}
@@ -107,3 +107,9 @@ body.gt-walled deepspot-cta{display:none}
 }
 .gt-sheet .gt-form>.gt-go{width:100%;margin:12px 0 0;padding:0 24px}
 .gt-sheet .gt-form>.gt-err{margin:8px 0 0}
+
+/* wall sheet: peek + scroll-driven rise (translate is set in gate.mjs) */
+.gt-sheet[data-mode=wall]{will-change:translate;box-shadow:0 -24px 60px rgba(0,0,0,.28)}
+.gt-sheet[data-mode=wall][data-peek]{cursor:pointer}
+.gt-sheet[data-mode=wall][data-peek] .gt-in{pointer-events:none}
+.gt-sheet[data-mode=wall][data-peek] .gt-in :is(a,button,input){pointer-events:auto}

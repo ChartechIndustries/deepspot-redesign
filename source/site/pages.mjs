@@ -2,7 +2,7 @@ import {esc,$,$$,icon,localURL,action,pageTitle,loadData,spotURL,storyURL,spotCa
 import {savedStories,subscribeStore} from './core.mjs';
 import {galleryMarkup,wireGallery} from './gallery.mjs';
 import {authorLink,profileHref,profileId} from '../profile/identity.mjs';
-import {wallReading} from './gate.mjs?v=gate5';
+import {wallReading} from './gate.mjs?v=gate6';
 const root=$('#page-content'),route=document.body.dataset.page,params=new URLSearchParams(location.search);
 const heading=(title,link='',label='view all')=>`<div class="ds-section-heading"><h2>${title}</h2>${link?`<a class="ds-text-link" href="${localURL(link)}">${label}${icon('arrow')}</a>`:''}</div>`;
 const outbound=(label,url,style='secondary')=>`<a class="ds-button ${style}" href="${esc(url)}" data-original target="_blank" rel="noopener">${label}${icon('arrow')}</a>`;
@@ -95,9 +95,9 @@ async function render(data){const {spots,stories,content}=data;
   const policy=content.legal[route];root.innerHTML=pageTitle('The small print.',policy.title.toLowerCase())+`<div class="ds-article-layout"><article class="ds-prose"><p class="ds-note">The policy below is reproduced from DeepSpot for this design preview. ${outboundText('Read the current policy','https://www.deepspot.io/'+route)}.</p>${route==='cookies'?'<div class="ds-callout"><h3 aria-level="2">this preview.</h3><p>This version stores your theme, saved spots, trip, and drafts in this browser. It does not connect account or marketing services. Map tiles and externally hosted photographs load from their providers.</p></div>':''}${policy.blocks.map(b=>`<${b.tag}>${esc(b.text)}</${b.tag}>`).join('')}</article><aside class="ds-practical"><h2>legal.</h2><nav class="ds-legal-list">${[['privacy','privacy policy'],['terms','terms of service'],['cookies','cookie policy']].map(([path,label])=>`<a href="${localURL('/'+path+'/')}">${label}${icon('arrow')}</a>`).join('')}</nav></aside></div>`;
  }
  else if(route==='sponsored')root.innerHTML=pageTitle('A place','worth supporting.','Have a partnership in mind? Tell the DeepSpot team what you’re working on.')+`<section class="ds-editorial-feature ds-feature-aqua"><img src="/spots/maishima.jpg" alt="Maishima’s colorful towers"><div><h2>let’s make<br>something<br>interesting.</h2><p>For sponsorship and partnership enquiries, contact the DeepSpot team. Placements, pricing, and terms are arranged directly.</p><a class="ds-button" href="mailto:hello@deepspot.jp?subject=DeepSpot%20partnership%20enquiry">start a conversation ${icon('arrow')}</a></div></section>`;
- else if(['account','inbox','invites'].includes(route)){await (await import('./account.mjs?v=gate5')).renderAccount(root,data,route);}
+ else if(['account','inbox','invites'].includes(route)){await (await import('./account.mjs?v=gate6')).renderAccount(root,data,route);}
  else if(route==='map'){await (await import('./map.mjs')).renderMap(root,data);}
- else if(route==='plan-trip'){await (await import('./planner.mjs?v=gate5')).renderPlanner(root,data);}
+ else if(route==='plan-trip'){await (await import('./planner.mjs?v=gate6')).renderPlanner(root,data);}
  else if(route==='contribute'){await (await import('./contribute.mjs')).renderContribution(root,data);}
  else if(route==='404'){title('Off the map');root.innerHTML=`<div class="ds-empty"><span class="ds-empty-symbol">${icon('star')}</span><h2>this spot is off the map.</h2><p>The page you wanted isn’t here. It may have moved, or the link may be wrong.</p><div class="ds-actions">${action('back to the globe','/')}${action('browse deep spots','/browse/','secondary')}</div></div>`;}
  else root.innerHTML=empty('take another turn.','That page isn’t in this collection.');
