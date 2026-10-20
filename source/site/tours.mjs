@@ -5,14 +5,15 @@ import {action} from './core.mjs';
 
 const STAR='<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 2v44M2 24h44M8.5 8.5l31 31m0-31-31 31"/></svg>';
 const PHOTOS=['oya','chiatura','teufelsberg','rummu','maishima','sandchurch'];
-/* band centers and slopes from the sketch: A rises left→right, B falls left→right and passes behind A */
+/* band centers and slopes from the sketch: A rises left→right, B falls left→right and passes behind A; C clips the top-right corner */
 const TAPES=[
  {id:'b',y:.80,rise:-.235,dur:170,dir:-1},
- {id:'a',y:.70,rise:.507,dur:140,dir:1}
+ {id:'a',y:.70,rise:.507,dur:140,dir:1},
+ {id:'c',x:.9,y:.06,rot:24,dur:120,dir:1,fixed:true}
 ];
 
 const run=()=>Array.from({length:10},()=>`<span>under construction</span>${STAR}`).join('');
-const tape=t=>`<div class="tr-tape" data-tape="${t.id}" style="--y:${t.y*100}%;--dur:${t.dur}s"><div class="tr-run${t.dir<0?' tr-rev':''}"><div>${run()}</div><div>${run()}</div></div></div>`;
+const tape=t=>`<div class="tr-tape" data-tape="${t.id}" style="--x:${(t.x??.5)*100}%;--y:${t.y*100}%;--dur:${t.dur}s${t.fixed?`;--rot:${t.rot}deg`:''}"><div class="tr-run${t.dir<0?' tr-rev':''}"><div>${run()}</div><div>${run()}</div></div></div>`;
 
 function fakePage(){
  const card=p=>`<div class="tr-f-card"><img src="/spots/${p}.jpg" alt="" decoding="async"><i></i><i></i></div>`;
@@ -23,13 +24,14 @@ export function renderTours(root){
  document.title='Tours — DeepSpot';
  document.documentElement.classList.add('tr-lock');
  root.classList.add('tr-root');
- root.innerHTML=`<section class="tr-stage" aria-labelledby="tr-h">${fakePage()}<h1 class="tr-title" id="tr-h">tours<span>.</span><span class="sr-only"> Under construction.</span></h1><div class="tr-mole"><picture><source srcset="/tours/mole-construction-still.webp" media="(prefers-reduced-motion: reduce)"><img src="/tours/mole-construction.webp" alt="The DeepSpot mole in a hard hat and safety vest, holding a hammer" width="585" height="720" fetchpriority="high"></picture></div><div class="tr-tapes" aria-hidden="true">${TAPES.map(tape).join('')}</div><div class="tr-cta">${action('see the roadmap','/roadmap/')}</div></section>`;
+ root.innerHTML=`<section class="tr-stage" aria-labelledby="tr-h">${fakePage()}<h1 class="tr-title" id="tr-h">tours<span class="sr-only"> Under construction.</span></h1><div class="tr-mole"><picture><source srcset="/tours/mole-construction-still.webp" media="(prefers-reduced-motion: reduce)"><img src="/tours/mole-construction.webp" alt="The DeepSpot mole in a hard hat and safety vest, holding a hammer" width="585" height="720" fetchpriority="high"></picture></div><div class="tr-tapes" aria-hidden="true">${TAPES.map(tape).join('')}</div><div class="tr-cta">${action('see the roadmap','/roadmap/')}</div></section>`;
  const stage=root.querySelector('.tr-stage'),header=document.querySelector('ds-site-header');
  const fit=()=>{
   const top=Math.max(0,Math.round(header?.getBoundingClientRect().bottom||0));stage.style.top=top+'px';
   const W=stage.clientWidth,H=stage.clientHeight;
-  stage.style.setProperty('--len',Math.ceil(Math.hypot(W,H)*1.25)+'px');
-  TAPES.forEach(t=>stage.querySelector(`[data-tape="${t.id}"]`).style.setProperty('--rot',Math.max(-24,Math.min(24,-Math.atan(t.rise*H/W)*180/Math.PI)).toFixed(2)+'deg'));
+  stage.querySelector('[data-tape="c"]').style.setProperty('--y',(W<700?4:20)+'%');
+ stage.style.setProperty('--len',Math.ceil(Math.hypot(W,H)*1.25)+'px');
+  TAPES.filter(t=>!t.fixed).forEach(t=>stage.querySelector(`[data-tape="${t.id}"]`).style.setProperty('--rot',Math.max(-24,Math.min(24,-Math.atan(t.rise*H/W)*180/Math.PI)).toFixed(2)+'deg'));
  };
  fit();addEventListener('resize',fit);new ResizeObserver(fit).observe(header||document.body);
 }
