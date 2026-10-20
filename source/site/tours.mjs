@@ -9,7 +9,7 @@ const PHOTOS=['oya','chiatura','teufelsberg','rummu','maishima','sandchurch'];
 const TAPES=[
  {id:'b',y:.80,rise:-.235,dur:170,dir:-1},
  {id:'a',y:.70,rise:.507,dur:140,dir:1},
- {id:'c',x:.9,y:.06,rot:24,dur:120,dir:1,fixed:true}
+ {id:'c',x:.9,y:.06,rot:16,dur:120,dir:1,fixed:true}
 ];
 
 const run=()=>Array.from({length:10},()=>`<span>under construction</span>${STAR}`).join('');
@@ -24,12 +24,19 @@ export function renderTours(root){
  document.title='Tours — DeepSpot';
  document.documentElement.classList.add('tr-lock');
  root.classList.add('tr-root');
- root.innerHTML=`<section class="tr-stage" aria-labelledby="tr-h">${fakePage()}<h1 class="tr-title" id="tr-h">tours<span class="sr-only"> Under construction.</span></h1><div class="tr-mole"><picture><source srcset="/tours/mole-construction-still.webp" media="(prefers-reduced-motion: reduce)"><img src="/tours/mole-construction.webp" alt="The DeepSpot mole in a hard hat and safety vest, holding a hammer" width="585" height="720" fetchpriority="high"></picture></div><div class="tr-tapes" aria-hidden="true">${TAPES.map(tape).join('')}</div><div class="tr-cta">${action('see the roadmap','/roadmap/')}</div></section>`;
+ root.innerHTML=`<section class="tr-stage" aria-labelledby="tr-h">${fakePage()}<h1 class="tr-title" id="tr-h">tours<span class="tr-base" aria-hidden="true"></span><span class="sr-only"> Under construction.</span></h1><div class="tr-mole"><picture><source srcset="/tours/mole-construction-still.webp" media="(prefers-reduced-motion: reduce)"><img src="/tours/mole-construction.webp" alt="The DeepSpot mole in a hard hat and safety vest, holding a hammer" width="585" height="720" fetchpriority="high"></picture></div><div class="tr-tapes" aria-hidden="true">${TAPES.map(tape).join('')}</div><div class="tr-cta">${action('see the roadmap','/roadmap/')}</div></section>`;
  const stage=root.querySelector('.tr-stage'),header=document.querySelector('ds-site-header');
  const fit=()=>{
   const top=Math.max(0,Math.round(header?.getBoundingClientRect().bottom||0));stage.style.top=top+'px';
   const W=stage.clientWidth,H=stage.clientHeight;
-  stage.querySelector('[data-tape="c"]').style.setProperty('--y',(W<700?4:20)+'%');
+  /* corner band: its lower edge just clips the tops of the "r" and the "s" */
+  const c=stage.querySelector('[data-tape="c"]'),title=stage.querySelector('.tr-title'),txt=title.firstChild,base=title.querySelector('.tr-base');
+  if(txt?.nodeType===3&&base){
+   const sr=stage.getBoundingClientRect(),F=parseFloat(getComputedStyle(title).fontSize),rg=document.createRange();rg.setStart(txt,3);rg.setEnd(txt,4);
+   const R=rg.getBoundingClientRect(),xTop=base.getBoundingClientRect().top-.53*F,th=16*Math.PI/180,h=c.offsetHeight;
+   const px=R.left+R.width*.6-sr.left,py=xTop-F*.04-sr.top;
+   c.style.setProperty('--x',(px+h/2*Math.sin(th))+'px');c.style.setProperty('--y',(py-h/2*Math.cos(th))+'px');
+  }
  stage.style.setProperty('--len',Math.ceil(Math.hypot(W,H)*1.25)+'px');
   TAPES.filter(t=>!t.fixed).forEach(t=>stage.querySelector(`[data-tape="${t.id}"]`).style.setProperty('--rot',Math.max(-24,Math.min(24,-Math.atan(t.rise*H/W)*180/Math.PI)).toFixed(2)+'deg'));
  };

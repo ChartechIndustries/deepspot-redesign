@@ -46,3 +46,4 @@ html.tr-lock ds-site-header{position:relative;z-index:20}
 @media(prefers-reduced-motion:reduce){.tr-run{animation:none}}
 .tr-tape[data-tape=c]{width:120vw}
 .tr-cta .ds-button svg{width:1em;height:1em}
+.tr-base{display:inline-block;width:0;height:0;vertical-align:baseline}
