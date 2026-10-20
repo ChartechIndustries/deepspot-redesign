@@ -1,0 +1,57 @@
+/* Tours: under construction (2026-10-20). Tape colors = redesign: green #07d653, cobalt #3c60ff, cream #f5f4ee, ink #0b1b27. */
+.tr-root{overflow-x:clip;--tr-ink:#0b1b27;--tr-green:#07d653;--tr-cobalt:#3c60ff;--tr-cream:#f5f4ee}
+.tr-stage{position:relative;width:100vw;margin-left:calc(50% - 50vw);height:clamp(560px,calc(100vh - 140px),940px);overflow:hidden;isolation:isolate;background:var(--br-bg)}
+
+/* 1 · the tour page being built (blurred, inert) */
+.tr-fake{position:absolute;inset:-24px;padding:72px max(var(--ds-gutter,24px),calc(50vw - 860px)) 0;filter:blur(10px) saturate(.75);opacity:.6;transform:scale(1.02);pointer-events:none;z-index:0}
+.tr-fake i,.tr-fake b{display:block;background:var(--br-line);border-radius:6px}
+.tr-f-head{display:flex;justify-content:space-between;align-items:flex-end;gap:48px;margin-bottom:48px}
+.tr-f-h1{width:min(52vw,820px);height:clamp(48px,6vw,96px);margin-bottom:16px;background:var(--br-text)!important;opacity:.5}
+.tr-f-h2{width:min(36vw,560px);height:clamp(48px,6vw,96px);background:var(--tr-green)!important}
+.tr-f-p{width:min(24vw,340px);height:56px}
+.tr-f-chips{display:flex;gap:12px;margin-bottom:32px}
+.tr-f-chips b{width:120px;height:40px;border-radius:99px!important}
+.tr-f-chips b:first-child{background:var(--tr-green)}
+.tr-f-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.tr-f-card{background:var(--br-panel);border:1px solid var(--br-line);border-radius:8px;overflow:hidden;padding-bottom:16px}
+.tr-f-card img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}
+.tr-f-card i{height:16px;margin:16px 16px 0}
+.tr-f-card b{width:96px;height:32px;margin:16px 16px 0;border-radius:99px!important;background:var(--tr-cobalt)}
+
+/* 2 · the construction mole, behind the tape */
+.tr-mole{position:absolute;left:50%;bottom:0;z-index:1;width:min(46vh,430px,64vw);transform:translateX(-50%)}
+.tr-mole img{display:block;width:100%;height:auto;filter:drop-shadow(0 24px 30px rgba(0,0,0,.45))}
+.tr-mole::after{content:'';position:absolute;left:12%;right:12%;bottom:-10px;height:28px;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.45),transparent);z-index:-1}
+
+/* 3 · tape bands on top */
+.tr-tapes{position:absolute;inset:0;z-index:2;pointer-events:none}
+.tr-tape{--h:clamp(64px,8vw,108px);--fg:var(--tr-ink);--bg:var(--tr-green);position:absolute;left:-25vw;width:150vw;top:var(--top);height:var(--h);margin-top:calc(var(--h) / -2);transform:rotate(var(--rot));background:var(--bg);color:var(--fg);overflow:hidden;
+ box-shadow:0 26px 34px -10px rgba(0,0,0,.5),0 6px 10px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.28)}
+/* striped edges, like real barrier tape */
+.tr-tape::before,.tr-tape::after{content:'';position:absolute;left:0;right:0;height:14%;background:repeating-linear-gradient(-55deg,var(--fg) 0 22px,transparent 22px 44px);z-index:1}
+.tr-tape::before{top:5%}.tr-tape::after{bottom:5%}
+/* plastic sheen */
+.tr-tape{background-image:linear-gradient(180deg,rgba(255,255,255,.18),transparent 38%,transparent 62%,rgba(0,0,0,.12))}
+.tr-cobalt{--bg:var(--tr-cobalt);--fg:var(--tr-cream);background-color:var(--tr-cobalt)}
+.tr-green{background-color:var(--tr-green)}
+.tr-cream{--bg:var(--tr-cream);--fg:var(--tr-ink);background-color:var(--tr-cream)}
+.tr-run{position:absolute;inset:0;display:flex;width:max-content;animation:tr-scroll var(--dur,90s) linear infinite;will-change:transform}
+.tr-rev{animation-direction:reverse}
+.tr-run>div{display:flex;align-items:center;flex:none}
+.tr-run span{padding:0 .5em;font:800 calc(var(--h) * .44)/1 Arial,Helvetica,sans-serif;letter-spacing:-.02em;text-transform:uppercase;white-space:nowrap}
+.tr-run svg{flex:none;width:calc(var(--h) * .34);height:calc(var(--h) * .34);margin:0 .4em;fill:none;stroke:currentColor;stroke-width:5}
+@keyframes tr-scroll{to{transform:translateX(-50%)}}
+
+/* copy under the stage */
+.tr-copy{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:48px;align-items:end;padding:48px 0 0}
+.tr-k{display:flex;align-items:center;gap:12px;margin:0 0 16px;font:600 12px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--br-muted)}
+.tr-k span{width:10px;height:10px;border-radius:99px;background:var(--tr-green);animation:tr-blink 1.6s steps(2,end) infinite}
+.tr-copy h1{margin:0;font-size:clamp(48px,6.4vw,104px);line-height:.92;letter-spacing:-.05em}
+.tr-copy h1 span{display:block;color:var(--tr-green)}
+:root[data-theme=light] .tr-copy h1 span{color:#08782f}
+.tr-copy p:not(.tr-k){margin:0 0 24px;max-width:46ch;font-size:18px;line-height:1.5;color:var(--br-muted)}
+@keyframes tr-blink{50%{opacity:.25}}
+
+@media(max-width:900px){.tr-copy{grid-template-columns:1fr;gap:24px}.tr-f-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){.tr-stage{height:clamp(520px,calc(100svh - 120px),720px)}.tr-tape{--h:64px}.tr-tape::before,.tr-tape::after{background-size:auto}.tr-mole{width:min(78vw,360px)}.tr-f-head{display:block}.tr-f-p{display:none!important}.tr-copy{padding-top:32px}.tr-copy p:not(.tr-k){font-size:16px}}
+@media(prefers-reduced-motion:reduce){.tr-run,.tr-k span{animation:none}}
