@@ -6182,8 +6182,7 @@ function So() {
             children: [
               `Browse`,
               `Map`,
-              `Adventures`,
-              `Stories`,
+              `Tours`,
               `Community`,
               `App`,
             ].map((e) => (0, Y.jsx)(`a`, {href: mounted ? `/${e.toLowerCase()}/?theme=${THEME}` : `/${e.toLowerCase()}/`, style:{color:`inherit`,textDecoration:`none`},children:e},e)),

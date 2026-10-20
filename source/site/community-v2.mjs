@@ -4,15 +4,10 @@ import {readAccount,avatarImage} from './account-state.mjs?v=pad1';
 import {stampArt,awards,moleCrop} from '../profile/passport-art.mjs?v=pad1';
 import {COMMUNITY_METRICS} from './community-hub.mjs';
 
-/* Community hub v2 (2026-10-19). Real data only: leaderboard, forum snapshot, catalog, pending list. Votes live in this browser. The giveaway hero lives in giveaway-hero.mjs. */
+/* Community hub v2 (2026-10-19). Real data only: leaderboard, forum snapshot, catalog. Votes live in this browser. The giveaway hero lives in giveaway-hero.mjs. */
 const DISCORD_URL='https://www.deepspot.io/community'; // TODO: replace with the real Discord invite when Charlie supplies it
 const VOTE_KEYS={spot:'deepspot-community-spot-votes-v1',poll:'deepspot-community-poll-v1',road:'deepspot-community-roadmap-v1'};
 const PP_COLORS=[['#07d653','#0b1b27'],['#3c60ff','#fff'],['#83cdce','#0b1b27'],['#f2c14e','#0b1b27']];
-const PENDING=[
- {id:'pending-icarus',img:'/community-assets/pending/icarus.jpg',credit:{by:'Dejandanailov',lic:'CC BY-SA 3.0',url:'https://commons.wikimedia.org/wiki/File:%D0%97%D0%B3%D1%80%D0%B0%D0%B4%D0%B0_%D0%BA%D0%BE%D0%BC%D0%B0%D0%BD%D0%B4%D0%B5_%D0%B2%D0%B0%D0%B7%D0%B4%D1%83%D1%85%D0%BE%D0%BF%D0%BB%D0%BE%D0%B2%D1%81%D1%82%D0%B2%D0%B0_(%D0%B4%D0%B5%D1%82%D0%B0%D1%99_%D1%81%D0%B0_%D1%84%D0%B0%D1%81%D0%B0%D0%B4%D0%B5,_%D1%81%D0%BA%D1%83%D0%BB%D0%BF%D1%82%D1%83%D1%80%D0%B0_%E2%80%9E%D0%98%D0%BA%D0%B0%D1%80%E2%80%9D,_%D0%BD%D0%BE%D1%9B%D1%83).jpg'},alt:'The Icarus sculpture on the facade of the Air Force Command building in Zemun at night'},
- {id:'pending-yu',img:'',credit:null,alt:''},
- {id:'pending-tre-sorelle',img:'/community-assets/pending/tre-sorelle.jpg',credit:{by:'Milica Buha',lic:'CC BY-SA 4.0',url:'https://commons.wikimedia.org/wiki/File:Tre_Sorelle_Palace_01.jpg'},alt:'Tre Sorelle Palace in Prčanj'}
-];
 const ROAD=[
  ['building now',[['passports','Passports + profile moles','Your explorer ID, with stamps and badges.',70],['signatures','PictoChat signatures','Draw your own passport signature.',60],['giveaways','Monthly giveaways','Prizes for the top spot hunters.',90]]],
  ['up next',[['trip-lists','Trip lists','Save spots into lists and share them.'],['offline-maps','Offline maps','Download a region before you lose signal.'],['live-meetups','Live meetups','Find explorers heading where you are.']]],
@@ -87,17 +82,11 @@ function spotCard(s,acct,dist){
  const where=s.region||s.place;
  return `<article class="cv-spot"><div class="cv-photo"><img src="${esc(cardImg(s))}" alt="" width="800" height="600" loading="lazy" decoding="async"><div class="cv-photo-copy"><span class="cv-place">${esc(where)}${dist!=null?` · ${fmt(Math.round(dist))} km away`:''}</span><h3><a href="${link}">${esc(s.title)}</a></h3><span class="cv-by">by ${esc(s.publisher||'DeepSpot collection')}</span></div><a class="cv-go" href="${link}" tabindex="-1" aria-hidden="true">${ICO.ext}</a></div>${saveButton(s)}${voteBlock(s.id,v)}<div class="cv-cmt">${viewerAvatar(acct,'sm')}<a class="cv-link" href="${link}">add a comment ↗</a></div></article>`;
 }
-function pendingCard(p,item,acct){
- const v=votes('spot')[item.id];
- return `<article class="cv-spot cv-pend"><div class="cv-photo ${item.img?'':'noimg'}">${item.img?`<img src="${esc(item.img)}" alt="${esc(item.alt)}" width="1000" height="750" loading="lazy" decoding="async">`:`<span class="cv-noimg" aria-hidden="true">deep<br>spot.</span>`}<span class="cv-badge">pending review</span><div class="cv-photo-copy"><span class="cv-place">${esc(p.place)}</span><h3><a href="${esc(DISCORD_URL)}" data-original target="_blank" rel="noopener">${esc(p.title)}</a></h3><span class="cv-by">by ${esc(p.author)}</span></div><a class="cv-go" href="${esc(DISCORD_URL)}" data-original target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">${ICO.ext}</a></div>${voteBlock(item.id,v)}<div class="cv-cmt cv-credit">${item.credit?`<span>Photo: ${esc(item.credit.by)} · <a href="${esc(item.credit.url)}" data-original target="_blank" rel="noopener">${esc(item.credit.lic)}</a> · Wikimedia Commons</span>`:'<span>No openly licensed photo found yet. Photo to come.</span>'}</div></article>`;
-}
 function spotsHTML(data,acct){
  const L=spotLists(data.spots);
  return `<section class="cv-panel cv-spots" aria-labelledby="cv-sp"><header class="cv-bar"><h2 id="cv-sp">community spots.</h2><p>Found by explorers. Vote on what makes the map.</p></header>
  <div class="cv-tabs" role="group" aria-label="Sort community spots">${[['trending','trending'],['high','highest voted'],['newest','newest'],['near','near you']].map(([k,l],i)=>`<button type="button" data-tab="${k}" aria-pressed="${i===0}">${l}</button>`).join('')}</div>
  <div class="cv-spots-in"><p class="cv-basis" data-basis role="status">${BASIS.trending}</p><div class="cv-grid" data-grid>${L.trending.map(s=>spotCard(s,acct)).join('')}</div>
- <div class="cv-pend-head"><h3>pending review.</h3><p>Three new submissions from Lana Velkov. Vote on whether they belong.</p></div>
- <div class="cv-grid" data-pending>${data.content.pending.map((p,i)=>pendingCard(p,PENDING[i]||{id:'pending-'+i,img:'',credit:null},acct)).join('')}</div>
  <div class="cv-cta">${action('see all community spots','/browse/')}${action('submit a spot','/contribute/','secondary')}</div></div></section>`;
 }
 
@@ -150,5 +139,5 @@ export async function renderCommunityV2(root,data){
  $$('[data-jump]',root).forEach(l=>l.addEventListener('click',e=>{const t=document.getElementById(l.dataset.jump);if(!t)return;e.preventDefault();t.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});}));
  const scope=$('.cv',root);
  wirePoll(scope);wireSpots(scope,data,acct);wireVotes(scope);
- const {renderGiveaway}=await import('./giveaway-hero.mjs?v=11');renderGiveaway($('[data-giveaway]',scope),data,gv);
+ const {renderGiveaway}=await import('./giveaway-hero.mjs?v=12');renderGiveaway($('[data-giveaway]',scope),data,gv);
 }

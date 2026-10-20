@@ -6,6 +6,7 @@ import {memberLevels,memberRange,POINTS} from './passport-rules.mjs?v=pv2';
 import {escapeHTML as esc,safeReturn} from './identity.mjs';
 import {loadProfile} from './data.mjs?v=pv3';
 import {halftoneField} from '../site/halftone-field.mjs?v=2';
+import {readWantToGo,writeWantToGo,addItem,removeAt,moveItem,WTG_MAX,WTG_NAME_MAX} from './want-to-go.mjs?v=wtg1';
 const $=selector=>document.querySelector(selector);
 let profile,toastTimer,exportPromise,exportImage;
 const params=new URLSearchParams(location.search);
@@ -68,6 +69,76 @@ function giveawayHTML(){
  const line=st?(st.rankAll===1?'First place. Hold it until the month ends.':st.ahead?`${fmt(st.ahead.gap)} ${st.ahead.gap===1?'point':'points'} behind ${esc(st.ahead.name)}.`:'On the board.'):'Not on the board yet. An approved spot earns 50 points.';
  return `<div class="pp-card pp-give">${st?.rankAll?`<div class="pp-give-big"><b>#${st.rankAll}</b><span>of ${st.total} · ${fmt(st.points)} pts</span></div>`:''}<div class="pp-give-copy"><p class="pp-give-line">${line}</p><p>Top 3 on Oct 31 win. First place takes $300 and a one-of-one character item.</p><div class="pp-give-links"><a class="pp-link" href="/community/">see the race ↗</a><a class="pp-link" href="/contribute/">add a spot ↗</a></div></div></div>`;
 }
+/* ---- want to go (own passport only; real profiles have no list data) ---- */
+let wtgList=[],wtgCatalog=[],wtgBySlug=new Map(),wtgPick=null,wtgActive=-1,wtgMatches=[];
+const wtgSlug=id=>id.split('/').pop();
+const wtgURL=slug=>{const u=new URL('/spot/',location.origin);u.searchParams.set('theme',document.documentElement.dataset.theme==='light'?'light':'dark');u.searchParams.set('id',slug);return u.pathname+u.search;};
+const wtgStem=src=>src.split('/').pop().replace(/\.[a-z]+$/i,'');
+function wtgSpot(s){const img=typeof s.image==='string'&&(s.image.startsWith('/')||/^https:\/\/[a-z0-9.-]+\.r2\.dev\//i.test(s.image))?s.image:'',loc=img.startsWith('/')?img:'';return {id:s.id,slug:wtgSlug(s.id),title:s.title,place:s.place||'',image:img,card:loc?'/editorial-assets/cards/'+wtgStem(loc)+'.webp':''};}
+async function wtgLoadCatalog(){try{const r=await fetch('/featured-spots.json');if(!r.ok)return;const data=await r.json();wtgCatalog=data.filter(s=>s.id?.startsWith('/blog/')&&s.title&&!s.title.startsWith('PART OF:')).map(wtgSpot);wtgBySlug=new Map(wtgCatalog.map(s=>[s.id,s]));}catch{}}
+const PIN='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>';
+const wtgBtn=(act,i,label,glyph,off)=>`<button type="button" class="pp-wtg-btn" data-wtg="${act}" data-i="${i}" aria-label="${esc(label)}"${off?' disabled':''}><svg viewBox="0 0 24 24" aria-hidden="true">${glyph}</svg></button>`;
+function wtgCard(item,i,n){
+ const spot=item.type==='spot'?wtgBySlug.get(item.id):null,isSpot=item.type==='spot',name=isSpot?(spot?.title||wtgSlug(item.id).replaceAll('-',' ')):item.name;
+ const thumb=spot&&spot.image?`<img src="${esc(spot.card||spot.image)}" data-orig="${esc(spot.image)}" alt="" width="400" height="300" loading="lazy" decoding="async">`:`<span class="pp-wtg-pin" aria-hidden="true">${PIN}</span>`;
+ const copy=`<span class="pp-post-img">${thumb}</span><span class="pp-post-copy"><span class="pp-mono">${isSpot?esc(spot?.place||'deep spot'):'your pick'}</span><strong>${esc(name)}</strong></span>`;
+ return `<li class="pp-wtg-item"><div class="pp-wtg-card">${isSpot?`<a class="pp-wtg-link" href="${esc(wtgURL(wtgSlug(item.id)))}">${copy}</a>`:`<div class="pp-wtg-link">${copy}</div>`}
+ <div class="pp-wtg-ctl"><span class="pp-mono" aria-hidden="true">${String(i+1).padStart(2,'0')}</span><span class="pp-wtg-btns">${wtgBtn('up',i,`move ${name} up`,'<path d="m6 15 6-6 6 6"/>',i===0)}${wtgBtn('down',i,`move ${name} down`,'<path d="m6 9 6 6 6-6"/>',i===n-1)}${wtgBtn('rm',i,`remove ${name}`,'<path d="m6 6 12 12M18 6 6 18"/>')}</span></div></div></li>`;
+}
+function wtgListHTML(){return wtgList.length?`<ul class="pp-wtg">${wtgList.map((it,i)=>wtgCard(it,i,wtgList.length)).join('')}</ul>`:empty('no places yet.','add the first one above.');}
+const wtgStatus=()=>`${wtgList.length}/${WTG_MAX} places. Saved on this browser.`;
+function wtgHTML(){
+ if(!profile.localPreview)return empty('no want-to-go list yet.','Lists are not shared from live accounts yet.');
+ return `<form class="pp-wtg-form" id="pp-wtg-form" autocomplete="off" novalidate><label class="pp-mono" for="pp-wtg-in">add a place</label>
+ <div class="pp-wtg-row"><div class="pp-wtg-combo"><input id="pp-wtg-in" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="pp-wtg-lb" maxlength="${WTG_NAME_MAX}" placeholder="a spot, a city, anywhere" enterkeyhint="done"><ul id="pp-wtg-lb" class="pp-wtg-lb" role="listbox" aria-label="Matching deep spots" hidden></ul></div><button type="submit" class="pp-wtg-add">add</button></div>
+ <p class="pp-fine pp-wtg-msg" id="pp-wtg-msg" role="status" aria-live="polite">${wtgStatus()}</p></form><div id="pp-wtg-list">${wtgListHTML()}</div>`;
+}
+function wtgRefresh(){const box=$('#pp-wtg-list');if(!box)return;box.innerHTML=wtgListHTML();const s=document.querySelector('#pp-wtg span');if(s)s.textContent=`(${wtgList.length})`;const m=$('#pp-wtg-msg');if(m&&!m.dataset.keep)m.textContent=wtgStatus();}
+function wtgSay(text){const m=$('#pp-wtg-msg');if(!m)return;m.textContent=text;m.dataset.keep='1';clearTimeout(wtgSay.t);wtgSay.t=setTimeout(()=>{delete m.dataset.keep;m.textContent=wtgStatus();},3500);}
+function wtgCommit(next){wtgList=next;if(!writeWantToGo(wtgList))wtgSay('Could not save on this browser.');wtgRefresh();}
+function wtgClose(){const lb=$('#pp-wtg-lb'),inp=$('#pp-wtg-in');if(!lb)return;lb.hidden=true;inp.setAttribute('aria-expanded','false');inp.removeAttribute('aria-activedescendant');wtgActive=-1;}
+function wtgSuggest(){
+ const inp=$('#pp-wtg-in'),lb=$('#pp-wtg-lb'),q=inp.value.trim().toLowerCase();wtgPick=null;
+ if(q.length<2){wtgClose();return;}
+ const have=new Set(wtgList.filter(i=>i.type==='spot').map(i=>i.id));
+ const score=s=>{const t=s.title.toLowerCase(),p=s.place.toLowerCase();return t.startsWith(q)||p.startsWith(q)?0:t.includes(q)?1:p.includes(q)?2:-1;};
+ wtgMatches=wtgCatalog.filter(s=>!have.has(s.id)&&score(s)>=0).sort((a,b)=>score(a)-score(b)).slice(0,6);
+ if(!wtgMatches.length){wtgClose();return;}
+ lb.innerHTML=wtgMatches.map((s,i)=>`<li role="option" id="pp-wtg-o${i}" aria-selected="false" data-i="${i}"><strong>${esc(s.title)}</strong><span class="pp-mono">${esc(s.place)}</span></li>`).join('');
+ lb.hidden=false;inp.setAttribute('aria-expanded','true');wtgActive=-1;inp.removeAttribute('aria-activedescendant');
+}
+function wtgSetActive(i){const lb=$('#pp-wtg-lb'),inp=$('#pp-wtg-in');wtgActive=i;lb.querySelectorAll('[role=option]').forEach((o,n)=>o.setAttribute('aria-selected',String(n===i)));if(i>=0){inp.setAttribute('aria-activedescendant','pp-wtg-o'+i);lb.children[i].scrollIntoView({block:'nearest'});}else inp.removeAttribute('aria-activedescendant');}
+function wtgChoose(i){const s=wtgMatches[i];if(!s)return;const inp=$('#pp-wtg-in');inp.value=s.title.slice(0,WTG_NAME_MAX);wtgClose();wtgPick=s;inp.focus();}
+function wtgSubmit(){
+ const inp=$('#pp-wtg-in'),text=inp.value.trim();let raw=null;
+ if(wtgPick)raw={type:'spot',id:wtgPick.id};
+ else if(text){const exact=wtgCatalog.find(s=>s.title.trim().toLowerCase()===text.toLowerCase());raw=exact?{type:'spot',id:exact.id}:{type:'place',name:text};}
+ const r=addItem(wtgList,raw);
+ if(!r.ok){wtgSay(r.reason==='duplicate'?'Already on your list.':r.reason==='full'?`List is full. ${WTG_MAX} places max.`:'Type a place first.');inp.focus();return;}
+ inp.value='';wtgPick=null;wtgClose();wtgCommit(r.list);
+ wtgSay(`Added ${r.item.type==='spot'?(wtgBySlug.get(r.item.id)?.title||'spot'):r.item.name}.`);inp.focus();
+}
+function wtgBind(){
+ const form=$('#pp-wtg-form');if(!form)return;const inp=$('#pp-wtg-in'),lb=$('#pp-wtg-lb');
+ form.addEventListener('submit',e=>{e.preventDefault();wtgSubmit();});
+ inp.addEventListener('input',wtgSuggest);
+ inp.addEventListener('blur',()=>setTimeout(wtgClose,120));
+ inp.addEventListener('keydown',e=>{
+  const open=!lb.hidden;
+  if(e.key==='ArrowDown'&&wtgMatches.length){e.preventDefault();if(!open)wtgSuggest();if(!lb.hidden)wtgSetActive(Math.min(wtgActive+1,wtgMatches.length-1));}
+  else if(e.key==='ArrowUp'&&open){e.preventDefault();wtgSetActive(Math.max(wtgActive-1,-1));}
+  else if(e.key==='Enter'&&open&&wtgActive>=0){e.preventDefault();wtgChoose(wtgActive);}
+  else if(e.key==='Escape'&&open){e.preventDefault();wtgClose();}
+ });
+ lb.addEventListener('mousedown',e=>e.preventDefault());
+ lb.addEventListener('click',e=>{const o=e.target.closest('[role=option]');if(o)wtgChoose(+o.dataset.i);});
+ $('#pp-wtg-list').addEventListener('click',e=>{
+  const b=e.target.closest('[data-wtg]');if(!b)return;const i=+b.dataset.i,act=b.dataset.wtg;
+  if(act==='rm'){wtgCommit(removeAt(wtgList,i));const next=document.querySelector(`#pp-wtg-list [data-wtg="rm"][data-i="${Math.min(i,wtgList.length-1)}"]`);(next||inp).focus();wtgSay('Removed.');return;}
+  const j=i+(act==='up'?-1:1);wtgCommit(moveItem(wtgList,i,act==='up'?-1:1));
+  const t=document.querySelector(`#pp-wtg-list [data-wtg="${act}"][data-i="${j}"]:not([disabled])`)||document.querySelector(`#pp-wtg-list [data-wtg="rm"][data-i="${j}"]`);t?.focus();
+ });
+}
 function setTab(name,focus){
  const mark=name==='mark';
  document.querySelectorAll('.pp-tab').forEach(t=>{const on=(t.dataset.tab==='mark')===mark;t.setAttribute('aria-selected',String(on));t.tabIndex=on?0:-1;if(on&&focus)t.focus();});
@@ -102,6 +173,7 @@ function render(){
  ${sec('type','traveler type',null,typeHTML())}
  ${sec('stats','contributions',null,statsHTML())}
  ${sec('posts','postings',profile.records.length,postingsHTML(),profile.records.length>6?'<button type="button" class="pp-chipbtn" data-more aria-expanded="false">show all</button>':'')}
+ ${sec('wtg','want to go',profile.localPreview?wtgList.length:null,wtgHTML())}
  ${sec('stamps','stamps',`${profile.stamps.filter(s=>s.earned).length}/${profile.stamps.length}`,stampsHTML())}
  ${sec('places','places',profile.places.length,placesHTML())}
  ${sec('give','giveaway',null,giveawayHTML())}
@@ -110,6 +182,7 @@ function render(){
  /* soft ambient field: Earth glyphs on slow turbulent noise (same module as the community race), very low strength, fills the whole left column (sticky viewport-sized layer, so the cost stays one screen) */
  window._ppField?.stop();window._ppField=halftoneField($('.pp-bg-in'),{cell:8,fps:20,ink:()=>document.documentElement.dataset.theme==='light'?[24/255,48/255,86/255]:[146/255,193/255,228/255]});
  if(profile.localPreview)initPad($('#pp-pad'),{art:profile.signatureArt,onSave:url=>{profile.signatureArt=url||null;$('#pp-sig').innerHTML=sigHTML(profile.signatureArt);exportPromise=null;if(exportImage){URL.revokeObjectURL(exportImage.url);exportImage=null;}if(url)setTab('passport');}});
+ if(profile.localPreview)wtgBind();
  if(location.hash==='#pp-pad')setTab('mark');
  applyTheme(document.documentElement.dataset.theme);
 }
@@ -138,6 +211,7 @@ document.addEventListener('error',event=>{const img=event.target;if(!(img instan
 document.querySelectorAll('dialog').forEach(dialog=>dialog.addEventListener('click',event=>{if(event.target!==dialog)return;const r=dialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)dialog.close();}));
 try{
  profile=await loadProfile(params.get('user')||'wayfarer');
+ if(profile?.localPreview){wtgList=readWantToGo();await wtgLoadCatalog();}
  if(!profile){$('#passport').innerHTML='<div class="pp-loading"><h1>Profile not found</h1><p>This passport isn’t in the current collection.</p><a href="/community/">back to the community ↗</a></div>';$('#passport').setAttribute('aria-busy','false');}
  else render();
 }catch{$('#passport').innerHTML='<div class="pp-loading"><h1>Unable to load this passport</h1><p>Please refresh to try again.</p><a href="/community/">back to the community ↗</a></div>';$('#passport').setAttribute('aria-busy','false');}

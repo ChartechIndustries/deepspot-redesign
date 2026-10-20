@@ -33,7 +33,7 @@ body{margin:0;background:var(--br-bg);color:var(--br-text);font:15px/1.45 Arial,
 </main>
 <script type="module">
 import {loadData} from '/site/core.mjs';
-import {renderGiveaway,VARIANTS} from '/site/giveaway-hero.mjs?v=11';
+import {renderGiveaway,VARIANTS} from '/site/giveaway-hero.mjs?v=12';
 const data=await loadData(),list=document.getElementById('list');
 document.getElementById('jump').innerHTML=VARIANTS.map(([k,n])=>`<a href="#${k}">${k.toUpperCase()}</a>`).join(' ');
 list.innerHTML=VARIANTS.map(([k,n])=>`<section id="${k}"><h2><b>${k.toUpperCase()}</b> · ${n}</h2><div class="cv"><div class="gvr-frame" data-frame="${k}"></div></div></section>`).join('');

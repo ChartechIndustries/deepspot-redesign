@@ -1,5 +1,5 @@
 (()=>{
- const localSections=new Set(['browse','map','adventures','stories','guides','community','app','mission','faq','privacy','terms','cookies','contribute','saved','plan-trip','leaderboard','membership','competition','roadmap','profile','account','forum','guide','story','spot','sponsored','inbox','invites']);
+ const localSections=new Set(['browse','map','adventures','stories','tours','guides','community','app','mission','faq','privacy','terms','cookies','contribute','saved','plan-trip','leaderboard','membership','competition','roadmap','profile','account','forum','guide','story','spot','sponsored','inbox','invites']);
  let available=null;
  const getTheme=()=>document.documentElement.dataset.theme==='light'?'light':'dark';
  function destination(anchor){

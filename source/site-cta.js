@@ -35,7 +35,7 @@
       <h2 id="ds-footer-explore">explore</h2>
       <ul>
        <li><a href="/">home</a></li>
-       <li><a href="/browse/">browse</a></li><li><a href="/stories/">stories</a></li><li><a href="/guides/">guides</a></li><li><a href="/community/">community</a></li><li><a href="/saved/">your fieldbook</a></li><li><a href="/membership/">membership</a></li><li><a href="/account/">your account</a></li>
+       <li><a href="/browse/">browse</a></li><li><a href="/tours/">tours</a></li><li><a href="/guides/">guides</a></li><li><a href="/community/">community</a></li><li><a href="/saved/">your fieldbook</a></li><li><a href="/membership/">membership</a></li><li><a href="/account/">your account</a></li>
        <li><a href="/map/">interactive map</a></li>
        <li><a href="/mission/">our mission</a></li>
        <li><a href="/faq/">faq</a></li>
