@@ -1,0 +1,63 @@
+PASS wall shows (spot,out) {'sheet': True, 'fade': True, 'inert': 10, 'walled': True, 'mh': '1036px'}
+PASS wall: focus on email at load 
+PASS invalid email shows error 
+PASS unlocks in place at once (page unclipped, inert gone) {'sheet': True, 'fade': False, 'inert': 0, 'walled': False, 'mh': ''}
+PASS success line shown 
+PASS sheet leaves after success 
+PASS session = free + email {'state': 'free', 'email': 'me@example.com'}
+PASS persists after reload {'sheet': False, 'fade': False, 'inert': 0, 'walled': False, 'mh': ''}
+PASS account shows session state preview session: free account · me@example.com |  | sign out of preview ×
+PASS sign out sets out 
+PASS relocks after sign out {'sheet': True, 'fade': True, 'inert': 10, 'walled': True, 'mh': '1036px'}
+PASS wall: Tab stays inside sheet (14 presses) 
+PASS wall: Shift+Tab from first wraps inside 
+PASS wall: dialog + aria-modal + labelled heading 
+PASS wall: Escape does not close (sheet stays, focus to site logo) 
+PASS wall shows (story,out) {'sheet': True, 'fade': True, 'inert': 9, 'walled': True, 'mh': '1753px'}
+PASS story: first 3 paragraphs allowed, rest clipped but in DOM {'total': 6, 'shown': 3, 'docH': 2636, 'mainBottom': 1895}
+PASS spot: first 2 paragraphs allowed, rest clipped but in DOM {'total': 7, 'shown': 2}
+PASS save (out) opens action sheet "sign in to save this." 
+PASS save not applied while out 
+PASS action: Tab stays inside sheet (14 presses) 
+PASS Escape closes action sheet 
+PASS focus returns to the save button 
+PASS x closes action sheet 
+PASS after sign-in the save resumes 
+PASS spot vote yes (out) opens sheet, nothing stored, no navigation sign in to vote.
+PASS spot vote not quite (out) opens sheet, nothing stored, no navigation sign in to vote.
+PASS poll option (out) opens sheet, nothing stored, no navigation sign in to vote.
+PASS roadmap vote (out) opens sheet, nothing stored, no navigation sign in to vote.
+PASS comment link (out) opens sheet, nothing stored, no navigation sign in to comment.
+PASS vote resumes after sign-in 
+PASS trip: edit while out is not written to storage 
+PASS trip: status offers sign-in 
+PASS trip share (out) opens "sign in to share this trip." 
+PASS trip: edits saved right after sign-in 
+PASS contribute submit (out) opens "sign in to submit this." 
+PASS contribute submit resumes after sign-in (preview shown) 
+PASS free: first photo opens (no gate) 
+PASS free: next photo opens member sheet over viewer 
+PASS member sheet Esc closes only the sheet 
+PASS free: arrow key also gated 
+PASS mark-as-member sets member + resumes next photo 2 / 5
+PASS free: thumbnail 2 opens member sheet 
+PASS member sheet CTA goes to /membership/ 
+PASS member sheet: Tab stays inside 
+PASS member: gallery opens freely 
+PASS free: join now opens member sheet, no navigation 
+PASS mark member resumes join (navigates to /contribute/) http://localhost:8766/contribute/?theme=dark
+PASS out: join now asks to sign in first 
+PASS out: after sign-in the member sheet follows 
+PASS ?gate=off: no wall on spot {'sheet': False, 'fade': False, 'inert': 0, 'walled': False, 'mh': ''}
+PASS ?gate=off persists in tab: vote works, no sheet 
+PASS ?gate=off persists on story 
+PASS ?gate=out turns it back on 
+PASS free: no wall on /spot/ 
+PASS free: no wall on /story 
+PASS member: no wall on /spot/ 
+PASS member: no wall on /story 
+PASS reduced motion: no slide animation 
+PASS light theme wall renders 
+
+console/network problems: 0 []
+PASS 60 FAIL 0

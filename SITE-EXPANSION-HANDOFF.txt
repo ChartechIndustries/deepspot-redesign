@@ -1,0 +1,205 @@
+DEEPSPOT — FULL-SITE FRONTEND EXPANSION
+October 8, 2026
+
+START HERE
+Serve the source folder using the existing OPEN SITE.bat / serve.py.
+Local preview: http://localhost:8766/?theme=dark
+This is the current frontend prototype. No production deployment was made.
+The pre-expansion text files are preserved in backups/full-site-20261008/.
+
+DESIGN
+The existing Earth homepage remains the visual anchor. The added pages use its
+large editorial type, navy/cream backgrounds, fine borders, cobalt and green
+headings, aqua panels, photographic content, and compact arrow CTAs. Theme and
+panel-color controls carry across navigation. Existing homepage motion, bento
+layout, What's New banner, and mobile globe placement remain in place.
+
+ROUTES
+Existing: /, /browse/, /profile/?user=wayfarer
+Places: /spot/?id=tochigi-underground-quarry, /map/
+Reading: /stories/, /story/?id=shark
+Guides: /guides/, /guide/?id=tas-aizu-samurai-cultural-tour, /adventures/
+Personal: /saved/, /plan-trip/, /contribute/, /account/, /inbox/, /invites/
+Community: /community/, /leaderboard/, /competition/, /forum/
+About/support: /mission/, /faq/, /membership/, /app/, /roadmap/, /sponsored/
+Legal: /privacy/, /terms/, /cookies/
+All routes support ?theme=dark and ?theme=light.
+Spot IDs in URLs omit the /blog/ prefix; the catalog keeps the full /blog/ ID.
+Story URLs accept either the short editorial ID or the original story slug.
+
+SOURCE AND COVERAGE
+Source: authenticated, read-only review of https://www.deepspot.io on October 8.
+Evidence: research/original-site-20261008.json (public site content only).
+The saved collection was merged with 120 current Browse records, giving:
+  - 393 raw catalog entries; 369 standalone spots after tour parts are excluded.
+  - 132 standalone entries with publisher credits; missing credits stay missing.
+  - 13 complete destination articles and gallery credits.
+  - 9 complete original stories, with authors and photographs.
+  - 7 guides, excluding the source's explicit test guides.
+  - Source-associated stops for the Aizu and retro-street collections.
+  - 10 verified coordinate pairs for the map (the hero globe destinations).
+  - 10 source contributor profiles/ranking records and public avatars where present.
+  - 4 forum topics and 3 pending submissions, explicitly dated snapshots.
+  - Original membership, competition, roadmap and legal information.
+These are content snapshots, NOT live database counts or a complete site crawl.
+The original site displayed different totals on different pages. The redesign's
+count is based on its own current standalone catalog, never a fabricated total.
+Guide summaries and available stop collections are included; complete source
+itineraries remain linked. Destination summaries without full bodies also retain
+an explicit link to the original entry.
+
+CONFIRMED PRICING
+Membership: $1/week, billed monthly. This supersedes the old $1/month placeholder.
+Membership and competition are distinct flows. Checkout and official competition
+rules remain on the original DeepSpot site; the preview does not collect payments.
+
+WORKING FRONTEND FLOWS
+  - Shared header/footer and local routing from home, Browse, cards and bylines.
+  - Paginated Browse, filters, search, category tabs, and real destination pages.
+  - Stories and Guides search/filter, reading pages, related content and sharing.
+  - Bookmarked places and stories in the fieldbook, persisted on this browser.
+  - Trip name, context, stops, reorder, day assignment and day notes; local save,
+    JSON download, shareable URL, isolated shared-trip view and explicit save-copy.
+  - Map search, marker previews, saved/trip filters, surprise-me and trip lines.
+    Lines are straight connections, not directions; only verified coordinates plot.
+  - Contribution location/story/edit/photo draft forms, categories, validation,
+    preview, local save, JSON export and a guarded start-new-draft action.
+  - Contributor passports with source totals, four featured records, author-filtered
+    Browse link, shareable profile URL and downloadable passport image.
+  - Community activity tabs, rankings views, forum reading, FAQs and legal pages.
+  - Light/dark, panel-color setting, responsive navigation and mobile layouts.
+  - App page with browser-install guidance and an install prompt when supported.
+
+BACKEND CONNECTIONS STILL REQUIRED
+This static prototype intentionally does not pretend these actions are complete:
+  1. Authentication/session/account settings. /account/ hands off to original access.
+  2. Replace snapshots with live content, author profiles, avatar URLs, rankings,
+     contribution counts, guide stops, map coordinates and admin-curated collections.
+  3. Sync saved places/stories and trips to signed-in users. Shared trips currently
+     embed their non-secret content in the URL; use a short server record ID in prod.
+  4. Contribution submission, photo upload/storage, moderation and status updates.
+     Current form saves/exports drafts; it never claims to publish anything.
+  5. Forum replies, voting, reactions, community groups and competition eligibility.
+     Current interaction links return to the original live service.
+  6. Membership billing and entitlements. Current CTA uses the original checkout.
+  7. Newsletter remains intentionally disabled at the user's request.
+  8. Confirm current legal text with the existing policy owner when integrating.
+  9. Production map provider/accessibility and coordinate coverage. Do not bulk-cache
+     OpenStreetMap tiles or claim offline maps from this prototype.
+
+IMPLEMENTATION
+source/site/core.mjs: data loading, shared header, cards, saves, trip entry, sharing.
+source/site/pages.mjs: route views; split into Next components during integration.
+source/site/pages.css + finishing.css: shared responsive page styles.
+source/site/map.mjs: Leaflet 1.9.4, vendored in site/vendor with license.
+source/site/planner.mjs + trip-state.mjs: trip UI and normalized import/export state.
+source/site/contribute.mjs: local draft form and export.
+source/site/navigation.js: routes legacy home/Browse links into the new pages.
+Links marked data-original deliberately continue to the live site.
+source/site/content.json: supplemental sourced articles, guides, community, policies.
+source/featured-spots.json, editorial-stories.json, profile/profiles.json: catalogs.
+source/site/assets/: localized source avatars and missing story cover images.
+source/manifest.webmanifest, sw.js, site/install.js: installable web shell.
+The service worker has no offline content or account-data cache.
+
+Homepage uses the v51 trio: page-C89T775K-v51.js, index-B9ZOBUSp-v51.js,
+layout-segment-context-BmbrN5Mh-v51.js. source/index.html references them together.
+SSR navigation and the React navigation were updated in tandem to avoid hydration
+mismatches. Old versioned chunks remain as recovery artifacts. Do not serve an
+older readable/page.js over this version.
+
+BROWSER STORAGE CONTRACTS
+deepspot-saved-spots: array of /blog/ IDs
+deepspot-saved-stories: array of short story IDs
+deepspot-trip-v1: {name, spots, days, dayCount, notes, dayNotes}
+deepspot-contribution-v1: form draft including type, fields, categories, updatedAt
+Existing theme and panel-color preferences remain in their existing storage keys.
+Missing/unavailable storage is handled without claiming a successful save.
+
+QA COMPLETED
+  - 29 HTML routes return 200; all literal local HTML links/assets resolve.
+  - Syntax checks passed on the 19 changed/new executable modules and home chunks.
+  - Trip state tests: share round-trip, day notes, invalid/duplicate stops, day bounds.
+  - Desktop screenshots reviewed for home, stories, spot details, map, community,
+    and contributor passport. No browser errors in these inspected views.
+  - Mobile width 390: all new sections, reading pages and passport have no horizontal
+    overflow. Existing mobile Earth rendering and layout also checked.
+  - Search -> story -> save -> fieldbook -> unsave verified.
+  - Spot save and add-to-trip -> day move -> share -> shared notes verified.
+  - Contribution form -> preview -> reload draft -> start-new verified.
+  - Passport share panel generated a downloadable image successfully.
+  - Browse still displays 12 cards/page and the three collection tabs route locally.
+Temporary test bookmarks, story save, trip stop/day/note and draft were removed.
+Native install prompts, production payments/auth, full catalog geocoding, real
+submission delivery and deployment are not claimed as tested or connected.
+
+MAINTENANCE
+build_site_content.py, connect_site.py and add_community.py are one-time migration
+helpers outside source/. Do not blindly rerun them: later integration edits and
+localized image paths were applied after those scripts. Edit the current modules
+and data or replace their fetch layer with live backend adapters.
+qa/trip-state.test.mjs is a small Node test for imported/shared-trip integrity.
+
+SIGNED-IN ACCOUNT AUDIT ADDENDUM — OCTOBER 8
+The newly available profile was reviewed read-only. See
+research/account-structure-20261008.txt for the information architecture.
+
+/account/ now includes a responsive account sidebar with eight sections:
+passport editor, travel stats, trips, submissions, placements, notifications,
+membership/billing and account settings. Local trips and contribution drafts
+appear automatically; live account statistics use explicit unconnected states.
+/inbox/ and /invites/ reproduce the service structure without copying private
+messages or live access codes. Account access is available in the site header.
+
+Public profile drafts can be edited, saved locally, exported as JSON and previewed
+at /profile/?user=preview. Fields: display name, username, bio, signature, social
+handles, website, traveler style and a local photo (JPG/PNG/WebP, <=1 MB).
+The five source traveler styles use editorial vector marks in this preview;
+character inventory/generation and unlocks continue through the live account.
+
+New modules: site/account.mjs, account-state.mjs, account.css, account-nav.css.
+Storage: deepspot-profile-draft-v1. The draft schema explicitly excludes email,
+password, XP, levels, membership and other private account state. No account
+identity, messages or contact details from the source were added to the site.
+The edited passport is local to the browser: share its downloaded image, not a
+link that would imply the draft is published. Source contributor passports remain
+linkable as before. Authentication, profile publication, username availability,
+photo storage, badge/XP sync, moderation, inbox and billing need backend adapters.
+
+QA: all eight tabs; draft save/reload -> matching passport; avatar mark rendering;
+new header entry; mobile 390px account, inbox, invite, passport and homepage with
+no horizontal overflow; syntax checks; three profile-state tests passed. Both
+additional routes return 200. The temporary test profile was removed.
+Source photo-upload validation is implemented; no live avatar upload was made.
+No production deployment or live account mutation was performed.
+
+
+October 8 design audit: see DESIGN-AUDIT-2026-10-08.txt. Apply source/site/refinements.css after the base route styles. It is already linked into every route. Existing backend boundaries remain unchanged.
+
+DEEP AUDIT ADDENDUM — OCTOBER 9
+See DEEP-AUDIT-2026-10-09.txt for source research, verified changes, QA and the
+remaining integration priorities. This pass is local and has not been deployed.
+
+New shared storage.mjs synchronizes bookmarks between homepage, Browse, readers
+and Fieldbook, including other tabs and restored browser pages. Failed writes
+do not announce success. Existing storage keys and record IDs are preserved.
+fieldbook.mjs replaces repeated collections with Places/Stories tabs, search,
+compact saved rows and a trip summary. gallery.mjs exposes every stored photo
+through an accessible dialog with credits, keys and focus restoration.
+
+Trip state has one 50-stop limit. The planner protects existing local trips from
+shared-copy replacement and detects stale-tab writes. Contribution drafts now
+autosave and cannot be resurrected by a pending write after Start New.
+
+Public profile records add aliases and identityVerifiedAt. Handle/name aliases
+join publisher records to canonical profiles without changing the October 8
+count snapshots. Total contributions and published-item counts remain distinct.
+
+navigation.js only localizes known details via site/routes.json. Rebuild this
+index after fixture changes with build_route_manifest.py. Unknown content and
+maps without verified local coordinates retain their original-site destination.
+The local 369-destination collection is a fixture subset, not the live total.
+
+QA: 11 tests passed, 29 routes/33 referenced assets returned 200, and real-browser
+save/read/plan/share/draft/gallery journeys were checked. Phone checks included
+320px and 390px. The existing Earth and homepage composition remain intact.

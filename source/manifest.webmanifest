@@ -1,0 +1,3 @@
+{
+ "id":"/","name":"DeepSpot","short_name":"DeepSpot","description":"Your map to the extra-unordinary.","start_url":"/?theme=dark","scope":"/","display":"standalone","background_color":"#0c101b","theme_color":"#0c101b","icons":[{"src":"/site/app-icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any"}]
+}

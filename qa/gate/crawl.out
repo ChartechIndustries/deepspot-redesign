@@ -1,0 +1,54 @@
+GATE?? / False []
+CLEAN /browse/ False []
+CLEAN /map/ False []
+CLEAN /stories/ False []
+CLEAN /guides/ False []
+CLEAN /guide/?id=tas-aizu-samurai-cultural-tour False []
+CLEAN /adventures/ False []
+CLEAN /saved/ False []
+CLEAN /plan-trip/ False []
+CLEAN /contribute/ False []
+CLEAN /account/ False []
+CLEAN /inbox/ False []
+CLEAN /invites/ False []
+CLEAN /community/ False []
+CLEAN /leaderboard/ False []
+CLEAN /competition/ False []
+CLEAN /forum/ False []
+CLEAN /forum/?id=0 False []
+CLEAN /mission/ False []
+CLEAN /faq/ False []
+CLEAN /membership/ False []
+CLEAN /app/ False []
+CLEAN /roadmap/ False []
+CLEAN /sponsored/ False []
+CLEAN /privacy/ False []
+CLEAN /terms/ False []
+CLEAN /cookies/ False []
+CLEAN /profile/?user=wayfarer False []
+CLEAN /profile/?user=preview False []
+CLEAN /404.html False []
+CLEAN /nope-not-a-route/ False ['404 http://localhost:8766/nope-not-a-route/?theme=dark&gate=out', 'Failed to load resource: the server responded with a status of 404 (File not found)']
+CLEAN /spot/?id=does-not-exist False []
+CLEAN /story/?id=does-not-exist False []
+GATED /spot/?id=tochigi-underground-quarry {'sheet': 1, 'fade': 1, 'inert': 10, 'walled': True, 'gtcss': True, 'mh': '1036px', 'route': '/spot/?id=tochigi-underground-quarry', 'errs': []} []
+GATED /story/?id=shark {'sheet': 1, 'fade': 1, 'inert': 9, 'walled': True, 'gtcss': True, 'mh': '1753px', 'route': '/story/?id=shark', 'errs': []} []
+OVER 1440 /spot/?id=tochigi-underground-quarry {'sw': 1440, 'cw': 1440, 'route': '/spot/?id=tochigi-underground-quarry', 'w': 1440, 'state': 'out'}
+OVER 1440 /story/?id=shark {'sw': 1440, 'cw': 1440, 'route': '/story/?id=shark', 'w': 1440, 'state': 'out'}
+OVER 1440 member sheet {'sw': 1440, 'cw': 1440, 'route': 'member-sheet', 'w': 1440, 'sheet': [389, 1440]}
+OVER 1440 action sheet {'sw': 1440, 'cw': 1440, 'route': 'action-sheet', 'w': 1440}
+OVER 768 /spot/?id=tochigi-underground-quarry {'sw': 768, 'cw': 768, 'route': '/spot/?id=tochigi-underground-quarry', 'w': 768, 'state': 'out'}
+OVER 768 /story/?id=shark {'sw': 768, 'cw': 768, 'route': '/story/?id=shark', 'w': 768, 'state': 'out'}
+OVER 768 member sheet {'sw': 768, 'cw': 768, 'route': 'member-sheet', 'w': 768, 'sheet': [389, 768]}
+OVER 768 action sheet {'sw': 768, 'cw': 768, 'route': 'action-sheet', 'w': 768}
+OVER 390 /spot/?id=tochigi-underground-quarry {'sw': 390, 'cw': 390, 'route': '/spot/?id=tochigi-underground-quarry', 'w': 390, 'state': 'out'}
+OVER 390 /story/?id=shark {'sw': 390, 'cw': 390, 'route': '/story/?id=shark', 'w': 390, 'state': 'out'}
+OVER 390 member sheet {'sw': 390, 'cw': 390, 'route': 'member-sheet', 'w': 390, 'sheet': [393, 390]}
+OVER 390 action sheet {'sw': 390, 'cw': 390, 'route': 'action-sheet', 'w': 390}
+OVER 320 /spot/?id=tochigi-underground-quarry {'sw': 320, 'cw': 320, 'route': '/spot/?id=tochigi-underground-quarry', 'w': 320, 'state': 'out'}
+OVER 320 /story/?id=shark {'sw': 320, 'cw': 320, 'route': '/story/?id=shark', 'w': 320, 'state': 'out'}
+OVER 320 member sheet {'sw': 320, 'cw': 320, 'route': 'member-sheet', 'w': 320, 'sheet': [393, 320]}
+OVER 320 action sheet {'sw': 320, 'cw': 320, 'route': 'action-sheet', 'w': 320}
+never-gated routes checked 33 with a gate 1
+overflow cases 16 overflowing 0 []
+routes with console/network problems 1 [('/nope-not-a-route/', ['404 http://localhost:8766/nope-not-a-route/?theme=dark&gate=out', 'Failed to load resource: the server responded with a status of 404 (File not found)'])]

@@ -1,0 +1,780 @@
+{
+  "generated": "2026-09-11 01:42:52",
+  "blend": "C:\\Users\\CharD\\Downloads\\BLOOD1.blend",
+  "engine": "BLENDER_EEVEE",
+  "render_resolution": [
+    1080,
+    1080
+  ],
+  "view_transform": "Standard",
+  "look": "None",
+  "exposure": 0.0,
+  "gamma": 1.0,
+  "film_transparent": true,
+  "draco": true,
+  "camera": {
+    "position": [
+      16.099998,
+      0.68,
+      0.0
+    ],
+    "quaternion": [
+      2e-08,
+      0.70710677,
+      -2e-08,
+      0.70710677
+    ],
+    "fov_vertical_deg": 13.685547,
+    "fov_horizontal_deg": 13.685547,
+    "lens_mm": 150.0,
+    "sensor": [
+      36.0,
+      24.0
+    ],
+    "sensor_fit": "AUTO",
+    "near": 0.1,
+    "far": 100.0,
+    "shift": [
+      0.0,
+      0.0
+    ],
+    "aspect": 1.0,
+    "blender_position": [
+      16.099998,
+      0.0,
+      0.68
+    ]
+  },
+  "slotOrder": [
+    "Body/Shirt",
+    "Jackets",
+    "Mouth Area",
+    "Face",
+    "Eyes",
+    "Head/Hat"
+  ],
+  "depth_push": [
+    "Body"
+  ],
+  "world": {
+    "mode": "envtex",
+    "strength": 1.0,
+    "source": "photo_studio_broadway_hall_4k.exr",
+    "rotation_z_rad": 16.927947998046875,
+    "color": null,
+    "file": "env.hdr",
+    "size": [
+      1024,
+      512
+    ],
+    "mean_color": [
+      0.81923,
+      0.7861,
+      0.8027
+    ],
+    "sun_dir_three": [
+      0.22878,
+      0.33689,
+      -0.91333
+    ],
+    "peak_luminance": 17.83
+  },
+  "base": {
+    "file": "base.glb",
+    "objects": [
+      "Body",
+      "Legs",
+      "Claw1",
+      "Claw 2",
+      "Claw 3",
+      "Notes",
+      "Whisker1",
+      "Whisker2",
+      "Whisker3",
+      "Whisker4",
+      "Head",
+      "Body2",
+      "Sphere.001"
+    ],
+    "bytes": 382212
+  },
+  "slots": {
+    "Body/Shirt": [
+      {
+        "id": "Body_Shirt/Playstation",
+        "name": "Playstation",
+        "file": "traits/Body_Shirt/Playstation.glb",
+        "thumb": "assets/thumbs/Body_Shirt/Playstation.png",
+        "objects": [
+          "Playstation"
+        ],
+        "bytes": 29504
+      },
+      {
+        "id": "Body_Shirt/Tux",
+        "name": "Tux",
+        "file": "traits/Body_Shirt/Tux.glb",
+        "thumb": "assets/thumbs/Body_Shirt/Tux.png",
+        "objects": [
+          "Tux"
+        ],
+        "bytes": 59796
+      },
+      {
+        "id": "Body_Shirt/Egg",
+        "name": "Egg'",
+        "file": "traits/Body_Shirt/Egg.glb",
+        "thumb": "assets/thumbs/Body_Shirt/Egg.png",
+        "objects": [
+          "Egg'"
+        ],
+        "bytes": 227572
+      },
+      {
+        "id": "Body_Shirt/Fractal",
+        "name": "Fractal",
+        "file": "traits/Body_Shirt/Fractal.glb",
+        "thumb": "assets/thumbs/Body_Shirt/Fractal.png",
+        "objects": [
+          "Fractal"
+        ],
+        "bytes": 274872
+      },
+      {
+        "id": "Body_Shirt/Cage",
+        "name": "Cage",
+        "file": "traits/Body_Shirt/Cage.glb",
+        "thumb": "assets/thumbs/Body_Shirt/Cage.png",
+        "objects": [
+          "Cage"
+        ],
+        "bytes": 157484
+      },
+      {
+        "id": "Body_Shirt/Cool_S",
+        "name": "Cool S",
+        "file": "traits/Body_Shirt/Cool_S.glb",
+        "thumb": "assets/thumbs/Body_Shirt/Cool_S.png",
+        "objects": [
+          "Cool S"
+        ],
+        "bytes": 125328
+      },
+      {
+        "id": "Body_Shirt/FREE",
+        "name": "FREE",
+        "file": "traits/Body_Shirt/FREE.glb",
+        "thumb": "assets/thumbs/Body_Shirt/FREE.png",
+        "objects": [
+          "FREE"
+        ],
+        "bytes": 218616
+      },
+      {
+        "id": "Body_Shirt/GO",
+        "name": "GO",
+        "file": "traits/Body_Shirt/GO.glb",
+        "thumb": "assets/thumbs/Body_Shirt/GO.png",
+        "objects": [
+          "GO"
+        ],
+        "bytes": 147484
+      },
+      {
+        "id": "Body_Shirt/I_3_Tartaria",
+        "name": "I <3 Tartaria",
+        "file": "traits/Body_Shirt/I_3_Tartaria.glb",
+        "thumb": "assets/thumbs/Body_Shirt/I_3_Tartaria.png",
+        "objects": [
+          "I <3 Tartaria"
+        ],
+        "bytes": 261284
+      },
+      {
+        "id": "Body_Shirt/Stupid",
+        "name": "Stupid",
+        "file": "traits/Body_Shirt/Stupid.glb",
+        "thumb": "assets/thumbs/Body_Shirt/Stupid.png",
+        "objects": [
+          "Stupid"
+        ],
+        "bytes": 264668
+      },
+      {
+        "id": "Body_Shirt/Mole_Mole",
+        "name": "Mole Mole",
+        "file": "traits/Body_Shirt/Mole_Mole.glb",
+        "thumb": "assets/thumbs/Body_Shirt/Mole_Mole.png",
+        "objects": [
+          "Mole Mole"
+        ],
+        "bytes": 140968
+      },
+      {
+        "id": "Body_Shirt/Its_Over",
+        "name": "Its Over",
+        "file": "traits/Body_Shirt/Its_Over.glb",
+        "thumb": "assets/thumbs/Body_Shirt/Its_Over.png",
+        "objects": [
+          "Its Over"
+        ],
+        "bytes": 66348
+      },
+      {
+        "id": "Body_Shirt/OVO",
+        "name": "OVO",
+        "file": "traits/Body_Shirt/OVO.glb",
+        "thumb": "assets/thumbs/Body_Shirt/OVO.png",
+        "objects": [
+          "OVO"
+        ],
+        "bytes": 197420
+      },
+      {
+        "id": "Body_Shirt/Mindfulness",
+        "name": "Mindfulness",
+        "file": "traits/Body_Shirt/Mindfulness.glb",
+        "thumb": "assets/thumbs/Body_Shirt/Mindfulness.png",
+        "objects": [
+          "Mindfulness"
+        ],
+        "bytes": 222620
+      },
+      {
+        "id": "Body_Shirt/Muckbang",
+        "name": "Muckbang",
+        "file": "traits/Body_Shirt/Muckbang.glb",
+        "thumb": "assets/thumbs/Body_Shirt/Muckbang.png",
+        "objects": [
+          "Muckbang"
+        ],
+        "bytes": 226564
+      },
+      {
+        "id": "Body_Shirt/Fat_Idiot",
+        "name": "Fat Idiot",
+        "file": "traits/Body_Shirt/Fat_Idiot.glb",
+        "thumb": "assets/thumbs/Body_Shirt/Fat_Idiot.png",
+        "objects": [
+          "Fat Idiot"
+        ],
+        "bytes": 48316
+      },
+      {
+        "id": "Body_Shirt/Nami",
+        "name": "Nami",
+        "file": "traits/Body_Shirt/Nami.glb",
+        "thumb": "assets/thumbs/Body_Shirt/Nami.png",
+        "objects": [
+          "Nami"
+        ],
+        "bytes": 271824
+      },
+      {
+        "id": "Body_Shirt/Lace_Dress",
+        "name": "Lace Dress",
+        "file": "traits/Body_Shirt/Lace_Dress.glb",
+        "thumb": "assets/thumbs/Body_Shirt/Lace_Dress.png",
+        "objects": [
+          "Lace Dress"
+        ],
+        "bytes": 1026940
+      },
+      {
+        "id": "Body_Shirt/Polka",
+        "name": "Polka",
+        "file": "traits/Body_Shirt/Polka.glb",
+        "thumb": "assets/thumbs/Body_Shirt/Polka.png",
+        "objects": [
+          "Polka"
+        ],
+        "bytes": 186192
+      }
+    ],
+    "Jackets": [
+      {
+        "id": "Jackets/Puffer",
+        "name": "Puffer",
+        "file": "traits/Jackets/Puffer.glb",
+        "thumb": "assets/thumbs/Jackets/Puffer.png",
+        "objects": [
+          "Puffer"
+        ],
+        "bytes": 132084
+      },
+      {
+        "id": "Jackets/Carhart",
+        "name": "Carhart",
+        "file": "traits/Jackets/Carhart.glb",
+        "thumb": "assets/thumbs/Jackets/Carhart.png",
+        "objects": [
+          "Carhart"
+        ],
+        "bytes": 134940
+      },
+      {
+        "id": "Jackets/Smock",
+        "name": "Smock",
+        "file": "traits/Jackets/Smock.glb",
+        "thumb": "assets/thumbs/Jackets/Smock.png",
+        "objects": [
+          "Smock"
+        ],
+        "bytes": 390752
+      },
+      {
+        "id": "Jackets/Yellow_Smock",
+        "name": "Yellow Smock",
+        "file": "traits/Jackets/Yellow_Smock.glb",
+        "thumb": "assets/thumbs/Jackets/Yellow_Smock.png",
+        "objects": [
+          "Yellow Smock"
+        ],
+        "bytes": 396960
+      },
+      {
+        "id": "Jackets/Manifest",
+        "name": "Manifest",
+        "file": "traits/Jackets/Manifest.glb",
+        "thumb": "assets/thumbs/Jackets/Manifest.png",
+        "objects": [
+          "Manifest"
+        ],
+        "bytes": 134640
+      }
+    ],
+    "Mouth Area": [
+      {
+        "id": "Mouth_Area/Cig",
+        "name": "Cig",
+        "file": "traits/Mouth_Area/Cig.glb",
+        "thumb": "assets/thumbs/Mouth_Area/Cig.png",
+        "objects": [
+          "Cig"
+        ],
+        "bytes": 33884
+      },
+      {
+        "id": "Mouth_Area/Straw",
+        "name": "Straw",
+        "file": "traits/Mouth_Area/Straw.glb",
+        "thumb": "assets/thumbs/Mouth_Area/Straw.png",
+        "objects": [
+          "Straw"
+        ],
+        "bytes": 23876
+      },
+      {
+        "id": "Mouth_Area/Fangs",
+        "name": "Fangs",
+        "file": "traits/Mouth_Area/Fangs.glb",
+        "thumb": "assets/thumbs/Mouth_Area/Fangs.png",
+        "objects": [
+          "Fangs"
+        ],
+        "bytes": 24144
+      },
+      {
+        "id": "Mouth_Area/Oni",
+        "name": "Oni",
+        "file": "traits/Mouth_Area/Oni.glb",
+        "thumb": "assets/thumbs/Mouth_Area/Oni.png",
+        "objects": [
+          "Oni"
+        ],
+        "bytes": 93400
+      },
+      {
+        "id": "Mouth_Area/Tongue",
+        "name": "Tongue",
+        "file": "traits/Mouth_Area/Tongue.glb",
+        "thumb": "assets/thumbs/Mouth_Area/Tongue.png",
+        "objects": [
+          "Tongue"
+        ],
+        "bytes": 30048
+      },
+      {
+        "id": "Mouth_Area/Tongue_side",
+        "name": "Tongue side",
+        "file": "traits/Mouth_Area/Tongue_side.glb",
+        "thumb": "assets/thumbs/Mouth_Area/Tongue_side.png",
+        "objects": [
+          "Tongue side"
+        ],
+        "bytes": 29680
+      },
+      {
+        "id": "Mouth_Area/Nose_Ring",
+        "name": "Nose Ring",
+        "file": "traits/Mouth_Area/Nose_Ring.glb",
+        "thumb": "assets/thumbs/Mouth_Area/Nose_Ring.png",
+        "objects": [
+          "Nose Ring"
+        ],
+        "bytes": 31436
+      },
+      {
+        "id": "Mouth_Area/Buck_Teeth",
+        "name": "Buck Teeth",
+        "file": "traits/Mouth_Area/Buck_Teeth.glb",
+        "thumb": "assets/thumbs/Mouth_Area/Buck_Teeth.png",
+        "objects": [
+          "Buck Teeth"
+        ],
+        "bytes": 24396
+      },
+      {
+        "id": "Mouth_Area/Rose",
+        "name": "Rose",
+        "file": "traits/Mouth_Area/Rose.glb",
+        "thumb": "assets/thumbs/Mouth_Area/Rose.png",
+        "objects": [
+          "Rose"
+        ],
+        "bytes": 38552
+      }
+    ],
+    "Face": [
+      {
+        "id": "Face/Pimple_Patch",
+        "name": "Pimple Patch",
+        "file": "traits/Face/Pimple_Patch.glb",
+        "thumb": "assets/thumbs/Face/Pimple_Patch.png",
+        "objects": [
+          "Pimple Patch"
+        ],
+        "bytes": 6760
+      },
+      {
+        "id": "Face/Bandaid",
+        "name": "Bandaid",
+        "file": "traits/Face/Bandaid.glb",
+        "thumb": "assets/thumbs/Face/Bandaid.png",
+        "objects": [
+          "Bandaid"
+        ],
+        "bytes": 45228
+      }
+    ],
+    "Eyes": [
+      {
+        "id": "Eyes/Aviators",
+        "name": "Aviators",
+        "file": "traits/Eyes/Aviators.glb",
+        "thumb": "assets/thumbs/Eyes/Aviators.png",
+        "objects": [
+          "Aviators"
+        ],
+        "bytes": 185644
+      }
+    ],
+    "Head/Hat": [
+      {
+        "id": "Head_Hat/Trucker",
+        "name": "Trucker",
+        "file": "traits/Head_Hat/Trucker.glb",
+        "thumb": "assets/thumbs/Head_Hat/Trucker.png",
+        "objects": [
+          "Trucker"
+        ],
+        "bytes": 21204
+      },
+      {
+        "id": "Head_Hat/Partyhat",
+        "name": "Partyhat",
+        "file": "traits/Head_Hat/Partyhat.glb",
+        "thumb": "assets/thumbs/Head_Hat/Partyhat.png",
+        "objects": [
+          "Partyhat"
+        ],
+        "bytes": 18016
+      },
+      {
+        "id": "Head_Hat/OSRS_Party_Hat",
+        "name": "OSRS Party Hat",
+        "file": "traits/Head_Hat/OSRS_Party_Hat.glb",
+        "thumb": "assets/thumbs/Head_Hat/OSRS_Party_Hat.png",
+        "objects": [
+          "OSRS Party Hat"
+        ],
+        "bytes": 12764
+      },
+      {
+        "id": "Head_Hat/Devil_Horn",
+        "name": "Devil Horn",
+        "file": "traits/Head_Hat/Devil_Horn.glb",
+        "thumb": "assets/thumbs/Head_Hat/Devil_Horn.png",
+        "objects": [
+          "Devil Horn"
+        ],
+        "bytes": 14480
+      },
+      {
+        "id": "Head_Hat/Halo",
+        "name": "Halo",
+        "file": "traits/Head_Hat/Halo.glb",
+        "thumb": "assets/thumbs/Head_Hat/Halo.png",
+        "objects": [
+          "Halo"
+        ],
+        "bytes": 2536
+      },
+      {
+        "id": "Head_Hat/Fez",
+        "name": "Fez",
+        "file": "traits/Head_Hat/Fez.glb",
+        "thumb": "assets/thumbs/Head_Hat/Fez.png",
+        "objects": [
+          "Fez"
+        ],
+        "bytes": 54508
+      },
+      {
+        "id": "Head_Hat/Safari",
+        "name": "Safari",
+        "file": "traits/Head_Hat/Safari.glb",
+        "thumb": "assets/thumbs/Head_Hat/Safari.png",
+        "objects": [
+          "Safari"
+        ],
+        "bytes": 27432
+      },
+      {
+        "id": "Head_Hat/Straw_Hat",
+        "name": "Straw Hat",
+        "file": "traits/Head_Hat/Straw_Hat.glb",
+        "thumb": "assets/thumbs/Head_Hat/Straw_Hat.png",
+        "objects": [
+          "Straw Hat"
+        ],
+        "bytes": 40080
+      },
+      {
+        "id": "Head_Hat/Wizard",
+        "name": "Wizard",
+        "file": "traits/Head_Hat/Wizard.glb",
+        "thumb": "assets/thumbs/Head_Hat/Wizard.png",
+        "objects": [
+          "Wizard"
+        ],
+        "bytes": 24040
+      },
+      {
+        "id": "Head_Hat/Pink_Bow",
+        "name": "Pink Bow",
+        "file": "traits/Head_Hat/Pink_Bow.glb",
+        "thumb": "assets/thumbs/Head_Hat/Pink_Bow.png",
+        "objects": [
+          "Pink Bow"
+        ],
+        "bytes": 11324
+      },
+      {
+        "id": "Head_Hat/Bandana",
+        "name": "Bandana",
+        "file": "traits/Head_Hat/Bandana.glb",
+        "thumb": "assets/thumbs/Head_Hat/Bandana.png",
+        "objects": [
+          "Bandana"
+        ],
+        "bytes": 43844
+      },
+      {
+        "id": "Head_Hat/Bunny",
+        "name": "Bunny",
+        "file": "traits/Head_Hat/Bunny.glb",
+        "thumb": "assets/thumbs/Head_Hat/Bunny.png",
+        "objects": [
+          "Bunny"
+        ],
+        "bytes": 16740
+      },
+      {
+        "id": "Head_Hat/Unicorn",
+        "name": "Unicorn",
+        "file": "traits/Head_Hat/Unicorn.glb",
+        "thumb": "assets/thumbs/Head_Hat/Unicorn.png",
+        "objects": [
+          "Unicorn"
+        ],
+        "bytes": 13888
+      },
+      {
+        "id": "Head_Hat/Pirate",
+        "name": "Pirate",
+        "file": "traits/Head_Hat/Pirate.glb",
+        "thumb": "assets/thumbs/Head_Hat/Pirate.png",
+        "objects": [
+          "Pirate"
+        ],
+        "bytes": 102048
+      },
+      {
+        "id": "Head_Hat/Arrow",
+        "name": "Arrow",
+        "file": "traits/Head_Hat/Arrow.glb",
+        "thumb": "assets/thumbs/Head_Hat/Arrow.png",
+        "objects": [
+          "Arrow"
+        ],
+        "bytes": 154404
+      },
+      {
+        "id": "Head_Hat/Eh",
+        "name": "Eh",
+        "file": "traits/Head_Hat/Eh.glb",
+        "thumb": "assets/thumbs/Head_Hat/Eh.png",
+        "objects": [
+          "Eh"
+        ],
+        "bytes": 107864
+      },
+      {
+        "id": "Head_Hat/Stars",
+        "name": "Stars",
+        "file": "traits/Head_Hat/Stars.glb",
+        "thumb": "assets/thumbs/Head_Hat/Stars.png",
+        "objects": [
+          "Stars"
+        ],
+        "bytes": 17420
+      },
+      {
+        "id": "Head_Hat/Hard_Hat",
+        "name": "Hard Hat",
+        "file": "traits/Head_Hat/Hard_Hat.glb",
+        "thumb": "assets/thumbs/Head_Hat/Hard_Hat.png",
+        "objects": [
+          "Hard Hat"
+        ],
+        "bytes": 44576
+      },
+      {
+        "id": "Head_Hat/Chaos",
+        "name": "Chaos",
+        "file": "traits/Head_Hat/Chaos.glb",
+        "thumb": "assets/thumbs/Head_Hat/Chaos.png",
+        "objects": [
+          "Chaos"
+        ],
+        "bytes": 51176
+      },
+      {
+        "id": "Head_Hat/Pompadour",
+        "name": "Pompadour",
+        "file": "traits/Head_Hat/Pompadour.glb",
+        "thumb": "assets/thumbs/Head_Hat/Pompadour.png",
+        "objects": [
+          "Pompadour"
+        ],
+        "bytes": 157708
+      },
+      {
+        "id": "Head_Hat/Little_Hair",
+        "name": "Little Hair",
+        "file": "traits/Head_Hat/Little_Hair.glb",
+        "thumb": "assets/thumbs/Head_Hat/Little_Hair.png",
+        "objects": [
+          "Little Hair"
+        ],
+        "bytes": 2288
+      },
+      {
+        "id": "Head_Hat/Flower_HEad",
+        "name": "Flower HEad",
+        "file": "traits/Head_Hat/Flower_HEad.glb",
+        "thumb": "assets/thumbs/Head_Hat/Flower_HEad.png",
+        "objects": [
+          "Flower HEad"
+        ],
+        "bytes": 489812
+      },
+      {
+        "id": "Head_Hat/Hawaiin_Flower",
+        "name": "Hawaiin Flower",
+        "file": "traits/Head_Hat/Hawaiin_Flower.glb",
+        "thumb": "assets/thumbs/Head_Hat/Hawaiin_Flower.png",
+        "objects": [
+          "Hawaiin Flower"
+        ],
+        "bytes": 214032
+      },
+      {
+        "id": "Head_Hat/Curly_Q",
+        "name": "Curly Q",
+        "file": "traits/Head_Hat/Curly_Q.glb",
+        "thumb": "assets/thumbs/Head_Hat/Curly_Q.png",
+        "objects": [
+          "Curly Q"
+        ],
+        "bytes": 2436
+      },
+      {
+        "id": "Head_Hat/Beer_Hat",
+        "name": "Beer Hat",
+        "file": "traits/Head_Hat/Beer_Hat.glb",
+        "thumb": "assets/thumbs/Head_Hat/Beer_Hat.png",
+        "objects": [
+          "Beer Hat"
+        ],
+        "bytes": 79916
+      },
+      {
+        "id": "Head_Hat/Viking",
+        "name": "Viking",
+        "file": "traits/Head_Hat/Viking.glb",
+        "thumb": "assets/thumbs/Head_Hat/Viking.png",
+        "objects": [
+          "Viking"
+        ],
+        "bytes": 442112
+      }
+    ]
+  },
+  "total_bytes": 9990337,
+  "rules": {
+    "version": 1,
+    "updated": "2026-10-19",
+    "note": "Single source of truth for which mole traits can be worn together. Edit here, then run sync_mole_rules.py and check_mole_rules.py. Evidence renders: DeepSpot Globe/qa/mole-combos/.",
+    "rollOrder": [
+      "Body/Shirt",
+      "Jackets",
+      "Mouth Area",
+      "Face",
+      "Eyes",
+      "Head/Hat"
+    ],
+    "slotNone": {
+      "Jackets": 0.6
+    },
+    "slotNoneWhy": "only Puffer and Carhart are left in the Jackets pool; 60% empty keeps each near 17% of moles, as before",
+    "softAlpha": [
+      "Mouth_Area/Cig",
+      "Head_Hat/Fez"
+    ],
+    "softAlphaWhy": "real see-through alpha (smoke, tassel strings): rendered blended. All other alpha is Blender HASHED cutout. Lace/Polka stay cutouts: blending shows the inside of the skirt.",
+    "drawWith": {
+      "Jackets/Smock": "Body/Shirt",
+      "Jackets/Yellow_Smock": "Body/Shirt",
+      "Jackets/Manifest": "Body/Shirt"
+    },
+    "exclude": [
+      {
+        "a": "Jackets/Smock",
+        "b": "Body/Shirt",
+        "why": "full top; any shirt, the Nami bikini or a dress clips through it"
+      },
+      {
+        "a": "Jackets/Yellow_Smock",
+        "b": "Body/Shirt",
+        "why": "full top; any shirt, the Nami bikini or a dress clips through it"
+      },
+      {
+        "a": "Jackets/Manifest",
+        "b": "Body/Shirt",
+        "why": "full top tee; hides any shirt, dresses poke out under it"
+      }
+    ]
+  }
+}

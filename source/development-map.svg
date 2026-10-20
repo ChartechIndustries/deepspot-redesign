@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="460" viewBox="0 0 480 460" role="img" aria-labelledby="title desc">
+<title id="title">The DeepSpot development map</title><desc id="desc">A folded map with a winding blue route connecting milestones and a yellow destination flag.</desc>
+<defs><pattern id="dots" width="18" height="18" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="1.6" fill="#3559b7" opacity=".15"/></pattern></defs>
+<path d="M35 128L170 82L305 123L438 75V347L305 394L170 353L35 399Z" fill="#173f39" opacity=".12" transform="translate(0 14)"/>
+<path d="M35 112L170 66L305 107L438 59V331L305 378L170 337L35 383Z" fill="#faf3dc" stroke="#173f39" stroke-width="4" stroke-linejoin="round"/>
+<path d="M170 66L305 107V378L170 337Z" fill="#e3e9cc"/>
+<path d="M35 112L170 66L305 107L438 59V331L305 378L170 337L35 383Z" fill="url(#dots)"/>
+<path d="M170 66V337M305 107V378" stroke="#173f39" stroke-width="2" opacity=".2"/>
+<path d="M72 302C99 291 104 238 147 240S209 310 254 282S277 184 324 173S367 194 389 143" fill="none" stroke="#faf3dc" stroke-width="23" stroke-linecap="round"/>
+<path d="M72 302C99 291 104 238 147 240S209 310 254 282S277 184 324 173S367 194 389 143" fill="none" stroke="#3559b7" stroke-width="10" stroke-linecap="round" stroke-dasharray="2 19"/>
+<g fill="#3559b7" stroke="#faf3dc" stroke-width="6"><circle cx="72" cy="302" r="18"/><circle cx="166" cy="247" r="18"/><circle cx="272" cy="251" r="18"/></g>
+<path d="M65 302L70 307L80 295M159 247L164 252L174 240" fill="none" stroke="#faf3dc" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="272" cy="251" r="5" fill="#ffdc26"/>
+<path d="M385 147V28" stroke="#173f39" stroke-width="7" stroke-linecap="round"/>
+<path d="M389 29L447 43L429 62L447 84L389 71Z" fill="#ffdc26" stroke="#173f39" stroke-width="4" stroke-linejoin="round"/>
+<circle cx="385" cy="149" r="12" fill="#ffdc26" stroke="#173f39" stroke-width="4"/>
+<g transform="translate(76 131)" stroke="#3559b7" stroke-width="4" stroke-linecap="round"><path d="M0-21V21M-21 0H21M-15-15L15 15M15-15L-15 15"/></g>
+<path d="M327 321h61m-61 12h39" stroke="#3559b7" stroke-width="5" stroke-linecap="round" opacity=".45"/>
+</svg>

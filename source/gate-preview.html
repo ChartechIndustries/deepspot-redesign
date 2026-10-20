@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en" data-theme="dark"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0c101b"><title>Gate preview — DeepSpot</title><meta name="description" content="Review page for the DeepSpot sign-in gate: every gated page in each preview state.">
+<script>try{document.documentElement.dataset.theme=new URLSearchParams(location.search).get('theme')||localStorage.getItem('deepspot-theme')||'dark';}catch{}</script>
+<link rel="icon" href="/site/app-icon.svg" type="image/svg+xml"><link rel="stylesheet" href="/browse/browse.css"><meta name="robots" content="noindex">
+<style>
+.gp{max-width:1100px;margin:0 auto;padding:48px 24px 80px}
+.gp-k{font:11px/1.4 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.06em;color:var(--br-accent);margin:0 0 10px}
+.gp h1{margin:0 0 14px;font-size:clamp(44px,8vw,96px);line-height:.9;font-weight:800;letter-spacing:-.065em}
+.gp h1 span{color:var(--br-green)}
+html[data-theme=light] .gp h1 span{color:var(--br-accent)}
+.gp h2{margin:48px 0 12px;font-size:28px;font-weight:800;letter-spacing:-.05em}
+.gp p{max-width:68ch;font-size:15px;line-height:1.55;color:var(--br-muted)}
+.gp code{font:13px ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--br-text)}
+.gp table{width:100%;border-collapse:collapse;border:1px solid var(--br-line);background:var(--br-panel)}
+.gp th,.gp td{padding:14px 16px;text-align:left;border-bottom:1px solid var(--br-line);font-size:14px;vertical-align:top}
+.gp th{font:11px/1.4 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.05em;font-weight:400;color:var(--br-muted)}
+.gp td small{display:block;margin-top:4px;font-size:12px;line-height:1.4;color:var(--br-muted)}
+.gp td a{display:inline-block;margin:0 6px 4px 0;padding:6px 12px;border:1px solid var(--br-line);border-radius:30px;text-decoration:none;font-size:13px}
+.gp td a:hover{border-color:var(--br-green);color:var(--br-green)}
+html[data-theme=light] .gp td a:hover{color:var(--br-accent);border-color:var(--br-accent)}
+.gp-wrap{overflow-x:auto}
+@media(max-width:700px){.gp{padding:32px 16px 60px}}
+</style></head>
+<body><main class="gp" id="main">
+<p class="gp-k">deepspot · gate preview</p>
+<h1>the gate.<br><span>every state.</span></h1>
+<p>Prototype only. No backend, no email is sent, no sign-in is faked. The state lives in this browser (<code>deepspot-session-preview</code>). Each link sets the state with the review switch and opens the page.</p>
+
+<h2>switches.</h2>
+<p><code>?gate=out</code> signed out, free-account wall. <code>?gate=free</code> signed in, member wall on photos and the giveaway. <code>?gate=member</code> everything open. <code>?gate=off</code> gates disabled for this tab. Add <code>&amp;theme=light</code> for light mode. Sign out of the preview on <a href="/account/">your account</a>.</p>
+
+<h2>free-account wall.</h2>
+<div class="gp-wrap"><table><thead><tr><th>page</th><th>out</th><th>free</th><th>member</th><th>off</th></tr></thead><tbody>
+<tr><td>spot <small>reading wall after the first 2 paragraphs</small></td>
+<td><a href="/spot/?id=tochigi-underground-quarry&gate=out">out</a></td><td><a href="/spot/?id=tochigi-underground-quarry&gate=free">free</a></td><td><a href="/spot/?id=tochigi-underground-quarry&gate=member">member</a></td><td><a href="/spot/?id=tochigi-underground-quarry&gate=off">off</a></td></tr>
+<tr><td>story <small>reading wall after the first 3 paragraphs</small></td>
+<td><a href="/story/?id=shark&gate=out">out</a></td><td><a href="/story/?id=shark&gate=free">free</a></td><td><a href="/story/?id=shark&gate=member">member</a></td><td><a href="/story/?id=shark&gate=off">off</a></td></tr>
+<tr><td>community <small>vote on a spot, poll, roadmap, add a comment, save a spot (click one while signed out)</small></td>
+<td><a href="/community/?gate=out">out</a></td><td><a href="/community/?gate=free">free</a></td><td><a href="/community/?gate=member">member</a></td><td><a href="/community/?gate=off">off</a></td></tr>
+<tr><td>plan a trip <small>share, save a copy, and saving edits</small></td>
+<td><a href="/plan-trip/?gate=out">out</a></td><td><a href="/plan-trip/?gate=free">free</a></td><td><a href="/plan-trip/?gate=member">member</a></td><td><a href="/plan-trip/?gate=off">off</a></td></tr>
+<tr><td>contribute <small>the preview button is the submit</small></td>
+<td><a href="/contribute/?gate=out">out</a></td><td><a href="/contribute/?gate=free">free</a></td><td><a href="/contribute/?gate=member">member</a></td><td><a href="/contribute/?gate=off">off</a></td></tr>
+</tbody></table></div>
+
+<h2>member wall.</h2>
+<div class="gp-wrap"><table><thead><tr><th>page</th><th>out</th><th>free</th><th>member</th><th>off</th></tr></thead><tbody>
+<tr><td>spot photo gallery <small>photo 1 is free; photo 2 and up, and the arrow keys, ask for membership</small></td>
+<td><a href="/spot/?id=tochigi-underground-quarry&gate=out">out</a></td><td><a href="/spot/?id=tochigi-underground-quarry&gate=free">free</a></td><td><a href="/spot/?id=tochigi-underground-quarry&gate=member">member</a></td><td><a href="/spot/?id=tochigi-underground-quarry&gate=off">off</a></td></tr>
+<tr><td>giveaway “join now” <small>top of the community page</small></td>
+<td><a href="/community/?gate=out">out</a></td><td><a href="/community/?gate=free">free</a></td><td><a href="/community/?gate=member">member</a></td><td><a href="/community/?gate=off">off</a></td></tr>
+</tbody></table></div>
+
+<h2>never gated.</h2>
+<p>Home, browse, map, community (viewing), stories and guides lists, passports, membership, FAQ, legal, app, mission, 404.</p>
+</main></body></html>

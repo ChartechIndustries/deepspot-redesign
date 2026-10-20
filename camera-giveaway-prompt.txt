@@ -1,0 +1,1 @@
+Mode: built-in image generation. Asset: source/camera-giveaway.png. Prompt: Create a photorealistic unbranded silver and black compact travel camera cutout, three-quarter view, black wrist strap, studio lighting, transparent alpha background. Illustrative prize image; no logos or text.

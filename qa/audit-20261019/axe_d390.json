@@ -1,0 +1,150 @@
+[
+ {
+  "route": "/",
+  "v": []
+ },
+ {
+  "route": "/browse/",
+  "v": []
+ },
+ {
+  "route": "/spot/?id=tochigi-underground-quarry",
+  "v": []
+ },
+ {
+  "route": "/map/",
+  "v": []
+ },
+ {
+  "route": "/stories/",
+  "v": []
+ },
+ {
+  "route": "/story/?id=shark",
+  "v": []
+ },
+ {
+  "route": "/guides/",
+  "v": []
+ },
+ {
+  "route": "/guide/?id=tas-aizu-samurai-cultural-tour",
+  "v": []
+ },
+ {
+  "route": "/adventures/",
+  "v": []
+ },
+ {
+  "route": "/saved/",
+  "v": []
+ },
+ {
+  "route": "/plan-trip/",
+  "v": []
+ },
+ {
+  "route": "/contribute/",
+  "v": []
+ },
+ {
+  "route": "/account/",
+  "v": []
+ },
+ {
+  "route": "/inbox/",
+  "v": []
+ },
+ {
+  "route": "/invites/",
+  "v": []
+ },
+ {
+  "route": "/community/",
+  "v": []
+ },
+ {
+  "route": "/leaderboard/",
+  "v": [
+   {
+    "id": "color-contrast",
+    "impact": "serious",
+    "n": 10,
+    "ex": [
+     "tr:nth-child(1) > td:nth-child(1) || Element has insufficient color contrast of 3.48 (foreground color: #3c60ff, background color: #141d28, font size: 13.5pt (18px), font weight: bold). Expected contrast ratio of 4.5:1",
+     "tr:nth-child(2) > td:nth-child(1) || Element has insufficient color contrast of 3.89 (foreground color: #3c60ff, background color: #0c101b, font size: 13.5pt (18px), font weight: bold). Expected contrast ratio of 4.5:1",
+     "tr:nth-child(3) > td:nth-child(1) || Element has insufficient color contrast of 3.89 (foreground color: #3c60ff, background color: #0c101b, font size: 13.5pt (18px), font weight: bold). Expected contrast ratio of 4.5:1"
+    ]
+   }
+  ]
+ },
+ {
+  "route": "/competition/",
+  "v": []
+ },
+ {
+  "route": "/forum/",
+  "v": []
+ },
+ {
+  "route": "/mission/",
+  "v": []
+ },
+ {
+  "route": "/faq/",
+  "v": []
+ },
+ {
+  "route": "/membership/",
+  "v": []
+ },
+ {
+  "route": "/app/",
+  "v": []
+ },
+ {
+  "route": "/roadmap/",
+  "v": []
+ },
+ {
+  "route": "/sponsored/",
+  "v": []
+ },
+ {
+  "route": "/privacy/",
+  "v": []
+ },
+ {
+  "route": "/terms/",
+  "v": []
+ },
+ {
+  "route": "/cookies/",
+  "v": []
+ },
+ {
+  "route": "/profile/?user=wayfarer",
+  "v": []
+ },
+ {
+  "route": "/profile/?user=preview",
+  "v": [
+   {
+    "id": "color-contrast",
+    "impact": "serious",
+    "n": 1,
+    "ex": [
+     ".pp-contributions > .pp-profile-pending || Element has insufficient color contrast of 1.84 (foreground color: #28505a, background color: #142130, font size: 9.8pt (13px), font weight: normal). Expected contrast ratio of 4.5:1"
+    ]
+   }
+  ]
+ },
+ {
+  "route": "/promo-variations.html",
+  "v": []
+ },
+ {
+  "route": "/404.html",
+  "v": []
+ }
+]

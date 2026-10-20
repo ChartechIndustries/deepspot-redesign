@@ -1,0 +1,481 @@
+{
+ "never": [
+  {
+   "sheet": 0,
+   "fade": 0,
+   "inert": 4,
+   "walled": false,
+   "gtcss": false,
+   "mh": "",
+   "route": "/",
+   "errs": []
+  },
+  {
+   "sheet": 0,
+   "fade": 0,
+   "inert": 0,
+   "walled": false,
+   "gtcss": false,
+   "mh": "",
+   "route": "/browse/",
+   "errs": []
+  },
+  {
+   "sheet": 0,
+   "fade": 0,
+   "inert": 0,
+   "walled": false,
+   "gtcss": false,
+   "mh": "",
+   "route": "/map/",
+   "errs": []
+  },
+  {
+   "sheet": 0,
+   "fade": 0,
+   "inert": 0,
+   "walled": false,
+   "gtcss": false,
+   "mh": "",
+   "route": "/stories/",
+   "errs": []
+  },
+  {
+   "sheet": 0,
+   "fade": 0,
+   "inert": 0,
+   "walled": false,
+   "gtcss": false,
+   "mh": "",
+   "route": "/guides/",
+   "errs": []
+  },
+  {
+   "sheet": 0,
+   "fade": 0,
+   "inert": 0,
+   "walled": false,
+   "gtcss": false,
+   "mh": "",
+   "route": "/guide/?id=tas-aizu-samurai-cultural-tour",
+   "errs": []
+  },
+  {
+   "sheet": 0,
+   "fade": 0,
+   "inert": 0,
+   "walled": false,
+   "gtcss": false,
+   "mh": "",
+   "route": "/adventures/",
+   "errs": []
+  },
+  {
+   "sheet": 0,
+   "fade": 0,
+   "inert": 0,
+   "walled": false,
+   "gtcss": false,
+   "mh": "",
+   "route": "/saved/",
+   "errs": []
+  },
+  {
+   "sheet": 0,
+   "fade": 0,
+   "inert": 0,
+   "walled": false,
+   "gtcss": false,
+   "mh": "",
+   "route": "/plan-trip/",
+   "errs": []
+  },
+  {
+   "sheet": 0,
+   "fade": 0,
+   "inert": 0,
+   "walled": false,
+   "gtcss": false,
+   "mh": "",
+   "route": "/contribute/",
+   "errs": []
+  },
+  {
+   "sheet": 0,
+   "fade": 0,
+   "inert": 0,
+   "walled": false,
+   "gtcss": false,
+   "mh": "",
+   "route": "/account/",
+   "errs": []
+  },
+  {
+   "sheet": 0,
+   "fade": 0,
+   "inert": 0,
+   "walled": false,
+   "gtcss": false,
+   "mh": "",
+   "route": "/inbox/",
+   "errs": []
+  },
+  {
+   "sheet": 0,
+   "fade": 0,
+   "inert": 0,
+   "walled": false,
+   "gtcss": false,
+   "mh": "",
+   "route": "/invites/",
+   "errs": []
+  },
+  {
+   "sheet": 0,
+   "fade": 0,
+   "inert": 0,
+   "walled": false,
+   "gtcss": false,
+   "mh": "",
+   "route": "/community/",
+   "errs": []
+  },
+  {
+   "sheet": 0,
+   "fade": 0,
+   "inert": 0,
+   "walled": false,
+   "gtcss": false,
+   "mh": "",
+   "route": "/leaderboard/",
+   "errs": []
+  },
+  {
+   "sheet": 0,
+   "fade": 0,
+   "inert": 0,
+   "walled": false,
+   "gtcss": false,
+   "mh": "",
+   "route": "/competition/",
+   "errs": []
+  },
+  {
+   "sheet": 0,
+   "fade": 0,
+   "inert": 0,
+   "walled": false,
+   "gtcss": false,
+   "mh": "",
+   "route": "/forum/",
+   "errs": []
+  },
+  {
+   "sheet": 0,
+   "fade": 0,
+   "inert": 0,
+   "walled": false,
+   "gtcss": false,
+   "mh": "",
+   "route": "/forum/?id=0",
+   "errs": []
+  },
+  {
+   "sheet": 0,
+   "fade": 0,
+   "inert": 0,
+   "walled": false,
+   "gtcss": false,
+   "mh": "",
+   "route": "/mission/",
+   "errs": []
+  },
+  {
+   "sheet": 0,
+   "fade": 0,
+   "inert": 0,
+   "walled": false,
+   "gtcss": false,
+   "mh": "",
+   "route": "/faq/",
+   "errs": []
+  },
+  {
+   "sheet": 0,
+   "fade": 0,
+   "inert": 0,
+   "walled": false,
+   "gtcss": false,
+   "mh": "",
+   "route": "/membership/",
+   "errs": []
+  },
+  {
+   "sheet": 0,
+   "fade": 0,
+   "inert": 0,
+   "walled": false,
+   "gtcss": false,
+   "mh": "",
+   "route": "/app/",
+   "errs": []
+  },
+  {
+   "sheet": 0,
+   "fade": 0,
+   "inert": 0,
+   "walled": false,
+   "gtcss": false,
+   "mh": "",
+   "route": "/roadmap/",
+   "errs": []
+  },
+  {
+   "sheet": 0,
+   "fade": 0,
+   "inert": 0,
+   "walled": false,
+   "gtcss": false,
+   "mh": "",
+   "route": "/sponsored/",
+   "errs": []
+  },
+  {
+   "sheet": 0,
+   "fade": 0,
+   "inert": 0,
+   "walled": false,
+   "gtcss": false,
+   "mh": "",
+   "route": "/privacy/",
+   "errs": []
+  },
+  {
+   "sheet": 0,
+   "fade": 0,
+   "inert": 0,
+   "walled": false,
+   "gtcss": false,
+   "mh": "",
+   "route": "/terms/",
+   "errs": []
+  },
+  {
+   "sheet": 0,
+   "fade": 0,
+   "inert": 0,
+   "walled": false,
+   "gtcss": false,
+   "mh": "",
+   "route": "/cookies/",
+   "errs": []
+  },
+  {
+   "sheet": 0,
+   "fade": 0,
+   "inert": 0,
+   "walled": false,
+   "gtcss": false,
+   "mh": "",
+   "route": "/profile/?user=wayfarer",
+   "errs": []
+  },
+  {
+   "sheet": 0,
+   "fade": 0,
+   "inert": 0,
+   "walled": false,
+   "gtcss": false,
+   "mh": "",
+   "route": "/profile/?user=preview",
+   "errs": []
+  },
+  {
+   "sheet": 0,
+   "fade": 0,
+   "inert": 0,
+   "walled": false,
+   "gtcss": false,
+   "mh": "",
+   "route": "/404.html",
+   "errs": []
+  },
+  {
+   "sheet": 0,
+   "fade": 0,
+   "inert": 0,
+   "walled": false,
+   "gtcss": false,
+   "mh": "",
+   "route": "/nope-not-a-route/",
+   "errs": [
+    "404 http://localhost:8766/nope-not-a-route/?theme=dark&gate=out",
+    "Failed to load resource: the server responded with a status of 404 (File not found)"
+   ]
+  },
+  {
+   "sheet": 0,
+   "fade": 0,
+   "inert": 0,
+   "walled": false,
+   "gtcss": false,
+   "mh": "",
+   "route": "/spot/?id=does-not-exist",
+   "errs": []
+  },
+  {
+   "sheet": 0,
+   "fade": 0,
+   "inert": 0,
+   "walled": false,
+   "gtcss": false,
+   "mh": "",
+   "route": "/story/?id=does-not-exist",
+   "errs": []
+  }
+ ],
+ "gated": [
+  {
+   "sheet": 1,
+   "fade": 1,
+   "inert": 10,
+   "walled": true,
+   "gtcss": true,
+   "mh": "1036px",
+   "route": "/spot/?id=tochigi-underground-quarry",
+   "errs": []
+  },
+  {
+   "sheet": 1,
+   "fade": 1,
+   "inert": 9,
+   "walled": true,
+   "gtcss": true,
+   "mh": "1753px",
+   "route": "/story/?id=shark",
+   "errs": []
+  }
+ ],
+ "overflow": [
+  {
+   "sw": 1440,
+   "cw": 1440,
+   "route": "/spot/?id=tochigi-underground-quarry",
+   "w": 1440,
+   "state": "out"
+  },
+  {
+   "sw": 1440,
+   "cw": 1440,
+   "route": "/story/?id=shark",
+   "w": 1440,
+   "state": "out"
+  },
+  {
+   "sw": 1440,
+   "cw": 1440,
+   "route": "member-sheet",
+   "w": 1440,
+   "sheet": [
+    389,
+    1440
+   ]
+  },
+  {
+   "sw": 1440,
+   "cw": 1440,
+   "route": "action-sheet",
+   "w": 1440
+  },
+  {
+   "sw": 768,
+   "cw": 768,
+   "route": "/spot/?id=tochigi-underground-quarry",
+   "w": 768,
+   "state": "out"
+  },
+  {
+   "sw": 768,
+   "cw": 768,
+   "route": "/story/?id=shark",
+   "w": 768,
+   "state": "out"
+  },
+  {
+   "sw": 768,
+   "cw": 768,
+   "route": "member-sheet",
+   "w": 768,
+   "sheet": [
+    389,
+    768
+   ]
+  },
+  {
+   "sw": 768,
+   "cw": 768,
+   "route": "action-sheet",
+   "w": 768
+  },
+  {
+   "sw": 390,
+   "cw": 390,
+   "route": "/spot/?id=tochigi-underground-quarry",
+   "w": 390,
+   "state": "out"
+  },
+  {
+   "sw": 390,
+   "cw": 390,
+   "route": "/story/?id=shark",
+   "w": 390,
+   "state": "out"
+  },
+  {
+   "sw": 390,
+   "cw": 390,
+   "route": "member-sheet",
+   "w": 390,
+   "sheet": [
+    393,
+    390
+   ]
+  },
+  {
+   "sw": 390,
+   "cw": 390,
+   "route": "action-sheet",
+   "w": 390
+  },
+  {
+   "sw": 320,
+   "cw": 320,
+   "route": "/spot/?id=tochigi-underground-quarry",
+   "w": 320,
+   "state": "out"
+  },
+  {
+   "sw": 320,
+   "cw": 320,
+   "route": "/story/?id=shark",
+   "w": 320,
+   "state": "out"
+  },
+  {
+   "sw": 320,
+   "cw": 320,
+   "route": "member-sheet",
+   "w": 320,
+   "sheet": [
+    393,
+    320
+   ]
+  },
+  {
+   "sw": 320,
+   "cw": 320,
+   "route": "action-sheet",
+   "w": 320
+  }
+ ]
+}

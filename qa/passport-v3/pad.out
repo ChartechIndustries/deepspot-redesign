@@ -1,0 +1,24 @@
+PASS canvas starts blank
+PASS smooth small stroke draws
+PASS smooth big stroke draws more
+PASS pixel stroke draws
+PASS eraser removes
+PASS undo restores previous
+PASS undo x3 back to smooth stroke only
+PASS clear step 1 only arms
+PASS arm text sure?
+PASS clear step 2 empties
+PASS undo after clear brings art back
+PASS save writes png to draft
+PASS save switches back to passport tab
+PASS status says saved
+PASS signature strip shows art after reload
+PASS reload keeps art in canvas
+PASS share image 1600x1100
+PASS share image has art strokes (red px 2185)
+PASS share image has mole pixels (30828)
+PASS other passport has no canvas/tools
+PASS other passport shows no-art state
+PASS no dialogs/errors
+[]
+FAILS []

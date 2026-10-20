@@ -1,0 +1,26 @@
+DeepSpot full-site expansion — October 8, 2026
+
+Design direction
+Preserve the existing halftone Earth, homepage composition, dark/cream page backgrounds, large editorial type, thin rules, cobalt, aqua, and purposeful green CTAs. Existing color and theme controls work across all routes.
+
+Audit
+The local redesign has a homepage, paginated Browse, and passports. Several header items are plain text; most destination cards, stories, map and footer routes leave the redesign. The saved catalog contains 257 standalone spots; photos/credits and full article content are incomplete. The community leaderboard is approved sample data. Newsletter is intentionally not connected.
+
+Research completed
+The user signed in to the original DeepSpot site. The audit covered Browse, Stories, Guides, Map, Community, contribution forms, rankings, competition, mission, FAQ, membership, the installable app, roadmap, and legal pages. Source evidence is saved in research/original-site-20261008.json.
+Membership is $1/week, billed monthly, as explicitly confirmed by the user. The source app is a browser-installed web app; no native store download is claimed.
+
+Build sequence
+1. Establish shared navigation, URLs, saved state, page layout and data adapters.
+2. Build place details and interactive map, connect Browse and homepage cards.
+3. Build Stories, Guides and Adventures with reading pages and a working local trip planner.
+4. Build Community, connect existing passports, and add a contribution draft flow.
+5. Complete supporting routes from the original navigation: mission, FAQ, app, membership/sponsorship, roadmap and legal entry points.
+6. Check desktop/mobile, light/dark/color modes, search/filter/empty states, local routes, saving, sharing, and browser errors.
+
+Data boundaries
+Do not invent publisher identities, lifetime statistics, article bodies, opening hours, prices, reviews or availability. Preserve source content and mark unavailable data. User-authorized sample profiles stay labeled. Local drafts and trip plans do not claim to be submitted or synced. Account/payment/newsletter services remain at explicit integration boundaries. Do not copy private account information into the prototype.
+
+Delivery completed
+29 routes including the existing homepage, Browse and passports. See SITE-EXPANSION-HANDOFF.txt for content coverage, working interactions, backend integration points, and verification results. The updated local site is served at http://localhost:8766/.
+No production deployment was made.

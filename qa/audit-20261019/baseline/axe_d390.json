@@ -1,0 +1,642 @@
+[
+ {
+  "route": "/",
+  "v": [
+   {
+    "id": "aria-allowed-role",
+    "impact": "minor",
+    "n": 4,
+    "ex": [
+     ".wn-active || ARIA role group is not allowed for given element",
+     "article[data-news-panel=\"1\"] || ARIA role group is not allowed for given element",
+     "article[data-news-panel=\"2\"] || ARIA role group is not allowed for given element"
+    ]
+   },
+   {
+    "id": "color-contrast",
+    "impact": "serious",
+    "n": 1,
+    "ex": [
+     ".ds-cta-contribute > p || Element has insufficient color contrast of 4.42 (foreground color: #f5f4ee, background color: #3c60ff, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
+    ]
+   }
+  ]
+ },
+ {
+  "route": "/browse/",
+  "v": [
+   {
+    "id": "color-contrast",
+    "impact": "serious",
+    "n": 1,
+    "ex": [
+     ".ds-cta-contribute > p || Element has insufficient color contrast of 4.42 (foreground color: #f5f4ee, background color: #3c60ff, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+    ]
+   },
+   {
+    "id": "region",
+    "impact": "moderate",
+    "n": 1,
+    "ex": [
+     ".br-ticker > span:nth-child(1) || Some page content is not contained by landmarks"
+    ]
+   }
+  ]
+ },
+ {
+  "route": "/spot/?id=tochigi-underground-quarry",
+  "v": [
+   {
+    "id": "color-contrast",
+    "impact": "serious",
+    "n": 1,
+    "ex": [
+     ".ds-cta-contribute > p || Element has insufficient color contrast of 4.42 (foreground color: #f5f4ee, background color: #3c60ff, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+    ]
+   },
+   {
+    "id": "heading-order",
+    "impact": "moderate",
+    "n": 1,
+    "ex": [
+     ".ds-callout > h3 || Heading order invalid"
+    ]
+   },
+   {
+    "id": "landmark-complementary-is-top-level",
+    "impact": "moderate",
+    "n": 1,
+    "ex": [
+     ".ds-callout || The null landmark is contained in another landmark."
+    ]
+   },
+   {
+    "id": "region",
+    "impact": "moderate",
+    "n": 1,
+    "ex": [
+     ".br-ticker > span:nth-child(1) || Some page content is not contained by landmarks"
+    ]
+   }
+  ]
+ },
+ {
+  "route": "/map/",
+  "v": [
+   {
+    "id": "region",
+    "impact": "moderate",
+    "n": 1,
+    "ex": [
+     ".br-ticker > span:nth-child(1) || Some page content is not contained by landmarks"
+    ]
+   }
+  ]
+ },
+ {
+  "route": "/stories/",
+  "v": [
+   {
+    "id": "color-contrast",
+    "impact": "serious",
+    "n": 1,
+    "ex": [
+     ".ds-cta-contribute > p || Element has insufficient color contrast of 4.42 (foreground color: #f5f4ee, background color: #3c60ff, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+    ]
+   },
+   {
+    "id": "heading-order",
+    "impact": "moderate",
+    "n": 1,
+    "ex": [
+     "article:nth-child(1) > div > h3 || Heading order invalid"
+    ]
+   },
+   {
+    "id": "region",
+    "impact": "moderate",
+    "n": 1,
+    "ex": [
+     ".br-ticker > span:nth-child(1) || Some page content is not contained by landmarks"
+    ]
+   }
+  ]
+ },
+ {
+  "route": "/story/?id=shark",
+  "v": [
+   {
+    "id": "color-contrast",
+    "impact": "serious",
+    "n": 1,
+    "ex": [
+     ".ds-cta-contribute > p || Element has insufficient color contrast of 4.42 (foreground color: #f5f4ee, background color: #3c60ff, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+    ]
+   },
+   {
+    "id": "region",
+    "impact": "moderate",
+    "n": 1,
+    "ex": [
+     ".br-ticker > span:nth-child(1) || Some page content is not contained by landmarks"
+    ]
+   }
+  ]
+ },
+ {
+  "route": "/guides/",
+  "v": [
+   {
+    "id": "color-contrast",
+    "impact": "serious",
+    "n": 2,
+    "ex": [
+     ".ds-wide-cta > div > p || Element has insufficient color contrast of 3.91 (foreground color: #e1e5ff, background color: #3c60ff, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1",
+     ".ds-cta-contribute > p || Element has insufficient color contrast of 4.42 (foreground color: #f5f4ee, background color: #3c60ff, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+    ]
+   },
+   {
+    "id": "heading-order",
+    "impact": "moderate",
+    "n": 1,
+    "ex": [
+     "article:nth-child(1) > div > h3 || Heading order invalid"
+    ]
+   },
+   {
+    "id": "region",
+    "impact": "moderate",
+    "n": 1,
+    "ex": [
+     ".br-ticker > span:nth-child(1) || Some page content is not contained by landmarks"
+    ]
+   }
+  ]
+ },
+ {
+  "route": "/guide/?id=tas-aizu-samurai-cultural-tour",
+  "v": [
+   {
+    "id": "color-contrast",
+    "impact": "serious",
+    "n": 1,
+    "ex": [
+     ".ds-cta-contribute > p || Element has insufficient color contrast of 4.42 (foreground color: #f5f4ee, background color: #3c60ff, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+    ]
+   },
+   {
+    "id": "region",
+    "impact": "moderate",
+    "n": 1,
+    "ex": [
+     ".br-ticker > span:nth-child(1) || Some page content is not contained by landmarks"
+    ]
+   }
+  ]
+ },
+ {
+  "route": "/adventures/",
+  "v": [
+   {
+    "id": "color-contrast",
+    "impact": "serious",
+    "n": 2,
+    "ex": [
+     ".ds-wide-cta > div > p || Element has insufficient color contrast of 3.91 (foreground color: #e1e5ff, background color: #3c60ff, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1",
+     ".ds-cta-contribute > p || Element has insufficient color contrast of 4.42 (foreground color: #f5f4ee, background color: #3c60ff, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+    ]
+   },
+   {
+    "id": "region",
+    "impact": "moderate",
+    "n": 1,
+    "ex": [
+     ".br-ticker > span:nth-child(1) || Some page content is not contained by landmarks"
+    ]
+   }
+  ]
+ },
+ {
+  "route": "/saved/",
+  "v": [
+   {
+    "id": "region",
+    "impact": "moderate",
+    "n": 1,
+    "ex": [
+     ".br-ticker > span:nth-child(1) || Some page content is not contained by landmarks"
+    ]
+   }
+  ]
+ },
+ {
+  "route": "/plan-trip/",
+  "v": [
+   {
+    "id": "region",
+    "impact": "moderate",
+    "n": 1,
+    "ex": [
+     ".br-ticker > span:nth-child(1) || Some page content is not contained by landmarks"
+    ]
+   }
+  ]
+ },
+ {
+  "route": "/contribute/",
+  "v": [
+   {
+    "id": "region",
+    "impact": "moderate",
+    "n": 1,
+    "ex": [
+     ".br-ticker > span:nth-child(1) || Some page content is not contained by landmarks"
+    ]
+   }
+  ]
+ },
+ {
+  "route": "/account/",
+  "v": [
+   {
+    "id": "region",
+    "impact": "moderate",
+    "n": 1,
+    "ex": [
+     ".br-ticker > span:nth-child(1) || Some page content is not contained by landmarks"
+    ]
+   }
+  ]
+ },
+ {
+  "route": "/inbox/",
+  "v": [
+   {
+    "id": "landmark-complementary-is-top-level",
+    "impact": "moderate",
+    "n": 1,
+    "ex": [
+     "aside || The null landmark is contained in another landmark."
+    ]
+   },
+   {
+    "id": "region",
+    "impact": "moderate",
+    "n": 1,
+    "ex": [
+     ".br-ticker > span:nth-child(1) || Some page content is not contained by landmarks"
+    ]
+   }
+  ]
+ },
+ {
+  "route": "/invites/",
+  "v": [
+   {
+    "id": "region",
+    "impact": "moderate",
+    "n": 1,
+    "ex": [
+     ".br-ticker > span:nth-child(1) || Some page content is not contained by landmarks"
+    ]
+   }
+  ]
+ },
+ {
+  "route": "/community/",
+  "v": [
+   {
+    "id": "aria-allowed-role",
+    "impact": "minor",
+    "n": 1,
+    "ex": [
+     "article[aria-label=\"1 of 3\"] || ARIA role group is not allowed for given element"
+    ]
+   },
+   {
+    "id": "color-contrast",
+    "impact": "serious",
+    "n": 5,
+    "ex": [
+     "article[aria-label=\"1 of 3\"] > .hub-slide-copy > .ds-eyebrow || Element has insufficient color contrast of 3.97 (foreground color: #e2e7ff, background color: #3c60ff, font size: 8.3pt (11px), font weight: normal). Expected contrast ratio of 4.5:1",
+     "article[aria-label=\"1 of 3\"] > .hub-slide-copy > p || Element has insufficient color contrast of 4.36 (foreground color: #eff2ff, background color: #3c60ff, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1",
+     "div[data-board-panel=\"month\"] > .hub-tops > .hub-top1.hub-top > .hub-handle || Element has insufficient color contrast of 3.89 (foreground color: #dfe5ff, background color: #3c60ff, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+    ]
+   },
+   {
+    "id": "landmark-complementary-is-top-level",
+    "impact": "moderate",
+    "n": 1,
+    "ex": [
+     "aside || The null landmark is contained in another landmark."
+    ]
+   },
+   {
+    "id": "region",
+    "impact": "moderate",
+    "n": 1,
+    "ex": [
+     ".br-ticker > span:nth-child(1) || Some page content is not contained by landmarks"
+    ]
+   }
+  ]
+ },
+ {
+  "route": "/leaderboard/",
+  "v": [
+   {
+    "id": "color-contrast",
+    "impact": "serious",
+    "n": 2,
+    "ex": [
+     ".ds-wide-cta > div > p || Element has insufficient color contrast of 3.91 (foreground color: #e1e5ff, background color: #3c60ff, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1",
+     ".ds-cta-contribute > p || Element has insufficient color contrast of 4.42 (foreground color: #f5f4ee, background color: #3c60ff, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+    ]
+   },
+   {
+    "id": "region",
+    "impact": "moderate",
+    "n": 1,
+    "ex": [
+     ".br-ticker > span:nth-child(1) || Some page content is not contained by landmarks"
+    ]
+   }
+  ]
+ },
+ {
+  "route": "/competition/",
+  "v": [
+   {
+    "id": "color-contrast",
+    "impact": "serious",
+    "n": 3,
+    "ex": [
+     ".ds-prize-type > span || Element has insufficient color contrast of 4.39 (foreground color: #f6f3ec, background color: #3c60ff, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1",
+     ".ds-prize-type > p || Element has insufficient color contrast of 4.39 (foreground color: #f6f3ec, background color: #3c60ff, font size: 13.5pt (18px), font weight: normal). Expected contrast ratio of 4.5:1",
+     "div:nth-child(2) > .ds-eyebrow || Element has insufficient color contrast of 3.44 (foreground color: #c9d9ff, background color: #3c60ff, font size: 8.3pt (11px), font weight: normal). Expected contrast ratio of 4.5:1"
+    ]
+   },
+   {
+    "id": "region",
+    "impact": "moderate",
+    "n": 1,
+    "ex": [
+     ".br-ticker > span:nth-child(1) || Some page content is not contained by landmarks"
+    ]
+   }
+  ]
+ },
+ {
+  "route": "/forum/",
+  "v": [
+   {
+    "id": "color-contrast",
+    "impact": "serious",
+    "n": 1,
+    "ex": [
+     ".ds-cta-contribute > p || Element has insufficient color contrast of 4.42 (foreground color: #f5f4ee, background color: #3c60ff, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+    ]
+   },
+   {
+    "id": "region",
+    "impact": "moderate",
+    "n": 1,
+    "ex": [
+     ".br-ticker > span:nth-child(1) || Some page content is not contained by landmarks"
+    ]
+   }
+  ]
+ },
+ {
+  "route": "/mission/",
+  "v": [
+   {
+    "id": "color-contrast",
+    "impact": "serious",
+    "n": 1,
+    "ex": [
+     ".ds-cta-contribute > p || Element has insufficient color contrast of 4.42 (foreground color: #f5f4ee, background color: #3c60ff, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+    ]
+   },
+   {
+    "id": "region",
+    "impact": "moderate",
+    "n": 1,
+    "ex": [
+     ".br-ticker > span:nth-child(1) || Some page content is not contained by landmarks"
+    ]
+   }
+  ]
+ },
+ {
+  "route": "/faq/",
+  "v": [
+   {
+    "id": "region",
+    "impact": "moderate",
+    "n": 1,
+    "ex": [
+     ".br-ticker > span:nth-child(1) || Some page content is not contained by landmarks"
+    ]
+   }
+  ]
+ },
+ {
+  "route": "/membership/",
+  "v": [
+   {
+    "id": "color-contrast",
+    "impact": "serious",
+    "n": 6,
+    "ex": [
+     ".ds-member-paid > .ds-eyebrow || Element has insufficient color contrast of 3.44 (foreground color: #c9d9ff, background color: #3c60ff, font size: 8.3pt (11px), font weight: normal). Expected contrast ratio of 4.5:1",
+     ".ds-billing || Element has insufficient color contrast of 4.39 (foreground color: #f6f3ec, background color: #3c60ff, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1",
+     ".ds-member-paid > .ds-simple-list > li:nth-child(1) || Element has insufficient color contrast of 4.39 (foreground color: #f6f3ec, background color: #3c60ff, font size: 12.0pt (16px), font weight: normal). Expected contrast ratio of 4.5:1"
+    ]
+   },
+   {
+    "id": "region",
+    "impact": "moderate",
+    "n": 1,
+    "ex": [
+     ".br-ticker > span:nth-child(1) || Some page content is not contained by landmarks"
+    ]
+   }
+  ]
+ },
+ {
+  "route": "/app/",
+  "v": [
+   {
+    "id": "color-contrast",
+    "impact": "serious",
+    "n": 1,
+    "ex": [
+     ".ds-cta-contribute > p || Element has insufficient color contrast of 4.42 (foreground color: #f5f4ee, background color: #3c60ff, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+    ]
+   },
+   {
+    "id": "heading-order",
+    "impact": "moderate",
+    "n": 1,
+    "ex": [
+     ".ds-phone > h3 || Heading order invalid"
+    ]
+   },
+   {
+    "id": "region",
+    "impact": "moderate",
+    "n": 1,
+    "ex": [
+     ".br-ticker > span:nth-child(1) || Some page content is not contained by landmarks"
+    ]
+   }
+  ]
+ },
+ {
+  "route": "/roadmap/",
+  "v": [
+   {
+    "id": "color-contrast",
+    "impact": "serious",
+    "n": 1,
+    "ex": [
+     ".ds-cta-contribute > p || Element has insufficient color contrast of 4.42 (foreground color: #f5f4ee, background color: #3c60ff, font size: 11.3pt (15px), font weight: normal). Expected contrast ratio of 4.5:1"
+    ]
+   },
+   {
+    "id": "region",
+    "impact": "moderate",
+    "n": 1,
+    "ex": [
+     ".br-ticker > span:nth-child(1) || Some page content is not contained by landmarks"
+    ]
+   }
+  ]
+ },
+ {
+  "route": "/sponsored/",
+  "v": [
+   {
+    "id": "region",
+    "impact": "moderate",
+    "n": 1,
+    "ex": [
+     ".br-ticker > span:nth-child(1) || Some page content is not contained by landmarks"
+    ]
+   }
+  ]
+ },
+ {
+  "route": "/privacy/",
+  "v": [
+   {
+    "id": "region",
+    "impact": "moderate",
+    "n": 1,
+    "ex": [
+     ".br-ticker > span:nth-child(1) || Some page content is not contained by landmarks"
+    ]
+   }
+  ]
+ },
+ {
+  "route": "/terms/",
+  "v": [
+   {
+    "id": "region",
+    "impact": "moderate",
+    "n": 1,
+    "ex": [
+     ".br-ticker > span:nth-child(1) || Some page content is not contained by landmarks"
+    ]
+   }
+  ]
+ },
+ {
+  "route": "/cookies/",
+  "v": [
+   {
+    "id": "heading-order",
+    "impact": "moderate",
+    "n": 1,
+    "ex": [
+     ".ds-callout > h3 || Heading order invalid"
+    ]
+   },
+   {
+    "id": "landmark-complementary-is-top-level",
+    "impact": "moderate",
+    "n": 1,
+    "ex": [
+     ".ds-callout || The null landmark is contained in another landmark."
+    ]
+   },
+   {
+    "id": "region",
+    "impact": "moderate",
+    "n": 1,
+    "ex": [
+     ".br-ticker > span:nth-child(1) || Some page content is not contained by landmarks"
+    ]
+   }
+  ]
+ },
+ {
+  "route": "/profile/?user=wayfarer",
+  "v": [
+   {
+    "id": "region",
+    "impact": "moderate",
+    "n": 1,
+    "ex": [
+     ".br-ticker > span:nth-child(1) || Some page content is not contained by landmarks"
+    ]
+   }
+  ]
+ },
+ {
+  "route": "/profile/?user=preview",
+  "v": [
+   {
+    "id": "color-contrast",
+    "impact": "serious",
+    "n": 1,
+    "ex": [
+     ".pp-contributions > .pp-profile-pending || Element has insufficient color contrast of 1.84 (foreground color: #28505a, background color: #142130, font size: 9.8pt (13px), font weight: normal). Expected contrast ratio of 4.5:1"
+    ]
+   },
+   {
+    "id": "region",
+    "impact": "moderate",
+    "n": 1,
+    "ex": [
+     ".br-ticker > span:nth-child(1) || Some page content is not contained by landmarks"
+    ]
+   }
+  ]
+ },
+ {
+  "route": "/promo-variations.html",
+  "v": [
+   {
+    "id": "landmark-one-main",
+    "impact": "moderate",
+    "n": 1,
+    "ex": [
+     "html || Document does not have a main landmark"
+    ]
+   },
+   {
+    "id": "region",
+    "impact": "moderate",
+    "n": 61,
+    "ex": [
+     "h1 || Some page content is not contained by landmarks",
+     ".rv-note:nth-child(2) || Some page content is not contained by landmarks",
+     ".rv-note:nth-child(3) || Some page content is not contained by landmarks"
+    ]
+   }
+  ]
+ }
+]

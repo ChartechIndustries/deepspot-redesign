@@ -1,0 +1,21 @@
+# heavy / local-only
+qa/**/*.png
+qa/**/*.jpg
+qa/**/*.jpeg
+qa/**/*.webm
+qa/**/*.mp4
+qa/**/*.webp
+qa/**/*.jsonl
+deployments/
+backups/
+_archive/
+spots_raw/
+source-original/
+readable/
+research/
+.netlify/
+_site/
+spot-page-sample.html
+compare.png
+__pycache__/
+*.pyc

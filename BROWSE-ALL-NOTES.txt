@@ -1,0 +1,37 @@
+Browse All — local redesign, October 3, 2026
+
+Open: http://localhost:8766/browse/?theme=dark
+Light: http://localhost:8766/browse/?theme=light
+
+Source: source/browse/index.html, browse.css, browse.js, catalog.mjs
+Shared dependencies: featured-spots.json, panel-colors.js/css, site-cta.js/css,
+spots/ and editorial-assets/. No additional packages or build step.
+
+The homepage Browse navigation and browse-all CTA now open this route.
+Original files are backed up in backups/before-browse-20261003/.
+Existing handoff archives and Netlify deployment have not been changed.
+
+Working interactions:
+- Case-insensitive search across title, place, description, publisher, tags.
+- Six primary categories plus a menu of remaining normalized catalog tags.
+- Curated order, A-Z, Z-A. Grid/list layout, numbered pagination (12 per page, Previous/Next).
+- Bookmarks share deepspot-saved-spots storage with the homepage.
+- Search, category, sort, layout, saved filter, page and theme are represented in the URL.
+- Light/dark switch and shared persistent panel color preference.
+- Keyboard-accessible controls, mobile navigation, and responsive cards.
+- Links open the existing DeepSpot spot URLs, map, and contribution destination.
+
+Data boundary for backend integration:
+- browse.js fetches /featured-spots.json once.
+- catalog.mjs prepares and filters the array without changing the saved source.
+- 257 unique standalone spots remain after excluding PART OF: adventure records.
+- 16 records have local photos; 3 have verified publisher credits.
+- Missing photos and publisher credits are explicitly marked unavailable.
+- Do not infer ratings, publication dates, or publishers from order or imagery.
+- Replace the local fetch with the live Browse collection and real photo/credit fields.
+- Bookmark state is browser-local; connect to account storage in the backend.
+- Newsletter remains intentionally disabled as in the approved homepage.
+
+The public /browse URL redirected to the early-access page during this build.
+The page therefore uses the existing saved DeepSpot catalog and the user's
+Browse screenshot as its content/feature reference, not a fresh authenticated export.

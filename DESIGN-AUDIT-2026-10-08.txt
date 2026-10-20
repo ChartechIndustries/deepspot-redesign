@@ -1,0 +1,38 @@
+DEEPSPOT — DESIGN AUDIT AND REFINEMENT
+October 8, 2026
+
+Scope: local redesign at http://localhost:8766. No production deployment or live-account changes.
+
+WHAT CHANGED
+- Shared visual hierarchy: quieter, compact titles on account, map, trip, fieldbook, contribution and supporting pages; editorial routes retain larger type.
+- Aligned homepage video and bento margins with the featured section and bottom CTA.
+- Fixed the bento Stories title inheriting 11px caption text.
+- Narrowed the desktop hero description to keep it clear of the Earth.
+- Rebuilt the Community introduction around contributor portraits and one clear invitation.
+- Corrected guide/competition sequence layouts: actual numbers, readable titles and descriptions instead of names in a 50px column.
+- Improved article headings, mobile photo proportions, card typography, form spacing and link contrast in light mode.
+- Removed repeated contribution/newsletter blocks from task-oriented, legal, and already-CTA-heavy pages; all retain the footer.
+- Compact account form, less repeated helper text, normal unstyled action buttons, styled controls loaded before first paint.
+- Added a complete phone/tablet homepage menu with keyboard/Escape support; tablet navigation no longer silently hides destinations.
+- Kept banner colors and border independent of the color toggle, including light mode.
+- Stopped loading 14 retired banner-lab JS/CSS files on the homepage (199,912 bytes uncompressed). Archives remain on disk.
+- Leaflet styling now loads only on the map page.
+- Passport export image requests have an 8-second fallback so an unavailable photo cannot leave export hanging indefinitely.
+- Removed a duplicated category word from one guide title.
+
+VERIFICATION
+- All 29 routes returned HTTP 200.
+- All 36 directly referenced local assets and local content-photo paths resolved.
+- Every route was visited in the browser; mobile overflow checks passed at 390px. Additional 320px checks passed for home, Browse, account, membership, contribution, map and community.
+- Visual checks covered desktop, tablet and phone, dark/light, plus color-off banner behavior.
+- Verified Browse search, list view, clear filters and pagination; map surprise selection; mobile navigation and Escape; source/photo rendering.
+- Six existing account/trip state tests passed; changed JavaScript passed syntax checks.
+- No browser errors in the final homepage/community checks.
+
+IMPLEMENTATION
+source/site/refinements.css is the common finishing layer, linked last in the 29 page documents.
+Other changes: site/pages.mjs, core.mjs, navigation.js, account.mjs, site/content.json, site-cta.js, profile/passport-export.mjs, and route HTML dependencies.
+Backup: backups/design-audit-20261008-213318/ contains the prior route documents and edited application modules.
+
+BOUNDARIES
+This remains the frontend handoff preview. Account authentication/sync, payments, messages, live rankings, submission publishing and newsletter enrollment are not connected. Public source content and rankings remain dated snapshots. The map has ten destinations with verified coordinates; the full Browse collection has 369 standalone spots. No missing publisher names, user statistics or photographs were invented.

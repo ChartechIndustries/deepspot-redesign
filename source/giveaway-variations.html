@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Giveaway hero variations — DeepSpot</title>
+<script>try{const q=new URLSearchParams(location.search);document.documentElement.dataset.theme=q.get('theme')||localStorage.getItem('deepspot-theme')||'dark';if(q.get('panel')==='off')localStorage.setItem('deepspot-panel-colors','off');else if(q.get('panel')==='on')localStorage.removeItem('deepspot-panel-colors');}catch{}</script>
+<link rel="icon" href="/site/app-icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/site-cta.css?v=audit1"><link rel="stylesheet" href="/panel-colors.css?v=6"><link rel="stylesheet" href="/browse/browse.css"><link rel="stylesheet" href="/site/pages.css"><link rel="stylesheet" href="/site/finishing.css"><link rel="stylesheet" href="/site/community-v2.css?v=4"><link rel="stylesheet" href="/site/giveaway-hero.css?v=10">
+<script src="/panel-colors.js?v=2"></script>
+<style>
+body{margin:0;background:var(--br-bg);color:var(--br-text);font:15px/1.45 Arial,Helvetica,sans-serif}
+.gvr{max-width:1800px;margin:auto;padding:28px var(--ds-gutter,32px) 90px}
+.gvr h1{margin:0 0 8px;font-size:clamp(34px,5vw,64px);letter-spacing:-.065em;line-height:.95;font-weight:800}
+.gvr-note{margin:0 0 18px;color:var(--br-muted);max-width:70ch}
+.gvr-bar{position:sticky;top:0;z-index:20;display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:10px 0;background:var(--br-bg);border-bottom:1px solid var(--br-line)}
+.gvr-bar a,.gvr-bar button{font:700 13px Arial,sans-serif;color:var(--br-text);background:transparent;border:1px solid var(--br-line);border-radius:99px;padding:9px 14px;text-decoration:none;cursor:pointer;min-height:40px;display:inline-flex;align-items:center}
+.gvr-bar a:hover,.gvr-bar button:hover{border-color:var(--br-text)}
+.gvr-bar button[aria-pressed=true]{background:var(--br-text);color:var(--br-bg)}
+.gvr h2{margin:56px 0 14px;font:700 13px ui-monospace,Menlo,Consolas,monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--br-muted)}
+.gvr h2 b{color:var(--br-text)}
+.gvr-frame{margin:0 auto}
+.phone .gvr-frame{width:390px;max-width:100%}
+@media(max-width:600px){.gvr{--ds-gutter:16px}}
+</style>
+</head>
+<body>
+<main class="gvr" id="top">
+<h1>Giveaway hero variations.</h1>
+<p class="gvr-note">Ten versions of the community giveaway hero. Real data: this month's leaderboard. Live pick: <code>/community/?giveaway=g1</code> to <code>g10</code>. Replay any race with “run it again”.</p>
+<div class="gvr-bar" role="navigation" aria-label="Jump to a version"><span id="jump"></span><button type="button" id="phone" aria-pressed="false">phone width: off</button></div>
+<div id="list"></div>
+</main>
+<script type="module">
+import {loadData} from '/site/core.mjs';
+import {renderGiveaway,VARIANTS} from '/site/giveaway-hero.mjs?v=11';
+const data=await loadData(),list=document.getElementById('list');
+document.getElementById('jump').innerHTML=VARIANTS.map(([k,n])=>`<a href="#${k}">${k.toUpperCase()}</a>`).join(' ');
+list.innerHTML=VARIANTS.map(([k,n])=>`<section id="${k}"><h2><b>${k.toUpperCase()}</b> · ${n}</h2><div class="cv"><div class="gvr-frame" data-frame="${k}"></div></div></section>`).join('');
+const draw=()=>VARIANTS.forEach(([k])=>renderGiveaway(document.querySelector(`[data-frame=${k}]`),data,k,{mode:new URLSearchParams(location.search).get('race')||''}));
+draw();
+const b=document.getElementById('phone');
+b.onclick=()=>{const on=document.body.classList.toggle('phone');b.textContent='phone width: '+(on?'on':'off');b.setAttribute('aria-pressed',on);requestAnimationFrame(draw);};
+</script>
+</body>
+</html>

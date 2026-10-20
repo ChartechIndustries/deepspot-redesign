@@ -1,0 +1,305 @@
+{
+ "res": [
+  [
+   "wall shows (spot,out)",
+   true,
+   "{'sheet': True, 'fade': True, 'inert': 10, 'walled': True, 'mh': '1036px'}"
+  ],
+  [
+   "wall: focus on email at load",
+   true,
+   ""
+  ],
+  [
+   "invalid email shows error",
+   true,
+   ""
+  ],
+  [
+   "unlocks in place at once (page unclipped, inert gone)",
+   true,
+   "{'sheet': True, 'fade': False, 'inert': 0, 'walled': False, 'mh': ''}"
+  ],
+  [
+   "success line shown",
+   true,
+   ""
+  ],
+  [
+   "sheet leaves after success",
+   true,
+   ""
+  ],
+  [
+   "session = free + email",
+   true,
+   "{'state': 'free', 'email': 'me@example.com'}"
+  ],
+  [
+   "persists after reload",
+   true,
+   "{'sheet': False, 'fade': False, 'inert': 0, 'walled': False, 'mh': ''}"
+  ],
+  [
+   "account shows session state",
+   true,
+   "preview session: free account \u00b7 me@example.com |  | sign out of preview \u00d7"
+  ],
+  [
+   "sign out sets out",
+   true,
+   ""
+  ],
+  [
+   "relocks after sign out",
+   true,
+   "{'sheet': True, 'fade': True, 'inert': 10, 'walled': True, 'mh': '1036px'}"
+  ],
+  [
+   "wall: Tab stays inside sheet (14 presses)",
+   true,
+   ""
+  ],
+  [
+   "wall: Shift+Tab from first wraps inside",
+   true,
+   ""
+  ],
+  [
+   "wall: dialog + aria-modal + labelled heading",
+   true,
+   ""
+  ],
+  [
+   "wall: Escape does not close (sheet stays, focus to site logo)",
+   true,
+   ""
+  ],
+  [
+   "wall shows (story,out)",
+   true,
+   "{'sheet': True, 'fade': True, 'inert': 9, 'walled': True, 'mh': '1753px'}"
+  ],
+  [
+   "story: first 3 paragraphs allowed, rest clipped but in DOM",
+   true,
+   "{'total': 6, 'shown': 3, 'docH': 2636, 'mainBottom': 1895}"
+  ],
+  [
+   "spot: first 2 paragraphs allowed, rest clipped but in DOM",
+   true,
+   "{'total': 7, 'shown': 2}"
+  ],
+  [
+   "save (out) opens action sheet \"sign in to save this.\"",
+   true,
+   ""
+  ],
+  [
+   "save not applied while out",
+   true,
+   ""
+  ],
+  [
+   "action: Tab stays inside sheet (14 presses)",
+   true,
+   ""
+  ],
+  [
+   "Escape closes action sheet",
+   true,
+   ""
+  ],
+  [
+   "focus returns to the save button",
+   true,
+   ""
+  ],
+  [
+   "x closes action sheet",
+   true,
+   ""
+  ],
+  [
+   "after sign-in the save resumes",
+   true,
+   ""
+  ],
+  [
+   "spot vote yes (out) opens sheet, nothing stored, no navigation",
+   true,
+   "sign in to vote."
+  ],
+  [
+   "spot vote not quite (out) opens sheet, nothing stored, no navigation",
+   true,
+   "sign in to vote."
+  ],
+  [
+   "poll option (out) opens sheet, nothing stored, no navigation",
+   true,
+   "sign in to vote."
+  ],
+  [
+   "roadmap vote (out) opens sheet, nothing stored, no navigation",
+   true,
+   "sign in to vote."
+  ],
+  [
+   "comment link (out) opens sheet, nothing stored, no navigation",
+   true,
+   "sign in to comment."
+  ],
+  [
+   "vote resumes after sign-in",
+   true,
+   ""
+  ],
+  [
+   "trip: edit while out is not written to storage",
+   true,
+   ""
+  ],
+  [
+   "trip: status offers sign-in",
+   true,
+   ""
+  ],
+  [
+   "trip share (out) opens \"sign in to share this trip.\"",
+   true,
+   ""
+  ],
+  [
+   "trip: edits saved right after sign-in",
+   true,
+   ""
+  ],
+  [
+   "contribute submit (out) opens \"sign in to submit this.\"",
+   true,
+   ""
+  ],
+  [
+   "contribute submit resumes after sign-in (preview shown)",
+   true,
+   ""
+  ],
+  [
+   "free: first photo opens (no gate)",
+   true,
+   ""
+  ],
+  [
+   "free: next photo opens member sheet over viewer",
+   true,
+   ""
+  ],
+  [
+   "member sheet Esc closes only the sheet",
+   true,
+   ""
+  ],
+  [
+   "free: arrow key also gated",
+   true,
+   ""
+  ],
+  [
+   "mark-as-member sets member + resumes next photo",
+   true,
+   "2 / 5"
+  ],
+  [
+   "free: thumbnail 2 opens member sheet",
+   true,
+   ""
+  ],
+  [
+   "member sheet CTA goes to /membership/",
+   true,
+   ""
+  ],
+  [
+   "member sheet: Tab stays inside",
+   true,
+   ""
+  ],
+  [
+   "member: gallery opens freely",
+   true,
+   ""
+  ],
+  [
+   "free: join now opens member sheet, no navigation",
+   true,
+   ""
+  ],
+  [
+   "mark member resumes join (navigates to /contribute/)",
+   true,
+   "http://localhost:8766/contribute/?theme=dark"
+  ],
+  [
+   "out: join now asks to sign in first",
+   true,
+   ""
+  ],
+  [
+   "out: after sign-in the member sheet follows",
+   true,
+   ""
+  ],
+  [
+   "?gate=off: no wall on spot",
+   true,
+   "{'sheet': False, 'fade': False, 'inert': 0, 'walled': False, 'mh': ''}"
+  ],
+  [
+   "?gate=off persists in tab: vote works, no sheet",
+   true,
+   ""
+  ],
+  [
+   "?gate=off persists on story",
+   true,
+   ""
+  ],
+  [
+   "?gate=out turns it back on",
+   true,
+   ""
+  ],
+  [
+   "free: no wall on /spot/",
+   true,
+   ""
+  ],
+  [
+   "free: no wall on /story",
+   true,
+   ""
+  ],
+  [
+   "member: no wall on /spot/",
+   true,
+   ""
+  ],
+  [
+   "member: no wall on /story",
+   true,
+   ""
+  ],
+  [
+   "reduced motion: no slide animation",
+   true,
+   ""
+  ],
+  [
+   "light theme wall renders",
+   true,
+   ""
+  ]
+ ],
+ "errs": []
+}

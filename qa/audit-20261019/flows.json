@@ -1,0 +1,137 @@
+[
+ [
+  "home globe canvas present",
+  "PASS",
+  "[1440, 620]"
+ ],
+ [
+  "home no hydration error",
+  "PASS",
+  "[]"
+ ],
+ [
+  "home pins rendered",
+  "PASS",
+  "46"
+ ],
+ [
+  "globe drag rotates",
+  "PASS",
+  ""
+ ],
+ [
+  "home theme buttons found",
+  "PASS",
+  "['theme-toggle|\u2600 Light|Switch to light mode', '||Highlight next location']"
+ ],
+ [
+  "subpage theme toggle",
+  "PASS",
+  "light"
+ ],
+ [
+  "nav links follow new theme",
+  "PASS",
+  "/map/?theme=light"
+ ],
+ [
+  "theme persists across nav",
+  "PASS",
+  "light"
+ ],
+ [
+  "theme persists to home (no param)",
+  "PASS",
+  "light"
+ ],
+ [
+  "browse search filters",
+  "PASS",
+  "(12, 3)"
+ ],
+ [
+  "saved shows bookmarked place",
+  "PASS",
+  "Yourfieldbook.\n\nKeep the places that pull you in. Make a trip out of them when you\u2019re ready.\n\nyour next adventure\na few "
+ ],
+ [
+  "spot page title",
+  "PASS",
+  "The Japanese Quarry That Became an Underground Illuminated Cathedral"
+ ],
+ [
+  "spot bad id handled",
+  "PASS",
+  "skip to content | THIS WEEK\u2019S WEIRDEST FINDS | \u2197 a cathedral carved under Tochigi | \u2197 swim through a Soviet prison | FOLLOW YOUR CURIOSITY \u2197 | DEEP | SPOT | BRO"
+ ],
+ [
+  "story bad id handled",
+  "PASS",
+  "story not found. |  | Find another story in our collection. |  | explore stories"
+ ],
+ [
+  "guide bad id handled",
+  "PASS",
+  "guide not found. |  | Explore another route. |  | browse guides"
+ ],
+ [
+  "profile bad user handled",
+  "PASS",
+  "skip to passport | THIS WEEK\u2019S WEIRDEST FINDS | \u2197 a cathedral carved under Tochigi | \u2197 swim through a Soviet prison | FOLLOW YOUR CURIOSITY \u2197 | DEEP | SPOT | BR"
+ ],
+ [
+  "404 page exists",
+  "FAIL",
+  "404"
+ ],
+ [
+  "map markers",
+  "PASS",
+  "10"
+ ],
+ [
+  "trip name persists",
+  "PASS",
+  "Audit trip"
+ ],
+ [
+  "contribute draft persists",
+  "PASS",
+  "Audit spot"
+ ],
+ [
+  "promo param swaps",
+  "PASS",
+  "(1, 1, 1)"
+ ],
+ [
+  "newsletter",
+  "FAIL",
+  "Locator.fill: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\"input[type=email]\").first\n    - locator resolved to <input disabled type=\"email\" id=\""
+ ],
+ [
+  "mobile menu opens",
+  "PASS",
+  "Close navigation"
+ ],
+ [
+  "mobile menu Escape closes",
+  "PASS",
+  ""
+ ],
+ [
+  "mole reveal ran, no errors",
+  "PASS",
+  "[]"
+ ],
+ [
+  "mole saved to draft",
+  "FAIL",
+  ""
+ ],
+ [
+  "total page errors in flows",
+  "PASS",
+  "[]"
+ ]
+]

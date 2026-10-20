@@ -1,0 +1,5 @@
+body paddings (phone?,[t,r,b,l]): [(False, (24, 24, 24, 24)), (True, (16, 16, 16, 16))]
+bar (phone?,[height,padL,padR]): [(False, (40, 24, 24)), (True, (40, 16, 16))]
+card paddings: [('', (16, 16, 16, 16)), ('pp-give', (16, 16, 16, 16)), ('pp-hot', (16, 16, 16, 16)), ('pp-nil', (16, 16, 16, 16)), ('pp-post-copy', (12, 12, 12, 12)), ('pp-stamp', (12, 12, 12, 12)), ('pp-stamp', (16, 16, 16, 16)), ('pp-type', (16, 16, 16, 16))]
+aqua >120x120: [] 0
+off-scale spacing values: 0

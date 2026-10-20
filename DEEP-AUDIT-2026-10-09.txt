@@ -1,0 +1,165 @@
+DEEPSPOT — DEEP AUDIT AND RESEARCH
+October 9, 2026
+
+Project: C:/Users/CharD/Desktop/DeepSpot Globe
+Preview: http://localhost:8766/?theme=dark
+Scope: original-site comparison, cross-page user journeys, data integrity,
+public contributor identity, keyboard use, and desktop/mobile presentation.
+This pass is implemented locally. It has not been deployed to Netlify.
+
+FINDINGS AND CHANGES
+
+1. Saved content needed to behave as one collection throughout the site.
+   Previously, homepage, Browse, readers and Fieldbook maintained separate UI
+   assumptions. A save in one tab could leave another tab looking out of date.
+   site/storage.mjs now normalizes bookmark IDs and notifies every surface after
+   a successful write, cross-tab update or browser back/forward restoration.
+   Storage failures do not produce a false successful-save state.
+
+2. Fieldbook repeated large empty sections instead of helping people plan.
+   It now leads with a restrained aqua trip panel, then Places/Stories tabs,
+   counts, search and compact photographic rows. Saved destinations can be added
+   to a trip directly. Removing an item preserves keyboard focus. The local-only
+   storage boundary is stated clearly. Its header shortcut now appears across
+   home, Browse, passport and the shared page shell; mobile exposes it in Menu.
+
+3. Destination photography was unnecessarily restricted.
+   The old detail renderer used only the first three stored gallery photos.
+   The new photo reader exposes every locally available photo, preserves source
+   credits/licensing, supports previous/next and arrow keys, closes with Escape,
+   and restores focus. Three previews keep the reading page compact. Single-photo
+   and phone layouts have separate, verified control placement.
+
+4. Trip editing could silently lose information.
+   The UI and imported/restored state now share a 50-stop limit. Adding a stop
+   preserves day assignments and notes. Shared links open an editable copy;
+   replacing an existing local trip takes a second explicit save action. A tab
+   with stale trip data cannot silently overwrite a newer saved trip. Download
+   remains available to recover its edits, including a notes-only trip.
+   A shared-trip map action that would have shown the wrong stored route was
+   removed. No route-distance or travel-time values have been invented.
+
+5. Contribution drafts needed more reliable continuity.
+   Drafts autosave after typing and on field changes. Type switching preserves
+   content and removes an irrelevant edit/photo reference. Failed persistence
+   stays visible rather than pretending to save. Starting a fresh draft cancels
+   pending writes so an old draft cannot reappear on exit. This remains a local
+   draft/export workflow, not a live submission endpoint.
+
+6. Several public passport identities were mismatched.
+   The original public profile pages were checked individually. The verified
+   display names Kris, Lana Velkov, Lydia, Six and SAZ now resolve from their
+   existing handles and former name links. Aliases also join saved publisher
+   credits to the correct portrait and contributed records. Profile handles and
+   member-since values reach the passport renderer. Existing count snapshots
+   retain their October 8 capture date; identity verification is October 9.
+
+7. Link rewriting was too optimistic.
+   Navigation now consults site/routes.json before converting original detail
+   links to local routes. Content not represented locally continues to the
+   original page. Original signed-in /profile links lead to /account/, while
+   public /user/handle links lead to the appropriate passport. Map links without
+   verified local coordinates retain the original destination. Missing local
+   content has a meaningful page title and heading.
+
+8. Visual and responsive refinement.
+   Retained the halftone Earth, navy/cream backgrounds, green calls to action,
+   cobalt accents and the existing What's New palette. Fieldbook uses quieter
+   aqua grouping and clearer reading/planning hierarchy. Gallery controls and
+   compact saved rows fit 320px and 390px widths. Mobile navigation now exposes
+   the same major destinations across Browse and passports. The globe, original
+   six-card homepage section and existing bento structure remain intact.
+
+ORIGINAL-SITE RESEARCH
+
+Read-only inspection of the signed-in original used the visible public site.
+No account identity, private messages, draft contents or access codes were copied.
+No live saves, submissions, profile changes or payments were made.
+
+https://www.deepspot.io/browse
+  Browse includes Deep Spots/Stories/Guides, search, categories, regions, ratings,
+  conditions such as endangered/closed/seasonal, sorting, grid/list views and
+  numbered pagination. The live collection is larger than this saved prototype.
+
+https://www.deepspot.io/blog/a-flooded-abandoned-18-century-church-in-a-toxic-lake
+  Confirmed full gallery, licensing/captions, publisher, map, sharing/saving,
+  community contribution actions, ratings/comments and related destinations.
+  This informed the local gallery and publisher-link fixes.
+
+https://www.deepspot.io/plan-trip
+  Confirmed multiple days, DeepSpot and custom stops, general tips, visibility,
+  media, duration/distance overrides and submission. An existing private draft
+  was not opened or modified. The saved prototype implements the known-spot
+  planning subset; the larger submission workflow still requires integration.
+
+Public identity pages verified:
+https://www.deepspot.io/user/lampbane       — Kris
+https://www.deepspot.io/user/wayfarer       — Wayfarer
+https://www.deepspot.io/user/kisekikana     — kisekikana
+https://www.deepspot.io/user/numberone      — NumberOne
+https://www.deepspot.io/user/joelle         — Joelle
+https://www.deepspot.io/user/annebelle      — Annebelle
+https://www.deepspot.io/user/lanavelkov     — Lana Velkov
+https://www.deepspot.io/user/s4zr4ty        — SAZ
+https://www.deepspot.io/user/korrgan        — Lydia
+https://www.deepspot.io/user/sixbacteria    — Six
+
+Public counters can animate from zero. This audit did not replace the existing
+count snapshot with transient values. Backend integration should distinguish
+total contributions, published spots and published stories explicitly.
+
+VERIFICATION
+
+- 11 automated tests passed: account/profile state, trip serialization and
+  normalization, malformed bookmarks, write failures, notification delivery,
+  the shared 50-stop bound and verified contributor aliases.
+- 29 HTML routes and 33 directly referenced local CSS/JS assets returned 200.
+- Syntax checks passed for the 12 changed executable files checked this pass.
+- Actual browser journeys: Browse save -> Fieldbook; story save -> Fieldbook;
+  removal -> reader update; homepage save -> Fieldbook -> homepage update.
+- Trip title, days and notes survived reload; shared-link values matched; copy
+  replacement required confirmation; a stale tab could not overwrite new data.
+- Contribution autosave, type switch, reload and fresh-draft clearing verified.
+- Gallery next/previous, arrow keys, photo counts, Escape and focus verified.
+- Correct public identity and associated work verified through an alias URL.
+- 320px and 390px checks of changed layouts; desktop homepage and globe reviewed.
+- Temporary homepage/bookmark test entries were removed. Trip/draft tests used
+  a separate localhost origin so they did not overwrite normal preview data.
+
+REMAINING INTEGRATION GAPS / RECOMMENDED ORDER
+
+1. Replace fixture fetches with backend content adapters. The local collection
+   contains 369 standalone destinations in a 393-record raw catalog, 13 fuller
+   spot entries, 9 stories, 7 guides, 10 verified map coordinates and 10 public
+   contributor snapshots. These are local fixture counts, not current live-site
+   totals. The full catalog and map need current records and verified geometry.
+
+2. Connect authenticated saves, trip persistence and submission APIs. Keep
+   server IDs, ownership and revision checks when replacing browser storage.
+   Add custom stops, media, visibility and publish/review states to the trip
+   backend contract. Keep existing draft recovery during that migration.
+
+3. Supply actual region, rating, condition and sort metadata for Browse. Do not
+   infer danger, closure or endangered status from descriptive text. Original
+   filter parity requires these fields rather than cosmetic controls.
+
+4. Connect profile publication, username availability, photos, XP/badges,
+   memberships, notifications, inbox and moderation to authenticated services.
+   Public-profile links are shareable; unpublished browser-local passport edits
+   are not server-published profiles. Membership copy remains $1/week, billed
+   monthly. Newsletter enrollment remains intentionally unconnected.
+
+5. Extend full detail content, ratings/comments, related items and gallery
+   provenance as backend records become available. Current fallbacks route users
+   to the original page rather than inventing unavailable information.
+
+MAINTENANCE / FILES
+
+New modules: source/site/storage.mjs, fieldbook.mjs, gallery.mjs.
+Known-content index: source/site/routes.json.
+Rebuild that index after fixture changes with build_route_manifest.py; this
+script is idempotent. Do not rerun the older one-time migration helpers.
+Tests: qa/journey-state.test.mjs plus the existing account/trip state suites.
+Styles: source/site/refinements.css, linked after base styles on all routes.
+Backup of this pass: backups/journey-audit-20261009/.
+See SITE-EXPANSION-HANDOFF.txt for the complete route and storage contracts.

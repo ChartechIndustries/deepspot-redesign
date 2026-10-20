@@ -1,0 +1,148 @@
+DEEPSPOT REDESIGN — FULL AUDIT
+October 19, 2026
+
+Scope: local prototype, source/ served at http://localhost:8766. No files in source/ were changed.
+Evidence: qa/audit-20261019/ (crawl.py, flows.py, axe.py, weight.py, res_*.jsonl, axe_*.json,
+flows.json, shots/, sheets/).
+
+METHOD
+- 31 routes x 5 views (1440 dark/light, 390 dark/light, 768 dark) = 155 page loads, headless Chromium.
+  Each load: status, console/page errors, failed requests, horizontal overflow, broken images,
+  duplicate IDs, h1 count, unnamed controls, missing alt, tap targets, text artifacts.
+- axe-core 4.10.2 (WCAG 2 A/AA + best practice) at 1440 dark, 1440 light, 390 dark.
+- Internal link check: 131 unique links.
+- 25 scripted user flows (globe, theme, browse, fieldbook, bad IDs, map, trip, contribute, promo
+  param, newsletter, mobile menu, mole reveal).
+- Page weight on 8 key routes at 1440 and 390.
+- node --check on 83 JS/MJS files, JSON parse on all data files, 3 test suites.
+- Diff of source/ against the last deploy manifest (deployments/20261003-browse-manifest.json).
+- Visual review of full-page contact sheets, 1440 and 390 dark.
+
+RESULT IN ONE LINE
+Functionally clean. The main problems are page weight, deploy hygiene and contrast on cobalt.
+
+PASSED
+- 155/155 page loads returned 200. 0 page errors. 0 failed requests. 0 broken images.
+- 131/131 internal links resolve.
+- 83/83 JS/MJS files pass syntax check. All JSON parses. Tests: 13/13 pass (5 account, 5 journey, 3 trip).
+- No page-level horizontal scroll on any real route at 390 or 768.
+- No duplicate IDs. Exactly one h1 per page. No images without alt.
+- Flows pass: globe renders, pins (46), drag rotates; no hydration error #418; subpage theme toggle
+  and nav carry-over; Browse search (12 -> 3); bookmark -> fieldbook; bad spot/story/guide/profile
+  IDs show a clear "not found" state; map shows 10 markers; trip name and contribute draft survive
+  reload; ?promo=c4,w4,y1 swaps cards; mobile menu opens and closes on Escape; mole reveal runs
+  with no errors and offers keep / roll again / download.
+
+FINDINGS (most severe first)
+
+HIGH
+
+H1. Page weight. Images are served at camera size to every device.
+    - Home: 15.3 MB, 57 requests, same on phone and desktop.
+      editorial-assets/boundary.jpg 5.3 MB (4160x3120), spot-south-london-...jpg 2.5 MB,
+      site/assets/story-moscow.jpg 1.3 MB.
+    - /story/?id=boundary: 28.1 MB. Two Wikimedia originals are hotlinked (7.0 MB + 5.3 MB).
+    - /stories/: 8.7 MB. /browse/: 6.6 MB. /roadmap/: 4.1 MB (roadmap-mountain.png 3.5 MB, 2990x1919).
+    Fix: make 640/1280/1920 WebP sizes with srcset; copy hotlinked Wikimedia images locally at
+    display size (keep the credit); convert roadmap-mountain.png to WebP.
+
+H2. The deploy folder holds dead files.
+    - 98 unreferenced files, 12.5 MB: page/index chunks v25–v50, japan.jpg, london.jpg,
+      austria.jpg, athens.webp, bridge-lab*.css/js and more.
+    - source/backups/ (34 files) is inside the served folder. A deploy of source/ publishes it.
+    Fix: move source/backups/ to backups/; move dead files to _archive/ outside source/ before deploy.
+
+H3. Production is 16 days behind. Live = 10/3 (browse). Not live: 189 new and 13 changed files
+    (community hub, moles, promo banners, passport round 1, design and journey audits).
+
+MEDIUM
+
+M1. Small text on cobalt #3c60ff fails 4.5:1 on 16 pages.
+    - Cream #f5f4ee on cobalt = 4.42. Affects .ds-cta-contribute p (13 pages), membership,
+      competition prize panel.
+    - Tinted text is lower: #e1e5ff 3.91 (.ds-wide-cta p), #c9d9ff 3.44 (eyebrows),
+      community slide copy 3.97–4.36, top-explorer handle 3.89.
+    Fix (pick one): text panels use cobalt #3858f0 (cream 4.99, white 5.49); or set the small text
+    to pure #fff (4.87) and stop using blue tints for text on cobalt.
+
+M2. Light-mode home headline: "Un-Ordinary" green #16e05a on cream #f6f3ec = 1.59:1
+    (large-text minimum is 3:1). Readable at 140px but weak. Option: a darker green in light mode only.
+
+M3. Module duplicated by cache key. profile/data.mjs imports ../site/account-state.mjs with no
+    ?v, while sign-pad.mjs and account.mjs use ?v=pad1. The profile page loads two copies. After a
+    deploy, a cached old copy can drop signatureArt in normalizeAccount, so the drawing would not
+    show on the passport. Fix: add ?v=pad1 to the data.mjs import.
+    Also: site-cta.css is ?v=expansion1 on 26 pages and ?v=footer1 on home, browse and profile.
+
+M4. Home ignores the saved theme. Sub-pages read localStorage 'deepspot-theme'; the home page
+    reads only ?theme=. A bookmark or typed URL to / always opens dark. In-site links carry
+    ?theme=, so normal navigation works.
+
+M5. No 404 page. source/404.html does not exist; a bad URL on Netlify shows the default page.
+
+M6. Leaderboard at 390px: the table (480px) scrolls sideways inside a 356px box. The
+    "points" column is off-screen with no scroll cue.
+
+LOW
+
+L1. Accessibility structure (axe, all views):
+    - The top ticker (.br-ticker) sits outside any landmark on 30 pages.
+    - Heading order skips on /spot/, /stories/, /guides/, /app/, /cookies/.
+    - <aside> nested inside another landmark on /spot/, /inbox/, /community/, /cookies/.
+    - role="group" on <article> carousel slides (home what's-new, community hub).
+L2. Tap targets under 24px at 390: /contribute/ 29, /stories/ 25, /spot/ 24, /story/ 22.
+L3. Every route downloads featured-spots.json (233 KB) and site/content.json (119 KB), also
+    pages that do not use them (/account/, /competition/).
+L4. Legal pages: "01.What Are Cookies?", "01.Information We Collect" — no space after the number
+    (copied from the source text in site/content.json).
+L5. No og:title / og:image / twitter tags on any page. Shared links have no preview card.
+L6. /promo-variations.html (review page only): 509px wide at 390 (horizontal scroll);
+    loads promo-variations.js with no ?v.
+
+NOT ISSUES (checked)
+- Black globe in the full-page crawl shots is a headless GPU artifact. With software GL the hero
+  renders correctly in light and dark, before and after scroll.
+- Newsletter email field is disabled on purpose ("newsletter signup coming soon").
+- Mole reveal saves to the draft only after "keep this mole". This is by design.
+- /at-risk/ is an image folder, not a route.
+- Community "unnamed links" are hidden carousel slides / aria-hidden duplicates.
+
+OPEN DECISIONS (from earlier rounds)
+- Roadmap banner: no pick yet from R1–R5, Y1–Y5, R4a–c.
+- Passport: round 1 done; no round 2 spec.
+- Backend items: see SITE-EXPANSION-HANDOFF.txt and DEEP-AUDIT-2026-10-09.txt.
+
+SUGGESTED ORDER
+1. H2 + M5 + M3 (small, unblocks a clean deploy).
+2. H1 image pipeline (largest user impact, mostly phones).
+3. M1 + M2 contrast (one token change).
+4. H3 deploy after a visual QA pass.
+5. M4, M6, then the LOW list.
+
+==========================================================================
+FIX ROUND — same day (plan: FIXES-PLAN-2026-10-19.md). No deploy.
+
+RE-AUDIT RESULT (160 loads: 32 routes incl. /404.html x 5 views)
+- 160/160 = 200. 0 page errors, 0 failed requests, 0 broken images, 0 overflow, 132/132 links.
+- axe WCAG A/AA: 0 violations at 1440 dark and light; 0 at 390 after two follow-up fixes.
+- Flows: 24 pass. Home now opens in the saved theme. (404 routing, disabled newsletter and
+  mole "keep" are by design / host-side.)
+- Tests 13/13. Mole rules checker 24/24.
+
+FINDING STATUS
+H1 page weight      PARTLY. / 15.3→8.4 MB, /story/?id=boundary 28.1→5.2, /stories/ 8.7→3.5,
+                    /browse/ 6.6→4.6, /roadmap/ 4.1→0.3. 72 hotlinked images now local (1600 px).
+                    Next: 800 px card variants + srcset (home ~3 MB).
+H2 deploy folder    DONE. source/backups → backups/; 62 dead files (12.6 MB) → _archive/.
+H3 deploy           OPEN (not deployed). og:image is relative: set the real domain at deploy.
+M1 cobalt contrast  DONE (#3858f0 text panels, cream/white text).
+M2 light headline   DONE (#0a8a3a in light mode).
+M3 module copies    DONE (?v=pad1 everywhere; site-cta.css ?v=audit1 on all pages).
+M4 home theme       DONE (head script restores ?theme from storage).
+M5 404              DONE (source/404.html).
+M6 leaderboard 390  DONE (5 columns fit at 320–390; rank 19px bold).
+L1–L6               DONE (landmarks, heading order, asides, roles, tap targets, data fetch split
+                    on 8 routes, legal heading spaces, og/twitter tags, promo review page).
+Extra               Passport placeholder line contrast (1.84 → muted token).
+
+ALSO TODAY: mole trait rules + alpha fix (see README "Mole trait rules + alpha fix").
