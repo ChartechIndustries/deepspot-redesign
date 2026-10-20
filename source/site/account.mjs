@@ -1,5 +1,5 @@
 import {esc,$,$$,icon,localURL,action,pageTitle,readStore,writeStore,keys,notify,downloadJSON,savedIDs} from './core.mjs';
-import {readSession,setState,onGate,gateOff} from './gate.mjs?v=gate3';
+import {readSession,setState,onGate,gateOff} from './gate.mjs?v=gate5';
 import {accountKey,readAccount,normalizeAccount,travelerStyles,travelerMark,avatarImage} from './account-state.mjs?v=pad1';
 
 const live=(label,hash='')=>`<a class="ds-text-link" href="https://www.deepspot.io/profile${hash}" data-original target="_blank" rel="noopener">${label}${icon('arrow')}</a>`;

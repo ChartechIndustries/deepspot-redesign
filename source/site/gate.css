@@ -61,3 +61,49 @@ body.gt-walled deepspot-cta{display:none}
  .gt-foot{margin-top:10px}
 }
 .gt-foot a{white-space:nowrap}
+
+/* ===== big sheet (Opus design pass 2026-10-20): site display scale, two columns, room to breathe ===== */
+.gt-sheet{border-top:3px solid var(--br-green,#07d653)}
+.gt-sheet .gt-in{max-width:1180px;padding:56px clamp(24px,4vw,56px) 40px}
+.gt-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(32px,5vw,88px);align-items:start}
+.gt-sheet .gt-k{font-size:12px;letter-spacing:.1em;text-transform:uppercase;margin:0 0 18px}
+.gt-sheet .gt-h{font-size:clamp(48px,5.6vw,92px);line-height:.88;letter-spacing:-.07em;font-weight:800;margin:0;text-wrap:balance;white-space:normal}
+.gt-sheet .gt-h em{font-style:normal;color:var(--br-green,#07d653);display:block}
+:root[data-theme=light] .gt-sheet .gt-h em{color:#08782f}
+:root[data-panel-color=off] .gt-sheet .gt-h em{color:var(--br-accent)}
+.gt-sheet .gt-b{margin:24px 0 0;font-size:clamp(17px,1.4vw,20px);line-height:1.45;color:var(--br-muted)}
+.gt-perks{list-style:none;margin:24px 0 0;padding:0;display:grid;gap:12px}
+.gt-perks li{display:flex;align-items:center;gap:14px;font-size:clamp(16px,1.3vw,19px);font-weight:700;letter-spacing:-.02em;color:var(--br-text)}
+.gt-perks svg{flex:none;width:28px;height:28px;padding:5px;border-radius:50%;background:color-mix(in srgb,var(--br-green,#07d653) 18%,transparent);stroke:var(--br-green,#07d653);stroke-width:2.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
+:root[data-theme=light] .gt-perks svg{stroke:#08782f}
+.gt-c{padding-top:6px}
+.gt-sheet .gt-l{font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin:0 0 10px}
+.gt-sheet .gt-form{display:block}
+.gt-sheet .gt-input{height:60px;font-size:18px;padding:0 18px;border-radius:4px}
+.gt-sheet .gt-input::placeholder{color:var(--br-muted);opacity:.7}
+.gt-sheet .gt-go{display:flex;justify-content:space-between;align-items:center;width:100%;min-height:60px;margin:12px 0 0;padding:0 24px;font-size:19px;font-weight:800;letter-spacing:-.02em}
+.gt-sheet .gt-go svg{width:22px;height:22px}
+.gt-sheet .gt-or{margin:20px 0;font-size:12px;text-transform:uppercase;letter-spacing:.1em}
+.gt-sheet .gt-prov{grid-template-columns:1fr;gap:10px}
+.gt-sheet .gt-p{min-height:56px;font-size:16px;font-weight:700}
+.gt-sheet .gt-p svg{width:20px;height:20px}
+.gt-sheet .gt-legal{margin:18px 0 0;font-size:13px}
+.gt-sheet .gt-foot{margin:16px 0 0;padding-top:16px;font-size:15px}
+.gt-sheet .gt-note{margin-top:12px}
+.gt-sheet .gt-price{margin:20px 0 0;font-size:clamp(88px,9vw,148px);line-height:.85;letter-spacing:-.07em;font-weight:800;color:var(--br-green,#07d653)}
+:root[data-theme=light] .gt-sheet .gt-price{color:#08782f}
+.gt-sheet .gt-price small{font-size:22px;letter-spacing:-.02em;color:var(--br-muted);margin-left:8px}
+.gt-sheet[data-mode=member] .gt-perks{margin:0 0 24px}
+.gt-sheet .gt-x{top:20px;right:24px;width:48px;height:48px;font-size:26px}
+.gt-done{max-width:760px}
+@media(max-width:900px){
+ .gt-grid{grid-template-columns:1fr;gap:28px}
+ .gt-sheet .gt-in{padding:40px 24px 28px}
+}
+@media(max-width:520px){
+ .gt-sheet .gt-in{padding:32px 16px 24px}
+ .gt-sheet .gt-h{font-size:clamp(40px,12vw,52px)}
+ .gt-sheet .gt-x{top:12px;right:12px;width:44px;height:44px}
+}
+.gt-sheet .gt-form>.gt-go{width:100%;margin:12px 0 0;padding:0 24px}
+.gt-sheet .gt-form>.gt-err{margin:8px 0 0}
