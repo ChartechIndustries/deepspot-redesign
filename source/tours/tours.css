@@ -1,57 +1,48 @@
-/* Tours: under construction (2026-10-20). Tape colors = redesign: green #07d653, cobalt #3c60ff, cream #f5f4ee, ink #0b1b27. */
-.tr-root{overflow-x:clip;--tr-ink:#0b1b27;--tr-green:#07d653;--tr-cobalt:#3c60ff;--tr-cream:#f5f4ee}
-.tr-stage{position:relative;width:100vw;margin-left:calc(50% - 50vw);height:clamp(560px,calc(100vh - 140px),940px);overflow:hidden;isolation:isolate;background:var(--br-bg)}
+/* Tours: under construction (2026-10-20, v3). One screen, no scroll. Tape = redesign green #07d653 with ink #0b1b27. */
+html.tr-lock,html.tr-lock body{overflow:hidden;height:100%}
+html.tr-lock deepspot-cta{display:none}
+html.tr-lock ds-site-header{position:relative;z-index:20}
+.tr-root{--tr-ink:#0b1b27;--tr-green:#07d653;padding:0;min-height:0}
+.tr-stage{position:fixed;left:0;right:0;bottom:0;top:140px;overflow:hidden;isolation:isolate;background:var(--br-bg);z-index:1}
 
-/* 1 · the tour page being built (blurred, inert) */
-.tr-fake{position:absolute;inset:-24px;padding:72px max(var(--ds-gutter,24px),calc(50vw - 860px)) 0;filter:blur(10px) saturate(.75);opacity:.6;transform:scale(1.02);pointer-events:none;z-index:0}
+/* the tour page being built: blurred, inert, faint */
+.tr-fake{position:absolute;inset:-24px;padding:48px max(var(--ds-gutter,24px),calc(50vw - 860px)) 0;filter:blur(12px) saturate(.7);opacity:.32;pointer-events:none;z-index:0}
 .tr-fake i,.tr-fake b{display:block;background:var(--br-line);border-radius:6px}
-.tr-f-head{display:flex;justify-content:space-between;align-items:flex-end;gap:48px;margin-bottom:48px}
-.tr-f-h1{width:min(52vw,820px);height:clamp(48px,6vw,96px);margin-bottom:16px;background:var(--br-text)!important;opacity:.5}
-.tr-f-h2{width:min(36vw,560px);height:clamp(48px,6vw,96px);background:var(--tr-green)!important}
-.tr-f-p{width:min(24vw,340px);height:56px}
 .tr-f-chips{display:flex;gap:12px;margin-bottom:32px}
 .tr-f-chips b{width:120px;height:40px;border-radius:99px!important}
 .tr-f-chips b:first-child{background:var(--tr-green)}
 .tr-f-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
 .tr-f-card{background:var(--br-panel);border:1px solid var(--br-line);border-radius:8px;overflow:hidden;padding-bottom:16px}
 .tr-f-card img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}
-.tr-f-card i{height:16px;margin:16px 16px 0}
-.tr-f-card b{width:96px;height:32px;margin:16px 16px 0;border-radius:99px!important;background:var(--tr-cobalt)}
+.tr-f-card i{height:16px;margin:16px 16px 0;width:60%}
 
-/* 2 · the construction mole, behind the tape */
-.tr-mole{position:absolute;left:50%;bottom:0;z-index:1;width:min(46vh,430px,64vw);transform:translateX(-50%)}
-.tr-mole img{display:block;width:100%;height:auto;filter:drop-shadow(0 24px 30px rgba(0,0,0,.45))}
-.tr-mole::after{content:'';position:absolute;left:12%;right:12%;bottom:-10px;height:28px;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.45),transparent);z-index:-1}
+/* giant title, top of the stage */
+.tr-stage .tr-title{position:absolute;left:0;right:0;top:1%;margin:0;padding:0;z-index:1;text-align:center;font:800 min(29vw,52vh)/.9 Arial,Helvetica,sans-serif;letter-spacing:-.07em;color:var(--br-text);white-space:nowrap;max-width:none}
+.tr-stage .tr-title>span:not(.sr-only){color:var(--tr-green)}
+:root[data-theme=light] .tr-stage .tr-title>span:not(.sr-only){color:#08782f}
 
-/* 3 · tape bands on top */
-.tr-tapes{position:absolute;inset:0;z-index:2;pointer-events:none}
-.tr-tape{--h:clamp(64px,8vw,108px);--fg:var(--tr-ink);--bg:var(--tr-green);position:absolute;left:-25vw;width:150vw;top:var(--top);height:var(--h);margin-top:calc(var(--h) / -2);transform:rotate(var(--rot));background:var(--bg);color:var(--fg);overflow:hidden;
- box-shadow:0 26px 34px -10px rgba(0,0,0,.5),0 6px 10px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.28)}
-/* striped edges, like real barrier tape */
-.tr-tape::before,.tr-tape::after{content:'';position:absolute;left:0;right:0;height:14%;background:repeating-linear-gradient(-55deg,var(--fg) 0 22px,transparent 22px 44px);z-index:1}
-.tr-tape::before{top:5%}.tr-tape::after{bottom:5%}
-/* plastic sheen */
-.tr-tape{background-image:linear-gradient(180deg,rgba(255,255,255,.18),transparent 38%,transparent 62%,rgba(0,0,0,.12))}
-.tr-cobalt{--bg:var(--tr-cobalt);--fg:var(--tr-cream);background-color:var(--tr-cobalt)}
-.tr-green{background-color:var(--tr-green)}
-.tr-cream{--bg:var(--tr-cream);--fg:var(--tr-ink);background-color:var(--tr-cream)}
-.tr-run{position:absolute;inset:0;display:flex;width:max-content;animation:tr-scroll var(--dur,90s) linear infinite;will-change:transform}
+/* the construction mole: in front of the title, behind the tape */
+.tr-mole{position:absolute;left:42%;top:20%;z-index:2;height:50%;aspect-ratio:585/720;transform:translateX(-50%)}
+.tr-mole img{display:block;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 24px 30px rgba(0,0,0,.45))}
+
+/* two green tape bands, an X across the full width */
+.tr-tapes{position:absolute;inset:0;z-index:3;pointer-events:none}
+.tr-tape{--h:clamp(72px,15vh,150px);position:absolute;left:50%;top:var(--y);width:var(--len,250vw);height:var(--h);transform:translate(-50%,-50%) rotate(var(--rot,0deg));overflow:hidden;color:var(--tr-ink);
+ background:var(--tr-green) linear-gradient(180deg,rgba(255,255,255,.2),transparent 38%,transparent 62%,rgba(0,0,0,.12));
+ box-shadow:0 28px 36px -12px rgba(0,0,0,.55),0 6px 10px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.35)}
+.tr-tape::before,.tr-tape::after{content:'';position:absolute;left:0;right:0;height:13%;background:repeating-linear-gradient(-55deg,var(--tr-ink) 0 24px,transparent 24px 48px);z-index:1}
+.tr-tape::before{top:6%}.tr-tape::after{bottom:6%}
+.tr-run{position:absolute;inset:0;display:flex;width:max-content;animation:tr-scroll var(--dur,150s) linear infinite;will-change:transform}
 .tr-rev{animation-direction:reverse}
 .tr-run>div{display:flex;align-items:center;flex:none}
-.tr-run span{padding:0 .5em;font:800 calc(var(--h) * .44)/1 Arial,Helvetica,sans-serif;letter-spacing:-.02em;text-transform:uppercase;white-space:nowrap}
-.tr-run svg{flex:none;width:calc(var(--h) * .34);height:calc(var(--h) * .34);margin:0 .4em;fill:none;stroke:currentColor;stroke-width:5}
+.tr-run span{padding:0 .45em;font:800 calc(var(--h) * .42)/1 Arial,Helvetica,sans-serif;letter-spacing:-.02em;text-transform:uppercase;white-space:nowrap}
+.tr-run svg{flex:none;width:calc(var(--h) * .32);height:calc(var(--h) * .32);margin:0 .35em;fill:none;stroke:currentColor;stroke-width:5}
 @keyframes tr-scroll{to{transform:translateX(-50%)}}
 
-/* copy under the stage */
-.tr-copy{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:48px;align-items:end;padding:48px 0 0}
-.tr-k{display:flex;align-items:center;gap:12px;margin:0 0 16px;font:600 12px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--br-muted)}
-.tr-k span{width:10px;height:10px;border-radius:99px;background:var(--tr-green);animation:tr-blink 1.6s steps(2,end) infinite}
-.tr-copy h1{margin:0;font-size:clamp(48px,6.4vw,104px);line-height:.92;letter-spacing:-.05em}
-.tr-copy h1 span{display:block;color:var(--tr-green)}
-:root[data-theme=light] .tr-copy h1 span{color:#08782f}
-.tr-copy p:not(.tr-k){margin:0 0 24px;max-width:46ch;font-size:18px;line-height:1.5;color:var(--br-muted)}
-@keyframes tr-blink{50%{opacity:.25}}
+/* roadmap pill on top, bottom center */
+.tr-cta{position:absolute;left:50%;bottom:clamp(16px,4vh,40px);z-index:4;transform:translateX(-50%)}
+.tr-cta .ds-button{white-space:nowrap;min-height:64px;padding:0 32px;font-size:clamp(16px,1.6vw,22px);background:var(--tr-ink);color:#f5f4ee;border:2px solid var(--tr-green);box-shadow:0 18px 30px -10px rgba(0,0,0,.55)}
+.tr-cta .ds-button:hover{background:#13293a}
 
-@media(max-width:900px){.tr-copy{grid-template-columns:1fr;gap:24px}.tr-f-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:520px){.tr-stage{height:clamp(520px,calc(100svh - 120px),720px)}.tr-tape{--h:64px}.tr-tape::before,.tr-tape::after{background-size:auto}.tr-mole{width:min(78vw,360px)}.tr-f-head{display:block}.tr-f-p{display:none!important}.tr-copy{padding-top:32px}.tr-copy p:not(.tr-k){font-size:16px}}
-@media(prefers-reduced-motion:reduce){.tr-run,.tr-k span{animation:none}}
+@media(max-width:700px){.tr-f-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.tr-stage .tr-title{top:8%}.tr-mole{height:42%;top:24%;left:46%}}
+@media(prefers-reduced-motion:reduce){.tr-run{animation:none}}
