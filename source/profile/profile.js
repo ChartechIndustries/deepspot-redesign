@@ -6,7 +6,8 @@ import {memberLevels,memberRange,POINTS} from './passport-rules.mjs?v=pv2';
 import {escapeHTML as esc,safeReturn} from './identity.mjs';
 import {loadProfile} from './data.mjs?v=pv3';
 import {halftoneField} from '../site/halftone-field.mjs?v=2';
-import {mountGlobe} from './wtg-globe.mjs?v=wg7';
+import {mountGlobe} from './wtg-globe.mjs?v=wg8';
+import {itemsFor} from './items.mjs?v=it1';
 import {readWantToGo,writeWantToGo,addItem,removeAt,moveItem,WTG_MAX,WTG_NAME_MAX} from './want-to-go.mjs?v=wtg1';
 const $=selector=>document.querySelector(selector);
 let profile,toastTimer,exportPromise,exportImage;
@@ -70,6 +71,30 @@ function giveawayHTML(){
  const line=st?(st.rankAll===1?'First place. Hold it until the month ends.':st.ahead?`${fmt(st.ahead.gap)} ${st.ahead.gap===1?'point':'points'} behind ${esc(st.ahead.name)}.`:'On the board.'):'Not on the board yet. An approved spot earns 50 points.';
  return `<div class="pp-card pp-give">${st?.rankAll?`<div class="pp-give-big"><b>#${st.rankAll}</b><span>of ${st.total} · ${fmt(st.points)} pts</span></div>`:''}<div class="pp-give-copy"><p class="pp-give-line">${line}</p><p>Top 3 on Oct 31 win. First place takes $300 and a one-of-one character item.</p><div class="pp-give-links"><a class="pp-link" href="/community/">see the race ↗</a><a class="pp-link" href="/contribute/">add a spot ↗</a></div></div></div>`;
 }
+/* ---- trophy case (2026-10-21): placeholder items; a click shows the item card where the passport sits ---- */
+function shelfHTML(){
+ const list=profile.items;
+ if(!list.length)return empty('no items yet.','Items are earned by posting spots and placing in the monthly race.');
+ return `<ul class="pp-shelf">${list.map(it=>`<li><button type="button" class="pp-trophy" data-item="${it.id}" aria-pressed="false" style="--ic:${it.color}" aria-label="Show ${esc(it.name)}"><span class="pp-trophy-box">${it.art}</span><span class="pp-trophy-name">${esc(it.name)}</span></button></li>`).join('')}</ul><p class="pp-fine">Placeholder items for the release. Names and art are not final.</p>`;
+}
+function itemCardHTML(it){
+ const n=ITEM_NO(it);
+ return `<span class="pp-ic-top"><span>deepspot · item</span><span>no. ${n} · ${esc(it.rarity)}</span></span>
+ <span class="pp-ic-art" style="--ic:${it.color}">${it.art}<span class="pp-ic-tag">placeholder art</span></span>
+ <span class="pp-ic-plate"><strong>${esc(it.name)}</strong><span class="pp-ic-kind">${esc(it.kind)} · ${esc(it.rarity)}</span><span class="pp-ic-note">${esc(it.note)}</span></span>
+ <span class="pp-ic-back">tap the card to go back to the passport</span>`;
+}
+const ITEM_NO=it=>String(profile.items.indexOf(it)+1).padStart(3,'0');
+function showItem(id,from){
+ const obj=$('.pp-passobj'),card=$('#pp-itemcard'),it=profile.items.find(i=>i.id===id);if(!obj||!card)return;
+ const open=it&&obj.dataset.show!==id;
+ document.querySelectorAll('.pp-trophy').forEach(b=>b.setAttribute('aria-pressed',String(open&&b.dataset.item===id)));
+ if(!open){obj.removeAttribute('data-show');card.hidden=true;if(from)from.focus();return;}
+ card.innerHTML=itemCardHTML(it);card.hidden=false;card.setAttribute('aria-label',`${it.name}, ${it.kind}, ${it.rarity}. Back to passport`);obj.dataset.show=id;
+ if(innerWidth<1100)$('.pp-field')?.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
+}
+document.addEventListener('click',e=>{const t=e.target.closest('[data-item]');if(t){showItem(t.dataset.item);return;}if(e.target.closest('#pp-itemcard')){const id=$('.pp-passobj')?.dataset.show;showItem(id,document.querySelector(`.pp-trophy[data-item="${id}"]`));}});
+document.addEventListener('keydown',e=>{if(e.key!=='Escape'||!$('.pp-passobj')?.dataset.show||document.querySelector('dialog[open]'))return;const id=$('.pp-passobj').dataset.show;showItem(id,document.querySelector(`.pp-trophy[data-item="${id}"]`));});
 /* ---- want to go (own passport only; real profiles have no list data) ---- */
 let wtgList=[],wtgCatalog=[],wtgBySlug=new Map(),wtgPick=null,wtgActive=-1,wtgMatches=[];
 const wtgSlug=id=>id.split('/').pop();
@@ -77,6 +102,8 @@ const wtgURL=slug=>{const u=new URL('/spot/',location.origin);u.searchParams.set
 const wtgStem=src=>src.split('/').pop().replace(/\.[a-z]+$/i,'');
 function wtgSpot(s){const img=typeof s.image==='string'&&(s.image.startsWith('/')||/^https:\/\/[a-z0-9.-]+\.r2\.dev\//i.test(s.image))?s.image:'',loc=img.startsWith('/')?img:'';return {id:s.id,slug:wtgSlug(s.id),title:s.title,place:s.place||'',image:img,card:loc?'/editorial-assets/cards/'+wtgStem(loc)+'.webp':''};}
 let spotCoords={};
+/* tap a list card (not its buttons) to show that place on the globe */
+document.addEventListener('click',e=>{const li=e.target.closest('.pp-wtg-item');if(!li||!wg||e.target.closest('button'))return;const k=[...li.parentElement.children].indexOf(li);if(wgPins[k]?.lat==null)return;e.preventDefault();wg.focus(k);});
 async function wtgLoadCoords(){try{const r=await fetch('/site/spot-coords.json');if(r.ok)spotCoords=await r.json();}catch{}}
 async function wtgLoadCatalog(){try{const r=await fetch('/featured-spots.json');if(!r.ok)return;const data=await r.json();wtgCatalog=data.filter(s=>s.id?.startsWith('/blog/')&&s.title&&!s.title.startsWith('PART OF:')).map(wtgSpot);wtgBySlug=new Map(wtgCatalog.map(s=>[s.id,s]));}catch{}}
 const PIN='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>';
@@ -92,9 +119,9 @@ function wtgListHTML(){return wtgList.length?`<ul class="pp-wtg">${wtgList.map((
 const wtgStatus=()=>`${wtgList.length}/${WTG_MAX} places. Saved on this browser.`;
 function wtgHTML(){
  if(!profile.localPreview)return empty('no want-to-go list yet.','Lists are not shared from live accounts yet.');
- return `<div class="wg-wrap"><div class="wg" id="wg"><p class="wg-note pp-mono" id="wg-note"></p></div><aside class="wg-side" aria-label="Selected place"><div class="wg-info" id="wg-card" aria-live="polite"></div><p class="wg-sidenote" id="wg-note2"></p></aside></div><form class="pp-wtg-form" id="pp-wtg-form" autocomplete="off" novalidate><label class="pp-mono" for="pp-wtg-in">add a place</label>
+ return `<div class="wg-wrap"><div class="wg" id="wg"><div class="wg-pop" id="wg-pop" hidden></div><p class="sr-only" id="wg-card" aria-live="polite"></p></div><aside class="wg-side" aria-label="Your want-to-go list"><form class="pp-wtg-form" id="pp-wtg-form" autocomplete="off" novalidate><label class="pp-mono" for="pp-wtg-in">add a place</label>
  <div class="pp-wtg-row"><div class="pp-wtg-combo"><input id="pp-wtg-in" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="pp-wtg-lb" maxlength="${WTG_NAME_MAX}" placeholder="a spot, a city, anywhere" enterkeyhint="done"><ul id="pp-wtg-lb" class="pp-wtg-lb" role="listbox" aria-label="Matching deep spots" hidden></ul></div><button type="submit" class="pp-wtg-add">add</button></div>
- <p class="pp-fine pp-wtg-msg" id="pp-wtg-msg" role="status" aria-live="polite">${wtgStatus()}</p></form><div id="pp-wtg-list">${wtgListHTML()}</div>`;
+ <p class="pp-fine pp-wtg-msg" id="pp-wtg-msg" role="status" aria-live="polite">${wtgStatus()}</p></form><h3 class="wg-listh">my list</h3><div id="pp-wtg-list">${wtgListHTML()}</div><p class="wg-sidenote" id="wg-note2"></p></aside></div>`;
 }
 function wtgRefresh(){const box=$('#pp-wtg-list');if(!box)return;box.innerHTML=wtgListHTML();const s=document.querySelector('#pp-wtg span');if(s)s.textContent=`(${wtgList.length})`;const m=$('#pp-wtg-msg');if(m&&!m.dataset.keep)m.textContent=wtgStatus();}
 function wtgSay(text){const m=$('#pp-wtg-msg');if(!m)return;m.textContent=text;m.dataset.keep='1';clearTimeout(wtgSay.t);wtgSay.t=setTimeout(()=>{delete m.dataset.keep;m.textContent=wtgStatus();},3500);}
@@ -148,7 +175,7 @@ function setTab(name,focus){
  $('#pp-pane-pass').hidden=mark;$('#pp-pane-mark').hidden=!mark;$('.pp-book').dataset.tab=name;
 }
 function render(){
- document.title=`${profile.name} — DeepSpot Passport`;
+ document.title=`${profile.name} — DeepSpot Passport`;profile.items=itemsFor(profile);
  const initials=profile.name.split(/\s+/).slice(0,2).map(word=>word[0]).join('').toUpperCase(),lv=profile.level,st=profile.standing,soc=profile.socials;
  const rank=st?.rankAll;profile.field=rank&&rank<=3?RANKC[rank-1]:'#dfe6e4';
  const mole=profile.mole?moleHTML():profile.localPreview?'<button type="button" class="pp-mole pp-mole-empty" data-set-roll><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="4"/><path d="M4 21c1-5 4-7 8-7s7 2 8 7"/></svg><span>roll your mole</span></button>':`<span class="pp-mole pp-mole-empty" role="img" aria-label="${esc(profile.name)}’s initials"><b>${esc(initials)}</b></span>`;
@@ -168,6 +195,7 @@ function render(){
      ${lv?`<div class="pp-prog"><div class="pp-bar4" role="progressbar" aria-label="Progress to level ${lv.level+1}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${lv.pct}"><i style="width:${Math.max(lv.pct,2)}%"></i></div><span>${fmt(lv.points)} / ${fmt(lv.to)} pts</span></div>`:''}
      <span class="pp-readable-code" aria-hidden="true">DEEP&lt;SPOT&lt;&lt;${esc(profile.name.toUpperCase().replaceAll(' ','<'))}&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;</span></div>
     <div class="pp-sig" id="pp-sig"><span class="pp-sig-l">${own?'my mark':'their mark'}</span>${sigHTML(profile.signatureArt)}</div>
+    <button type="button" class="pp-itemcard" id="pp-itemcard" hidden></button>
     </div></div>
    </div>
    <div class="pp-pane" id="pp-pane-mark" hidden>${own?mark+'<div class="pp-markdone"><button type="button" class="pp-chipbtn" data-mark-done>back to passport</button></div>':''}</div>
@@ -182,6 +210,7 @@ function render(){
    ${own?editHTML(lk):''}
   </section>
   <div class="pp-statsrow">${sec('type','traveler type',null,typeHTML())}${sec('stats','contributions',null,statsHTML())}</div>
+  ${sec('trophies',`${own?'my':esc(profile.name.split(/\s+/)[0].toLowerCase())+'’s'} trophy case`,profile.items.length,shelfHTML(),'<span class="pp-mono pp-ph">placeholder</span>')}
   <section class="pp-sec pp-tabsec" aria-label="Passport contents"><div class="pp-vtabs" role="tablist" aria-orientation="vertical" aria-label="Passport contents">${VTABS.map(([id,label],i)=>`<button type="button" role="tab" class="pp-vtab" id="pp-vt-${id}" data-vt="${id}" aria-controls="pp-vp-${id}" aria-selected="${i===0}" tabindex="${i===0?0:-1}">${label}${id==='wtg'&&own&&wtgList.length?` <span>${wtgList.length}</span>`:id==='contrib'&&profile.records.length?` <span>${profile.records.length}</span>`:''}</button>`).join('')}</div>
    <div class="pp-vpanels">
     <div class="pp-vpanel" role="tabpanel" id="pp-vp-show" aria-labelledby="pp-vt-show" tabindex="0">${showcaseHTML()}</div>
@@ -232,7 +261,7 @@ document.addEventListener('keydown',event=>{const tb=event.target.closest?.('.pp
 
 
 /* ---------- v5 (2026-10-20): passport object, edit in place, bio look, vertical tabs ---------- */
-const VTABS=[['show','showcase'],['contrib','contributions'],['wtg','want to go'],['items','items']];
+const VTABS=[['show','showcase'],['contrib','contributions'],['wtg','want to go'],['items','stamps']];
 const sub=(title,body,act='')=>`<div class="pp-sub"><div class="pp-sub-h"><h3>${title}</h3>${act}</div>${body}</div>`;
 const LOOK_KEY='deepspot-bio-look-v1',PIN_KEY='deepspot-showcase-v1';
 const LOOKS={bg:[['panel','plain'],['green','green'],['cobalt','cobalt'],['aqua','aqua'],['cream','paper'],['ink','ink']],font:[['display','bold'],['serif','serif'],['mono','type'],['hand','hand']],align:[['left','left'],['center','center']]};
@@ -331,15 +360,16 @@ function appShell(){
 let wg=null,wgPins=[],wgTimer=0;
 function wgPinsFrom(){return wtgList.map(it=>{const spot=it.type==='spot'?wtgBySlug.get(it.id):null,slug=it.type==='spot'?wtgSlug(it.id):null,c=slug&&spotCoords[slug];
  return {name:spot?spot.title:it.name,place:spot?spot.place:'your pick',href:spot?wtgURL(slug):null,img:spot?(spot.card||spot.image):'',lat:c?c[0]:null,lon:c?c[1]:null,exact:c?.[2]==='exact'};});}
-function wgCard(i){const p=wgPins[i],box=$('#wg-card');if(!box)return;
- if(!p){box.innerHTML=`<p class="pp-mono wg-k">want to go</p><p class="wg-empty">${wgPins.length?'Tap a pin on the globe.':'Add a place below. It lands on the globe as a pin.'}</p>`;return;}
- const on=wgPins.map((x,k)=>x.lat!=null?k:-1).filter(k=>k>=0),n=on.indexOf(i);
- box.innerHTML=`<p class="pp-mono wg-k">want to go · ${n+1} of ${on.length}</p><div class="wg-row">${p.img?`<img class="wg-img" src="${esc(p.img)}" alt="" width="400" height="300">`:'<span class="wg-img wg-img-none" aria-hidden="true">deep<br>spot.</span>'}<div><p class="pp-mono wg-place">${esc(p.place||'')}</p><h3 class="wg-name">${esc(p.name)}</h3>${p.exact?'':'<p class="pp-fine">The pin is approximate.</p>'}</div></div><div class="wg-acts">${p.href?`<a class="pp-chipbtn pp-editbtn" href="${esc(p.href)}">open the spot ↗</a>`:''}${on.length>1?`<button type="button" class="pp-chipbtn" data-wg-step="-1" aria-label="Previous place">←</button><button type="button" class="pp-chipbtn" data-wg-step="1" aria-label="Next place">→</button>`:''}</div>`;}
+function wgCard(i){const p=wgPins[i],pop=$('#wg-pop'),sr=$('#wg-card');if(sr)sr.textContent=p?`${p.name}, ${p.place||''}`:'';if(!pop)return;
+ if(!p||p.lat==null){pop.hidden=true;return;}
+ pop.innerHTML=`${p.img?`<img src="${esc(p.img)}" alt="" width="120" height="90">`:''}<div><span class="pp-mono">${esc(p.place||'')}</span><strong>${esc(p.name)}</strong>${p.href?`<a href="${esc(p.href)}">open the spot ↗</a>`:''}</div>`;pop.hidden=false;
+ document.querySelectorAll('.pp-wtg-item').forEach((li,k)=>li.classList.toggle('is-on',k===i));}
+function wgPlace(pt){const pop=$('#wg-pop');if(!pop||pop.hidden)return;if(!pt){pop.style.visibility='hidden';return;}pop.style.visibility='';pop.style.transform=`translate(${pt.x.toFixed(1)}px,${pt.y.toFixed(1)}px)`;}
 document.addEventListener('click',e=>{const b=e.target.closest('[data-wg-step]');if(!b||!wg)return;const on=wgPins.map((x,k)=>x.lat!=null?k:-1).filter(k=>k>=0),n=on.indexOf(wg.sel);wg.focus(on[(n+ +b.dataset.wgStep+on.length)%on.length]);});
 function wgSync(){
  const host=$('#wg');if(!host)return;wgPins=wgPinsFrom();const on=wgPins.map((p,i)=>p.lat!=null?i:-1).filter(i=>i>=0),off=wgPins.length-on.length;
- $('#wg-note2').textContent=$('#wg-note').textContent=!wgPins.length?'add places below and they land on the globe as pins.':off?`${off} ${off===1?'place has':'places have'} no location yet, so ${off===1?'it is':'they are'} only in the list.`:'drag to turn · scroll or pinch to zoom · tap a pin';
- if(!wg)wg=mountGlobe(host,{pins:wgPins,onSelect:wgCard,_old:(pt,{w})=>{const l=$('#wg-line'),c=$('#wg-card');if(!l||!c)return;if(!pt||c.hidden){l.setAttribute('x1',0);l.setAttribute('x2',0);l.setAttribute('y1',0);l.setAttribute('y2',0);return;}
+ $('#wg-note2').textContent=!wgPins.length?'add places below and they land on the globe as pins.':off?`${off} ${off===1?'place has':'places have'} no location yet, so ${off===1?'it is':'they are'} only in the list.`:'drag to turn · scroll or pinch to zoom · tap a pin';
+ if(!wg)wg=mountGlobe(host,{pins:wgPins,onSelect:wgCard,onPin:wgPlace,_old:(pt,{w})=>{const l=$('#wg-line'),c=$('#wg-card');if(!l||!c)return;if(!pt||c.hidden){l.setAttribute('x1',0);l.setAttribute('x2',0);l.setAttribute('y1',0);l.setAttribute('y2',0);return;}
   const hb=host.getBoundingClientRect(),cb=c.getBoundingClientRect(),x1=cb.left-hb.left+cb.width/2,y1=cb.bottom-hb.top;l.setAttribute('x1',x1);l.setAttribute('y1',y1);l.setAttribute('x2',pt.x);l.setAttribute('y2',pt.y);}});
  else wg.set(wgPins);
  if(on.length&&(wg.sel<0||!on.includes(wg.sel)))wg.focus(on[0]);if(!on.length)wgCard(-1);else if(wg.sel>=0)wgCard(wg.sel);

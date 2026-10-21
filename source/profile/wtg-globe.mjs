@@ -105,7 +105,7 @@ void main(){
 const imgP={};const img=src=>imgP[src]??=new Promise(res=>{const i=new Image();i.onload=()=>res(i);i.onerror=()=>res(null);i.src=src;});
 const themeColors=()=>document.documentElement.dataset.theme==='light'?{bg:[246/255,243/255,236/255],glow:[200/255,214/255,255/255],paper:[1,1,1]}:{bg:[12/255,16/255,27/255],glow:[24/255,44/255,110/255],paper:[1,1,1]};
 
-export function mountGlobe(host,{pins=[],onSelect=()=>{}}={}){
+export function mountGlobe(host,{pins=[],onSelect=()=>{},onPin=()=>{}}={}){
  const cv=document.createElement('canvas');cv.className='wg-canvas';cv.setAttribute('aria-hidden','true');host.prepend(cv);
  const layer=document.createElement('div');layer.className='wg-pins';host.append(layer);
  const zoomUI=document.createElement('div');zoomUI.className='wg-zoom';zoomUI.innerHTML='<button type="button" data-z="1" aria-label="Zoom in">+</button><button type="button" data-z="-1" aria-label="Zoom out">−</button>';host.append(zoomUI);
@@ -123,7 +123,7 @@ export function mountGlobe(host,{pins=[],onSelect=()=>{}}={}){
    if(im)gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,gl.RGB,gl.UNSIGNED_BYTE,im);else gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,1,1,0,gl.RGB,gl.UNSIGNED_BYTE,new Uint8Array([0,0,0]));};
   Promise.all([img('/earth-day.jpg'),img('/earth-clouds.jpg')]).then(([e,c])=>{tex(0,e,gl.CLAMP_TO_EDGE);tex(1,c,gl.REPEAT);gl.uniform1i(U.earth,0);gl.uniform1i(U.clouds,1);gl.activeTexture(gl.TEXTURE0);ready=!!e;kick();});
  }
- const geom=()=>{const r=Math.min(W,H)*.4*zoom;return {r,cx:W/2,cy:H/2};};
+ const geom=()=>{const r=Math.min(W,H)*.46*zoom;return {r,cx:W/2,cy:H/2};};
  function fit(){dpr=Math.min(devicePixelRatio||1,2);W=host.clientWidth;H=host.clientHeight;cv.width=Math.max(1,Math.round(W*dpr));cv.height=Math.max(1,Math.round(H*dpr));cv.style.width=W+'px';cv.style.height=H+'px';}
  const proj=(lat,lon)=>{const {r,cx,cy}=geom(),f=lat*D2R,a=lon*D2R-yaw*D2R,p=pitch*D2R,nx=Math.cos(f)*Math.sin(a),tx=Math.sin(f),ty=Math.cos(f)*Math.cos(a),ny=tx*Math.cos(p)-ty*Math.sin(p),z=tx*Math.sin(p)+ty*Math.cos(p);return {x:cx+nx*r,y:cy-ny*r,z};};
  function drawGL(now){
@@ -135,8 +135,9 @@ export function mountGlobe(host,{pins=[],onSelect=()=>{}}={}){
  }
  function drawPins(){
   if(layer.childElementCount!==P.length){layer.innerHTML=P.map((p,i)=>`<button type="button" class="wg-pin" data-i="${i}" tabindex="-1"><i aria-hidden="true"></i><span class="wg-tag"><b></b><small></small></span></button>`).join('');}
-  [...layer.children].forEach((el,i)=>{const p=P[i];if(p.lat==null){el.hidden=true;return;}const v=proj(p.lat,p.lon);const show=v.z>.05;el.hidden=!show;if(!show)return;
+  [...layer.children].forEach((el,i)=>{const p=P[i];if(p.lat==null){el.hidden=true;return;}const v=proj(p.lat,p.lon);const show=v.z>.05;el.hidden=!show;if(!show){if(i===sel)onPin(null);return;}
    el.style.transform=`translate(${v.x.toFixed(1)}px,${v.y.toFixed(1)}px)`;el.style.opacity=Math.min(1,.4+v.z).toFixed(2);el.classList.toggle('is-sel',i===sel);el.style.zIndex=i===sel?50:Math.round(v.z*10);
+   if(i===sel)onPin({x:v.x,y:v.y});
    const t=el.querySelector('.wg-tag');if(i===sel){t.querySelector('b').textContent=p.name;t.querySelector('small').textContent=p.place||'';}el.setAttribute('aria-label',p.name);});
  }
  const shortest=(a,b)=>a+(((b-a)%360+540)%360-180);
