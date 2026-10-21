@@ -1,16 +1,17 @@
 import {moleCrop} from './passport-art.mjs?v=pad1';
 import {createPassportImage} from './passport-export.mjs?v=pv3';
 import {padHTML,initPad} from './sign-pad.mjs?v=pv3';
-import {travelerStyles,travelerMark} from '../site/account-state.mjs?v=pad1';
+import {travelerStyles,travelerMark,accountKey,readAccount,normalizeAccount} from '../site/account-state.mjs?v=pad1';
 import {memberLevels,memberRange,POINTS} from './passport-rules.mjs?v=pv2';
 import {escapeHTML as esc,safeReturn} from './identity.mjs';
 import {loadProfile} from './data.mjs?v=pv3';
 import {halftoneField} from '../site/halftone-field.mjs?v=2';
+import {mountGlobe} from './wtg-globe.mjs?v=wg2';
 import {readWantToGo,writeWantToGo,addItem,removeAt,moveItem,WTG_MAX,WTG_NAME_MAX} from './want-to-go.mjs?v=wtg1';
 const $=selector=>document.querySelector(selector);
 let profile,toastTimer,exportPromise,exportImage;
 const params=new URLSearchParams(location.search);
-const returnPath=safeReturn(params.get('from'))||(params.get('user')==='preview'?'/account/':'/community/');
+const returnPath=safeReturn(params.get('from'))||'/community/';
 const returnURL=new URL(returnPath,location.origin);
 const returnLabel=returnURL.pathname==='/account/'?'back to account':returnURL.pathname==='/story/'?'back to story':returnURL.pathname==='/spot/'?'back to spot':returnURL.pathname==='/stories/'?'back to stories':returnURL.pathname==='/leaderboard/'?'back to leaderboard':returnURL.pathname==='/browse/'?'back to browse':returnURL.hash==='#stories'?'back to stories':returnURL.hash==='#fs-heading'?'back to deep spots':returnURL.hash==='#wn-heading'?'back to what’s new':'community';
 $('.pp-back').textContent='← '+returnLabel;
@@ -50,7 +51,7 @@ function statsHTML(){
  <p class="pp-fine">Level = 1 + √(points ÷ 40). You earn +${POINTS.spot} points for an approved spot, +${POINTS.story} for a story and +${POINTS.upvote} for each upvote.</p>`;
 }
 function postingsHTML(){
- const list=profile.records,card=r=>`<li class="pp-post"${list.indexOf(r)>5?' data-extra hidden':''}><a href="${esc(r.href)}"><span class="pp-post-img">${r.image?`<img src="${esc(r.card||r.image)}" data-orig="${esc(r.image)}" alt="" width="400" height="300" loading="lazy" decoding="async">`:'<span class="pp-no-photo" aria-hidden="true">deep<br>spot.</span>'}</span><span class="pp-post-copy"><span class="pp-mono">${esc(r.place||'')}</span><strong>${esc(r.name)}</strong><span class="pp-post-tags">${r.kind==='story'?`<i>story · ${esc(r.tag||'')}</i>`:r.tags.filter(t=>t!=='DEEP SPOT CHOICE').slice(0,2).map(t=>`<i>${esc(t.toLowerCase())}</i>`).join('')+(r.tags.includes('DEEP SPOT CHOICE')?'<i class="pp-choice">deep spot choice</i>':'')}</span></span></a></li>`;
+ const list=profile.records,card=r=>`<li class="pp-post"${list.indexOf(r)>5?' data-extra hidden':''}><a href="${esc(r.href)}"><span class="pp-post-img">${r.image?`<img src="${esc(r.card||r.image)}" data-orig="${esc(r.image)}" alt="" width="400" height="300" loading="lazy" decoding="async">`:'<span class="pp-no-photo" aria-hidden="true">deep<br>spot.</span>'}</span><span class="pp-post-copy"><span class="pp-mono">${esc(r.place||'')}</span><strong>${esc(r.name)}</strong><span class="pp-post-tags">${r.kind==='story'?`<i>story · ${esc(r.tag||'')}</i>`:r.tags.filter(t=>t!=='DEEP SPOT CHOICE').slice(0,2).map(t=>`<i>${esc(t.toLowerCase())}</i>`).join('')+(r.tags.includes('DEEP SPOT CHOICE')?'<i class="pp-choice">deep spot choice</i>':'')}</span></span></a>${profile.localPreview?pinBtn(r):''}</li>`;
  if(!list.length)return empty(profile.localPreview?'nothing posted yet.':'no postings in this collection.',profile.localPreview?'Your spots and stories will fill this page when your account is connected.':'This explorer’s postings are not in the saved collection yet.',profile.localPreview?'<a href="/contribute/" class="pp-link">add a spot ↗</a>':`<a href="/browse/?q=${encodeURIComponent(profile.name)}" class="pp-link">search for ${esc(profile.name)} ↗</a>`);
  return `<ul class="pp-posts">${list.map(card).join('')}</ul><a class="pp-link pp-all" href="/browse/?q=${encodeURIComponent(profile.name)}">all spots by ${esc(profile.name)} ↗</a>`;
 }
@@ -75,6 +76,8 @@ const wtgSlug=id=>id.split('/').pop();
 const wtgURL=slug=>{const u=new URL('/spot/',location.origin);u.searchParams.set('theme',document.documentElement.dataset.theme==='light'?'light':'dark');u.searchParams.set('id',slug);return u.pathname+u.search;};
 const wtgStem=src=>src.split('/').pop().replace(/\.[a-z]+$/i,'');
 function wtgSpot(s){const img=typeof s.image==='string'&&(s.image.startsWith('/')||/^https:\/\/[a-z0-9.-]+\.r2\.dev\//i.test(s.image))?s.image:'',loc=img.startsWith('/')?img:'';return {id:s.id,slug:wtgSlug(s.id),title:s.title,place:s.place||'',image:img,card:loc?'/editorial-assets/cards/'+wtgStem(loc)+'.webp':''};}
+let spotCoords={};
+async function wtgLoadCoords(){try{const r=await fetch('/site/spot-coords.json');if(r.ok)spotCoords=await r.json();}catch{}}
 async function wtgLoadCatalog(){try{const r=await fetch('/featured-spots.json');if(!r.ok)return;const data=await r.json();wtgCatalog=data.filter(s=>s.id?.startsWith('/blog/')&&s.title&&!s.title.startsWith('PART OF:')).map(wtgSpot);wtgBySlug=new Map(wtgCatalog.map(s=>[s.id,s]));}catch{}}
 const PIN='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>';
 const wtgBtn=(act,i,label,glyph,off)=>`<button type="button" class="pp-wtg-btn" data-wtg="${act}" data-i="${i}" aria-label="${esc(label)}"${off?' disabled':''}><svg viewBox="0 0 24 24" aria-hidden="true">${glyph}</svg></button>`;
@@ -89,13 +92,13 @@ function wtgListHTML(){return wtgList.length?`<ul class="pp-wtg">${wtgList.map((
 const wtgStatus=()=>`${wtgList.length}/${WTG_MAX} places. Saved on this browser.`;
 function wtgHTML(){
  if(!profile.localPreview)return empty('no want-to-go list yet.','Lists are not shared from live accounts yet.');
- return `<form class="pp-wtg-form" id="pp-wtg-form" autocomplete="off" novalidate><label class="pp-mono" for="pp-wtg-in">add a place</label>
+ return `<div class="wg" id="wg"><div class="wg-card" id="wg-card" aria-live="polite"></div><svg class="wg-stem" aria-hidden="true"><line id="wg-line"/></svg><p class="wg-note pp-mono" id="wg-note"></p></div><form class="pp-wtg-form" id="pp-wtg-form" autocomplete="off" novalidate><label class="pp-mono" for="pp-wtg-in">add a place</label>
  <div class="pp-wtg-row"><div class="pp-wtg-combo"><input id="pp-wtg-in" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="pp-wtg-lb" maxlength="${WTG_NAME_MAX}" placeholder="a spot, a city, anywhere" enterkeyhint="done"><ul id="pp-wtg-lb" class="pp-wtg-lb" role="listbox" aria-label="Matching deep spots" hidden></ul></div><button type="submit" class="pp-wtg-add">add</button></div>
  <p class="pp-fine pp-wtg-msg" id="pp-wtg-msg" role="status" aria-live="polite">${wtgStatus()}</p></form><div id="pp-wtg-list">${wtgListHTML()}</div>`;
 }
 function wtgRefresh(){const box=$('#pp-wtg-list');if(!box)return;box.innerHTML=wtgListHTML();const s=document.querySelector('#pp-wtg span');if(s)s.textContent=`(${wtgList.length})`;const m=$('#pp-wtg-msg');if(m&&!m.dataset.keep)m.textContent=wtgStatus();}
 function wtgSay(text){const m=$('#pp-wtg-msg');if(!m)return;m.textContent=text;m.dataset.keep='1';clearTimeout(wtgSay.t);wtgSay.t=setTimeout(()=>{delete m.dataset.keep;m.textContent=wtgStatus();},3500);}
-function wtgCommit(next){wtgList=next;if(!writeWantToGo(wtgList))wtgSay('Could not save on this browser.');wtgRefresh();}
+function wtgCommit(next){wtgList=next;if(!writeWantToGo(wtgList))wtgSay('Could not save on this browser.');wtgRefresh();wgSync();}
 function wtgClose(){const lb=$('#pp-wtg-lb'),inp=$('#pp-wtg-in');if(!lb)return;lb.hidden=true;inp.setAttribute('aria-expanded','false');inp.removeAttribute('aria-activedescendant');wtgActive=-1;}
 function wtgSuggest(){
  const inp=$('#pp-wtg-in'),lb=$('#pp-wtg-lb'),q=inp.value.trim().toLowerCase();wtgPick=null;
@@ -141,7 +144,7 @@ function wtgBind(){
 }
 function setTab(name,focus){
  const mark=name==='mark';
- document.querySelectorAll('.pp-tab').forEach(t=>{const on=(t.dataset.tab==='mark')===mark;t.setAttribute('aria-selected',String(on));t.tabIndex=on?0:-1;if(on&&focus)t.focus();});
+ 
  $('#pp-pane-pass').hidden=mark;$('#pp-pane-mark').hidden=!mark;$('.pp-book').dataset.tab=name;
 }
 function render(){
@@ -151,33 +154,45 @@ function render(){
  const mole=profile.mole?moleHTML():profile.localPreview?'<a class="pp-mole pp-mole-empty" href="/account/"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="4"/><path d="M4 21c1-5 4-7 8-7s7 2 8 7"/></svg><span>roll your mole ↗</span></a>':`<span class="pp-mole pp-mole-empty" role="img" aria-label="${esc(profile.name)}’s initials"><b>${esc(initials)}</b></span>`;
  const mini=profile.mole?moleHTML('pp-mole-mini'):`<span class="pp-mole pp-mole-mini pp-mole-empty" aria-hidden="true"><b>${esc(initials)}</b></span>`;
  const mark=padHTML(profile),label=profile.localPreview?'my mark':'their mark';
+ {const ks=$('.pp-share'),kb=$('.pp-back');if(ks)$('.pp-tools')?.append(ks);if(kb)$('.pp-toolbar')?.prepend(kb);}
+ const own=profile.localPreview,lk=readLook();wg?.stop();wg=null;clearInterval(wgTimer);
  $('#passport').innerHTML=`<article class="pp-book" style="--pf:${profile.field}" data-tab="passport" aria-label="${esc(profile.name)}’s explorer passport">
  <aside class="pp-field" aria-label="Passport"><div class="pp-bg" aria-hidden="true"><div class="pp-bg-in"></div></div><div class="pp-field-in">
-  <div class="pp-tabs" role="tablist" aria-label="Passport views"><button class="pp-tab" role="tab" id="pp-tab-pass" data-tab="passport" aria-selected="true" aria-controls="pp-pane-pass">passport</button><button class="pp-tab" role="tab" id="pp-tab-mark" data-tab="mark" aria-selected="false" tabindex="-1" aria-controls="pp-pane-mark">${label}</button></div>
   <div class="pp-halftone" aria-hidden="true"></div>
   <div class="pp-stage">
-   <div class="pp-pane" id="pp-pane-pass" role="tabpanel" aria-labelledby="pp-tab-pass">
-    <div class="pp-card pp-idcard"><div class="pp-id-top"><span>deepspot · explorer passport</span><span>${rank?'no. '+String(rank).padStart(3,'0'):profile.localPreview?'draft':''}</span></div>
+   <div class="pp-pane" id="pp-pane-pass">
+    <div class="pp-passobj"><div class="pp-passobj-in">
+    <div class="pp-card pp-idcard"><div class="pp-id-top"><span>deepspot · explorer passport</span><span>${rank?'no. '+String(rank).padStart(3,'0'):own?'draft':''}</span></div>
      <div class="pp-id-body"><div class="pp-molebox">${mole}${lv?`<span class="pp-lvl" role="img" aria-label="Level ${lv.level}"><b>${lv.level}</b><i>lvl</i></span>`:''}</div>
       <dl class="pp-rows"><div><dt>name</dt><dd id="pp-name">${esc(profile.name)}</dd></div><div><dt>user</dt><dd>${profile.handle?'@'+esc(profile.handle):'—'}</dd></div><div><dt>since</dt><dd>${esc(profile.joined||'—')}</dd></div><div><dt>level</dt><dd>${esc(profile.member)}</dd></div></dl></div>
      ${lv?`<div class="pp-prog"><div class="pp-bar4" role="progressbar" aria-label="Progress to level ${lv.level+1}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${lv.pct}"><i style="width:${Math.max(lv.pct,2)}%"></i></div><span>${fmt(lv.points)} / ${fmt(lv.to)} pts</span></div>`:''}
      <span class="pp-readable-code" aria-hidden="true">DEEP&lt;SPOT&lt;&lt;${esc(profile.name.toUpperCase().replaceAll(' ','<'))}&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;</span></div>
-    <div class="pp-sig" id="pp-sig">${sigHTML(profile.signatureArt)}</div>
+    <div class="pp-sig" id="pp-sig"><span class="pp-sig-l">${own?'my mark':'their mark'}</span>${sigHTML(profile.signatureArt)}</div>
+    </div></div>
    </div>
-   <div class="pp-pane" id="pp-pane-mark" role="tabpanel" aria-labelledby="pp-tab-mark" hidden>${mark}</div>
+   <div class="pp-pane" id="pp-pane-mark" hidden>${own?mark+'<div class="pp-markdone"><button type="button" class="pp-chipbtn" data-mark-done>back to passport</button></div>':''}</div>
   </div></div></aside>
  <div class="pp-rec">
- ${sec('bio','bio',null,`<div class="pp-bio-top">${mini}<div class="pp-bio-id"><h1 class="pp-bio-name">${esc(profile.name)}</h1><span class="pp-handle">${profile.handle?'@'+esc(profile.handle):'DeepSpot contributor'}</span></div>${lv?`<span class="pp-badge" role="img" aria-label="Level ${lv.level}"><b>${lv.level}</b><i>level</i></span>`:''}</div>
-  ${profile.bio?`<p class="pp-bio-text">${esc(profile.bio)}</p>`:'<p class="pp-bio-text pp-bio-empty">no bio yet.</p>'}
-  <div class="pp-chips-row"><ul class="pp-chips">${profile.points==null?'':`<li>${fmt(profile.points)} pts</li>`}${profile.joined?`<li>since ${esc(profile.joined.toLowerCase())}</li>`:''}<li>${esc(profile.member)}</li></ul>${soc&&(soc.instagram||soc.twitter||soc.website)?`<div class="pp-social-links">${soc.instagram?`<a href="https://www.instagram.com/${encodeURIComponent(soc.instagram.replace(/^@/,''))}/" target="_blank" rel="noopener" data-original>instagram ↗</a>`:''}${soc.twitter?`<a href="https://x.com/${encodeURIComponent(soc.twitter.replace(/^@/,''))}" target="_blank" rel="noopener" data-original>x ↗</a>`:''}${soc.website?`<a href="${esc(soc.website)}" target="_blank" rel="noopener" data-original>website ↗</a>`:''}</div>`:''}</div>`)}
- ${sec('type','traveler type',null,typeHTML())}
- ${sec('stats','contributions',null,statsHTML())}
- ${sec('posts','postings',profile.records.length,postingsHTML(),profile.records.length>6?'<button type="button" class="pp-chipbtn" data-more aria-expanded="false">show all</button>':'')}
- ${sec('wtg','want to go',profile.localPreview?wtgList.length:null,wtgHTML())}
- ${sec('stamps','stamps',`${profile.stamps.filter(s=>s.earned).length}/${profile.stamps.length}`,stampsHTML())}
- ${sec('places','places',profile.places.length,placesHTML())}
- ${sec('give','giveaway',null,giveawayHTML())}
- <p class="pp-note">${esc(profile.notice)}</p></div></article>`;
+  <section class="pp-sec pp-biosec" aria-labelledby="pp-bio" data-bg="${lk.bg}" data-font="${lk.font}" data-align="${lk.align}"><header class="pp-bar"><h2 id="pp-bio">bio</h2>${own?'<button type="button" class="pp-chipbtn pp-editbtn" data-edit aria-expanded="false">edit profile</button>':''}</header>
+   <div class="pp-body pp-bio-body" id="pp-bio-view">
+    <div class="pp-bio-top">${mini}<div class="pp-bio-id"><h1 class="pp-bio-name">${esc(profile.name)}</h1><span class="pp-handle">${profile.handle?'@'+esc(profile.handle):'DeepSpot contributor'}</span></div>${lv?`<span class="pp-badge" role="img" aria-label="Level ${lv.level}"><b>${lv.level}</b><i>level</i></span>`:''}</div>
+    <div class="pp-bio-fit">${profile.bio?`<p class="pp-bio-text">${esc(profile.bio)}</p>`:`<p class="pp-bio-text pp-bio-empty">${own?'say something. edit profile to write your bio.':'no bio yet.'}</p>`}</div>
+    <div class="pp-chips-row"><ul class="pp-chips">${profile.points==null?'':`<li>${fmt(profile.points)} pts</li>`}${profile.joined?`<li>since ${esc(profile.joined.toLowerCase())}</li>`:''}<li>${esc(profile.member)}</li></ul>${soc&&(soc.instagram||soc.twitter||soc.website)?`<div class="pp-social-links">${soc.instagram?`<a href="https://www.instagram.com/${encodeURIComponent(soc.instagram.replace(/^@/,''))}/" target="_blank" rel="noopener">instagram ↗</a>`:''}${soc.twitter?`<a href="https://x.com/${encodeURIComponent(soc.twitter.replace(/^@/,''))}" target="_blank" rel="noopener">x ↗</a>`:''}${soc.website?`<a href="${esc(soc.website)}" target="_blank" rel="noopener">website ↗</a>`:''}</div>`:''}</div>
+   </div>
+   ${own?editHTML(lk):''}
+  </section>
+  <section class="pp-sec pp-tabsec" aria-label="Passport contents"><div class="pp-vtabs" role="tablist" aria-orientation="vertical" aria-label="Passport contents">${VTABS.map(([id,label],i)=>`<button type="button" role="tab" class="pp-vtab" id="pp-vt-${id}" data-vt="${id}" aria-controls="pp-vp-${id}" aria-selected="${i===0}" tabindex="${i===0?0:-1}">${label}${id==='wtg'&&own&&wtgList.length?` <span>${wtgList.length}</span>`:id==='contrib'&&profile.records.length?` <span>${profile.records.length}</span>`:''}</button>`).join('')}</div>
+   <div class="pp-vpanels">
+    <div class="pp-vpanel" role="tabpanel" id="pp-vp-show" aria-labelledby="pp-vt-show" tabindex="0">${showcaseHTML()}</div>
+    <div class="pp-vpanel" role="tabpanel" id="pp-vp-contrib" aria-labelledby="pp-vt-contrib" tabindex="0" hidden>
+     ${sub('traveler type',typeHTML())}${sub('contributions',statsHTML())}${sub(`postings <span>(${profile.records.length})</span>`,postingsHTML(),profile.records.length>6?'<button type="button" class="pp-chipbtn" data-more aria-expanded="false">show all</button>':'')}${sub(`places <span>(${profile.places.length})</span>`,placesHTML())}
+    </div>
+    <div class="pp-vpanel" role="tabpanel" id="pp-vp-wtg" aria-labelledby="pp-vt-wtg" tabindex="0" hidden>${wtgHTML()}</div>
+    <div class="pp-vpanel" role="tabpanel" id="pp-vp-items" aria-labelledby="pp-vt-items" tabindex="0" hidden>${sub(`stamps <span>(${profile.stamps.filter(s=>s.earned).length}/${profile.stamps.length})</span>`,stampsHTML())}${sub('giveaway',giveawayHTML())}</div>
+   </div>
+  </section>
+ </div></article>`;
+ wireV4();
  $('#passport').setAttribute('aria-busy','false');$('.pp-share').disabled=false;
  /* soft ambient field: Earth glyphs on slow turbulent noise (same module as the community race), very low strength, fills the whole left column (sticky viewport-sized layer, so the cost stays one screen) */
  window._ppField?.stop();window._ppField=halftoneField($('.pp-bg-in'),{cell:8,fps:20,ink:()=>document.documentElement.dataset.theme==='light'?[24/255,48/255,86/255]:[146/255,193/255,228/255]});
@@ -210,30 +225,117 @@ document.addEventListener('click',event=>{
 // Card photo falls back to the full image, then to the deep spot mark.
 document.addEventListener('error',event=>{const img=event.target;if(!(img instanceof HTMLImageElement)||!img.closest('.pp-post-img'))return;if(img.dataset.orig&&img.getAttribute('src')!==img.dataset.orig){img.src=img.dataset.orig;return;}const mark=document.createElement('span');mark.className='pp-no-photo';mark.setAttribute('aria-hidden','true');mark.innerHTML='deep<br>spot.';img.replaceWith(mark);},true);
 document.querySelectorAll('dialog').forEach(dialog=>dialog.addEventListener('click',event=>{if(event.target!==dialog)return;const r=dialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)dialog.close();}));
-try{
- profile=await loadProfile(params.get('user')||'wayfarer');
- if(profile?.localPreview){wtgList=readWantToGo();await wtgLoadCatalog();}
- if(!profile){$('#passport').innerHTML='<div class="pp-loading"><h1>Profile not found</h1><p>This passport isn’t in the current collection.</p><a href="/community/">back to the community ↗</a></div>';$('#passport').setAttribute('aria-busy','false');}
- else render();
-}catch{$('#passport').innerHTML='<div class="pp-loading"><h1>Unable to load this passport</h1><p>Please refresh to try again.</p><a href="/community/">back to the community ↗</a></div>';$('#passport').setAttribute('aria-busy','false');}
 const footer=$('deepspot-cta');footer?.querySelectorAll('.ds-footer-logo,.ds-footer-nav a').forEach(a=>{if(a.classList.contains('ds-footer-logo')||a.textContent.trim()==='home')a.href='/?theme='+document.documentElement.dataset.theme;});
 
 document.addEventListener('keydown',event=>{const tb=event.target.closest?.('.pp-tab');if(!tb||!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;event.preventDefault();setTab(event.key==='ArrowLeft'||event.key==='Home'?'passport':'mark',true);});
 
-/* v4 composition (2026-10-20): full-page two panes on desktop; the passport is the shareable object (share bar under it, 3D tilt on hover) */
+
+/* ---------- v5 (2026-10-20): passport object, edit in place, bio look, vertical tabs ---------- */
+const VTABS=[['show','showcase'],['contrib','contributions'],['wtg','want to go'],['items','items']];
+const sub=(title,body,act='')=>`<div class="pp-sub"><div class="pp-sub-h"><h3>${title}</h3>${act}</div>${body}</div>`;
+const LOOK_KEY='deepspot-bio-look-v1',PIN_KEY='deepspot-showcase-v1';
+const LOOKS={bg:[['panel','plain'],['green','green'],['cobalt','cobalt'],['aqua','aqua'],['cream','paper'],['ink','ink']],font:[['display','bold'],['serif','serif'],['mono','type'],['hand','hand']],align:[['left','left'],['center','center']]};
+function readLook(){const d={bg:'panel',font:'display',align:'left'};if(!profile?.localPreview)return d;try{const v=JSON.parse(localStorage.getItem(LOOK_KEY))||{};for(const k in d)if(LOOKS[k].some(([id])=>id===v[k]))d[k]=v[k];}catch{}return d;}
+function readPins(){try{const v=JSON.parse(localStorage.getItem(PIN_KEY));return Array.isArray(v)?v.filter(x=>typeof x==='string').slice(0,12):[];}catch{return [];}}
+function writePins(v){try{localStorage.setItem(PIN_KEY,JSON.stringify(v));}catch{}}
+const pinBtn=r=>{const on=readPins().includes(r.href);return `<button type="button" class="pp-pin" data-pin="${esc(r.href)}" aria-pressed="${on}" aria-label="${on?'remove':'show'} ${esc(r.name)} ${on?'from':'on'} your showcase">${on?'★ showing':'☆ show'}</button>`;};
+function editHTML(lk){
+ const d=readAccount(),grp=(k,label)=>`<fieldset class="pp-look"><legend>${label}</legend>${LOOKS[k].map(([id,l])=>`<label class="pp-look-o pp-look-${k}" data-v="${id}"><input type="radio" name="pp-look-${k}" value="${id}"${lk[k]===id?' checked':''}><span>${l}</span></label>`).join('')}</fieldset>`;
+ return `<form class="pp-body pp-edit" id="pp-edit" hidden novalidate><div class="pp-edit-grid">
+  <label class="pp-f"><span>name</span><input name="name" maxlength="50" value="${esc(d.name)}" autocomplete="nickname"></label>
+  <label class="pp-f"><span>username</span><input name="username" maxlength="20" value="${esc(d.username)}" autocomplete="username"></label>
+  <label class="pp-f pp-f-wide"><span>bio <i id="pp-bio-n">${d.bio.length}/400</i></span><textarea name="bio" maxlength="400" rows="3" placeholder="who you are, where you go, what you look for.">${esc(d.bio)}</textarea></label>
+ </div>
+ ${grp('bg','background')}${grp('font','type')}${grp('align','align')}
+ <div class="pp-edit-acts"><button type="button" class="pp-chipbtn" data-draw>draw my mark</button><a class="pp-chipbtn" href="/account/#mole">change my mole ↗</a><span class="pp-edit-sp"></span><button type="button" class="pp-chipbtn" data-cancel>cancel</button><button type="submit" class="pp-savebtn">save profile</button></div></form>`;
+}
+function showcaseHTML(){
+ const t=profile.type||{},sid=t.id||(profile.localPreview?profile.style:null),style=sid&&travelerStyles.find(s=>s.id===sid);
+ const pins=readPins(),recs=profile.records,picked=pins.map(h=>recs.find(r=>r.href===h)).filter(Boolean),list=picked.length?picked:recs.slice(0,6);
+ const tcard=style?`<div class="pp-show-type"><span class="pp-type-mark">${travelerMark(style.id)}</span><div><span class="pp-mono">traveler type</span><strong>${esc(style.name)}.</strong></div></div>`:'';
+ const grid=list.length?`<ul class="pp-posts pp-show-posts">${list.map(r=>`<li class="pp-post"><a href="${esc(r.href)}"><span class="pp-post-img">${r.image?`<img src="${esc(r.card||r.image)}" data-orig="${esc(r.image)}" alt="" width="400" height="300" loading="lazy" decoding="async">`:'<span class="pp-no-photo" aria-hidden="true">deep<br>spot.</span>'}</span><span class="pp-post-copy"><span class="pp-mono">${esc(r.place||'')}</span><strong>${esc(r.name)}</strong></span></a></li>`).join('')}</ul>`:'';
+ const wtg=profile.localPreview&&!recs.length&&wtgList.length?`<div class="pp-sub-h"><h3>next on my list</h3></div><ul class="pp-chips pp-show-wtg">${wtgList.slice(0,8).map(it=>`<li>${esc(it.type==='spot'?(wtgBySlug.get(it.id)?.title||'a deep spot'):it.name)}</li>`).join('')}</ul>`:'';
+ const hint=profile.localPreview?`<p class="pp-fine">${recs.length?'Edit profile, then pick postings with ☆ show in contributions.':'Your showcase fills up as you post spots. Add places in want to go to show them here.'}</p>`:'';
+ return (tcard||grid||wtg)?`${tcard}${grid}${wtg}${hint}`:empty(profile.localPreview?'nothing to show yet.':'nothing here yet.',profile.localPreview?'Post a spot or add places to want to go.':'This explorer has not posted in this collection yet.');
+}
+function fitBio(){
+ const box=$('.pp-bio-fit'),t=box?.querySelector('.pp-bio-text');if(!t)return;
+ if(innerWidth<1100||box.clientHeight<20){t.style.fontSize='';return;}
+ let lo=16,hi=t.classList.contains('pp-bio-empty')?72:140;
+ for(let i=0;i<14;i++){const m=(lo+hi)/2;t.style.fontSize=m+'px';if(t.scrollHeight<=box.clientHeight&&t.scrollWidth<=box.clientWidth)lo=m;else hi=m;}
+ t.style.fontSize=Math.floor(lo)+'px';
+}
+function selectVT(id,focus){
+ document.querySelectorAll('.pp-vtab').forEach(b=>{const on=b.dataset.vt===id;b.setAttribute('aria-selected',String(on));b.tabIndex=on?0:-1;if(on&&focus)b.focus();});
+ document.querySelectorAll('.pp-vpanel').forEach(p=>p.hidden=p.id!=='pp-vp-'+id);$('.pp-tabsec').dataset.vt=id;if(id==='wtg'&&profile.localPreview)requestAnimationFrame(wgSync);requestAnimationFrame(fitBio);
+}
+function wireV4(){
+ selectVT('show');
+ const tl=$('.pp-vtabs');
+ tl.addEventListener('click',e=>{const b=e.target.closest('.pp-vtab');if(b)selectVT(b.dataset.vt);});
+ tl.addEventListener('keydown',e=>{const ids=VTABS.map(v=>v[0]),cur=ids.indexOf($('.pp-vtab[aria-selected=true]').dataset.vt);let n=null;
+  if(e.key==='ArrowDown'||e.key==='ArrowRight')n=(cur+1)%ids.length;else if(e.key==='ArrowUp'||e.key==='ArrowLeft')n=(cur-1+ids.length)%ids.length;else if(e.key==='Home')n=0;else if(e.key==='End')n=ids.length-1;
+  if(n!==null){e.preventDefault();selectVT(ids[n],true);}});
+ requestAnimationFrame(fitBio);
+ const form=$('#pp-edit');if(!form)return;
+ const sec=$('.pp-biosec'),view=$('#pp-bio-view'),btn=$('[data-edit]'),book=$('.pp-book');
+ const setEdit=on=>{form.hidden=!on;view.hidden=on;btn.setAttribute('aria-expanded',String(on));btn.textContent=on?'editing…':'edit profile';book.toggleAttribute('data-editing',on);if(on)form.querySelector('input').focus();else{Object.assign(sec.dataset,readLook());setTab('passport');requestAnimationFrame(fitBio);}};
+ btn.addEventListener('click',()=>setEdit(form.hidden));
+ form.addEventListener('change',e=>{const m=e.target.name?.match(/^pp-look-(\w+)$/);if(m)sec.dataset[m[1]]=e.target.value;});
+ form.bio.addEventListener('input',()=>{$('#pp-bio-n').textContent=form.bio.value.length+'/400';});
+ form.querySelector('[data-cancel]').addEventListener('click',()=>setEdit(false));
+ form.querySelector('[data-draw]').addEventListener('click',()=>{setTab('mark');$('#pp-pane-mark button')?.focus();});
+ form.addEventListener('submit',async e=>{e.preventDefault();
+  const d=readAccount(),next=normalizeAccount({...d,name:form.name.value,username:form.username.value,bio:form.bio.value});
+  const look={};for(const k of Object.keys(LOOKS))look[k]=form.querySelector(`[name=pp-look-${k}]:checked`)?.value;
+  try{localStorage.setItem(accountKey,JSON.stringify(next));localStorage.setItem(LOOK_KEY,JSON.stringify(look));}catch{notify('This browser could not save your profile.');return;}
+  profile=await loadProfile('preview');render();notify('Profile saved on this browser.');$('[data-edit]')?.focus();
+ });
+}
+document.addEventListener('click',e=>{
+ if(e.target.closest('[data-mark-done]'))setTab('passport');
+ const pin=e.target.closest('[data-pin]');if(!pin)return;
+ const h=pin.dataset.pin,list=readPins(),on=!list.includes(h);writePins(on?[...list,h]:list.filter(x=>x!==h));
+ pin.setAttribute('aria-pressed',String(on));pin.textContent=on?'★ showing':'☆ show';$('#pp-vp-show').innerHTML=showcaseHTML();
+});
+addEventListener('resize',()=>requestAnimationFrame(fitBio));
 function appShell(){
- const tabs=$('.pp-tabs'),back=$('.pp-back'),share=$('.pp-share'),pane=$('#pp-pane-pass');
- if(back&&tabs&&!back.classList.contains('pp-tabs-back')){back.classList.add('pp-tabs-back');tabs.after(back);}
+ const field=$('.pp-field-in'),back=$('.pp-back'),share=$('.pp-share'),pane=$('#pp-pane-pass');
+ if(back&&field){back.classList.add('pp-tabs-back');field.append(back);}
  if(share&&pane&&!pane.querySelector('.pp-sharebar')){const bar=document.createElement('div');bar.className='pp-sharebar';bar.append(share);const hint=document.createElement('span');hint.className='pp-mono';hint.textContent='share it, or save it as an image';bar.append(hint);pane.append(bar);}
  $('.pp-toolbar')?.setAttribute('hidden','');
- document.documentElement.classList.add('pp-app');
+ document.documentElement.classList.add('pp-app');requestAnimationFrame(fitBio);document.fonts?.ready.then(()=>requestAnimationFrame(fitBio));
  const header=document.querySelector('.br-header');
  const fit=()=>document.documentElement.style.setProperty('--pp-top',Math.max(0,Math.round(header?.getBoundingClientRect().bottom||0))+'px');
- fit();addEventListener('resize',fit);
- /* tilt: the card leans toward the pointer, like a held object */
- const stage=$('.pp-stage'),obj=$('.pp-idcard');if(!stage||!obj||stage.dataset.tilt)return;stage.dataset.tilt='1';
- const calm=matchMedia('(prefers-reduced-motion: reduce)');let raf=0;
- stage.addEventListener('pointermove',e=>{if(e.pointerType!=='mouse'||calm.matches)return;cancelAnimationFrame(raf);raf=requestAnimationFrame(()=>{const r=obj.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
-  const cx=Math.max(-.8,Math.min(.8,x)),cy=Math.max(-.8,Math.min(.8,y));obj.style.setProperty('--ry',(cx*14).toFixed(2)+'deg');obj.style.setProperty('--rx',(-cy*12).toFixed(2)+'deg');obj.style.setProperty('--gx',((cx+.5)*100).toFixed(1)+'%');obj.style.setProperty('--gy',((cy+.5)*100).toFixed(1)+'%');obj.classList.add('is-tilt');});});
- stage.addEventListener('pointerleave',()=>{cancelAnimationFrame(raf);obj.classList.remove('is-tilt');obj.style.setProperty('--rx','0deg');obj.style.setProperty('--ry','0deg');});
+ fit();if(!window._ppFit){window._ppFit=1;addEventListener('resize',fit);}
+ /* tilt: the whole passport (card + mark) is one object that leans toward the pointer; eased, small angles, no skew */
+ const stage=$('.pp-stage'),obj=$('.pp-passobj-in');if(!stage||!obj)return;
+ const calm=matchMedia('(prefers-reduced-motion: reduce)');let tx=0,ty=0,x=0,y=0,raf=0;
+ const loop=()=>{x+=(tx-x)*.12;y+=(ty-y)*.12;obj.style.transform=`perspective(1600px) rotateX(${(-y*7).toFixed(3)}deg) rotateY(${(x*9).toFixed(3)}deg)`;obj.style.setProperty('--gx',((x+.5)*100).toFixed(1)+'%');obj.style.setProperty('--gy',((y+.5)*100).toFixed(1)+'%');
+  if(Math.abs(tx-x)>.001||Math.abs(ty-y)>.001)raf=requestAnimationFrame(loop);else{raf=0;if(!tx&&!ty)obj.style.transform='';}};
+ const kick=()=>{if(!raf)raf=requestAnimationFrame(loop);};
+ stage.addEventListener('pointermove',e=>{if(e.pointerType!=='mouse'||calm.matches)return;const r=obj.getBoundingClientRect();tx=Math.max(-.6,Math.min(.6,(e.clientX-r.left)/r.width-.5));ty=Math.max(-.6,Math.min(.6,(e.clientY-r.top)/r.height-.5));obj.classList.add('is-tilt');kick();});
+ stage.addEventListener('pointerleave',()=>{tx=0;ty=0;obj.classList.remove('is-tilt');kick();});
 }
+
+/* ---------- want-to-go globe ---------- */
+let wg=null,wgPins=[],wgTimer=0;
+function wgPinsFrom(){return wtgList.map(it=>{const spot=it.type==='spot'?wtgBySlug.get(it.id):null,slug=it.type==='spot'?wtgSlug(it.id):null,c=slug&&spotCoords[slug];
+ return {name:spot?spot.title:it.name,place:spot?spot.place:'your pick',href:spot?wtgURL(slug):null,img:spot?(spot.card||spot.image):'',lat:c?c[0]:null,lon:c?c[1]:null,exact:c?.[2]==='exact'};});}
+function wgCard(i){const p=wgPins[i],box=$('#wg-card');if(!box)return;if(!p){box.innerHTML='';box.hidden=true;return;}box.hidden=false;
+ box.innerHTML=`${p.img?`<img src="${esc(p.img)}" alt="" width="160" height="120">`:''}<div><span class="pp-mono">${esc(p.place||'')}</span><strong>${p.href?`<a href="${esc(p.href)}">${esc(p.name)}</a>`:esc(p.name)}</strong><span class="pp-mono wg-n">${i+1} of ${wgPins.filter(x=>x.lat!=null).length} on the globe${p.exact?'':' · pin is approximate'}</span></div>`;}
+function wgSync(){
+ const host=$('#wg');if(!host)return;wgPins=wgPinsFrom();const on=wgPins.map((p,i)=>p.lat!=null?i:-1).filter(i=>i>=0),off=wgPins.length-on.length;
+ $('#wg-note').textContent=!wgPins.length?'add places below and they land on the globe as pins.':off?`${off} ${off===1?'place has':'places have'} no location yet, so ${off===1?'it is':'they are'} only in the list.`:'drag to turn the globe. tap a pin.';
+ if(!wg)wg=mountGlobe(host,{pins:wgPins,onSelect:wgCard,onStem:(pt,{w})=>{const l=$('#wg-line'),c=$('#wg-card');if(!l||!c)return;if(!pt||c.hidden){l.setAttribute('x1',0);l.setAttribute('x2',0);l.setAttribute('y1',0);l.setAttribute('y2',0);return;}
+  const hb=host.getBoundingClientRect(),cb=c.getBoundingClientRect(),x1=cb.left-hb.left+cb.width/2,y1=cb.bottom-hb.top;l.setAttribute('x1',x1);l.setAttribute('y1',y1);l.setAttribute('x2',pt.x);l.setAttribute('y2',pt.y);}});
+ else wg.set(wgPins);
+ if(on.length&&(wg.sel<0||!on.includes(wg.sel)))wg.focus(on[0]);if(!on.length)wgCard(-1);
+ clearInterval(wgTimer);if(on.length>1&&!matchMedia('(prefers-reduced-motion: reduce)').matches)wgTimer=setInterval(()=>{if(document.hidden||$('#wg')?.matches(':hover'))return;const k=on.indexOf(wg.sel);wg.focus(on[(k+1)%on.length]);},6000);
+}
+try{
+ profile=await loadProfile(params.get('user')||'wayfarer');
+ if(profile?.localPreview){wtgList=readWantToGo();await Promise.all([wtgLoadCatalog(),wtgLoadCoords()]);}
+ if(!profile){$('#passport').innerHTML='<div class="pp-loading"><h1>Profile not found</h1><p>This passport isn’t in the current collection.</p><a href="/community/">back to the community ↗</a></div>';$('#passport').setAttribute('aria-busy','false');}
+ else render();
+}catch(err){console.error(err);$('#passport').innerHTML='<div class="pp-loading"><h1>Unable to load this passport</h1><p>Please refresh to try again.</p><a href="/community/">back to the community ↗</a></div>';$('#passport').setAttribute('aria-busy','false');}

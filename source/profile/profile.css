@@ -247,3 +247,127 @@ a.pp-wtg-link:hover img{transform:scale(1.04)}
 .pp-main deepspot-cta,.pp-rec>.pp-note{display:none!important}
 .pp-sharebar .pp-share{display:inline-flex;align-items:center;gap:10px;min-height:52px;padding:0 28px;border-radius:99px;border:1px solid var(--br-green);background:var(--br-green);color:#0b1b27;font:700 16px/1 Arial,Helvetica,sans-serif;cursor:pointer;box-shadow:0 14px 30px -12px rgba(0,0,0,.5)}
 .pp-sharebar .pp-share:hover:not(:disabled){filter:brightness(1.06)}
+/* ================= v5 (2026-10-20) ================= */
+/* passport object: card + mark move together; tilt is set inline (perspective + rotate, no skew) */
+.pp-tabs{display:none}
+.pp-stage{perspective:none}
+.pp-idcard,.pp-idcard.is-tilt{transform:none!important;box-shadow:none;transition:none}
+.pp-idcard::after{display:none}
+.pp-passobj{filter:drop-shadow(0 28px 40px rgba(0,0,0,.42))}
+:root[data-theme=light] .pp-passobj{filter:drop-shadow(0 22px 34px rgba(11,27,39,.18))}
+.pp-passobj-in{position:relative;transform-style:preserve-3d;will-change:transform}
+.pp-passobj-in::after{content:'';position:absolute;inset:0;border-radius:12px;pointer-events:none;background:radial-gradient(circle at var(--gx,50%) var(--gy,30%),rgba(255,255,255,.22),transparent 60%);opacity:0;transition:opacity .4s}
+.pp-passobj-in.is-tilt::after{opacity:1}
+.pp-passobj .pp-sig{position:relative;box-shadow:none;margin-top:8px}
+.pp-sig-l{position:absolute;left:12px;top:8px;font:600 9px/1 var(--pp-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--pp-inkm)}
+.pp-tabs-back{position:absolute;top:12px;right:12px}
+.pp-markdone{display:flex;justify-content:center;margin-top:16px}
+/* buttons */
+.pp-chipbtn{display:inline-flex;align-items:center;height:32px;padding:0 14px;border:1px solid var(--br-line);border-radius:99px;background:transparent;color:var(--br-text);font:600 11px/1 var(--pp-mono);letter-spacing:.06em;text-transform:uppercase;text-decoration:none;cursor:pointer}
+.pp-chipbtn:hover{border-color:var(--br-green)}
+.pp-editbtn{background:var(--br-green);border-color:var(--br-green);color:#0b1b27}
+.pp-savebtn{height:40px;padding:0 20px;border-radius:99px;border:0;background:var(--br-green);color:#0b1b27;font:700 14px/1 Arial,Helvetica,sans-serif;cursor:pointer}
+/* bio: fills its area; the owner picks background, type and alignment */
+.pp-biosec{--bb:var(--br-panel);--bt:var(--br-text);--bm:var(--br-muted);background:var(--bb);color:var(--bt);transition:background .3s,color .3s}
+.pp-biosec[data-bg=green]{--bb:#07d653;--bt:#0b1b27;--bm:#0b1b27b3}
+.pp-biosec[data-bg=cobalt]{--bb:#3c60ff;--bt:#fff;--bm:#ffffffc0}
+.pp-biosec[data-bg=aqua]{--bb:#83cdce;--bt:#0b1b27;--bm:#0b1b27b3}
+.pp-biosec[data-bg=cream]{--bb:#f5f4ee;--bt:#0b1b27;--bm:#4a5a68}
+.pp-biosec[data-bg=ink]{--bb:#0b1b27;--bt:#f5f4ee;--bm:#f5f4eeb3}
+.pp-biosec .pp-bar{background:transparent;border-top:0}
+.pp-biosec .pp-bar h2,.pp-biosec .pp-handle,.pp-biosec .pp-chips li,.pp-biosec .pp-social-links a{color:var(--bm)}
+.pp-biosec .pp-bio-name{color:var(--bt)}
+.pp-biosec .pp-chips li{border-color:currentColor}
+.pp-bio-body{flex:1;min-height:0;gap:16px}
+.pp-bio-fit{flex:1;min-height:0;overflow:hidden;display:flex;align-items:center}
+.pp-bio-text:not(.pp-bio-empty){max-width:none;width:100%;margin:0;font-size:28px;line-height:1.08;letter-spacing:-.03em;font-weight:800;color:var(--bt);overflow-wrap:anywhere}
+.pp-biosec[data-font=serif] .pp-bio-text:not(.pp-bio-empty){font-family:Georgia,"Times New Roman",serif;font-weight:400;font-style:italic;letter-spacing:-.02em}
+.pp-biosec[data-font=mono] .pp-bio-text:not(.pp-bio-empty){font-family:var(--pp-mono);font-weight:500;letter-spacing:-.04em;line-height:1.2}
+.pp-biosec[data-font=hand] .pp-bio-text:not(.pp-bio-empty){font-family:Caveat,"Segoe Script","Bradley Hand",cursive;font-weight:600;letter-spacing:0;line-height:1}
+.pp-biosec[data-align=center] .pp-bio-text{text-align:center}
+.pp-bio-empty{color:var(--bm)}
+/* edit form */
+.pp-edit{gap:16px;overflow-y:auto}
+.pp-edit[hidden],.pp-bio-body[hidden]{display:none}
+.pp-edit-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pp-f{display:flex;flex-direction:column;gap:6px}.pp-f-wide{grid-column:1/-1}
+.pp-f>span{display:flex;justify-content:space-between;font:600 10px/1 var(--pp-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--bm)}.pp-f i{font-style:normal}
+.pp-f input,.pp-f textarea{width:100%;padding:10px 12px;border:1px solid var(--br-line);border-radius:8px;background:var(--br-bg);color:var(--br-text);font:500 15px/1.4 Arial,Helvetica,sans-serif;resize:vertical}
+.pp-look{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0;padding:0;border:0}
+.pp-look legend{float:left;width:96px;margin-right:4px;font:600 10px/32px var(--pp-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--bm)}
+.pp-look-o{position:relative;display:inline-flex}.pp-look-o input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.pp-look-o span{display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 12px;border:1px solid var(--br-line);border-radius:99px;background:var(--br-bg);color:var(--br-text);font:600 12px/1 Arial,Helvetica,sans-serif}
+.pp-look-o input:checked+span{outline:2px solid var(--br-green);outline-offset:1px}
+.pp-look-o input:focus-visible+span{outline:2px solid currentColor;outline-offset:3px}
+.pp-look-bg span::before{content:"";width:14px;height:14px;border-radius:99px;border:1px solid #0b1b2740;background:var(--sw,var(--br-panel))}
+.pp-look-bg[data-v=green]{--sw:#07d653}.pp-look-bg[data-v=cobalt]{--sw:#3c60ff}.pp-look-bg[data-v=aqua]{--sw:#83cdce}.pp-look-bg[data-v=cream]{--sw:#f5f4ee}.pp-look-bg[data-v=ink]{--sw:#0b1b27}
+.pp-look-font[data-v=serif] span{font:italic 400 14px/1 Georgia,serif}.pp-look-font[data-v=mono] span{font:500 12px/1 var(--pp-mono)}.pp-look-font[data-v=hand] span{font:600 18px/1 Caveat,cursive}
+.pp-edit-acts{display:flex;flex-wrap:wrap;align-items:center;gap:8px}.pp-edit-sp{flex:1}
+/* tabbed section: coloured vertical tabs on the left */
+.pp-tabsec{display:grid;grid-template-columns:176px minmax(0,1fr);border-top:1px solid var(--br-line)}
+.pp-vtabs{display:flex;flex-direction:column;gap:8px;padding:16px 0 16px 16px;border-right:1px solid var(--br-line);background:var(--br-card)}
+.pp-vtab{--c:#07d653;--ci:#0b1b27;position:relative;display:flex;justify-content:space-between;align-items:center;gap:8px;min-height:48px;padding:0 16px;border:0;border-radius:10px 0 0 10px;background:color-mix(in srgb,var(--c) 18%,transparent);color:var(--br-text);font:800 15px/1.1 Arial,Helvetica,sans-serif;letter-spacing:-.02em;text-align:left;cursor:pointer;margin-right:-1px}
+.pp-vtab span{font:600 11px/1 var(--pp-mono);opacity:.8}
+.pp-vtab:hover{background:color-mix(in srgb,var(--c) 34%,transparent)}
+.pp-vtab[aria-selected=true]{background:var(--c);color:var(--ci)}
+.pp-vtab#pp-vt-contrib{--c:#3c60ff;--ci:#fff}.pp-vtab#pp-vt-wtg{--c:#83cdce}.pp-vtab#pp-vt-items{--c:#f2c14e}
+.pp-vpanels{min-width:0;position:relative}
+.pp-vpanel{padding:24px;display:flex;flex-direction:column;gap:24px;outline-offset:-2px}
+.pp-vpanel[hidden]{display:none}
+.pp-tabsec[data-vt=show] .pp-vpanels{box-shadow:inset 3px 0 0 #07d653}.pp-tabsec[data-vt=contrib] .pp-vpanels{box-shadow:inset 3px 0 0 #3c60ff}.pp-tabsec[data-vt=wtg] .pp-vpanels{box-shadow:inset 3px 0 0 #83cdce}.pp-tabsec[data-vt=items] .pp-vpanels{box-shadow:inset 3px 0 0 #f2c14e}
+.pp-sub{display:flex;flex-direction:column;gap:12px}
+.pp-sub-h{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.pp-sub-h h3{margin:0;font:600 11px/1 var(--pp-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--br-text)}.pp-sub-h h3 span{color:var(--br-muted)}
+.pp-show-type{display:flex;align-items:center;gap:16px;padding:16px;border:1px solid var(--br-line);border-radius:8px;background:var(--br-card)}
+.pp-show-type strong{display:block;font-size:32px;font-weight:800;letter-spacing:-.05em;line-height:1}
+.pp-post{position:relative}
+.pp-pin{display:none;position:absolute;top:8px;right:8px;z-index:2;height:28px;padding:0 10px;border:0;border-radius:99px;background:#0b1b27d9;color:#f5f4ee;font:600 11px/1 var(--pp-mono);cursor:pointer}
+.pp-pin[aria-pressed=true]{background:#07d653;color:#0b1b27}
+.pp-book[data-editing] .pp-pin{display:block}
+/* want to go globe */
+.wg{position:relative;height:clamp(420px,62vh,640px);border:1px solid var(--br-line);border-radius:12px;overflow:hidden;background:radial-gradient(ellipse at 50% 70%,color-mix(in srgb,#3c60ff 18%,transparent),transparent 70%),var(--br-bg);--wg-land:#f5f4ee;--wg-sea:#3c60ff;--wg-pin:#07d653;--wg-ink:#0b1b27;touch-action:pan-y}
+:root[data-theme=light] .wg{--wg-land:#0b1b27;--wg-sea:#3c60ff;--wg-ink:#f5f4ee}
+.wg-canvas{position:absolute;inset:0;cursor:grab}.wg-canvas:active{cursor:grabbing}
+.wg-stem{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+.wg-stem line{stroke:var(--br-text);stroke-width:2}
+.wg-card{position:absolute;left:50%;top:16px;z-index:2;transform:translateX(-50%);display:flex;gap:12px;align-items:center;width:min(380px,calc(100% - 32px));padding:10px;border:1px solid var(--br-line);border-radius:10px;background:var(--br-panel);box-shadow:0 18px 30px -12px rgba(0,0,0,.5)}
+.wg-card[hidden]{display:none}
+.wg-card img{width:88px;height:66px;object-fit:cover;border-radius:6px;flex:none}
+.wg-card div{display:flex;flex-direction:column;gap:4px;min-width:0}
+.wg-card strong{font-size:16px;line-height:1.2;letter-spacing:-.02em}.wg-card a{color:inherit}
+.wg-card .pp-mono{font:500 10px/1.3 var(--pp-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--br-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wg-note{position:absolute;left:16px;bottom:12px;z-index:2;margin:0;font:500 10px/1.3 var(--pp-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--br-muted)}
+/* desktop: one window; left = passport, right = bio (fixed, no scroll) over the tabbed section (its panel scrolls) */
+@media(min-width:1100px){
+ html.pp-app .pp-rec{display:flex;flex-direction:column;overflow:hidden}
+ html.pp-app .pp-biosec{flex:0 0 44%;display:flex;flex-direction:column;min-height:0}
+ html.pp-app .pp-biosec>.pp-body{overflow:hidden}
+ html.pp-app .pp-biosec>.pp-edit{overflow-y:auto}
+ html.pp-app .pp-tabsec{flex:1;min-height:0}
+ html.pp-app .pp-vpanels{overflow-y:auto;overscroll-behavior:contain}
+ html.pp-app .pp-posts,html.pp-app .pp-wtg{grid-template-columns:repeat(3,minmax(0,1fr))}
+ html.pp-app .pp-tiles{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+@media(max-width:1099px){
+ .pp-tabsec{grid-template-columns:1fr}
+ .pp-vtabs{flex-direction:row;overflow-x:auto;padding:12px 12px 0;border-right:0;border-bottom:1px solid var(--br-line)}
+ .pp-vtab{border-radius:10px 10px 0 0;margin:0 0 -1px;white-space:nowrap;flex:none}
+ .pp-bio-text:not(.pp-bio-empty){font-size:clamp(24px,6vw,40px)}
+ .pp-edit-grid{grid-template-columns:1fr}
+}
+@media(max-width:650px){.pp-vpanel{padding:16px}.wg{height:440px}}
+.pp-biosec .pp-editbtn{background:var(--bt);border-color:var(--bt);color:var(--bb)}
+.pp-bio-text.pp-bio-empty{max-width:none;width:100%;margin:0;font:800 28px/1 Arial,Helvetica,sans-serif;letter-spacing:-.04em;text-transform:none;color:var(--bm);opacity:.55}
+.wg{height:clamp(460px,58vh,620px)}
+@media(min-width:1100px){html.pp-app .pp-rec:has(.pp-tabsec[data-vt=wtg]) .pp-biosec{flex-basis:30%}}
+@media(min-width:1100px){
+ html.pp-app .pp-biosec{flex-basis:56%}
+ html.pp-app .pp-rec:has(.pp-tabsec[data-vt=wtg]) .pp-biosec{flex-basis:30%}
+ html.pp-app .pp-biosec .pp-bio-body{padding:16px 24px 20px;gap:12px}
+ html.pp-app .pp-biosec .pp-bio-top .pp-badge{width:72px;height:72px}html.pp-app .pp-biosec .pp-bio-top .pp-badge b{font-size:30px}
+ html.pp-app .pp-biosec .pp-bio-name{font-size:28px}
+ .wg{height:clamp(420px,52vh,600px)}
+}
+@media(min-width:1100px){html.pp-app .pp-rec:has(.pp-tabsec[data-vt=wtg]) .pp-bio-fit{display:none}html.pp-app .pp-rec:has(.pp-tabsec[data-vt=wtg]) .pp-bio-body{justify-content:space-between}}
+@media(min-width:1100px){html.pp-app .pp-book[data-editing] .pp-biosec{flex-basis:60%!important}html.pp-app .pp-book[data-editing] .pp-bio-fit{display:flex}}
+.pp-bio-text.pp-bio-empty{opacity:1}
