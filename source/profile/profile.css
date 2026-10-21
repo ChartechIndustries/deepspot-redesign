@@ -820,3 +820,24 @@ button.pp-mole-empty span{font:600 12px/1.3 ui-monospace,Menlo,Consolas,monospac
 @media(prefers-reduced-motion:reduce){.pp-field[data-bg]{animation:none!important}}
 .pp-field:is([data-bg=green],[data-bg=cobalt],[data-bg=paper]) .pp-bg{display:block!important}.pp-field:is([data-bg=green],[data-bg=cobalt],[data-bg=paper]) .pp-bg-in>.hf-canvas{opacity:.22}
 .pp-passobj-in:not([data-foil=none]) .pp-bump{opacity:.38}.pp-passobj-in[data-foil=chrome] .pp-bump{opacity:.5}
+/* ================= v11 (2026-10-21): foil sits under the printed data; softer; embossed type and rules ================= */
+/* layer order: paper < foil + lit grain < printed data (photo, type, lines, stamps) */
+.pp-id9>:not(.pp-bump):not(.pp-id9-wm){position:relative;z-index:6}
+.pp-id9 .pp-id9-stamp{z-index:7}
+.pp-passobj-in:not([data-foil=none]) .pp-idcard::before{opacity:.32!important}
+.pp-passobj-in.is-tilt:not([data-foil=none]) .pp-idcard::before{opacity:.42!important}
+.pp-passobj-in:not([data-foil=none]) .pp-idcard::after{opacity:.35!important}
+.pp-passobj-in:not([data-foil=none]) .pp-bump{opacity:.2!important}
+/* the photo keeps its own clean frame */
+.pp-id9 .pp-molebox{background:#f7f6f0;isolation:isolate}
+/* emboss: a light edge below, a dark edge above, like ink pressed into card stock */
+.pp-id9{--emb-hi:rgba(255,255,255,.85);--emb-lo:rgba(11,27,39,.28)}
+.pp-id9 :is(.pp-id9-title b,.pp-rows dd,.pp-rows dt,.pp-id9-title i,.pp-prog span,.pp-id9-mrz,.pp-sig-l,.pp-id9-sig>span){text-shadow:0 1px 0 var(--emb-hi),0 -1px 0 var(--emb-lo)}
+.pp-id9 .pp-rows dd{color:#0b1b27}
+.pp-id9 .pp-rows>div{border-bottom-color:rgba(11,27,39,.22);box-shadow:0 1px 0 var(--emb-hi)}
+.pp-id9 .pp-id-top{box-shadow:0 1.5px 0 var(--emb-hi)}
+.pp-id9 .pp-id9-sig{box-shadow:0 1.5px 0 var(--emb-hi)}
+.pp-id9 .pp-bar4{box-shadow:inset 0 1px 1px rgba(11,27,39,.35),0 1px 0 var(--emb-hi)}
+.pp-id9 .pp-molebox{box-shadow:0 0 0 4px #f7f6f0,0 0 0 5px rgba(11,27,39,.25),inset 0 1px 2px rgba(11,27,39,.3),0 6px 0 -5px var(--emb-hi)}
+.pp-id9-crest{box-shadow:inset 0 -1px 0 rgba(255,255,255,.25),0 1px 0 var(--emb-hi),0 -1px 0 var(--emb-lo)}
+.pp-id9-no{box-shadow:0 1px 0 var(--emb-hi),inset 0 1px 0 rgba(194,53,47,.25)}
