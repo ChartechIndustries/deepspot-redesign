@@ -36,8 +36,8 @@ const sec=(id,label,count,body,act='')=>`<section class="pp-sec" aria-labelledby
 const empty=(title,text,link='')=>`<div class="pp-empty"><strong>${title}</strong><span>${text}</span>${link}</div>`;
 const moleHTML=(cls='')=>profile.mole?`<span class="pp-mole ${cls}" style="--mx:${moleCrop.x};--my:${moleCrop.y};--mw:${moleCrop.w}"><img src="${esc(profile.mole)}" alt="${cls?'':esc(profile.name)+'’s mole'}" ${cls?'aria-hidden="true"':''} width="512" height="512"></span>`:'';
 /* guilloche: the fine security curves printed on real passports (two rosettes, drawn once) */
-const GUILLOCHE=(()=>{const band=(y0,amp,f,ph,n)=>{let out='';for(let k=0;k<n;k++){let d='';for(let x=-10;x<=450;x+=6){const y=y0+amp*Math.sin(x*f+k*ph)+amp*.45*Math.sin(x*f*2.3-k*ph*1.7)+k*1.6;d+=(x<-9?'M':'L')+x+' '+y.toFixed(1);}out+=`<path d="${d}"/>`;}return out;};
- return `<svg class="pp-id9-gu" viewBox="0 0 440 300" preserveAspectRatio="none" aria-hidden="true"><g class="g1">${band(40,14,.028,.32,16)}</g><g class="g2">${band(170,18,.021,.27,18)}</g><g class="g3">${band(250,10,.035,.4,10)}</g></svg>`;})();
+/* foil bump: a fractal-noise height map lit by an SVG point light; the light follows the pointer, so the grain catches light like a real embossed foil */
+const BUMP=`<svg class="pp-bump" aria-hidden="true" preserveAspectRatio="none"><filter id="pp-bumpf" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3" seed="7" result="h"/><feSpecularLighting in="h" surfaceScale="2.2" specularConstant="1.1" specularExponent="18" lighting-color="#fff" result="s"><fePointLight id="pp-bumpl" x="200" y="-60" z="140"/></feSpecularLighting><feDiffuseLighting in="h" surfaceScale="2.2" diffuseConstant=".9" lighting-color="#fff" result="d"><fePointLight id="pp-bumpl2" x="200" y="-60" z="140"/></feDiffuseLighting><feComposite in="s" in2="d" operator="arithmetic" k1="0" k2="1" k3=".55" k4="0"/></filter><rect width="100%" height="100%" filter="url(#pp-bumpf)"/></svg>`;
 const mrzPad=(t,n)=>(t+'<'.repeat(n)).slice(0,n);
 const mrzName=n=>String(n||'').normalize('NFKD').replace(/[^\w ]/g,'').toUpperCase().trim().replace(/\s+/g,'<');
 function mrz(p,rank,lv){const l1=mrzPad('P<DSP'+mrzName(p.name)+'<<'+mrzName(p.handle||''),36),l2=mrzPad((rank?String(rank).padStart(3,'0'):'DRF')+'<'+mrzName(p.joined||'')+'<LVL'+String(lv?.level||1).padStart(2,'0')+'<'+mrzName(p.member||''),36);return `${esc(l1)}<br>${esc(l2)}`.replaceAll('<br>','\n').replace(/</g,'&lt;').replace(/\n/g,'<br>');}
@@ -210,7 +210,7 @@ function render(){
   <div class="pp-stage">
    <div class="pp-pane" id="pp-pane-pass">
     <div class="pp-passobj"><div class="pp-passobj-in">
-    <div class="pp-card pp-idcard pp-id9">${GUILLOCHE}<span class="pp-id9-wm" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M24 2v44M2 24h44M8.5 8.5l31 31m0-31-31 31"/></svg></span>
+    <div class="pp-card pp-idcard pp-id9">${BUMP}<span class="pp-id9-wm" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M24 2v44M2 24h44M8.5 8.5l31 31m0-31-31 31"/></svg></span>
      <div class="pp-id-top"><span class="pp-id9-crest" aria-hidden="true"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="21"/><path d="M24 8v32M8 24h32M12.7 12.7l22.6 22.6m0-22.6L12.7 35.3"/></svg></span><span class="pp-id9-title"><b>deepspot</b><i>explorer passport · pasaporte · パスポート</i></span><span class="pp-id9-no">${rank?'no. '+String(rank).padStart(3,'0'):own?'draft':''}</span></div>
      <div class="pp-id-body"><div class="pp-molebox">${mole}${lv?`<span class="pp-lvl" role="img" aria-label="Level ${lv.level}"><b>${lv.level}</b><i>lvl</i></span>`:''}<span class="pp-id9-stamp" aria-hidden="true"><b>${esc((travelerStyles.find(x=>x.id===(profile.type.id||(own?profile.style:null)))?.name||'explorer').replace(/^the /,''))}</b><i>${esc(profile.member)}</i></span></div>
       <dl class="pp-rows"><div><dt>name</dt><dd id="pp-name">${esc(profile.name)}</dd></div><div><dt>user</dt><dd>${profile.handle?'@'+esc(profile.handle):'—'}</dd></div><div><dt>since</dt><dd>${esc(profile.joined||'—')}</dd></div><div><dt>level</dt><dd>${esc(profile.member)}</dd></div></dl></div>
@@ -362,6 +362,8 @@ function fitPassport(){
  const z=Math.max(1,Math.min(fw/w,fh/h,1.75));obj.style.zoom=z.toFixed(3);
 }
 addEventListener('resize',()=>requestAnimationFrame(fitPassport));
+function moveBumpLight(e){const card=$('.pp-id9');if(!card)return;const b=card.getBoundingClientRect(),z=document.documentElement.style.zoom||1,sc=b.width/card.offsetWidth||1;
+ const x=((e.clientX-b.left)/sc).toFixed(0),y=((e.clientY-b.top)/sc).toFixed(0);for(const id of ['pp-bumpl','pp-bumpl2']){const l=document.getElementById(id);if(l){l.setAttribute('x',x);l.setAttribute('y',y);}}}
 function appShell(){
  const field=$('.pp-field-in'),back=$('.pp-back'),share=$('.pp-share'),pane=$('#pp-pane-pass');
  if(back&&field){back.classList.add('pp-tabs-back');field.append(back);}
@@ -377,7 +379,7 @@ function appShell(){
  const loop=()=>{x+=(tx-x)*.12;y+=(ty-y)*.12;obj.style.transform=`perspective(1600px) rotateX(${(-y*7).toFixed(3)}deg) rotateY(${(x*9).toFixed(3)}deg)`;obj.style.setProperty('--gx',Math.max(0,Math.min(100,(x+.5)*100)).toFixed(1)+'%');obj.style.setProperty('--gy',Math.max(0,Math.min(100,(y+.5)*100)).toFixed(1)+'%');
   if(Math.abs(tx-x)>.001||Math.abs(ty-y)>.001)raf=requestAnimationFrame(loop);else{raf=0;if(!tx&&!ty)obj.style.transform='';}};
  const kick=()=>{if(!raf)raf=requestAnimationFrame(loop);};
- stage.addEventListener('pointermove',e=>{if(e.pointerType!=='mouse'||calm.matches)return;const r=obj.getBoundingClientRect();tx=Math.max(-.6,Math.min(.6,(e.clientX-r.left)/r.width-.5));ty=Math.max(-.6,Math.min(.6,(e.clientY-r.top)/r.height-.5));obj.classList.add('is-tilt');kick();});
+ stage.addEventListener('pointermove',e=>{if(e.pointerType!=='mouse'||calm.matches)return;const r=obj.getBoundingClientRect();tx=Math.max(-.6,Math.min(.6,(e.clientX-r.left)/r.width-.5));ty=Math.max(-.6,Math.min(.6,(e.clientY-r.top)/r.height-.5));obj.classList.add('is-tilt');kick();moveBumpLight(e);});
  stage.addEventListener('pointerleave',()=>{tx=0;ty=0;obj.classList.remove('is-tilt');kick();});
 }
 
@@ -508,7 +510,7 @@ function customizeHTML(){
  const st=readStyle(),grp=(k,title,hint)=>`<fieldset class="pp-cz"><legend>${title}</legend><p class="pp-fine">${hint}</p><div class="pp-cz-opts">${STYLE[k].map(([id,label,icon,lock])=>`<label class="pp-cz-o pp-cz-${k}${lock?' is-locked':''}" data-v="${id}"><input type="radio" name="cz-${k}" value="${id}"${st[k]===id?' checked':''}${lock?' disabled':''}><span class="pp-cz-sw">${icon}</span><span class="pp-cz-l">${label}</span>${lock?`<span class="pp-cz-lock">🔒 ${lock}</span>`:''}</label>`).join('')}</div></fieldset>`;
  return `<p class="pp-mono pp-cz-k">customize your passport · placeholders, more unlock at launch</p>${grp('bg','background','The field behind your passport.')}${grp('foil','foil','A finish on your passport card. Move your mouse over it.')}`;
 }
-const FIELD_INK={'halftone':[[146,193,228],[24,48,86]],'dither-green':[[7,214,83],[8,120,47]],'dither-cobalt':[[120,150,255],[60,96,255]]};
+const FIELD_INK={'halftone':[[146,193,228],[24,48,86]],'dither-green':[[7,214,83],[8,120,47]],'dither-cobalt':[[120,150,255],[60,96,255]],'night':[[60,80,120],[60,80,120]],'green':[[11,27,39],[11,27,39]],'cobalt':[[160,185,255],[160,185,255]],'paper':[[11,27,39],[11,27,39]],'topo':[[131,205,206],[131,205,206]]};
 function setField(bg){
  const host=$('.pp-bg-in');if(!host)return;const ink=FIELD_INK[bg];
  if(window._ppFieldBg===bg&&window._ppField)return;window._ppField?.stop();window._ppField=null;window._ppFieldBg=bg;if(!ink)return;
