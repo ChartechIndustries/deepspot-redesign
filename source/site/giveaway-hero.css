@@ -594,3 +594,5 @@
 .gv-g1 .gv-bar{height:calc(var(--bmin) + var(--p)*(100cqh - var(--hr) - var(--bmin)))}
 .gv-g1 .gv-cols .gv-pin{bottom:calc(var(--bmin) + var(--p)*(100cqh - var(--hr) - var(--bmin)));transform:translateY(calc((1 - var(--t))*(var(--bmin) + var(--p)*(100cqh - var(--hr) - var(--bmin)))))}
 @container gv (max-width:650px){.gv-g1 .gv-stage{--bmin:0px}}
+/* phone (2026-10-20): no ranked list under the graph; it stays for screen readers only */
+@container gv (max-width:650px){.gv-g1 .gv-legend{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}}
