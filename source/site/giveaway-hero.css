@@ -596,3 +596,14 @@
 @container gv (max-width:650px){.gv-g1 .gv-stage{--bmin:0px}}
 /* phone (2026-10-20): no ranked list under the graph; it stays for screen readers only */
 @container gv (max-width:650px){.gv-g1 .gv-legend{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}}
+/* deck shadows (2026-10-20): one light from above for every card, theme-aware, never clipped; no grey dimming on side cards */
+.gv-fan{--dk-sh1:rgba(0,0,0,.32);--dk-sh2:rgba(0,0,0,.18)}
+:root[data-theme=light] .gv-fan{--dk-sh1:rgba(11,27,39,.10);--dk-sh2:rgba(11,27,39,.08)}
+.gv-fan .gv-fan-deck .cv-pp{filter:none}
+.gv-fan .gv-fan-deck .cv-pp a,.gv-fan .gv-fan-deck .cv-pp.is-front a{box-shadow:0 1px 0 var(--dk-sh2),0 10px 22px -6px var(--dk-sh1)}
+.gv-fan .gv-fan-deck .cv-pp.is-front a{box-shadow:0 1px 0 var(--dk-sh2),0 18px 34px -8px var(--dk-sh1)}
+/* side cards sit back by tone, not by grey: a faint wash of the page colour */
+.gv-fan .gv-fan-deck .cv-pp a{position:relative}
+.gv-fan .gv-fan-deck .cv-pp a::after{content:'';position:absolute;inset:0;pointer-events:none;background:var(--br-bg);opacity:calc(min(var(--a),4) * .06);transition:opacity .4s}
+/* A: clip only at the top (under the giveaway box) so shadows below are never cut */
+.gv-fan-a .gv-fan-stage{overflow:visible;clip-path:inset(0 -50vw -200px -50vw)}
