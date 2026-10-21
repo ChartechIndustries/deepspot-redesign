@@ -31,7 +31,7 @@
   if(!controls||header.querySelector('.ds-home-menu'))return;
   const button=document.createElement('button');button.className='ds-home-menu';button.type='button';button.textContent='☰';button.setAttribute('aria-label','Open navigation');button.setAttribute('aria-expanded','false');button.setAttribute('aria-controls','ds-home-navigation');
   const nav=document.createElement('nav');nav.id='ds-home-navigation';nav.className='ds-home-navigation';nav.hidden=true;nav.setAttribute('aria-label','Mobile navigation');
-  nav.innerHTML=[['browse','browse'],['map','map'],['adventures','adventures'],['stories','stories'],['guides','guides'],['community','community'],['app','app'],['your fieldbook','saved'],['your account','account'],['membership','membership'],['contribute','contribute']].map(([label,path])=>`<a href="/${path}/?theme=${getTheme()}">${label}</a>`).join('');
+  nav.innerHTML=[['browse','browse'],['map','map'],['tours','tours'],['guides','guides'],['community','community'],['your fieldbook','saved'],['your account','account'],['membership','membership'],['contribute','contribute']].map(([label,path])=>`<a href="/${path}/?theme=${getTheme()}">${label}</a>`).join('');
   button.onclick=()=>{nav.hidden=!nav.hidden;button.setAttribute('aria-expanded',String(!nav.hidden));button.setAttribute('aria-label',nav.hidden?'Open navigation':'Close navigation');button.textContent=nav.hidden?'☰':'×';if(!nav.hidden)nav.querySelector('a').focus();};
   header.addEventListener('keydown',e=>{if(e.key==='Escape'&&!nav.hidden){button.click();button.focus();}});
   controls.append(button);header.append(nav);

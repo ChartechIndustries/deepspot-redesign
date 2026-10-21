@@ -6,7 +6,7 @@ html.tr-lock ds-site-header{position:relative;z-index:20}
 .tr-stage{position:fixed;left:0;right:0;bottom:0;top:140px;overflow:hidden;isolation:isolate;background:var(--br-bg);z-index:1}
 
 /* the tour page being built: blurred, inert, faint */
-.tr-fake{position:absolute;inset:-24px;padding:48px max(var(--ds-gutter,24px),calc(50vw - 860px)) 0;filter:blur(12px) saturate(.7);opacity:.32;pointer-events:none;z-index:0}
+.tr-fake{position:absolute;inset:-24px;padding:48px max(var(--ds-gutter,24px),calc(50vw - 860px)) 0;filter:blur(12px) saturate(.7);opacity:.32;pointer-events:none;z-index:0;-webkit-mask-image:radial-gradient(ellipse 34% 48% at 46% 46%,transparent 55%,#000 100%);mask-image:radial-gradient(ellipse 34% 48% at 46% 46%,transparent 55%,#000 100%)}
 .tr-fake i,.tr-fake b{display:block;background:var(--br-line);border-radius:6px}
 .tr-f-chips{display:flex;gap:12px;margin-bottom:32px}
 .tr-f-chips b{width:120px;height:40px;border-radius:99px!important}
@@ -21,7 +21,9 @@ html.tr-lock ds-site-header{position:relative;z-index:20}
 
 /* the construction mole: in front of the title, behind the tape */
 .tr-mole{position:absolute;left:42%;top:20%;z-index:2;height:50%;aspect-ratio:585/720;transform:translateX(-50%)}
-.tr-mole img{display:block;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 24px 30px rgba(0,0,0,.45))}
+
+.tr-mole picture{display:contents}
+.tr-mole img{display:block;width:100%;height:100%}
 
 /* two green tape bands, an X across the full width */
 .tr-tapes{position:absolute;inset:0;z-index:3;pointer-events:none}
