@@ -19,22 +19,23 @@ test('member level ladder',()=>{
 });
 test('every mapped tag points at a real traveler style',()=>{
  const ids=new Set(travelerStyles.map(s=>s.id));for(const v of Object.values(TAG_TYPE))assert.ok(ids.has(v),v);
+ assert.equal(travelerStyles.length,45);assert.equal(ids.size,45);
 });
 test('traveler type comes from posting categories',()=>{
  const spot=(...tags)=>({kind:'spot',tags});
  assert.equal(travelerType([]).id,null);
  const t=travelerType([spot('WEIRD/FUNNY'),spot('HISTORICAL','WEIRD/FUNNY'),spot('FOOD & BARS'),spot('DEEP SPOT CHOICE','ART/SCULPTURE')]);
- assert.equal(t.postings,4);assert.equal(t.id,'explorer');
- assert.deepEqual(t.ranked,[['explorer',2],['poet',2],['foodie',1]]);
+ assert.equal(t.postings,4);assert.equal(t.id,'oddball');
+ assert.deepEqual(t.ranked,[['oddball',2],['history-buff',1],['forager',1],['artsy-fartsy',1]]);
  assert.equal(t.cats.some(c=>c[0]==='deep spot choice'),false);
- assert.equal(travelerType([spot('FOOD & BARS'),spot('SHOPPING')]).id,'foodie');
- assert.equal(travelerType([spot('ARCHITECTURE'),spot('SIGHTSEEING/NATURE')]).id,'shutterbug');
- assert.equal(travelerType([spot('ROADSIDE STOPS')]).id,'nomad');
- assert.equal(travelerType([{kind:'story',tag:'history & folklore'}]).id,'poet');
+ assert.equal(travelerType([spot('FOOD & BARS'),spot('SHOPPING')]).id,'forager');
+ assert.equal(travelerType([spot('ARCHITECTURE'),spot('ARCHITECTURE')]).id,'architect');
+ assert.equal(travelerType([spot('RUINS/URBEX')]).id,'urbex-rat');
+ assert.equal(travelerType([{kind:'story',tag:'history & folklore'}]).id,'folklorist');
  assert.equal(travelerType([spot('UNKNOWN TAG')]).id,null);
 });
 test('ties go to the first style in the list',()=>{
- const t=travelerType([{kind:'spot',tags:['HISTORICAL']},{kind:'spot',tags:['FOOD & BARS']}]);assert.equal(t.id,'foodie');
+ const t=travelerType([{kind:'spot',tags:['HISTORICAL']},{kind:'spot',tags:['FOOD & BARS']}]);assert.equal(t.id,'history-buff');
 });
 test('standing finds rank, points and the gap to the next rank',()=>{
  const lb={allTime:[{name:'Kris',points:6800},{name:'Wayfarer',points:2100},{name:'Six',points:250}],monthly:[{name:'Kris',points:6800},{name:'Six',points:250}]};

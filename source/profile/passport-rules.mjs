@@ -13,14 +13,18 @@ export function memberLevel(level){let name=memberLevels[0][1];for(const [from,t
 export const memberRange=index=>{const from=memberLevels[index][0],next=memberLevels[index+1];return next?(next[0]-from>1?`${from}–${next[0]-1}`:String(from)):from+'+';};
 // Catalog tag (lowercase) -> traveler style id (travelerStyles in account-state.mjs). One table, edit here.
 export const TAG_TYPE={
- 'weird/funny':'explorer','ruins/urbex':'explorer','cryptids/monsters':'explorer','geology/caves':'explorer','endangered':'explorer','infrastructure/industry':'explorer','military/war':'explorer',
- 'food & bars':'foodie','inns/hotels':'foodie','shopping':'foodie',
- 'architecture':'shutterbug','sightseeing/nature':'shutterbug','parks/gardens':'shutterbug','aquatic':'shutterbug','hotsprings':'shutterbug','zoos/aquariums':'shutterbug','castles/estates':'shutterbug',
- 'historical':'poet','art/sculpture':'poet','museums':'poet','religious':'poet','cemeteries/death':'poet','science/technology':'poet','retro':'poet',
- 'roadside stops':'nomad','recreation':'nomad','amusement parks':'nomad'
+ 'weird/funny':'oddball','roadside stops':'oddball','ruins/urbex':'urbex-rat','caves/ruins':'worm-lord','cryptids/monsters':'monster-hunter','cemeteries/death':'undertaker','retro':'liminalist',
+ 'geology/caves':'rock-hound','sightseeing/nature':'trailblazer','nature':'trailblazer','aquatic':'beach-bum','hotsprings':'hot-spring-hunter','parks/gardens':'botanist',
+ 'historical':'history-buff','castles/estates':'history-buff','shrines and castles':'history-buff','endangered':'archaeologist','religious':'prophet','temples':'prophet',
+ 'military/war':'warlord','museums':'museum-snob','zoos and museums':'museum-snob',
+ 'food & bars':'forager','food and bars':'forager','shopping':'forager',
+ 'science/technology':'science-geek','infrastructure/industry':'bureaucrat',
+ 'art/sculpture':'artsy-fartsy','architecture':'architect','art/architecture':'architect',
+ 'recreation':'adrenaline-junkie','amusement parks':'adrenaline-junkie','inns/hotels':'nomad','zoos/aquariums':'furball'
 };
-export const STORY_TYPE={'history & folklore':'poet','history & walking':'poet','urban legends':'poet','living traditions':'poet','people & culture':'poet','food & ritual':'foodie','nature':'shutterbug'};
-export const typeOrder=['explorer','foodie','shutterbug','poet','nomad'];
+export const STORY_TYPE={'history & folklore':'folklorist','urban legends':'ghost-hunter','history & walking':'history-buff','living traditions':'anthropologist','people & culture':'anthropologist','food & ritual':'taboo-gourmand','nature':'trailblazer'};
+// Tie order = the archetype list order (travelerStyles in account-state.mjs).
+export const typeOrder=['occultist','urbex-rat','dungeon-diver','ghost-hunter','monster-hunter','oddball','conspiracy-theorist','undertaker','folklorist','liminalist','mad-scientist','rock-hound','worm-lord','trailblazer','beach-bum','pirate','hot-spring-hunter','happy-camper','archaeologist','prophet','history-buff','warlord','museum-snob','anthropologist','prospector','jailbird','decadent-gourmand','taboo-gourmand','forager','night-goblin','pub-crawler','science-geek','astronaut','grease-monkey','bureaucrat','futurist','botanist','artsy-fartsy','weeb','bookworm','architect','mystic','adrenaline-junkie','nomad','furball'];
 // records: [{kind:'spot'|'story', tags:[…], tag:'…'}]. Each posting adds one point to every style its categories map to.
 export function travelerType(records){
  const cats=new Map(),score={};

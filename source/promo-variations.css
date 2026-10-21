@@ -10,17 +10,17 @@ html body .ed-promos .ed-promo[class*="pv-"] .ed-promo-copy{position:absolute;in
 html body .ed-promos .ed-promo[class*="pv-"] h3{margin:0;font-weight:800;line-height:.92;letter-spacing:-.045em;color:inherit;text-shadow:none}
 html body .ed-promos .ed-promo[class*="pv-"]:is(.ed-week,.ed-road) h3{white-space:nowrap}
 html body .ed-promos .ed-promo[class*="pv-"] h3 i{font-style:normal}
-html body .ed-promos .ed-promo[class*="pv-"] button{position:relative;display:inline-block;margin:0;min-height:0;padding:0 0 7px;font:12px/1 Arial,Helvetica,sans-serif;letter-spacing:0;text-transform:none;color:inherit;background:none;border:0;border-bottom:1px solid currentColor;border-radius:0;cursor:pointer;pointer-events:auto;white-space:nowrap}
+html body .ed-promos .ed-promo[class*="pv-"] button{position:relative;display:inline-block;margin:0;min-height:0;padding:0 0 7px;font:15px/1 Arial,Helvetica,sans-serif;letter-spacing:0;text-transform:none;color:inherit;background:none;border:0;border-bottom:1px solid currentColor;border-radius:0;cursor:pointer;pointer-events:auto;white-space:nowrap}
 html body .ed-promos .ed-promo[class*="pv-"] button:after{content:'';position:absolute;inset:-14px -8px -4px}
 html body .ed-promos .ed-promo[class*="pv-"] .ed-prize{font-weight:800}
 html body .ed-promos .ed-promo[class*="pv-"] .ed-seal{position:absolute;z-index:3;width:max(70px,calc(var(--u)*96));height:max(70px,calc(var(--u)*96));font-size:0;border-radius:50%;background:#07d653;color:#0b1b27;box-shadow:0 6px 20px -6px #0007;animation:none}
 html body .ed-promos .ed-promo[class*="pv-"] .ed-seal-star{inset:35%;width:30%;height:30%;stroke:#0b1b27;stroke-width:2.6}
-html body .ed-promos .ed-promo[class*="pv-"] .ed-place{position:absolute;z-index:3;max-width:none;font:11px/1.3 Arial,Helvetica,sans-serif;letter-spacing:.2px;color:#fbfaf5}
+html body .ed-promos .ed-promo[class*="pv-"] .ed-place{position:absolute;z-index:3;max-width:none;font:14px/1.3 Arial,Helvetica,sans-serif;letter-spacing:.2px;color:#fbfaf5}
 html body .ed-promos .ed-promo[class*="pv-"] .ed-dots{z-index:0}
 /* photo print */
 html body .ed-promos .ed-promo[class*="pv-"] .pv-print{position:absolute;z-index:1;margin:0;box-sizing:border-box;left:calc(var(--u)*var(--x));bottom:calc(var(--u)*var(--b));width:calc(var(--u)*var(--w));padding:calc(var(--u)*4) calc(var(--u)*4) calc(var(--u)*14);background:#fbfaf5;box-shadow:0 1px 0 #0b1b2714,0 10px 24px -8px #0b1b2766;transform:rotate(calc(var(--r)*1deg));transform-origin:50% 100%;translate:0 0;transition:translate .35s cubic-bezier(.22,1,.36,1)}
 html body .ed-promos .ed-promo[class*="pv-"] .pv-print img{display:block;width:100%;height:calc(var(--u)*var(--h));object-fit:cover}
-html body .ed-promos .ed-promo[class*="pv-"] .pv-print b{position:absolute;top:calc(var(--u)*-10);left:calc(var(--u)*-10);width:max(20px,calc(var(--u)*28));height:max(20px,calc(var(--u)*28));display:grid;place-items:center;border-radius:50%;background:#3c60ff;color:#fbfaf5;font-size:max(11px,calc(var(--u)*14));font-weight:700;line-height:1;box-shadow:0 0 0 max(2px,calc(var(--u)*3)) #fbfaf5}
+html body .ed-promos .ed-promo[class*="pv-"] .pv-print b{position:absolute;top:calc(var(--u)*-10);left:calc(var(--u)*-10);width:max(20px,calc(var(--u)*28));height:max(20px,calc(var(--u)*28));display:grid;place-items:center;border-radius:50%;background:#3c60ff;color:#fbfaf5;font-size:max(14px,calc(var(--u)*14));font-weight:700;line-height:1;box-shadow:0 0 0 max(2px,calc(var(--u)*3)) #fbfaf5}
 html body .ed-promos .ed-promo[class*="pv-"] .pv-print.pv-first b{background:#0b1b27;color:#07d653}
 html body .ed-promos .ed-promo[class*="pv-"] .pv-print.pv-last b{left:auto;right:calc(var(--u)*-10)}
 html body .ed-promos .ed-promo[class*="pv-"]:hover .pv-print{translate:0 -4px}
@@ -46,7 +46,7 @@ html body .ed-promos .ed-promo.pv-c1{background:#07d653;color:#0b1b27!important}
 html body .ed-promos .ed-promo.pv-c1 .pv-base{position:absolute;left:calc(var(--u)*14);width:calc(var(--u)*326);bottom:calc(var(--u)*36);height:2px;background:#0b1b27}
 html body .ed-promos .ed-promo.pv-c1 .ed-promo-copy{top:calc(var(--u)*22);right:calc(var(--u)*24);text-align:right}
 html body .ed-promos .ed-promo.pv-c1 .ed-prize{display:block;font-size:calc(var(--u)*84);line-height:.86;letter-spacing:-.06em;color:#0b1b27}
-html body .ed-promos .ed-promo.pv-c1 .ed-prize-line{display:block;margin-top:calc(var(--u)*8);font-size:max(13px,calc(var(--u)*17));letter-spacing:-.02em}
+html body .ed-promos .ed-promo.pv-c1 .ed-prize-line{display:block;margin-top:calc(var(--u)*8);font-size:max(15.5px,calc(var(--u)*17));letter-spacing:-.02em}
 html body .ed-promos .ed-promo.pv-c1 button{margin-top:max(10px,calc(var(--u)*14))}
 
 /* ---- C2 photo in type ---- */
@@ -55,7 +55,7 @@ html body .ed-promos .ed-promo.pv-c2 .ed-promo-copy{top:0;bottom:calc(var(--u)*2
 html body .ed-promos .ed-promo.pv-c2 h3{display:contents}
 html body .ed-promos .ed-promo.pv-c2 .ed-prize{margin-top:calc(var(--u)*14);width:max-content;font-size:calc(var(--u)*196);line-height:.86;letter-spacing:-.06em;color:#0b1b27;background:url(/spots/rummu.jpg) 50% 45%/cover no-repeat;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;-webkit-text-stroke:max(2px,calc(var(--u)*3)) #0b1b27;filter:drop-shadow(calc(var(--u)*5) calc(var(--u)*5) 0 #0b1b27)}
 @supports not ((-webkit-background-clip:text) or (background-clip:text)){html body .ed-promos .ed-promo.pv-c2 .ed-prize{color:#0b1b27;-webkit-text-fill-color:#0b1b27;background:none;-webkit-text-stroke:0}}
-html body .ed-promos .ed-promo.pv-c2 .ed-prize-line{margin-top:auto;font-size:max(13px,calc(var(--u)*18));letter-spacing:-.02em}
+html body .ed-promos .ed-promo.pv-c2 .ed-prize-line{margin-top:auto;font-size:max(15.5px,calc(var(--u)*18));letter-spacing:-.02em}
 html body .ed-promos .ed-promo.pv-c2 button{margin-top:max(10px,calc(var(--u)*12))}
 html body .ed-promos .ed-promo.pv-c2 .pv-badge{position:absolute;z-index:5;right:calc(var(--u)*24);bottom:calc(var(--u)*24);width:max(40px,calc(var(--u)*58));height:max(40px,calc(var(--u)*58));display:grid;place-items:center;border-radius:50%;background:#3c60ff;color:#fbfaf5;font-size:max(20px,calc(var(--u)*30));font-weight:800;line-height:1;box-shadow:0 0 0 max(3px,calc(var(--u)*4)) #fbfaf5}
 
@@ -63,7 +63,7 @@ html body .ed-promos .ed-promo.pv-c2 .pv-badge{position:absolute;z-index:5;right
 html body .ed-promos .ed-promo.pv-c3{background:#07d653;color:#0b1b27!important}
 html body .ed-promos .ed-promo.pv-c3 .pv-rows{position:absolute;left:calc(var(--u)*24);top:0;bottom:0;width:calc(var(--u)*228);display:flex;flex-direction:column;justify-content:center;gap:calc(var(--u)*16)}
 html body .ed-promos .ed-promo.pv-c3 .pv-row{display:flex;align-items:center;gap:max(5px,calc(var(--u)*10))}
-html body .ed-promos .ed-promo.pv-c3 .pv-row b{flex:none;width:max(20px,calc(var(--u)*30));height:max(20px,calc(var(--u)*30));display:grid;place-items:center;border-radius:50%;background:#3c60ff;color:#fbfaf5;font-size:max(11px,calc(var(--u)*15));font-weight:700;line-height:1}
+html body .ed-promos .ed-promo.pv-c3 .pv-row b{flex:none;width:max(20px,calc(var(--u)*30));height:max(20px,calc(var(--u)*30));display:grid;place-items:center;border-radius:50%;background:#3c60ff;color:#fbfaf5;font-size:max(14px,calc(var(--u)*15));font-weight:700;line-height:1}
 html body .ed-promos .ed-promo.pv-c3 .pv-row:first-child b{background:#0b1b27;color:#07d653}
 html body .ed-promos .ed-promo.pv-c3 .pv-row img{flex:none;display:block;box-sizing:border-box;width:max(34px,calc(var(--u)*60));height:max(34px,calc(var(--u)*60));object-fit:cover;border:max(2px,calc(var(--u)*3)) solid #fbfaf5;box-shadow:0 8px 16px -8px #0b1b2766}
 html body .ed-promos .ed-promo.pv-c3 .pv-track{flex:1;min-width:0;height:max(12px,calc(var(--u)*22));background:#0b1b2722}
@@ -71,7 +71,7 @@ html body .ed-promos .ed-promo.pv-c3 .pv-track i{display:block;height:100%;backg
 html body .ed-promos .ed-promo.pv-c3 .pv-rule{position:absolute;left:calc(var(--u)*258);top:calc(var(--u)*24);bottom:calc(var(--u)*24);width:1px;background:#0b1b2745}
 html body .ed-promos .ed-promo.pv-c3 .ed-promo-copy{top:calc(var(--u)*24);bottom:calc(var(--u)*24);left:calc(var(--u)*268);right:calc(var(--u)*24);display:flex;flex-direction:column;align-items:flex-end;text-align:right}
 html body .ed-promos .ed-promo.pv-c3 .ed-prize{display:block;font-size:calc(var(--u)*86);line-height:.86;letter-spacing:-.06em;color:#0b1b27}
-html body .ed-promos .ed-promo.pv-c3 .ed-prize-line{display:block;margin-top:calc(var(--u)*8);font-size:max(12px,calc(var(--u)*16));letter-spacing:-.02em}
+html body .ed-promos .ed-promo.pv-c3 .ed-prize-line{display:block;margin-top:calc(var(--u)*8);font-size:max(15px,calc(var(--u)*16));letter-spacing:-.02em}
 html body .ed-promos .ed-promo.pv-c3 button{margin-top:auto}
 
 /* ---- C4 prize ticket ---- */
@@ -84,7 +84,7 @@ html body .ed-promos .ed-promo.pv-c4 .pv-fan{position:absolute;z-index:-1;left:c
 html body .ed-promos .ed-promo.pv-c4 .pv-stub{position:absolute;top:0;bottom:0;right:0;width:22%;display:grid;place-items:center;background:radial-gradient(#3c60ff33 1.3px,#0000 1.6px) 50% 50%/9px 9px}
 html body .ed-promos .ed-promo.pv-c4 .pv-stub svg{position:static;inset:auto;width:max(22px,calc(var(--u)*34));height:max(22px,calc(var(--u)*34));fill:none;stroke:#3c60ff;stroke-width:2.4;stroke-linecap:round}
 html body .ed-promos .ed-promo.pv-c4 .ed-prize{display:block;font-size:calc(var(--u)*124);line-height:.86;letter-spacing:-.06em;color:#0b1b27}
-html body .ed-promos .ed-promo.pv-c4 .ed-prize-line{display:block;margin-top:calc(var(--u)*8);font-size:max(13px,calc(var(--u)*18));letter-spacing:-.02em;color:#0b1b27}
+html body .ed-promos .ed-promo.pv-c4 .ed-prize-line{display:block;margin-top:calc(var(--u)*8);font-size:max(15.5px,calc(var(--u)*18));letter-spacing:-.02em;color:#0b1b27}
 html body .ed-promos .ed-promo.pv-c4 button{color:#fbfaf5}
 
 /* ---- C5 rosette ---- */
@@ -93,7 +93,7 @@ html body .ed-promos .ed-promo.pv-c5 .pv-rosette{position:absolute;left:calc(var
 html body .ed-promos .ed-promo.pv-c5:hover .pv-rosette{rotate:4deg}
 html body .ed-promos .ed-promo.pv-c5 .ed-promo-copy{top:calc(var(--u)*34);bottom:calc(var(--u)*34);left:calc(var(--u)*236);right:calc(var(--u)*22);display:flex;flex-direction:column;align-items:flex-end;text-align:right}
 html body .ed-promos .ed-promo.pv-c5 .ed-prize{display:block;font-size:calc(var(--u)*98);line-height:.86;letter-spacing:-.06em;color:#0b1b27}
-html body .ed-promos .ed-promo.pv-c5 .ed-prize-line{display:block;margin-top:calc(var(--u)*8);font-size:max(12px,calc(var(--u)*17));letter-spacing:-.02em}
+html body .ed-promos .ed-promo.pv-c5 .ed-prize-line{display:block;margin-top:calc(var(--u)*8);font-size:max(15px,calc(var(--u)*17));letter-spacing:-.02em}
 html body .ed-promos .ed-promo.pv-c5 button{margin-top:auto}
 
 /* ---- W1 split ---- */

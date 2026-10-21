@@ -3,12 +3,13 @@ import {createPassportImage} from './passport-export.mjs?v=pv3';
 import {padHTML,initPad} from './sign-pad.mjs?v=pv3';
 import {travelerStyles,travelerMark,accountKey,readAccount,normalizeAccount} from '../site/account-state.mjs?v=pad1';
 import {memberLevels,memberRange,POINTS} from './passport-rules.mjs?v=pv2';
+import {LOOK_KEY,readLook as _readLook,readStyle as _readStyle,writeStyle,archHTML,wireArch,lookTilesHTML,styleTilesHTML,pickLook,pickStyle,mrz,moleImgHTML,stampName,cardHTML,biopHTML,syncPreview,fitPreview,bindTilt} from './passport-edit.mjs?v=ob1';
 import {escapeHTML as esc,safeReturn} from './identity.mjs';
-import {loadProfile} from './data.mjs?v=pv3';
+import {loadProfile} from './data.mjs?v=ob1';
 import {halftoneField} from '../site/halftone-field.mjs?v=2';
 import {mountGlobe} from './wtg-globe.mjs?v=wg9';
 import {itemsFor} from './items.mjs?v=it1';
-import {followHTML,exploredHTML,picksHTML,collectionsHTML,updatesHTML,counts as psCounts,bindSocial} from './profile-social.mjs?v=ps3';
+import {followHTML,exploredHTML,picksHTML,collectionsHTML,updatesHTML,counts as psCounts,bindSocial} from './profile-social.mjs?v=ps4';
 import {readWantToGo,writeWantToGo,addItem,removeAt,moveItem,WTG_MAX,WTG_NAME_MAX} from './want-to-go.mjs?v=wtg1';
 const $=selector=>document.querySelector(selector);
 let profile,toastTimer,exportPromise,exportImage;
@@ -34,13 +35,10 @@ const fmt=n=>new Intl.NumberFormat('en-US').format(n);
 const RANKC=['#07d653','#3c60ff','#f2c14e'],CATS=['#3c60ff','#07d653','#f2c14e','#e57a8a','#b69cff','#6fa8dc'];
 const sec=(id,label,count,body,act='')=>`<section class="pp-sec" aria-labelledby="pp-${id}"><header class="pp-bar"><h2 id="pp-${id}">${label}${count==null?'':` <span>(${count})</span>`}</h2>${act}</header><div class="pp-body">${body}</div></section>`;
 const empty=(title,text,link='')=>`<div class="pp-empty"><strong>${title}</strong><span>${text}</span>${link}</div>`;
-const moleHTML=(cls='')=>profile.mole?`<span class="pp-mole ${cls}" style="--mx:${moleCrop.x};--my:${moleCrop.y};--mw:${moleCrop.w}"><img src="${esc(profile.mole)}" alt="${cls?'':esc(profile.name)+'’s mole'}" ${cls?'aria-hidden="true"':''} width="512" height="512"></span>`:'';
+const moleHTML=(cls='')=>moleImgHTML(profile.mole,{cls,alt:profile.name+'’s mole'});
 /* guilloche: the fine security curves printed on real passports (two rosettes, drawn once) */
 /* foil bump: a fractal-noise height map lit by an SVG point light; the light follows the pointer, so the grain catches light like a real embossed foil */
-const BUMP=`<svg class="pp-bump" aria-hidden="true" preserveAspectRatio="none"><filter id="pp-bumpf" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3" seed="7" result="h"/><feSpecularLighting in="h" surfaceScale="2.2" specularConstant="1.1" specularExponent="18" lighting-color="#fff" result="s"><fePointLight id="pp-bumpl" x="200" y="-60" z="140"/></feSpecularLighting><feDiffuseLighting in="h" surfaceScale="2.2" diffuseConstant=".9" lighting-color="#fff" result="d"><fePointLight id="pp-bumpl2" x="200" y="-60" z="140"/></feDiffuseLighting><feComposite in="s" in2="d" operator="arithmetic" k1="0" k2="1" k3=".55" k4="0"/></filter><rect width="100%" height="100%" filter="url(#pp-bumpf)"/></svg>`;
-const mrzPad=(t,n)=>(t+'<'.repeat(n)).slice(0,n);
-const mrzName=n=>String(n||'').normalize('NFKD').replace(/[^\w ]/g,'').toUpperCase().trim().replace(/\s+/g,'<');
-function mrz(p,rank,lv){const l1=mrzPad('P<DSP'+mrzName(p.name)+'<<'+mrzName(p.handle||''),36),l2=mrzPad((rank?String(rank).padStart(3,'0'):'DRF')+'<'+mrzName(p.joined||'')+'<LVL'+String(lv?.level||1).padStart(2,'0')+'<'+mrzName(p.member||''),36);return `${esc(l1)}<br>${esc(l2)}`.replaceAll('<br>','\n').replace(/</g,'&lt;').replace(/\n/g,'<br>');}
+
 function factsHTML(){
  const own=profile.localPreview,t=profile.type||{},cat=t.cats?.[0]?.[0],rec=profile.records?.[0];
  const next=own?readWantToGo()[0]:null,nextName=next?(next.type==='spot'?(wtgBySlug.get(next.id)?.title||'a deep spot'):next.name):null;
@@ -50,11 +48,11 @@ function factsHTML(){
 }
 const sigHTML=art=>art?`<img src="${esc(art)}" alt="${esc(profile.name)}’s mark" width="512" height="256">`:'<span>no mark yet</span>';
 function typeHTML(){
- const t=profile.type,id=t.id||(profile.localPreview?profile.style:null),style=travelerStyles.find(s=>s.id===id);
+ const t=profile.type,id=(profile.localPreview&&profile.style)||t.id,style=travelerStyles.find(s=>s.id===id);
  if(!style)return empty('no type yet.','A traveler type shows up after the first posting. It is worked out from the categories of what is posted.','<a href="/contribute/" class="pp-link">add a spot ↗</a>');
  const top=t.cats.slice(0,6),rest=t.cats.slice(6).reduce((n,c)=>n+c[1],0),parts=[...top.map(([k,n],i)=>[k,n,CATS[i]]),...(rest?[['other',rest,'#8a98a6']]:[])];
  return `<div class="pp-card pp-type"><div class="pp-type-row"><span class="pp-type-mark">${travelerMark(style.id)}</span><div><h3>${esc(style.name)}.</h3><p>${esc(style.description)}</p></div></div>
- ${parts.length?`<div class="pp-catbar" role="img" aria-label="Posting categories: ${esc(parts.map(p=>p[0]+' '+p[1]).join(', '))}">${parts.map(([k,n,c])=>`<i style="flex:${n};background:${c}"></i>`).join('')}</div><ul class="pp-legend">${parts.map(([k,n,c])=>`<li><i style="background:${c}" aria-hidden="true"></i>${esc(k)} <b>${n}</b><em>${Math.round(n/parts.reduce((a,p)=>a+p[1],0)*100)}%</em></li>`).join('')}</ul>`:''}
+ ${parts.length?`<div class="pp-catbar" role="img" aria-label="Posting categories: ${esc(parts.map(p=>p[0]+' '+p[1]).join(', '))}">${parts.map(([k,n,c])=>`<i style="flex:${n};background:${c}"></i>`).join('')}</div><ul class="pp-legend">${parts.map(([k,n,c])=>`<li><i style="background:${c}" aria-hidden="true"></i><span>${esc(k).replaceAll('/','/<wbr>')}</span> <b>${n}</b><em>${Math.round(n/parts.reduce((a,p)=>a+p[1],0)*100)}%</em></li>`).join('')}</ul>`:''}
  <p class="pp-mono">${t.postings?`based on ${t.postings} ${t.postings===1?'posting':'postings'}${t.ranked.length>1?' · also '+t.ranked.slice(1).map(([sid,n])=>esc(travelerStyles.find(s=>s.id===sid).name.replace('the ',''))+' '+n).join(' · '):''}`:'your pick · postings will refine it'}</p></div>`;
 }
 function statsHTML(){
@@ -204,32 +202,25 @@ function render(){
  const mark=padHTML(profile),label=profile.localPreview?'my mark':'their mark';
  {const ks=$('.pp-share'),kb=$('.pp-back');if(ks)$('.pp-tools')?.append(ks);if(kb)$('.pp-toolbar')?.prepend(kb);}
  const own=profile.localPreview,lk=readLook();wg?.stop();wg=null;clearInterval(wgTimer);
- $('#passport').innerHTML=`<article class="pp-book" style="--pf:${profile.field}" data-tab="passport" aria-label="${esc(profile.name)}’s explorer passport">
+ $('#passport').innerHTML=`<article class="pp-book" style="--pf:${profile.field}" data-tab="passport"${own?' data-own':''} aria-label="${esc(profile.name)}’s explorer passport">
  <aside class="pp-field" aria-label="Passport"><div class="pp-bg" aria-hidden="true"><div class="pp-bg-in"></div></div><div class="pp-field-in">
   <div class="pp-halftone" aria-hidden="true"></div>
   <div class="pp-stage">
    <div class="pp-pane" id="pp-pane-pass">
     <div class="pp-passobj"><div class="pp-passobj-in">
-    <div class="pp-card pp-idcard pp-id9">${BUMP}<span class="pp-id9-wm" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M24 2v44M2 24h44M8.5 8.5l31 31m0-31-31 31"/></svg></span>
-     <div class="pp-id-top"><span class="pp-id9-crest" aria-hidden="true"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="21"/><path d="M24 8v32M8 24h32M12.7 12.7l22.6 22.6m0-22.6L12.7 35.3"/></svg></span><span class="pp-id9-title"><b>deepspot</b><i>explorer passport · pasaporte · パスポート</i></span><span class="pp-id9-no">${rank?'no. '+String(rank).padStart(3,'0'):own?'draft':''}</span></div>
-     <div class="pp-id-body"><div class="pp-molebox">${mole}${lv?`<span class="pp-lvl" role="img" aria-label="Level ${lv.level}"><b>${lv.level}</b><i>lvl</i></span>`:''}<span class="pp-id9-stamp" aria-hidden="true"><b>${esc((travelerStyles.find(x=>x.id===(profile.type.id||(own?profile.style:null)))?.name||'explorer').replace(/^the /,''))}</b><i>${esc(profile.member)}</i></span></div>
-      <dl class="pp-rows"><div><dt>name</dt><dd id="pp-name">${esc(profile.name)}</dd></div><div><dt>user</dt><dd>${profile.handle?'@'+esc(profile.handle):'—'}</dd></div><div><dt>since</dt><dd>${esc(profile.joined||'—')}</dd></div><div><dt>level</dt><dd>${esc(profile.member)}</dd></div></dl></div>
-     <div class="pp-sig pp-id9-sig" id="pp-sig"><span class="pp-sig-l">${own?'my mark':'their mark'}</span>${sigHTML(profile.signatureArt)}</div>
-     ${lv?`<div class="pp-prog"><div class="pp-bar4" role="progressbar" aria-label="Progress to level ${lv.level+1}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${lv.pct}"><i style="width:${Math.max(lv.pct,2)}%"></i></div><span>${fmt(lv.points)} / ${fmt(lv.to)} pts</span></div>`:''}
-     <span class="pp-readable-code pp-id9-mrz" aria-hidden="true">${mrz(profile,rank,lv)}</span></div>
+    ${cardHTML({no:rank?'no. '+String(rank).padStart(3,'0'):own?(localStorage.getItem('deepspot-onboarded-v1')?'issued':'draft'):'',mole,lv,stamp:{name:stampName((own&&profile.style)||profile.type.id),sub:profile.member},name:profile.name,nameId:'pp-name',handle:profile.handle,joined:profile.joined,member:profile.member,sigId:'pp-sig',sigLabel:own?'my mark':'their mark',sig:sigHTML(profile.signatureArt),mrz:mrz(profile,rank,lv)})}
     </div></div>
    </div>
    ${deckHTML()}
    <div class="pp-pane" id="pp-pane-mark" hidden>${own?mark+'<div class="pp-markdone"><button type="button" class="pp-chipbtn" data-mark-done>back to passport</button></div>':''}</div>
   </div></div></aside>
  <div class="pp-rec">
-  <section class="pp-sec pp-biosec" aria-labelledby="pp-bio" data-bg="${lk.bg}" data-font="${lk.font}" data-align="${lk.align}"><header class="pp-bar"><h2 id="pp-bio">bio</h2>${own?`<div class="pp-bar-acts"><button type="button" class="pp-chipbtn pp-editbtn" data-edit aria-expanded="false">edit profile</button><button type="button" class="pp-cog" data-settings aria-label="Settings" title="Settings">${COG}</button></div>`:''}</header>
+  <section class="pp-sec pp-biosec" aria-labelledby="pp-bio" data-bg="${lk.bg}" data-font="${lk.font}" data-align="${lk.align}"><header class="pp-bar"><h2 id="pp-bio">bio</h2>${own?`<div class="pp-bar-acts"><button type="button" class="pp-chipbtn pp-editbtn" data-edit aria-haspopup="dialog" aria-expanded="false">edit profile</button><button type="button" class="pp-cog" data-settings aria-label="Settings" title="Settings">${COG}</button></div>`:''}</header>
    <div class="pp-body pp-bio-body" id="pp-bio-view">
     <div class="pp-bio-top">${mini}<div class="pp-bio-id"><h1 class="pp-bio-name">${esc(profile.name)}</h1><div class="ps-idrow"><span class="pp-handle">${profile.handle?'@'+esc(profile.handle):'DeepSpot contributor'}</span>${followHTML(profile,own)}</div></div>${lv?`<span class="pp-badge" role="img" aria-label="Level ${lv.level}"><b>${lv.level}</b><i>level</i></span>`:''}</div>
     <div class="pp-bio-fit">${profile.bio?`<p class="pp-bio-text">${esc(profile.bio)}</p>`:`<p class="pp-bio-text pp-bio-empty">${own?'say something. edit profile to write your bio.':'no bio yet.'}</p>`}</div>
     ${factsHTML()}
    </div>
-   ${own?editHTML(lk):''}
   </section>
   <div class="pp-statsrow">${sec('type','traveler type',null,typeHTML())}${sec('stats','contributions',null,statsHTML())}</div>
   <section class="pp-sec pp-tabsec" aria-label="Passport contents"><div class="pp-vtabs" role="tablist" aria-orientation="vertical" aria-label="Passport contents">${VTABS.map(([id,label],i)=>`<button type="button" role="tab" class="pp-vtab" id="pp-vt-${id}" data-vt="${id}" aria-controls="pp-vp-${id}" aria-selected="${i===0}" tabindex="${i===0?0:-1}">${label}${id==='wtg'&&own&&wgAll().length?` <span>${wgAll().length}</span>`:id==='contrib'&&profile.records.length?` <span>${profile.records.length}</span>`:psCounts(own)[id]?` <span>${psCounts(own)[id]}</span>`:''}</button>`).join('')}</div>
@@ -244,7 +235,7 @@ function render(){
     <div class="pp-vpanel" role="tabpanel" id="pp-vp-items" aria-labelledby="pp-vt-items" tabindex="0" hidden>${sub(`items <span>(${allItems().filter(x=>!x.locked).length}/${allItems().length})</span>`,itemsHTML(),'<span class="pp-mono pp-ph">placeholder</span>')}${sub('giveaway',giveawayHTML())}</div>
    </div>
   </section>
- </div></article>`;
+ </div></article>${own?editHTML(lk):''}`;
  wireV4();applyStyle();
  $('#passport').setAttribute('aria-busy','false');$('.pp-share').disabled=false;
  /* soft ambient field: Earth glyphs on slow turbulent noise (same module as the community race), very low strength, fills the whole left column (sticky viewport-sized layer, so the cost stays one screen) */
@@ -287,24 +278,40 @@ document.addEventListener('keydown',event=>{const tb=event.target.closest?.('.pp
 /* ---------- v5 (2026-10-20): passport object, edit in place, bio look, vertical tabs ---------- */
 const VTABS=[['show','showcase'],['explored','explored'],['wtg','my map'],['picks','picks'],['contrib','contributions'],['items','items']];
 const sub=(title,body,act='')=>`<div class="pp-sub"><div class="pp-sub-h"><h3>${title}</h3>${act}</div>${body}</div>`;
-const LOOK_KEY='deepspot-bio-look-v1',PIN_KEY='deepspot-showcase-v1';
-const LOOKS={bg:[['panel','plain'],['green','green'],['cobalt','cobalt'],['aqua','aqua'],['cream','paper'],['ink','ink']],font:[['display','bold'],['serif','serif'],['mono','type'],['hand','hand']],align:[['left','left'],['center','center']]};
-function readLook(){const d={bg:'panel',font:'display',align:'left'};if(!profile?.localPreview)return d;try{const v=JSON.parse(localStorage.getItem(LOOK_KEY))||{};for(const k in d)if(LOOKS[k].some(([id])=>id===v[k]))d[k]=v[k];}catch{}return d;}
+const PIN_KEY='deepspot-showcase-v1';
+
+const readLook=()=>_readLook(!!profile?.localPreview);
 function readPins(){try{const v=JSON.parse(localStorage.getItem(PIN_KEY));return Array.isArray(v)?v.filter(x=>typeof x==='string').slice(0,12):[];}catch{return [];}}
 function writePins(v){try{localStorage.setItem(PIN_KEY,JSON.stringify(v));}catch{}}
 const pinBtn=r=>{const on=readPins().includes(r.href);return `<button type="button" class="pp-pin" data-pin="${esc(r.href)}" aria-pressed="${on}" aria-label="${on?'remove':'show'} ${esc(r.name)} ${on?'from':'on'} your showcase">${on?'★ showing':'☆ show'}</button>`;};
+const ED_SECS=[['who','who you are','who'],['arch','traveler archetype','archetype'],['look','bio look','look'],['style','passport style','style'],['mark','your mark + mole','mark']];
+
+
+
 function editHTML(lk){
- const d=readAccount(),grp=(k,label)=>`<fieldset class="pp-look"><legend>${label}</legend>${LOOKS[k].map(([id,l])=>`<label class="pp-look-o pp-look-${k}" data-v="${id}"><input type="radio" name="pp-look-${k}" value="${id}"${lk[k]===id?' checked':''}><span>${l}</span></label>`).join('')}</fieldset>`;
- return `<form class="pp-body pp-edit" id="pp-edit" hidden novalidate><div class="pp-edit-grid">
-  <label class="pp-f"><span>name</span><input name="name" maxlength="50" value="${esc(d.name)}" autocomplete="nickname"></label>
-  <label class="pp-f"><span>username</span><input name="username" maxlength="20" value="${esc(d.username)}" autocomplete="username"></label>
-  <label class="pp-f pp-f-wide"><span>bio <i id="pp-bio-n">${d.bio.length}/400</i></span><textarea name="bio" maxlength="400" rows="3" placeholder="who you are, where you go, what you look for.">${esc(d.bio)}</textarea></label>
+ const d=readAccount(),st=readStyle();
+
+
+ const sec=(i,title,body,extra='')=>`<section class="ed-sec" id="ed-s-${ED_SECS[i][0]}" aria-labelledby="ed-h-${ED_SECS[i][0]}" data-sec="${ED_SECS[i][0]}"><h3 id="ed-h-${ED_SECS[i][0]}"><span class="ed-n" aria-hidden="true">0${i+1}</span>${title}</h3>${extra}${body}</section>`;
+ return `<dialog class="pp-editdlg" id="pp-editdlg" aria-labelledby="ed-title"><form class="ed-form" id="pp-edit" novalidate>
+ <div class="ed-main">
+  <aside class="ed-prev ed-stage" data-bg="${st.bg}" aria-hidden="true" inert><div class="ed-prev-in"><div class="ed-cardw"><div class="ed-scale"><div class="pp-passobj-in ed-pobj" data-foil="${st.foil}"></div></div></div>
+   ${biopHTML(lk)}</div><span class="ed-plabel">live preview</span></aside>
+  <div class="ed-right">
+   <div class="ed-top"><nav class="ed-index" aria-label="Edit sections">${ED_SECS.map(([id,l,sh],i)=>`<a href="#ed-s-${id}" data-ed-go="${id}" aria-label="0${i+1} ${l}" title="${l}"><b aria-hidden="true">0${i+1}</b><span aria-hidden="true">${sh}</span></a>`).join('')}</nav><button type="button" class="ed-x" data-ed-close aria-label="Close editor"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+   <h2 class="ed-title" id="ed-title">edit your passport<span>.</span></h2>
+   ${sec(0,'who you are',`<div class="ed-fields"><label class="ed-f"><span>name</span><input name="name" maxlength="50" value="${esc(d.name)}" autocomplete="nickname"></label><label class="ed-f"><span>username</span><input name="username" maxlength="20" value="${esc(d.username)}" autocomplete="username"></label><label class="ed-f ed-f-wide"><span>bio <i id="pp-bio-n">${d.bio.length}/400</i></span><textarea name="bio" maxlength="400" rows="4" placeholder="who you are, where you go, what you look for.">${esc(d.bio)}</textarea></label></div>`)}
+   ${sec(1,'traveler archetype',archHTML(d.style),'<p class="ed-lead">pick the traveler you are. it prints on your passport.</p>')}
+   ${sec(2,'bio look',lookTilesHTML(lk),'<p class="ed-lead">how your bio block looks on your page.</p>')}
+   ${sec(3,'passport style',customizeHTML(),'<p class="ed-lead">the field behind your passport and the foil on the card. more unlock at launch.</p>')}
+   ${sec(4,'your mark + mole',`<div class="ed-bigbtns"><button type="button" class="ed-big" data-draw><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l1-4L16.5 4.5a2 2 0 0 1 3 3L8 19z"/><path d="M14 7l3 3"/></svg><span><b>draw my mark</b><i>sign your passport on the pad</i></span></button><button type="button" class="ed-big" data-set-roll><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="4"/><circle cx="9" cy="9" r="1.3"/><circle cx="15" cy="9" r="1.3"/><circle cx="9" cy="15" r="1.3"/><circle cx="15" cy="15" r="1.3"/></svg><span><b>${d.mole?'roll a new mole':'roll my mole'}</b><i>your face on the passport</i></span></button></div><p class="ed-lead ed-lead-b">the editor closes first.</p>`)}
+  </div>
  </div>
- ${grp('bg','bio background')}${grp('font','type')}${grp('align','align')}<div class="pp-edit-cz">${customizeHTML()}</div>
- <div class="pp-edit-acts"><button type="button" class="pp-chipbtn" data-draw>draw my mark</button><button type="button" class="pp-chipbtn" data-set-roll>${readAccount().mole?'roll a new mole':'roll my mole'}</button><span class="pp-edit-sp"></span><button type="button" class="pp-chipbtn" data-cancel>cancel</button><button type="submit" class="pp-savebtn">save profile</button></div></form>`;
+ <footer class="ed-foot"><span class="ed-dirty" role="status" aria-live="polite"><i aria-hidden="true"></i><b>no changes yet</b></span><span class="ed-sp"></span><button type="button" class="ed-ghost" data-cancel>cancel</button><button type="submit" class="ed-save">save profile</button></footer>
+</form></dialog>`;
 }
 function showcaseHTML(){
- const t=profile.type||{},sid=t.id||(profile.localPreview?profile.style:null),style=sid&&travelerStyles.find(s=>s.id===sid);
+ const t=profile.type||{},sid=(profile.localPreview&&profile.style)||t.id,style=sid&&travelerStyles.find(s=>s.id===sid);
  const pins=readPins(),recs=profile.records,picked=pins.map(h=>recs.find(r=>r.href===h)).filter(Boolean),list=picked.length?picked:recs.slice(0,6);
  const tcard=style?`<div class="pp-show-type"><span class="pp-type-mark">${travelerMark(style.id)}</span><div><span class="pp-mono">traveler type</span><strong>${esc(style.name)}.</strong></div></div>`:'';
  const grid=list.length?`<ul class="pp-posts pp-show-posts">${list.map(r=>`<li class="pp-post"><a href="${esc(r.href)}"><span class="pp-post-img">${r.image?`<img src="${esc(r.card||r.image)}" data-orig="${esc(r.image)}" alt="" width="400" height="300" loading="lazy" decoding="async">`:'<span class="pp-no-photo" aria-hidden="true">deep<br>spot.</span>'}</span><span class="pp-post-copy"><span class="pp-mono">${esc(r.place||'')}</span><strong>${esc(r.name)}</strong></span></a></li>`).join('')}</ul>`:'';
@@ -332,18 +339,62 @@ function wireV4(){
   if(n!==null){e.preventDefault();selectVT(ids[n],true);}});
  requestAnimationFrame(fitBio);
  const form=$('#pp-edit');if(!form)return;
- const sec=$('.pp-biosec'),view=$('#pp-bio-view'),btn=$('[data-edit]'),book=$('.pp-book');
- const setEdit=on=>{form.hidden=!on;view.hidden=on;btn.setAttribute('aria-expanded',String(on));btn.textContent=on?'editing…':'edit profile';book.toggleAttribute('data-editing',on);if(on)form.querySelector('input').focus();else{Object.assign(sec.dataset,readLook());setTab('passport');requestAnimationFrame(fitBio);}};
- btn.addEventListener('click',()=>setEdit(form.hidden));
- form.addEventListener('change',e=>{const m=e.target.name?.match(/^pp-look-(\w+)$/);if(m)sec.dataset[m[1]]=e.target.value;});
+ const dlg=$('#pp-editdlg'),sec=$('.pp-biosec'),btn=$('[data-edit]'),root=document.documentElement;
+ const calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
+ const stage=dlg.querySelector('.ed-prev'),cardw=dlg.querySelector('.ed-cardw'),scale=dlg.querySelector('.ed-scale'),pobj=dlg.querySelector('.ed-pobj'),biop=dlg.querySelector('.ed-biop'),dirtyEl=dlg.querySelector('.ed-dirty'),right=dlg.querySelector('.ed-right'),main=dlg.querySelector('.ed-main');
+ const arch=wireArch(form),archShow=arch.show,archSel=arch.sel;
+ const snap=()=>JSON.stringify([...new FormData(form)]);
+ let base=snap(),keep=false,saved=false;
+ const src=document.querySelector('.pp-id9');
+ if(src){const c=src.cloneNode(true);c.removeAttribute('id');c.querySelectorAll('[id]').forEach(n=>n.removeAttribute('id'));c.querySelectorAll('button').forEach(b=>{const s=document.createElement('span');s.className=b.className;s.innerHTML=b.innerHTML;b.replaceWith(s);});c.querySelectorAll('[data-set-roll]').forEach(n=>n.removeAttribute('data-set-roll'));pobj.append(c);}
+ const upd=()=>{
+  const v=n=>form.elements[n]?.value||'',look=pickLook(form);
+  syncPreview({stage,pobj,biop},{name:v('name'),username:v('username'),bio:v('bio'),arch:archSel(),foil:form.querySelector('[name=cz-foil]:checked')?.value||'none',bg:form.querySelector('[name=cz-bg]:checked')?.value||'halftone',look},{empty:'—'});
+  const dirty=snap()!==base;dirtyEl.dataset.dirty=String(dirty);dirtyEl.querySelector('b').textContent=dirty?'unsaved changes':'no changes yet';
+ };
+ const scroller=()=>getComputedStyle(right).display==='contents'?main:right;
+ const fit=()=>{if(!dlg.open)return;const phone=innerWidth<=900;fitPreview({stage,cardw,scale,card:pobj.firstElementChild,biop},{reserve:phone?0:150,padW:phone?64:56,maxScale:phone?.56:1,byHeight:!phone});};
+ const spy=()=>{
+  const sc=scroller(),top=sc.getBoundingClientRect().top+sc.clientHeight*.42;let cur=ED_SECS[0][0];
+  dlg.querySelectorAll('.ed-sec').forEach(s=>{if(s.getBoundingClientRect().top<=top)cur=s.dataset.sec;});
+  if(sc.scrollTop+sc.clientHeight>=sc.scrollHeight-4)cur=ED_SECS[ED_SECS.length-1][0];
+  dlg.querySelectorAll('[data-ed-go]').forEach(a=>{if(a.dataset.edGo===cur)a.setAttribute('aria-current','true');else a.removeAttribute('aria-current');});
+ };
+ right.addEventListener('scroll',spy,{passive:true});main.addEventListener('scroll',spy,{passive:true});
+ dlg.querySelector('.ed-index').addEventListener('click',e=>{const a=e.target.closest('[data-ed-go]');if(!a)return;e.preventDefault();const t=dlg.querySelector('#ed-s-'+a.dataset.edGo),sc=scroller();sc.scrollTo({top:sc.scrollTop+t.getBoundingClientRect().top-sc.getBoundingClientRect().top-96,behavior:calm?'auto':'smooth'});});
+ const openEd=()=>{
+  if(dlg.open)return;keep=false;saved=false;form.reset();archShow(archSel());base=snap();upd();
+  dlg.showModal();root.classList.add('ed-open');btn.setAttribute('aria-expanded','true');
+  right.scrollTop=0;main.scrollTop=0;fit();spy();form.name.focus({preventScroll:true});requestAnimationFrame(()=>{fit();spy();});
+ };
+ const closeEd=(k=false)=>{keep=k;if(dlg.open)dlg.close();};
+ dlg.addEventListener('close',()=>{
+  root.classList.remove('ed-open');btn.setAttribute('aria-expanded','false');
+  if(saved)return;
+  if(!keep){form.reset();archShow(archSel());$('#pp-bio-n').textContent=form.bio.value.length+'/400';applyStyle();Object.assign(sec.dataset,readLook());upd();}
+  requestAnimationFrame(fitBio);btn.focus({preventScroll:true});
+ });
+ btn.addEventListener('click',openEd);
+ dlg.addEventListener('click',e=>{if(e.target===dlg)closeEd();});
+ dlg.querySelector('[data-ed-close]').addEventListener('click',()=>closeEd());
+ form.querySelector('[data-cancel]').addEventListener('click',()=>closeEd());
+ addEventListener('resize',()=>{if(dlg.open)requestAnimationFrame(()=>{fit();spy();});});
+ form.addEventListener('input',upd);
+ form.addEventListener('change',upd);
+
+
+
  form.bio.addEventListener('input',()=>{$('#pp-bio-n').textContent=form.bio.value.length+'/400';});
- form.querySelector('[data-cancel]').addEventListener('click',()=>{applyStyle();setEdit(false);});
- form.querySelector('[data-draw]').addEventListener('click',()=>{setTab('mark');$('#pp-pane-mark button')?.focus();});
+ /* hover tilt on the preview card (mouse only) */
+ bindTilt(stage,cardw,pobj);
+ form.querySelector('[data-draw]').addEventListener('click',()=>{closeEd(true);setTab('mark');$('#pp-pane-mark button')?.focus();});
+ form.querySelector('[data-set-roll]').addEventListener('click',()=>{closeEd(true);});
  form.addEventListener('submit',async e=>{e.preventDefault();
-  const d=readAccount(),next=normalizeAccount({...d,name:form.name.value,username:form.username.value,bio:form.bio.value});
-  const look={};for(const k of Object.keys(LOOKS))look[k]=form.querySelector(`[name=pp-look-${k}]:checked`)?.value;
+  const d=readAccount(),next=normalizeAccount({...d,name:form.name.value,username:form.username.value,bio:form.bio.value,style:form.querySelector('[name=pp-arch]:checked')?.value||d.style});
+  const look=pickLook(form);
   writeStyle(czPick());
   try{localStorage.setItem(accountKey,JSON.stringify(next));localStorage.setItem(LOOK_KEY,JSON.stringify(look));}catch{notify('This browser could not save your profile.');return;}
+  saved=true;dlg.close();root.classList.remove('ed-open');
   profile=await loadProfile('preview');render();notify('Profile saved on this browser.');$('[data-edit]')?.focus();
  });
 }
@@ -409,7 +460,7 @@ const readSess=()=>{try{const v=JSON.parse(localStorage.getItem(SESSION_KEY))||{
 const ACCOUNT_LINKS=[['progress','travel stats'],['trips','my trips'],['submissions','my submissions'],['placements','my placements'],['billing','membership'],['notifications','notifications'],['security','account settings']];
 function settingsHTML(){
  const d=readAccount(),s=readSess(),moleImg=d.mole?.png;
- const styles=travelerStyles.map(t=>`<label class="pp-look-o pp-set-style"><input type="radio" name="style" value="${t.id}"${d.style===t.id?' checked':''}><span>${travelerMark(t.id)}${esc(t.name.replace(/^the /,''))}</span></label>`).join('');
+ const opt=t=>`<label class="pp-look-o pp-set-style" title="${esc(t.description)}"><input type="radio" name="style" value="${t.id}"${d.style===t.id?' checked':''}><span>${travelerMark(t.id)}${esc(t.name.replace(/^the /,''))}</span></label>`,styles=[...new Set(travelerStyles.map(t=>t.group))].map(g=>`<span class="pp-set-group">${esc(g)}</span>${travelerStyles.filter(t=>t.group===g).map(opt).join('')}`).join('');
  return `<button class="pp-dialog-close" type="button" aria-label="Close settings">×</button><p class="pp-small">your passport</p><h2 id="pp-set-title">settings.</h2>
  <section class="pp-set-sec"><h3>profile picture</h3><div class="pp-set-mole"><span class="pp-set-av">${moleImg?`<img src="${esc(moleImg)}" alt="Your mole">`:travelerMark(d.style)}</span><div><p>${moleImg?'Your mole is your passport picture.':'Roll a mole from the DeepSpot collection to be your passport picture.'}</p><button type="button" class="pp-chipbtn pp-editbtn" data-set-roll>${moleImg?'roll a new mole':'roll my mole'}</button></div></div></section>
  <form id="pp-set-form" novalidate>
@@ -417,7 +468,7 @@ function settingsHTML(){
   <label class="pp-f"><span>instagram</span><input name="instagram" maxlength="60" value="${esc(d.instagram)}" placeholder="@handle"></label>
   <label class="pp-f"><span>x / twitter</span><input name="twitter" maxlength="60" value="${esc(d.twitter)}" placeholder="@handle"></label>
   <label class="pp-f pp-f-wide"><span>website</span><input name="website" type="url" maxlength="300" value="${esc(d.website)}" placeholder="https://"></label></div></section>
- <section class="pp-set-sec"><h3>traveler type</h3><p class="pp-fine">Used until your postings decide it for you.</p><fieldset class="pp-look"><legend class="sr-only">traveler type</legend>${styles}</fieldset></section>
+
  <div class="pp-set-save"><button type="submit" class="pp-savebtn">save settings</button><span class="pp-fine" id="pp-set-msg" role="status"></span></div>
  </form>
  <section class="pp-set-sec"><h3>account</h3><p class="pp-set-sess">preview session: <b>${s.state==='member'?'founding member':s.state==='free'?'free account':'signed out'}</b>${s.email?' · '+esc(s.email):''}</p>
@@ -498,18 +549,11 @@ document.addEventListener('click',e=>{const b=e.target.closest('.pp-item');if(b)
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&deckState.open&&!document.querySelector('dialog[open]'))hideDeck(0);});
 
 /* ---------- customize (2026-10-21): backgrounds for the left pane and a foil on the passport (lives in edit profile). Placeholders; locked ones say how they will be earned ---------- */
-const STYLE_KEY='deepspot-passport-style-v1';
+
 const ICON=d=>`<svg viewBox="0 0 24 24" aria-hidden="true">${d}</svg>`;
-const STYLE={
- bg:[['halftone','earth halftone','',''],['dither-green','green dither','',''],['dither-cobalt','cobalt dither','',''],['night','night field','',''],['stars','starfield','',''],['aurora','aurora','',''],['dusk','dusk','',''],['grain','grain gradient','',''],['topo','topo lines','',''],['blueprint','blueprint','',''],['oya','oya quarry','',''],['xwejni','salt pans','',''],['green','green field','',''],['cobalt','cobalt field','',''],['paper','paper','','']],
- foil:[['none','none','',''],['holo','holo','',''],['gold','gold','',''],['chrome','chrome','',''],['cobalt','cobalt shine','','founding members'],['prism','prism','','reach level 10']]
-};
-function readStyle(){const d={bg:'halftone',foil:'none'};if(!profile?.localPreview)return d;try{const v=JSON.parse(localStorage.getItem(STYLE_KEY))||{};for(const k in d)if(STYLE[k].some(o=>o[0]===v[k]&&!o[3]))d[k]=v[k];}catch{}return d;}
-function writeStyle(v){try{localStorage.setItem(STYLE_KEY,JSON.stringify(v));}catch{}}
-function customizeHTML(){
- const st=readStyle(),grp=(k,title,hint)=>`<fieldset class="pp-cz"><legend>${title}</legend><p class="pp-fine">${hint}</p><div class="pp-cz-opts">${STYLE[k].map(([id,label,icon,lock])=>`<label class="pp-cz-o pp-cz-${k}${lock?' is-locked':''}" data-v="${id}"><input type="radio" name="cz-${k}" value="${id}"${st[k]===id?' checked':''}${lock?' disabled':''}><span class="pp-cz-sw">${icon}</span><span class="pp-cz-l">${label}</span>${lock?`<span class="pp-cz-lock">🔒 ${lock}</span>`:''}</label>`).join('')}</div></fieldset>`;
- return `<p class="pp-mono pp-cz-k">customize your passport · placeholders, more unlock at launch</p>${grp('bg','background','The field behind your passport.')}${grp('foil','foil','A finish on your passport card. Move your mouse over it.')}`;
-}
+const readStyle=()=>_readStyle(!!profile?.localPreview);
+
+const customizeHTML=()=>styleTilesHTML(readStyle());
 const FIELD_INK={'halftone':[[146,193,228],[24,48,86]],'dither-green':[[7,214,83],[8,120,47]],'dither-cobalt':[[120,150,255],[60,96,255]],'night':[[60,80,120],[60,80,120]],'green':[[11,27,39],[11,27,39]],'cobalt':[[160,185,255],[160,185,255]],'paper':[[11,27,39],[11,27,39]],'topo':[[131,205,206],[131,205,206]]};
 function setField(bg){
  const host=$('.pp-bg-in');if(!host)return;const ink=FIELD_INK[bg];
@@ -520,12 +564,23 @@ function applyStyle(st=readStyle()){
  setField(st.bg);const field=$('.pp-field'),obj=$('.pp-passobj-in');if(field)field.dataset.bg=st.bg;if(obj)obj.dataset.foil=st.foil;
 }
 /* in edit profile the choices preview live; save profile keeps them, cancel puts the saved look back */
-const czPick=()=>{const st=readStyle();document.querySelectorAll('#pp-edit [name^=cz-]:checked').forEach(i=>st[i.name.slice(3)]=i.value);return st;};
+const czPick=()=>pickStyle(document.querySelector('#pp-edit'),readStyle());
 document.addEventListener('change',e=>{if(/^cz-/.test(e.target.name||'')&&profile?.localPreview)applyStyle(czPick());});
 
+/* one-time "passport issued" moment after onboarding (/profile/?user=preview&welcome=1): the card tilts in, a stamp thunks onto it, then it fades. Reduced motion = none. */
+function issuedMoment(){
+ const u=new URL(location.href);u.searchParams.delete('welcome');u.searchParams.delete('share');history.replaceState(null,'',u);
+ if(calmNow())return;
+ const obj=$('.pp-passobj'),inner=$('.pp-passobj-in');if(!obj||!inner)return;
+ const st=document.createElement('div');st.className='pp-issued';st.setAttribute('aria-hidden','true');
+ st.innerHTML=`<span>issued</span><b>${new Date().toLocaleDateString('en-US',{day:'numeric',month:'short',year:'numeric'}).toUpperCase()}</b>`;inner.append(st);
+ obj.animate([{transform:'perspective(1400px) rotateX(22deg) rotateY(-30deg) translateY(48px) scale(.9)',opacity:0},{transform:'perspective(1400px) rotateX(-3deg) rotateY(4deg) scale(1.01)',opacity:1,offset:.7},{transform:'none',opacity:1}],{duration:900,easing:'cubic-bezier(.2,.8,.3,1)'});
+ inner.animate([{translate:'0 0'},{translate:'0 0',offset:.62},{translate:'0 7px',offset:.7},{translate:'0 0'}],{duration:1500});
+ setTimeout(()=>st.remove(),4200);
+}
 try{
  profile=await loadProfile(params.get('user')||'wayfarer');
  if(profile?.localPreview){wtgList=readWantToGo();await Promise.all([wtgLoadCatalog(),wtgLoadCoords()]);}
  if(!profile){$('#passport').innerHTML='<div class="pp-loading"><h1>Profile not found</h1><p>This passport isn’t in the current collection.</p><a href="/community/">back to the community ↗</a></div>';$('#passport').setAttribute('aria-busy','false');}
- else render();
+ else{render();if(profile.localPreview&&params.get('welcome')==='1'){issuedMoment();notify('Your passport is issued.');}if(profile.localPreview&&params.get('share')==='1')setTimeout(()=>$('.pp-share')?.click(),700);}
 }catch(err){console.error(err);$('#passport').innerHTML='<div class="pp-loading"><h1>Unable to load this passport</h1><p>Please refresh to try again.</p><a href="/community/">back to the community ↗</a></div>';$('#passport').setAttribute('aria-busy','false');}

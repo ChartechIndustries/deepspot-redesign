@@ -18,7 +18,7 @@
 .hub-slide[data-active=true]{opacity:1;visibility:visible}
 .hub-slide-copy{max-width:660px;align-self:center}
 .hub .hub-slide h2{font-size:clamp(40px,5vw,80px);line-height:.95;letter-spacing:-.06em;font-weight:800;margin:0 0 18px;color:inherit;text-wrap:balance}
-.hub .hub-slide p{font-size:clamp(15px,1.25vw,18px);color:inherit;opacity:.92;max-width:540px;margin:0 0 26px}
+.hub .hub-slide p{font-size:clamp(17px,1.25vw,19.5px);color:inherit;opacity:.92;max-width:540px;margin:0 0 26px}
 .hub .hub-slide .ds-eyebrow{color:inherit;opacity:.85;margin-bottom:16px}
 .hub-car-bar{position:absolute;left:clamp(14px,3.4vw,54px);right:clamp(16px,3.6vw,58px);bottom:clamp(16px,2vw,28px);display:flex;align-items:center;gap:6px;z-index:3}
 .hub .hub-ctrl{display:flex;gap:10px;margin-left:auto}
@@ -58,11 +58,11 @@
 .hub .hub-tabs button{cursor:pointer}
 .hub .hub-tabs button[aria-pressed=true]{color:var(--br-text);box-shadow:inset 0 -3px var(--br-green)}
 .hub .hub-chips{display:flex;flex-wrap:wrap;gap:8px}
-.hub .hub-chips button{border:1px solid var(--br-line);background:transparent;border-radius:99px;padding:8px 15px;font-size:13px;font-weight:600;cursor:pointer;min-height:40px;display:inline-flex;gap:8px;align-items:center;color:var(--br-text)}
-.hub .hub-chips button i{font:500 11px/1 ui-monospace,Menlo,Consolas,monospace;font-style:normal;opacity:.7}
+.hub .hub-chips button{border:1px solid var(--br-line);background:transparent;border-radius:99px;padding:8px 15px;font-size:15.5px;font-weight:600;cursor:pointer;min-height:40px;display:inline-flex;gap:8px;align-items:center;color:var(--br-text)}
+.hub .hub-chips button i{font:500 14px/1 ui-monospace,Menlo,Consolas,monospace;font-style:normal;opacity:.7}
 .hub .hub-chips button:hover{border-color:var(--br-green)}
 .hub .hub-chips button[aria-pressed=true]{background:var(--br-green);border-color:var(--br-green);color:var(--ds-ink)}
-.hub .hub-badge{display:inline-block;align-self:flex-start;font:600 11px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.07em;text-transform:uppercase;background:var(--br-blue);color:#fff;border-radius:99px;padding:6px 11px}
+.hub .hub-badge{display:inline-block;align-self:flex-start;font:600 14px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.07em;text-transform:uppercase;background:var(--br-blue);color:#fff;border-radius:99px;padding:6px 11px}
 .hub .hub-badge.poll{background:var(--br-green);color:var(--ds-ink)}
 
 /* announcements & polls */
@@ -77,11 +77,11 @@
 .hub .hub-post h3{margin:0;font-size:clamp(28px,3.6vw,54px);line-height:.98;letter-spacing:-.055em;font-weight:800;text-wrap:balance;max-width:20ch}
 .hub .hub-post h3 a{text-decoration:none;color:inherit}
 .hub .hub-post h3 a::after{content:"";position:absolute;inset:0;z-index:1}
-.hub .hub-post p{margin:0;font-size:clamp(15px,1.2vw,18px);max-width:60ch}
+.hub .hub-post p{margin:0;font-size:clamp(17px,1.2vw,19.5px);max-width:60ch}
 .hub-options{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
-.hub-options li{border:1px solid var(--br-line);border-radius:99px;padding:9px 16px;font-size:14px;font-weight:600;background:var(--br-bg)}
+.hub-options li{border:1px solid var(--br-line);border-radius:99px;padding:9px 16px;font-size:16px;font-weight:600;background:var(--br-bg)}
 .hub-post-foot{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-top:6px}
-.hub .hub-by{font:500 12px/1.4 ui-monospace,Menlo,Consolas,monospace;color:var(--br-muted)}
+.hub .hub-by{font:500 15px/1.4 ui-monospace,Menlo,Consolas,monospace;color:var(--br-muted)}
 .hub .hub-post .ds-button{position:relative;z-index:2}
 .hub-readlink{display:grid;place-items:center;width:44px;height:44px;border:1px solid var(--br-line);border-radius:50%}
 
@@ -100,10 +100,10 @@
 .hub-av img{width:100%;height:100%;object-fit:cover;display:block}
 .hub-av span{width:100%;height:100%;display:grid;place-items:center;font-weight:700;font-size:1.5em;color:#9ed9dc}
 .hub-top strong{font-size:clamp(22px,2.4vw,34px);letter-spacing:-.04em;line-height:1.05;overflow-wrap:anywhere}
-.hub-handle{font:500 12px/1.3 ui-monospace,Menlo,Consolas,monospace;color:var(--br-muted)}
+.hub-handle{font:500 15px/1.3 ui-monospace,Menlo,Consolas,monospace;color:var(--br-muted)}
 .hub-pts{font-size:clamp(38px,4.6vw,76px);line-height:.9;letter-spacing:-.06em;font-weight:800;font-variant-numeric:tabular-nums;margin-top:8px}
-.hub-pts small{display:block;font:500 11px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.06em;margin-top:6px;color:var(--br-muted)}
-.hub-meta{font:500 12px/1.4 ui-monospace,Menlo,Consolas,monospace;color:var(--br-muted)}
+.hub-pts small{display:block;font:500 14px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.06em;margin-top:6px;color:var(--br-muted)}
+.hub-meta{font:500 15px/1.4 ui-monospace,Menlo,Consolas,monospace;color:var(--br-muted)}
 .hub-lrows{border:1px solid var(--br-line);margin-top:16px}
 .hub-lrow{display:grid;grid-template-columns:44px 48px minmax(0,1fr) auto auto;gap:clamp(10px,2vw,24px);align-items:center;padding:12px clamp(14px,2vw,24px);border-bottom:1px solid var(--br-line);text-decoration:none;color:var(--br-text)}
 .hub-lrow:last-child{border-bottom:0}
@@ -111,11 +111,11 @@
 .hub-lrow .hub-rank{font-size:26px;color:var(--br-muted)}
 .hub-lrow .hub-av{width:48px;height:48px}
 .hub-lname{display:flex;flex-direction:column;gap:3px;min-width:0}
-.hub-lname strong{font-size:18px;letter-spacing:-.03em;overflow-wrap:anywhere}
+.hub-lname strong{font-size:19.5px;letter-spacing:-.03em;overflow-wrap:anywhere}
 .hub-lrow .hub-pts{font-size:26px;margin:0;text-align:right;min-width:3.4ch}
 .hub-board-foot{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-top:22px}
-.hub .hub-how{margin:0;font-size:14px;display:flex;gap:12px;flex-wrap:wrap}
-.hub .hub-how b{font:600 11px/1.8 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--br-accent)}
+.hub .hub-how{margin:0;font-size:16px;display:flex;gap:12px;flex-wrap:wrap}
+.hub .hub-how b{font:600 14px/1.8 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--br-accent)}
 
 /* responsive */
 @media(max-width:1000px){

@@ -1,6 +1,6 @@
 import {esc,$,$$,icon,action,pageTitle,spotURL,photo,readStore,writeStore,keys,savedIDs,downloadJSON,notify,localURL,sharePage,empty} from './core.mjs';
 import {normalizeTrip,MAX_TRIP_STOPS} from './trip-state.mjs';
-import {gateState,onGate} from './gate.mjs?v=gate6';
+import {gateState,onGate} from './gate.mjs?v=ob1';
 export async function renderPlanner(root,{spots}){
  const knownIDs=new Set(spots.map(s=>s.id));
  let state=normalizeTrip(readStore(keys.trip,{}),knownIDs);

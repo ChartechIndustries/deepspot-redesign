@@ -2,7 +2,7 @@ import {esc,$,$$,icon,localURL,action,pageTitle,loadData,spotURL,storyURL,spotCa
 import {savedStories,subscribeStore} from './core.mjs';
 import {galleryMarkup,wireGallery} from './gallery.mjs';
 import {authorLink,profileHref,profileId} from '../profile/identity.mjs';
-import {wallReading} from './gate.mjs?v=gate6';
+import {wallReading} from './gate.mjs?v=ob1';
 const root=$('#page-content'),route=document.body.dataset.page,params=new URLSearchParams(location.search);
 const heading=(title,link='',label='view all')=>`<div class="ds-section-heading"><h2>${title}</h2>${link?`<a class="ds-text-link" href="${localURL(link)}">${label}${icon('arrow')}</a>`:''}</div>`;
 const outbound=(label,url,style='secondary')=>`<a class="ds-button ${style}" href="${esc(url)}" data-original target="_blank" rel="noopener">${label}${icon('arrow')}</a>`;
@@ -60,7 +60,7 @@ async function render(data){const {spots,stories,content}=data;
  else if(route==='saved'){await (await import('./fieldbook.mjs')).renderFieldbook(root,data);}
  else if(route==='community'){
   const people=content.leaderboard.monthly;
-  if(!['old','hub1'].includes(params.get('v'))){const {renderCommunityV2}=await import('./community-v2.mjs?v=17');await renderCommunityV2(root,data);}
+  if(!['old','hub1'].includes(params.get('v'))){const {renderCommunityV2}=await import('./community-v2.mjs?v=20');await renderCommunityV2(root,data);}
   else if(params.get('v')==='hub1'){const tail=`${heading('the people behind the pins.','/leaderboard/','leaderboard')}<div class="ds-people">${people.slice(0,6).map(memberCard).join('')}</div>${notice}${heading('make your mark.')}<div class="ds-three"><article>${icon('pin')}<h3>put it on the map.</h3><p>Share a spot, your photographs, and the story that makes it worth finding.</p>${action('add a spot','/contribute/','secondary')}</article><article>${icon('star')}<h3>tell the whole story.</h3><p>Go deeper into the people, history, and culture beyond the location.</p>${action('write a story','/contribute/?type=story','secondary')}</article><article>${icon('route')}<h3>connect the dots.</h3><p>Bring your finds together in a route or a collection to return to.</p>${action('plan a trip','/plan-trip/','secondary')}</article></div><section class="ds-wide-cta"><div><h2>good finds deserve<br>good company.</h2><p>Submissions, conversations, and community decisions live on DeepSpot.</p></div>${outbound('open the community','https://www.deepspot.io/community','')}</section>`;
   const {renderCommunityHub}=await import('./community-hub.mjs');renderCommunityHub(root,data,'');}
   else{

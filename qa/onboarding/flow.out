@@ -1,0 +1,114 @@
+--- A. gate -> welcome
+PASS gate continue lands on /welcome/
+PASS from= carries the spot page
+PASS step 1 shown
+PASS email prefilled from gate
+PASS focus on heading
+--- B. account rules
+PASS empty password blocked
+PASS password error aria-invalid
+PASS short password blocked
+PASS meter reacts
+PASS terms required
+PASS show password
+PASS step 2 after account
+PASS session free + email
+PASS password never stored
+PASS password never sent
+--- C. name + username rules
+PASS card name types in
+PASS suggestions
+PASS username 'lampbane' -> taken
+PASS username 'admin' -> reserved
+PASS username 'ab' -> at least
+PASS username 'a b' -> letters
+PASS username '.dot' -> start and end
+PASS taken handle blocks next
+PASS free handle ok
+PASS card user line
+PASS Enter submits the step
+--- D. refresh resumes
+PASS resume at step 3 after reload
+PASS card kept name after reload
+--- E. mole
+PASS mole saved
+PASS card shows mole
+PASS keep it label
+PASS step 4
+--- F. archetype
+PASS group tabs = real groups (9)
+PASS next blocked until a pick
+PASS archetype saved
+PASS card stamp
+PASS step 5
+--- G. back keeps data
+PASS back to step 4
+PASS archetype still selected
+--- H. bio
+PASS prompt chip inserts text
+PASS count live
+PASS card bio preview
+PASS step 6
+--- I. mark
+PASS live mark on card
+PASS mark saved
+PASS step 7
+--- J. style
+PASS card bg/foil live
+PASS style saved
+PASS look saved
+PASS step 8
+--- K. places
+PASS 6 suggestions
+PASS suggestion header
+PASS search lists catalog spots
+PASS 3 places saved
+PASS count text
+PASS remove + re-add works
+PASS finish screen
+PASS issued stamp date
+PASS not onboarded yet
+--- L. passport shows every field
+PASS lands on passport + welcome=1
+PASS flag written
+{'name': 'Flow Tester', 'handle': '@flow.tester', 'stamp': 'urbex rat', 'mole': True, 'bio': 'I go looking for… quarries and tunnels.', 'sig': True, 'foil': 'gold', 'field': 'aurora', 'look': 'green', 'no': 'issued', 'since': 'Oct 2026', 'wtg': '3'}
+PASS passport name
+PASS passport handle
+PASS passport archetype
+PASS passport mole
+PASS passport bio
+PASS passport mark
+PASS passport foil + bg + bio look
+PASS passport places count
+PASS passport number says issued
+PASS passport since set
+PASS issued stamp plays
+PASS welcome param removed
+PASS account button -> passport after onboarding
+PASS edit dialog opens + prefilled
+PASS edit index fits at 1440 (no overflow, clear of close)
+PASS /welcome/ after onboarding redirects to passport
+PASS ?onboard=1 force-opens at step 1
+PASS forced run keeps your data
+PASS reset clears progress + data
+PASS no console errors (full flow)
+--- M. skip path
+PASS no skip on account
+PASS no skip on name
+PASS skip button on step 3
+PASS skip button on step 4
+PASS skip button on step 5
+PASS skip button on step 6
+PASS skip button on step 7
+PASS skip button on step 8
+PASS finish after skipping all
+['is-done', 'is-done', 'is-skipped', 'is-skipped', 'is-skipped', 'is-skipped', 'is-skipped', 'is-skipped']
+PASS skipped passport still has name
+PASS back from finish -> step 8
+PASS no console errors (skip path)
+--- N. already onboarded: gate does not redirect, account button goes to passport
+PASS onboarded user stays on the spot page
+PASS account button -> passport (onboarded)
+PASS account button -> /welcome/ when not onboarded
+
+PASS 96 FAIL 0 []

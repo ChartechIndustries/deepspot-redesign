@@ -3,6 +3,8 @@ import {readAccount} from '../site/account-state.mjs?v=pad1';
 import {normalizedTags} from '../browse/catalog.mjs';
 import {levelFor,memberLevel,travelerType,standing,earnedStamps} from './passport-rules.mjs?v=pv2';
 async function json(url){const response=await fetch(url);if(!response.ok)throw Error('Profile collection unavailable');return response.json();}
+/* "since" for your own passport = the month onboarding was finished (real: stored when the passport was issued) */
+const joinedLabel=()=>{try{const t=Number(localStorage.getItem('deepspot-onboarded-v1'));return t>0?new Date(t).toLocaleDateString('en-US',{month:'short',year:'numeric'}):null;}catch{return null;}};
 const local=src=>typeof src==='string'&&src.startsWith('/')?src:'';
 /* remote photos on DeepSpot's own image host (r2.dev) are real posting photos: show them; only local files have 800px cards */
 const photo=src=>typeof src==='string'&&(src.startsWith('/')||/^https:\/\/[a-z0-9.-]+\.r2\.dev\//i.test(src))?src:'';
@@ -16,7 +18,7 @@ const finish=p=>{
 export async function loadProfile(id){
  if(id==='preview'){
   const draft=readAccount();
-  return finish({id:'preview',name:draft.name||'Your name here',handle:draft.username||null,joined:null,localPreview:true,mole:draft.mole?.png||'',bio:draft.bio||null,signatureArt:draft.signatureArt||null,socials:{instagram:draft.instagram,twitter:draft.twitter,website:draft.website},points:0,standing:null,contrib:{spots:null,stories:null},records:[],style:draft.style,
+  return finish({id:'preview',name:draft.name||'Your name here',handle:draft.username||null,joined:joinedLabel(),localPreview:true,mole:draft.mole?.png||'',bio:draft.bio||null,signatureArt:draft.signatureArt||null,socials:{instagram:draft.instagram,twitter:draft.twitter,website:draft.website},points:0,standing:null,contrib:{spots:null,stories:null},records:[],style:draft.style,
    notice:'A passport draft stored on this browser. Points, postings and stamps appear when your live account is connected.'});
  }
  const [directory,catalog,stories,content]=await Promise.all([json('/profile/profiles.json'),json('/featured-spots.json'),json('/editorial-stories.json'),json('/site/content.json')]);

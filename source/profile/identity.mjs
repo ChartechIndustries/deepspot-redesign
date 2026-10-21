@@ -11,7 +11,14 @@ export function profileHref(id,{from,theme}={}){
  const back=safeReturn(from);if(back)params.set('from',back);
  return '/profile/?'+params;
 }
-export function authorLink(name,{className='',avatar=false,from}={}){
- const initials=String(name).split(/\s+/).slice(0,2).map(word=>word[0]).join('');
- return `<a class="ds-author ${escapeHTML(className)}" href="${escapeHTML(profileHref(profileId(name),{from}))}" aria-label="View ${escapeHTML(name)}’s profile">${avatar?`<span class="br-avatar" aria-hidden="true">${escapeHTML(initials)}</span>`:''}<span>by <strong>${escapeHTML(name)}</strong></span></a>`;
+// Profile pictures (mole renders) by profile id or display-name id. Names without one get initials.
+const PICS={lampbane:'lampbane',kris:'lampbane',wayfarer:'wayfarer',kisekikana:'kisekikana',numberone:'numberone',joelle:'joelle',annebelle:'annebelle',lanavelkov:'lanavelkov','lana-velkov':'lanavelkov',s4zr4ty:'s4zr4ty',saz:'s4zr4ty',korrgan:'korrgan',lydia:'korrgan',sixbacteria:'sixbacteria',six:'sixbacteria'};
+const RINGS=['#07d653','#3c60ff','#83cdce','#f2c94c','#e86a8f','#b59cf0'];
+export function avatarHTML(name,{className=''}={}){
+ const id=profileId(name),pic=PICS[id],ring=RINGS[[...id].reduce((a,c)=>a+c.charCodeAt(0),0)%RINGS.length];
+ const initials=String(name).split(/\s+/).slice(0,2).map(word=>word[0]||'').join('').toUpperCase();
+ return pic?`<span class="ds-av ${escapeHTML(className)}" style="--av:${ring}" aria-hidden="true"><img src="/community-assets/moles/${pic}.webp" alt="" loading="lazy" decoding="async"></span>`:`<span class="ds-av ds-av-text ${escapeHTML(className)}" style="--av:${ring}" aria-hidden="true">${escapeHTML(initials)}</span>`;
+}
+export function authorLink(name,{className='',avatar=true,from}={}){
+ return `<a class="ds-author ${escapeHTML(className)}" href="${escapeHTML(profileHref(profileId(name),{from}))}" aria-label="View ${escapeHTML(name)}’s profile">${avatar?avatarHTML(name):''}<span>by <strong>${escapeHTML(name)}</strong></span></a>`;
 }

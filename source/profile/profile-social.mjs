@@ -16,6 +16,18 @@ const fmt=n=>new Intl.NumberFormat('en-US').format(n);
 const emptyBox=(t,s)=>`<div class="pp-empty"><strong>${t}</strong><span>${s}</span></div>`;
 
 /* ---------- follow ---------- */
+/* follow = a short, soft wobble of the whole page + a few hearts popping off the button (off for reduced motion) */
+function cuteShake(btn){
+ if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+ const root=document.body;root.classList.remove('ps-shake');void root.offsetWidth;root.classList.add('ps-shake');
+ setTimeout(()=>root.classList.remove('ps-shake'),700);
+ btn.classList.remove('ps-pop');void btn.offsetWidth;btn.classList.add('ps-pop');
+ const r=btn.getBoundingClientRect(),cols=['#07d653','#3c60ff','#e86a8f','#f2c94c','#83cdce'];
+ for(let i=0;i<7;i++){const h=document.createElement('span');h.className='ps-heart';h.setAttribute('aria-hidden','true');h.textContent='♥';
+  const a=(-160+i*(140/6))*Math.PI/180,d=46+Math.random()*30;
+  h.style.cssText=`left:${r.left+r.width/2}px;top:${r.top+r.height/2}px;color:${cols[i%cols.length]};--hx:${Math.cos(a)*d}px;--hy:${Math.sin(a)*d}px;--hr:${(Math.random()*40-20).toFixed(0)}deg`;
+  document.documentElement.append(h);setTimeout(()=>h.remove(),900);}
+}
 export function followHTML(profile,own){
  const follows=read('follow').filter(x=>typeof x==='string'),on=follows.includes(profile.id);
  const followers=(Number.isFinite(profile.followers)?profile.followers:0)+(on&&!own?1:0);
@@ -68,6 +80,7 @@ export function bindSocial(root,profile,own,spotTitles=[]){
   const f=e.target.closest('[data-ps-follow]');
   if(f){let list=read('follow').filter(x=>typeof x==='string');const on=!list.includes(profile.id);list=on?[...list,profile.id]:list.filter(x=>x!==profile.id);write('follow',list);
    f.setAttribute('aria-pressed',String(on));f.textContent=on?'following ✓':'follow';
+   if(on)cuteShake(f);
    const b=root.querySelector('[data-ps-followers]');if(b){const n=(Number.isFinite(profile.followers)?profile.followers:0)+(on?1:0);b.textContent=fmt(n);b.nextSibling.textContent=n===1?' follower':' followers';}return;}
   const x=e.target.closest('[data-ps-rm]');
   if(x){const k=x.dataset.psRm,i=+x.dataset.i;

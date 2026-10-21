@@ -182,11 +182,11 @@
     --spacing: 0.25rem;
     --container-xs: 20rem;
     --container-sm: 24rem;
-    --text-xs: 0.75rem;
+    --text-xs: 0.9375rem;
     --text-xs--line-height: calc(1 / 0.75);
-    --text-sm: 0.875rem;
+    --text-sm: 1rem;
     --text-sm--line-height: calc(1.25 / 0.875);
-    --text-base: 1rem;
+    --text-base: 1.125rem;
     --text-base--line-height: calc(1.5 / 1);
     --font-weight-normal: 400;
     --font-weight-medium: 500;
@@ -1622,7 +1622,7 @@
     line-height: var(--tw-leading, var(--text-xs--line-height));
   }
   .text-\[0\.8rem\] {
-    font-size: 0.8rem;
+    font-size: 0.9625rem;
   }
   .leading-none {
     --tw-leading: 1;
@@ -5499,13 +5499,13 @@ main {
   gap: 35px;
   height: 29px;
   padding: 0 30px;
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 700;
   display: flex;
 }
 .ticker span:first-child {
   letter-spacing: 1.2px;
-  font-size: 10px;
+  font-size: 14px;
 }
 .header {
   background: #0b1220;
@@ -5536,14 +5536,14 @@ main {
 .coordinates {
   margin-left: 62px;
   font-family: monospace;
-  font-size: 10px;
+  font-size: 14px;
   line-height: 1.5;
 }
 .header nav {
   text-transform: uppercase;
   gap: 27px;
   margin-left: auto;
-  font-size: 14px;
+  font-size: 16px;
   display: flex;
 }
 .edition {
@@ -5551,13 +5551,13 @@ main {
   color: #a9b7b8;
   max-width: 60px;
   margin-left: 20px;
-  font-size: 9px;
+  font-size: 13px;
   line-height: 1.7;
 }
 .edition span {
   color: var(--green);
   font-family: monospace;
-  font-size: 13px;
+  font-size: 15.5px;
 }
 .hero {
   isolation: isolate;
@@ -5635,7 +5635,7 @@ main {
 .explore-bar > span {
   align-items: center;
   gap: 10px;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
   display: flex;
 }
@@ -5646,7 +5646,7 @@ main {
   align-items: center;
   gap: 14px;
   padding: 7px 18px;
-  font-size: 18px;
+  font-size: 19.5px;
   font-weight: 500;
   display: flex;
 }
@@ -5658,7 +5658,7 @@ main {
   align-items: center;
   gap: 8px;
   margin-top: 22px;
-  font-size: 12px;
+  font-size: 15px;
   display: flex;
 }
 .live-dot {
@@ -5750,7 +5750,7 @@ main {
   align-items: center;
   gap: 7px;
   padding: 6px 9px;
-  font-size: 12px;
+  font-size: 15px;
   display: flex;
   position: absolute;
   top: -34px;
@@ -5784,7 +5784,7 @@ main {
   justify-content: space-between;
   gap: 10px;
   margin: 4px 0 14px;
-  font-size: 8px;
+  font-size: 13px;
   font-weight: 700;
   display: flex;
 }
@@ -5802,7 +5802,7 @@ main {
 .card-place {
   color: #596b64;
   margin: 0;
-  font-size: 12px;
+  font-size: 15px;
 }
 .feature-card button {
   background: 0 0;
@@ -5810,7 +5810,7 @@ main {
   gap: 14px;
   margin-top: 12px;
   padding: 0;
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 600;
   display: flex;
 }
@@ -5838,7 +5838,7 @@ main {
   align-items: center;
   gap: 7px;
   margin-right: 12px;
-  font-size: 12px;
+  font-size: 15px;
   display: flex;
 }
 .globe-controls button {
@@ -5855,7 +5855,7 @@ main {
 }
 .map-credit {
   color: #385969;
-  font-size: 9px;
+  font-size: 13px;
   position: absolute;
   bottom: 9px;
   right: 4%;
@@ -5880,7 +5880,7 @@ footer {
   align-items: center;
   height: 44px;
   padding: 0 3.6%;
-  font-size: 9px;
+  font-size: 13px;
   font-weight: 600;
   display: flex;
   position: relative;
@@ -5929,7 +5929,7 @@ footer > span:last-child {
   text-transform: uppercase;
   letter-spacing: 1px;
   margin: 10px 0 0;
-  font-size: 12px;
+  font-size: 15px;
 }
 .detail-title {
   letter-spacing: -1px;
@@ -5939,18 +5939,18 @@ footer > span:last-child {
 .detail-description {
   line-height: 1.6;
   color: #52645e !important;
-  font-size: 16px !important;
+  font-size: 18px !important;
 }
 .detail-place {
   align-items: center;
   gap: 7px;
-  font-size: 15px;
+  font-size: 17px;
   display: flex;
 }
 .detail-coordinates {
   color: #617067;
   font-family: monospace;
-  font-size: 12px;
+  font-size: 15px;
 }
 .location-dialog [data-slot="dialog-close"] {
   background: var(--cream);
@@ -5996,7 +5996,7 @@ footer > span:last-child {
 @media (max-width: 1100px) {
   .header nav {
     gap: 16px;
-    font-size: 12px;
+    font-size: 15px;
   }
   .coordinates {
     display: none;
@@ -6015,7 +6015,7 @@ footer > span:last-child {
     font-size: 10vw;
   }
   .intro {
-    font-size: 18px;
+    font-size: 19.5px;
   }
   .title-star {
     display: none;
@@ -6029,20 +6029,20 @@ footer > span:last-child {
     width: 90px;
   }
   .feature-card h2 {
-    font-size: 18px;
+    font-size: 19.5px;
   }
   .card-kicker {
-    font-size: 7px;
+    font-size: 13px;
   }
   .explore-bar {
     width: 97%;
   }
   .explore-bar > span {
-    font-size: 11px;
+    font-size: 14px;
   }
   .explore-bar strong {
     padding: 7px 12px;
-    font-size: 16px;
+    font-size: 18px;
   }
   .edition {
     display: none;
@@ -6052,13 +6052,13 @@ footer > span:last-child {
   .ticker {
     height: 26px;
     padding: 0 18px;
-    font-size: 10px;
+    font-size: 14px;
   }
   .ticker span:nth-child(n + 3) {
     display: none;
   }
   .ticker span:first-child {
-    font-size: 8px;
+    font-size: 13px;
   }
   .header {
     height: 89px;
@@ -6073,7 +6073,7 @@ footer > span:last-child {
   }
   .header nav {
     gap: 15px;
-    font-size: 11px;
+    font-size: 14px;
   }
   .header nav span:nth-child(n + 3) {
     display: none;
@@ -6099,18 +6099,18 @@ footer > span:last-child {
   .intro {
     max-width: 350px;
     margin-bottom: 24px;
-    font-size: 17px;
+    font-size: 18.5px;
   }
   .explore-bar {
     width: 100%;
     max-width: 390px;
   }
   .explore-bar > span {
-    font-size: 12px;
+    font-size: 15px;
   }
   .discovery-note {
     margin-top: 16px;
-    font-size: 11px;
+    font-size: 14px;
   }
   .feature-card {
     background: #f6f3ecf5;
@@ -6126,7 +6126,7 @@ footer > span:last-child {
   }
   .card-kicker {
     margin-bottom: 10px;
-    font-size: 8px;
+    font-size: 13px;
   }
   .feature-card h2 {
     font-size: 20px;
@@ -6139,7 +6139,7 @@ footer > span:last-child {
     right: 24px;
   }
   .map-credit {
-    font-size: 8px;
+    font-size: 13px;
     bottom: 9px;
     right: 24px;
   }
@@ -6147,14 +6147,14 @@ footer > span:last-child {
     letter-spacing: 1px;
     height: 40px;
     padding: 0 24px;
-    font-size: 8px;
+    font-size: 13px;
   }
   footer > span:last-child {
     display: none;
   }
   .pin-label {
     padding: 5px;
-    font-size: 10px;
+    font-size: 14px;
     left: -35px;
   }
   .map-pin {
@@ -6196,7 +6196,7 @@ footer > span:last-child {
   filter: drop-shadow(0 0 7px #00c85355);
 }
 .pin-label {
-  font-size: 11px;
+  font-size: 14px;
   top: -32px;
   left: 50%;
   transform: translate(-50%);
@@ -6205,7 +6205,7 @@ footer > span:last-child {
   fill: #20e67b;
 }
 .map-credit {
-  font-size: 8px;
+  font-size: 13px;
 }
 @media (max-width: 759px) {
   .map-pin {
@@ -6218,7 +6218,7 @@ footer > span:last-child {
     height: 46px;
   }
   .pin-label {
-    font-size: 10px;
+    font-size: 14px;
     top: -29px;
     left: 50%;
   }
@@ -6304,13 +6304,13 @@ footer > span:last-child {
 .pin-preview p {
   color: #55616a;
   margin: 8px 0 0;
-  font-size: 15px;
+  font-size: 17px;
   line-height: 1.4;
 }
 .pin-preview .preview-place {
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 700;
 }
 .map-pin {
@@ -6346,7 +6346,7 @@ footer > span:last-child {
     font-size: 22px;
   }
   .pin-preview p {
-    font-size: 14px;
+    font-size: 16px;
   }
   .pin-preview > div {
     padding: 9px 6px;
@@ -6789,7 +6789,7 @@ html[data-theme="light"] .spot-dots button.selected:after {
 .variant-switch {
   z-index: 50;
   gap: 6px;
-  font: 600 10px / 1 monospace;
+  font: 600 14px / 1 monospace;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   display: flex;
@@ -6893,20 +6893,20 @@ html[data-theme="light"] .hero .intro{color:#6080bd}
 .promo-weekly .promo-photo{width:32%;margin-top:-51px}.promo-weekly .promo-photo img{transform:rotate(3deg)}
 .promo-development .promo-photo img{transform:rotate(-3deg)}
 .promo-copy{position:relative;flex:1;min-width:0;z-index:2}
-.promo-kicker{font:700 10px/1.4 Arial,sans-serif;letter-spacing:1.4px;margin:0 0 10px}
+.promo-kicker{font:700 14px/1.4 Arial,sans-serif;letter-spacing:1.4px;margin:0 0 10px}
 .promo-banner h2{font-size:clamp(20px,1.7vw,28px);line-height:1.04;letter-spacing:-1px;font-weight:800;margin:0 0 8px}
 .promo-weekly h2{font-size:clamp(25px,2.05vw,34px);padding-right:12px}
-.promo-description{font-size:13px;line-height:1.4;margin:0 0 13px;max-width:240px;color:#254246}
-.promo-copy a{font-size:14px;font-weight:700;text-underline-offset:4px;text-decoration-thickness:1px;display:inline-flex;gap:14px;align-items:center}
+.promo-description{font-size:15.5px;line-height:1.4;margin:0 0 13px;max-width:240px;color:#254246}
+.promo-copy a{font-size:16px;font-weight:700;text-underline-offset:4px;text-decoration-thickness:1px;display:inline-flex;gap:14px;align-items:center}
 .promo-copy a span{font-size:21px;text-decoration:none;transition:transform .2s}
 .promo-copy a:hover span{transform:translate(2px,-2px)}
 .verified-seal{position:absolute;top:-29px;right:12px;width:68px;height:68px;background:#ffdc24;border-radius:50%;z-index:3;color:#0c251f}
-.verified-seal svg{width:100%;height:100%;animation:verified-turn 28s linear infinite;fill:currentColor;font:bold 10.2px Arial,sans-serif;letter-spacing:.5px}
+.verified-seal svg{width:100%;height:100%;animation:verified-turn 28s linear infinite;fill:currentColor;font:bold 14px Arial,sans-serif;letter-spacing:.5px}
 .verified-seal>span{position:absolute;inset:18px;background:#0c251f;color:#ffdc24;border-radius:50%;display:grid;place-items:center;font:bold 25px Arial,sans-serif}
 @keyframes verified-turn{to{transform:rotate(360deg)}}
-@media(min-width:1600px){.hero-copy{padding-top:70px}.homepage-banners{gap:34px}.promo-banner{min-height:215px}.promo-description{font-size:15px}}
+@media(min-width:1600px){.hero-copy{padding-top:70px}.homepage-banners{gap:34px}.promo-banner{min-height:215px}.promo-description{font-size:17px}}
 @media(max-width:1100px){.homepage-banners{gap:18px;grid-template-columns:1fr 1fr}.promo-weekly{grid-column:1/-1;grid-row:1}.promo-weekly .promo-photo{width:28%;min-height:170px}.promo-weekly h2{font-size:34px}.hero .intro{font-size:23px}.promo-banner{min-height:185px}.homepage-news{padding-top:45px}}
-@media(max-width:759px){.hero{min-height:870px;height:auto}.hero-copy{padding:40px 24px 0}.hero .intro{font-size:22px;width:100%;max-width:420px}.homepage-news{padding:34px 24px 32px}.homepage-banners{grid-template-columns:1fr;gap:42px}.promo-weekly{grid-column:auto;grid-row:auto}.promo-banner{min-height:190px}.promo-weekly h2{font-size:28px}.promo-banner h2{font-size:26px}.promo-photo,.promo-weekly .promo-photo{width:31%;min-height:140px}.promo-description{font-size:14px}.hero .explore-bar{margin-top:25px}.verified-seal{width:62px;height:62px}}
+@media(max-width:759px){.hero{min-height:870px;height:auto}.hero-copy{padding:40px 24px 0}.hero .intro{font-size:22px;width:100%;max-width:420px}.homepage-news{padding:34px 24px 32px}.homepage-banners{grid-template-columns:1fr;gap:42px}.promo-weekly{grid-column:auto;grid-row:auto}.promo-banner{min-height:190px}.promo-weekly h2{font-size:28px}.promo-banner h2{font-size:26px}.promo-photo,.promo-weekly .promo-photo{width:31%;min-height:140px}.promo-description{font-size:16px}.hero .explore-bar{margin-top:25px}.verified-seal{width:62px;height:62px}}
 @media(prefers-reduced-motion:reduce){.verified-seal svg{animation:none}}
 
 .promo-giveaway .promo-photo{width:35%;margin-left:5px;margin-top:-54px}
@@ -6924,10 +6924,10 @@ html[data-theme="light"] .hero .intro{color:#6080bd}
 .homepage-banners .promo-weekly{background:#ffdb25}
 .homepage-banners .promo-development{background:#a5bfed}
 .homepage-banners .promo-copy{text-align:right;padding:0;flex:1}
-.homepage-banners .promo-kicker{font-size:11px;letter-spacing:1.8px;margin-bottom:16px}
+.homepage-banners .promo-kicker{font-size:14px;letter-spacing:1.8px;margin-bottom:16px}
 .homepage-banners .promo-banner h2{font-size:clamp(32px,4.1vw,61px);line-height:.99;letter-spacing:-2.4px;font-weight:850;margin:0 0 15px;padding:0;text-wrap:balance}
-.homepage-banners .promo-description{font-size:16px;max-width:none;margin:0 0 23px;color:inherit;opacity:.8}
-.homepage-banners .promo-copy a{font-size:19px;gap:16px;color:inherit}
+.homepage-banners .promo-description{font-size:18px;max-width:none;margin:0 0 23px;color:inherit;opacity:.8}
+.homepage-banners .promo-copy a{font-size:20px;gap:16px;color:inherit}
 .homepage-banners .promo-copy a span{font-size:27px}
 .homepage-banners .promo-photo{width:36%;margin:-76px 0 -30px;min-height:0;align-self:stretch}
 .homepage-banners .promo-photo img{height:100%;width:100%;object-fit:cover;transform:rotate(-4deg);border-radius:28px 28px 0 0;mask-image:linear-gradient(#000 0 80%,transparent 100%)}
@@ -6953,11 +6953,11 @@ html[data-theme=light] .promo-navigation{color:#365a99}
  .homepage-banners{padding:80px 10vw 18px;gap:32px}
  .homepage-banners .promo-banner{flex-basis:80vw;padding:24px 22px 24px 14px;min-height:250px;gap:14px;border-radius:23px}
  .homepage-banners .promo-banner h2{font-size:clamp(27px,5.7vw,42px);letter-spacing:-1.2px}
- .homepage-banners .promo-kicker{font-size:8px;letter-spacing:1px;margin-bottom:12px}
- .homepage-banners .promo-description{font-size:12px;margin-bottom:15px}
- .homepage-banners .promo-copy a{font-size:15px}
+ .homepage-banners .promo-kicker{font-size:13px;letter-spacing:1px;margin-bottom:12px}
+ .homepage-banners .promo-description{font-size:15px;margin-bottom:15px}
+ .homepage-banners .promo-copy a{font-size:17px}
  .promo-podium{width:37%;min-height:240px;margin:-62px 0 -24px}
- .podium-bar{padding:5px 3px 0}.podium-bar span{font-size:clamp(16px,4vw,28px);letter-spacing:-1px}
+ .podium-bar{padding:5px 3px 0}.podium-bar span{font-size:clamp(18px,4vw,28px);letter-spacing:-1px}
  .homepage-banners .promo-photo{width:32%;margin:-48px 0 -24px}
  .homepage-banners .verified-seal{width:60px;height:60px;right:15px;top:-30px}
  .homepage-banners .verified-seal>span{inset:16px;font-size:24px}
@@ -6975,7 +6975,7 @@ html[data-theme=light] .promo-navigation{color:#365a99}
 .homepage-banners .promo-giveaway h2{font-size:clamp(36px,4.4vw,66px);letter-spacing:-2.6px;line-height:1.02;margin-bottom:19px}
 .competition-line,.competition-prize{display:block;white-space:nowrap}
 .competition-prize{color:#183c87}
-.homepage-banners .promo-giveaway .promo-description{opacity:1;color:#29436e;font-size:17px;margin-bottom:23px}
+.homepage-banners .promo-giveaway .promo-description{opacity:1;color:#29436e;font-size:18.5px;margin-bottom:23px}
 .homepage-banners .promo-giveaway .promo-copy a{align-self:flex-end}
 .promo-giveaway .promo-podium{width:42%;gap:7px;margin-top:-94px;min-height:335px}
 .podium-bar{animation:none;will-change:transform;transform:scaleY(.05) translateY(25px);opacity:0;border-radius:80px 80px 8px 8px;padding:8px 7px 0;box-shadow:inset 0 -32px 44px #15387015}
@@ -6988,7 +6988,7 @@ html[data-theme=light] .promo-navigation{color:#365a99}
 @keyframes podium-arrive{0%{transform:translateY(65px) scaleY(.08);opacity:0}65%{transform:translateY(-12px) scaleY(1.035);opacity:1}100%{transform:translateY(0) scaleY(1);opacity:1}}
 @keyframes podium-idle{0%,100%{height:var(--bar-height)}50%{height:calc(var(--bar-height) - 20px)}}
 .promo-prize-art{background:#ffda24}
-@media(max-width:759px){.homepage-banners .promo-giveaway{gap:18px;padding-right:20px}.homepage-banners .promo-giveaway h2{font-size:clamp(22px,5.2vw,38px);letter-spacing:-1.1px}.homepage-banners .promo-giveaway .promo-description{font-size:12px}.promo-giveaway .promo-podium{width:35%;gap:3px;min-height:250px;margin-top:-65px}.podium-bar{padding:5px 3px 0}}
+@media(max-width:759px){.homepage-banners .promo-giveaway{gap:18px;padding-right:20px}.homepage-banners .promo-giveaway h2{font-size:clamp(22px,5.2vw,38px);letter-spacing:-1.1px}.homepage-banners .promo-giveaway .promo-description{font-size:15px}.promo-giveaway .promo-podium{width:35%;gap:3px;min-height:250px;margin-top:-65px}.podium-bar{padding:5px 3px 0}}
 @media(prefers-reduced-motion:reduce){.podium-bar,.has-entered .podium-bar,.promo-prize-art .podium-bar{animation:none;transform:none;opacity:1}}
 
 /* Coordinated supporting banners */
@@ -7037,7 +7037,7 @@ html[data-theme=light] .promo-navigation{color:#365a99}
 .homepage-banners .promo-development .promo-copy{flex:0 0 32%;margin-left:auto;align-self:flex-end;padding:0 0 5px;z-index:2}
 .homepage-banners .promo-development h2{font-size:clamp(30px,3.2vw,46px);letter-spacing:-1.8px;line-height:.98}
 .homepage-banners .promo-development .promo-description{display:none}
-.homepage-banners .promo-development .promo-kicker{font-size:9px;letter-spacing:1.6px;margin-bottom:16px}
+.homepage-banners .promo-development .promo-kicker{font-size:13px;letter-spacing:1.6px;margin-bottom:16px}
 .homepage-banners .promo-development .promo-copy a{margin-top:10px}
 @media(max-width:759px){.homepage-banners .promo-development{min-height:320px}.homepage-banners .promo-development .promo-photo{width:94%;top:-50px;bottom:92px}.homepage-banners .promo-development .promo-copy{flex-basis:78%}.homepage-banners .promo-development h2{font-size:29px}.homepage-banners .promo-development .promo-kicker{margin-bottom:9px}}
 
@@ -7048,9 +7048,9 @@ html[data-theme=light] .promo-navigation{color:#365a99}
 .homepage-banners .promo-development .promo-photo img{width:100%;height:100%;object-fit:contain;object-position:left top}
 .homepage-banners .promo-development .promo-copy{flex:0 0 43%;padding:0 0 5px;align-self:flex-end;text-align:right}
 .homepage-banners .promo-development h2{font-size:clamp(36px,3.8vw,56px);line-height:.98;letter-spacing:-2px;margin-bottom:15px;text-wrap:balance}
-.homepage-banners .promo-development .promo-kicker{font-size:10px;letter-spacing:1.7px;margin-bottom:16px}
-.homepage-banners .promo-development .promo-copy a{font-size:19px;margin-top:0}
-@media(max-width:759px){.homepage-banners .promo-development{min-height:350px}.homepage-banners .promo-development .promo-photo{width:98%;left:-8px;top:-51px;bottom:130px}.homepage-banners .promo-development .promo-copy{flex-basis:87%;padding-bottom:0}.homepage-banners .promo-development h2{font-size:34px;letter-spacing:-1.5px}.homepage-banners .promo-development .promo-kicker{font-size:8px;margin-bottom:10px}}
+.homepage-banners .promo-development .promo-kicker{font-size:14px;letter-spacing:1.7px;margin-bottom:16px}
+.homepage-banners .promo-development .promo-copy a{font-size:20px;margin-top:0}
+@media(max-width:759px){.homepage-banners .promo-development{min-height:350px}.homepage-banners .promo-development .promo-photo{width:98%;left:-8px;top:-51px;bottom:130px}.homepage-banners .promo-development .promo-copy{flex-basis:87%;padding-bottom:0}.homepage-banners .promo-development h2{font-size:34px;letter-spacing:-1.5px}.homepage-banners .promo-development .promo-kicker{font-size:13px;margin-bottom:10px}}
 
 /* Lowercase typography across all homepage banners. */
 .homepage-banners .promo-banner,.homepage-banners .promo-banner h2,.homepage-banners .promo-kicker,.homepage-banners .promo-description,.homepage-banners .promo-copy a,.homepage-banners .verified-seal{text-transform:lowercase}
@@ -7064,4 +7064,4 @@ html[data-theme=light] .promo-navigation{color:#365a99}
 .homepage-banners .promo-development .promo-kicker{display:none}
 .homepage-banners .promo-development h2{font-size:clamp(40px,4.7vw,68px);line-height:1.02;letter-spacing:-2px;max-width:390px;margin:0 0 30px auto;text-wrap:balance}
 .homepage-banners .promo-development .promo-copy a{font-size:24px;font-weight:800;color:#fffef4}
-@media(max-width:759px){.homepage-banners .promo-development{min-height:280px}.homepage-banners .promo-development .promo-photo{width:78%;top:-75px;bottom:0}.homepage-banners .promo-development .promo-copy{flex-basis:48%;align-self:center;padding:0}.homepage-banners .promo-development h2{font-size:35px;letter-spacing:-1px;margin-bottom:22px}.homepage-banners .promo-development .promo-copy a{font-size:17px}}
+@media(max-width:759px){.homepage-banners .promo-development{min-height:280px}.homepage-banners .promo-development .promo-photo{width:78%;top:-75px;bottom:0}.homepage-banners .promo-development .promo-copy{flex-basis:48%;align-self:center;padding:0}.homepage-banners .promo-development h2{font-size:35px;letter-spacing:-1px;margin-bottom:22px}.homepage-banners .promo-development .promo-copy a{font-size:18.5px}}

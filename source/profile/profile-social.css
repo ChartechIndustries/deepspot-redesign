@@ -1,34 +1,54 @@
 /* profile-social.mjs: follow row, explored / picks / collections lists (2026-10-21) */
 .ps-idrow{display:flex;align-items:center;flex-wrap:wrap;gap:6px 14px}
 .ps-follow{display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px}
-.ps-counts{display:flex;align-items:baseline;gap:8px;margin:0;font:600 12.5px/1 var(--pp-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--br-muted)}
-.ps-counts b{font-size:13px;color:var(--br-text)}
-.ps-followbtn{height:26px;padding:0 14px;border:1px solid var(--br-green);border-radius:99px;background:var(--br-green);color:#0b1b27;font:600 12.5px/1 var(--pp-mono);letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+.ps-counts{display:flex;align-items:baseline;gap:8px;margin:0;font:600 15.25px/1 var(--pp-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--br-muted)}
+.ps-counts b{font-size:15.5px;color:var(--br-text)}
+.ps-followbtn{height:26px;padding:0 14px;border:1px solid var(--br-green);border-radius:99px;background:var(--br-green);color:#0b1b27;font:600 15.25px/1 var(--pp-mono);letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
 .ps-followbtn[aria-pressed=true]{background:transparent;color:var(--br-text)}
 .ps-followbtn:hover{filter:brightness(1.08)}
 html[data-panel-color=off] .ps-followbtn[aria-pressed=false]{background:var(--br-text);border-color:var(--br-text);color:var(--br-bg)}
 .ps-form{display:grid;gap:8px;margin:0 0 18px}
 .ps-row{display:flex;gap:8px;flex-wrap:wrap}
-.ps-row input{flex:1 1 180px;min-width:0;height:40px;padding:0 14px;border:1px solid var(--br-line);border-radius:99px;background:transparent;color:var(--br-text);font:inherit;font-size:14px}
+.ps-row input{flex:1 1 180px;min-width:0;height:40px;padding:0 14px;border:1px solid var(--br-line);border-radius:99px;background:transparent;color:var(--br-text);font:inherit;font-size:16px}
 .ps-row input:focus-visible{outline:2px solid var(--br-aqua);outline-offset:2px}
-.ps-form-sm .ps-row input{height:32px;font-size:13px}
+.ps-form-sm .ps-row input{height:32px;font-size:15.5px}
 .ps-tally{margin:0 0 10px}
 .ps-list{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
-.ps-list li{display:inline-flex;align-items:center;gap:6px;min-height:30px;padding:0 6px 0 14px;border:1px solid var(--br-line);border-radius:99px;font-size:13px}
-.ps-x{display:grid;place-items:center;width:22px;height:22px;border:0;border-radius:50%;background:transparent;color:var(--br-muted);font-size:16px;line-height:1;cursor:pointer}
+.ps-list li{display:inline-flex;align-items:center;gap:6px;min-height:30px;padding:0 6px 0 14px;border:1px solid var(--br-line);border-radius:99px;font-size:15.5px}
+.ps-x{display:grid;place-items:center;width:22px;height:22px;border:0;border-radius:50%;background:transparent;color:var(--br-muted);font-size:18px;line-height:1;cursor:pointer}
 .ps-x:hover{background:var(--br-line);color:var(--br-text)}
 .ps-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin:0;padding:0;list-style:none}
 .ps-card{position:relative;padding:16px 40px 16px 16px;border:1px solid var(--br-line);border-radius:8px;background:var(--br-card)}
-.ps-card strong{display:block;font-size:16px;letter-spacing:-.01em}
-.ps-card p{margin:8px 0 0;color:var(--br-muted);font-size:14px;line-height:1.45}
+.ps-card strong{display:block;font-size:18px;letter-spacing:-.01em}
+.ps-card p{margin:8px 0 0;color:var(--br-muted);font-size:16px;line-height:1.45}
 .ps-card .ps-x{position:absolute;top:10px;right:10px}
 .ps-colls{display:grid;gap:14px;margin:0;padding:0;list-style:none}
 .ps-coll{padding:16px;border:1px solid var(--br-line);border-radius:8px;background:var(--br-card)}
 .ps-coll-h{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
-.ps-coll-h h4{margin:0;font-size:16px}.ps-coll-h h4 span{color:var(--br-muted);font-weight:400}
+.ps-coll-h h4{margin:0;font-size:18px}.ps-coll-h h4 span{color:var(--br-muted);font-weight:400}
 .ps-coll .ps-form{margin:10px 0 0}
 /* traveler-type legend: share of postings next to the count */
 .pp-legend em{font-style:normal;color:var(--br-muted);margin-left:2px}
 .pp-type .pp-legend{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px 14px;margin-top:12px}
-.pp-type .pp-legend li{height:auto;padding:0;border:0;gap:6px;font-size:12px}
+.pp-type .pp-legend li{height:auto;padding:0;border:0;gap:6px;font-size:15px}
 .pp-type .pp-legend b{margin-left:auto}
+
+/* 2026-10-21: bigger follow button + cute follow shake */
+.ps-followbtn{height:auto;min-height:44px;padding:11px 26px;font:800 17px/1 Arial,Helvetica,sans-serif;letter-spacing:.02em;text-transform:lowercase;box-shadow:0 3px 0 #0b1b2733;transition:transform .15s ease,filter .15s}
+.ps-followbtn:hover{transform:translateY(-1px)}
+.ps-followbtn:active{transform:translateY(1px) scale(.97)}
+.ps-followbtn.ps-pop{animation:ps-pop .5s cubic-bezier(.3,1.6,.5,1)}
+@keyframes ps-pop{0%{transform:scale(1)}30%{transform:scale(1.18) rotate(-4deg)}60%{transform:scale(.94) rotate(3deg)}100%{transform:scale(1)}}
+body.ps-shake{animation:ps-shake .62s cubic-bezier(.36,.07,.19,.97)}
+@keyframes ps-shake{0%,100%{transform:none}12%{transform:translate(-5px,1px) rotate(-.6deg)}26%{transform:translate(5px,-2px) rotate(.6deg)}40%{transform:translate(-4px,1px) rotate(-.4deg)}55%{transform:translate(3px,-1px) rotate(.3deg)}70%{transform:translate(-2px,0) rotate(-.15deg)}85%{transform:translate(1px,0)}}
+.ps-heart{position:fixed;z-index:9999;pointer-events:none;font:900 20px/1 Arial,sans-serif;transform:translate(-50%,-50%);animation:ps-heart .85s cubic-bezier(.2,.8,.3,1) forwards}
+@keyframes ps-heart{0%{opacity:0;transform:translate(-50%,-50%) scale(.3)}20%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--hx)),calc(-50% + var(--hy))) scale(1.15) rotate(var(--hr))}}
+@media(prefers-reduced-motion:reduce){body.ps-shake,.ps-followbtn.ps-pop{animation:none}}
+
+/* 2026-10-21: traveler type legend — one clean row per category (name wraps, numbers in fixed columns), even padding */
+.pp-type{padding:24px}
+.pp-type .pp-legend{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:8px 28px;margin-top:16px}
+.pp-type .pp-legend li{display:grid;grid-template-columns:10px minmax(0,1fr) auto 3.4em;align-items:center;column-gap:10px;height:auto;min-height:24px;padding:0;border:0;font:600 14px/1.25 var(--pp-mono);letter-spacing:.05em;overflow-wrap:normal}
+.pp-type .pp-legend b{margin:0;text-align:right}
+.pp-type .pp-legend em{margin:0;text-align:right}
+.pp-type .pp-catbar{margin-top:18px}

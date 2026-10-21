@@ -10,13 +10,14 @@ test('profile draft excludes account credentials and statistics',()=>{
 });
 test('external photos and executable website URLs cannot become draft media',()=>{
  const value=normalizeAccount({photo:'https://example.test/photo.png',website:'javascript:alert(1)',style:'unknown'});
- assert.equal(value.photo,'');assert.equal(value.website,'');assert.equal(value.style,'explorer');
+ assert.equal(value.photo,'');assert.equal(value.website,'');assert.equal(value.style,'oddball');
+ assert.equal(normalizeAccount({style:'poet'}).style,'history-buff');assert.equal(normalizeAccount({style:'ghost-hunter'}).style,'ghost-hunter');
 });
 test('bounded draft text and generated traveler marks remain portable',()=>{
  const value=normalizeAccount({name:'n'.repeat(100),bio:'b'.repeat(500),signature:'s'.repeat(80),website:'https://example.test/'});
  assert.equal(value.name.length,50);assert.equal(value.bio.length,400);assert.equal(value.signature.length,40);
  assert.equal(value.website,'https://example.test/');
- const svg=decodeURIComponent(travelerImage('shutterbug').split(',')[1]);
+ const svg=decodeURIComponent(travelerImage('nomad').split(',')[1]);
  assert.match(svg,/xmlns="http:\/\/www.w3.org\/2000\/svg"/);
  assert.match(svg,/<rect/);assert.match(svg,/<circle/);
 });

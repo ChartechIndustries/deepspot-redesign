@@ -2,14 +2,17 @@
 // Reading wall on /spot/ and /story/ (signed out), action sheet for save / vote / comment / trip / submit,
 // member sheet for the photo gallery and the giveaway. State lives in gate-state.mjs.
 import {esc,localURL,icon} from './core.mjs';
+import {safeReturn} from '../profile/identity.mjs';
+import {G_ICON,A_ICON} from './brand-icons.mjs?v=ob1';
 import {OFF_KEY,readSession,writeSession,validEmail,parseGateParam,allows,SESSION_KEY} from './gate-state.mjs?v=gate1';
 export {readSession,writeSession};
 
-const D=document,LOGIN='https://www.deepspot.io/login';
+const D=document,LOGIN='https://www.deepspot.io/login',ONBOARDED='deepspot-onboarded-v1';
+/* new account that has not finished onboarding -> /welcome/ (prototype: the flag lives in localStorage) */
+const needsOnboarding=()=>{try{return !localStorage.getItem(ONBOARDED);}catch{return false;}};
+const welcomeHref=()=>{const u=new URLSearchParams(),q=new URLSearchParams(location.search);q.delete('gate');const back=safeReturn(location.pathname+(q.toString()?'?'+q:''));if(back&&back!=='/')u.set('from',back);u.set('theme',D.documentElement.dataset.theme==='light'?'light':'dark');return '/welcome/?'+u;};
 const $=(s,r=D)=>r.querySelector(s);
 const reduce=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
-const G_ICON='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/></svg>';
-const A_ICON='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg>';
 
 /* ---------- state + review switch ---------- */
 {const g=parseGateParam(location.search);try{if(g==='off')sessionStorage.setItem(OFF_KEY,'1');else if(g){sessionStorage.removeItem(OFF_KEY);writeSession({state:g,email:g==='out'?'':readSession().email});}}catch{}}
@@ -64,14 +67,14 @@ function success(d,heading,line){
  $('.gt-in',d).innerHTML=`<div class="gt-done"><p class="gt-k">deepspot · free account</p><h2 class="gt-h" id="gt-h" tabindex="-1">${twoTone(heading)}</h2><p class="gt-b" id="gt-b">${line}</p><p class="gt-status gt-ok" role="status" aria-live="polite">${esc(heading)}</p>${note}</div>`;
  $('#gt-h',d).focus({preventScroll:true});
  const resume=o.resume,then=o.then;
- setTimeout(()=>{dismiss(!then);if(then)then();else if(resume)resume();if(d._wall&&wallResume){const r=wallResume;wallResume=null;r();}},d.dataset.mode==='wall'?1300:800);
+ setTimeout(()=>{if(d._onboard){location.assign(welcomeHref());return;}dismiss(!then);if(then)then();else if(resume)resume();if(d._wall&&wallResume){const r=wallResume;wallResume=null;r();}},d.dataset.mode==='wall'?1300:800);
 }
 function wire(d,kind){
  const email=$('#gt-email',d),err=$('#gt-err',d);
  d.addEventListener('submit',e=>{
   e.preventDefault();const v=email.value.trim();
   if(!validEmail(v)){err.textContent=v?'enter a valid email, like you@example.com.':'enter your email to continue.';email.setAttribute('aria-invalid','true');email.focus();return;}
-  d._wall=kind==='wall'&&!!wall;
+  d._wall=kind==='wall'&&!!wall;d._onboard=needsOnboarding();
   setState('free',v);
   success(d,'you’re in.',`signed in as ${esc(v)} in this preview. saved on this browser only.`);
   announce('You are signed in. The page is unlocked.');
