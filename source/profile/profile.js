@@ -72,30 +72,6 @@ function giveawayHTML(){
  const line=st?(st.rankAll===1?'First place. Hold it until the month ends.':st.ahead?`${fmt(st.ahead.gap)} ${st.ahead.gap===1?'point':'points'} behind ${esc(st.ahead.name)}.`:'On the board.'):'Not on the board yet. An approved spot earns 50 points.';
  return `<div class="pp-card pp-give">${st?.rankAll?`<div class="pp-give-big"><b>#${st.rankAll}</b><span>of ${st.total} · ${fmt(st.points)} pts</span></div>`:''}<div class="pp-give-copy"><p class="pp-give-line">${line}</p><p>Top 3 on Oct 31 win. First place takes $300 and a one-of-one character item.</p><div class="pp-give-links"><a class="pp-link" href="/community/">see the race ↗</a><a class="pp-link" href="/contribute/">add a spot ↗</a></div></div></div>`;
 }
-/* ---- trophy case (2026-10-21): placeholder items; a click shows the item card where the passport sits ---- */
-function shelfHTML(){
- const list=profile.items;
- if(!list.length)return empty('no items yet.','Items are earned by posting spots and placing in the monthly race.');
- return `<ul class="pp-shelf">${list.map(it=>`<li><button type="button" class="pp-trophy" data-item="${it.id}" aria-pressed="false" style="--ic:${it.color}" aria-label="Show ${esc(it.name)}"><span class="pp-trophy-box">${it.art}</span><span class="pp-trophy-name">${esc(it.name)}</span></button></li>`).join('')}</ul><p class="pp-fine">Placeholder items for the release. Names and art are not final.</p>`;
-}
-function itemCardHTML(it){
- const n=ITEM_NO(it);
- return `<span class="pp-ic-top"><span>deepspot · item</span><span>no. ${n} · ${esc(it.rarity)}</span></span>
- <span class="pp-ic-art" style="--ic:${it.color}">${it.art}<span class="pp-ic-tag">placeholder art</span></span>
- <span class="pp-ic-plate"><strong>${esc(it.name)}</strong><span class="pp-ic-kind">${esc(it.kind)} · ${esc(it.rarity)}</span><span class="pp-ic-note">${esc(it.note)}</span></span>
- <span class="pp-ic-back">tap the card to go back to the passport</span>`;
-}
-const ITEM_NO=it=>String(profile.items.indexOf(it)+1).padStart(3,'0');
-function showItem(id,from){
- const obj=$('.pp-passobj'),card=$('#pp-itemcard'),it=profile.items.find(i=>i.id===id);if(!obj||!card)return;
- const open=it&&obj.dataset.show!==id;
- document.querySelectorAll('.pp-trophy').forEach(b=>b.setAttribute('aria-pressed',String(open&&b.dataset.item===id)));
- if(!open){obj.removeAttribute('data-show');card.hidden=true;if(from)from.focus();return;}
- card.innerHTML=itemCardHTML(it);card.hidden=false;card.setAttribute('aria-label',`${it.name}, ${it.kind}, ${it.rarity}. Back to passport`);obj.dataset.show=id;
- if(innerWidth<1100)$('.pp-field')?.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
-}
-document.addEventListener('click',e=>{const t=e.target.closest('[data-item]');if(t){showItem(t.dataset.item);return;}if(e.target.closest('#pp-itemcard')){const id=$('.pp-passobj')?.dataset.show;showItem(id,document.querySelector(`.pp-trophy[data-item="${id}"]`));}});
-document.addEventListener('keydown',e=>{if(e.key!=='Escape'||!$('.pp-passobj')?.dataset.show||document.querySelector('dialog[open]'))return;const id=$('.pp-passobj').dataset.show;showItem(id,document.querySelector(`.pp-trophy[data-item="${id}"]`));});
 /* ---- want to go (own passport only; real profiles have no list data) ---- */
 let wtgList=[],wtgCatalog=[],wtgBySlug=new Map(),wtgPick=null,wtgActive=-1,wtgMatches=[];
 const wtgSlug=id=>id.split('/').pop();
@@ -227,9 +203,9 @@ function render(){
      ${lv?`<div class="pp-prog"><div class="pp-bar4" role="progressbar" aria-label="Progress to level ${lv.level+1}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${lv.pct}"><i style="width:${Math.max(lv.pct,2)}%"></i></div><span>${fmt(lv.points)} / ${fmt(lv.to)} pts</span></div>`:''}
      <span class="pp-readable-code" aria-hidden="true">DEEP&lt;SPOT&lt;&lt;${esc(profile.name.toUpperCase().replaceAll(' ','<'))}&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;</span></div>
     <div class="pp-sig" id="pp-sig"><span class="pp-sig-l">${own?'my mark':'their mark'}</span>${sigHTML(profile.signatureArt)}</div>
-    <button type="button" class="pp-itemcard" id="pp-itemcard" hidden></button>
     </div></div>
    </div>
+   ${deckHTML()}
    <div class="pp-pane" id="pp-pane-mark" hidden>${own?mark+'<div class="pp-markdone"><button type="button" class="pp-chipbtn" data-mark-done>back to passport</button></div>':''}</div>
   </div></div></aside>
  <div class="pp-rec">
@@ -242,8 +218,7 @@ function render(){
    ${own?editHTML(lk):''}
   </section>
   <div class="pp-statsrow">${sec('type','traveler type',null,typeHTML())}${sec('stats','contributions',null,statsHTML())}</div>
-  ${sec('trophies',`${own?'my':esc(profile.name.split(/\s+/)[0].toLowerCase())+'’s'} trophy case`,profile.items.length,shelfHTML(),'<span class="pp-mono pp-ph">placeholder</span>')}
-  <section class="pp-sec pp-tabsec" aria-label="Passport contents"><div class="pp-vtabs" role="tablist" aria-orientation="vertical" aria-label="Passport contents">${VTABS.map(([id,label],i)=>`<button type="button" role="tab" class="pp-vtab" id="pp-vt-${id}" data-vt="${id}" aria-controls="pp-vp-${id}" aria-selected="${i===0}" tabindex="${i===0?0:-1}">${label}${id==='wtg'&&own&&wgAll().length?` <span>${wgAll().length}</span>`:id==='contrib'&&profile.records.length?` <span>${profile.records.length}</span>`:psCounts(own)[id]?` <span>${psCounts(own)[id]}</span>`:''}</button>`).join('')}</div>
+  <section class="pp-sec pp-tabsec" aria-label="Passport contents"><div class="pp-vtabs" role="tablist" aria-orientation="vertical" aria-label="Passport contents">${VTABS.filter(([id])=>id!=='style'||own).map(([id,label],i)=>`<button type="button" role="tab" class="pp-vtab" id="pp-vt-${id}" data-vt="${id}" aria-controls="pp-vp-${id}" aria-selected="${i===0}" tabindex="${i===0?0:-1}">${label}${id==='wtg'&&own&&wgAll().length?` <span>${wgAll().length}</span>`:id==='contrib'&&profile.records.length?` <span>${profile.records.length}</span>`:psCounts(own)[id]?` <span>${psCounts(own)[id]}</span>`:''}</button>`).join('')}</div>
    <div class="pp-vpanels">
     <div class="pp-vpanel" role="tabpanel" id="pp-vp-show" aria-labelledby="pp-vt-show" tabindex="0">${showcaseHTML()}</div>
     <div class="pp-vpanel" role="tabpanel" id="pp-vp-contrib" aria-labelledby="pp-vt-contrib" tabindex="0" hidden>
@@ -252,11 +227,12 @@ function render(){
     <div class="pp-vpanel" role="tabpanel" id="pp-vp-explored" aria-labelledby="pp-vt-explored" tabindex="0" hidden>${sub('explored',exploredHTML(own))}</div>
     <div class="pp-vpanel" role="tabpanel" id="pp-vp-wtg" aria-labelledby="pp-vt-wtg" tabindex="0" hidden>${wtgHTML()}</div>
     <div class="pp-vpanel" role="tabpanel" id="pp-vp-picks" aria-labelledby="pp-vt-picks" tabindex="0" hidden>${sub('picks',picksHTML(own))}</div>
-    <div class="pp-vpanel" role="tabpanel" id="pp-vp-items" aria-labelledby="pp-vt-items" tabindex="0" hidden>${sub(`stamps <span>(${profile.stamps.filter(s=>s.earned).length}/${profile.stamps.length})</span>`,stampsHTML())}${sub('giveaway',giveawayHTML())}</div>
+    <div class="pp-vpanel" role="tabpanel" id="pp-vp-items" aria-labelledby="pp-vt-items" tabindex="0" hidden>${sub(`items <span>(${allItems().filter(x=>!x.locked).length}/${allItems().length})</span>`,itemsHTML(),'<span class="pp-mono pp-ph">placeholder</span>')}${sub('giveaway',giveawayHTML())}</div>
+    ${own?`<div class="pp-vpanel" role="tabpanel" id="pp-vp-style" aria-labelledby="pp-vt-style" tabindex="0" hidden>${customizeHTML()}</div>`:''}
    </div>
   </section>
  </div></article>`;
- wireV4();
+ wireV4();applyStyle();
  $('#passport').setAttribute('aria-busy','false');$('.pp-share').disabled=false;
  /* soft ambient field: Earth glyphs on slow turbulent noise (same module as the community race), very low strength, fills the whole left column (sticky viewport-sized layer, so the cost stays one screen) */
  window._ppField?.stop();window._ppField=halftoneField($('.pp-bg-in'),{cell:8,fps:20,ink:()=>document.documentElement.dataset.theme==='light'?[24/255,48/255,86/255]:[146/255,193/255,228/255]});
@@ -296,7 +272,7 @@ document.addEventListener('keydown',event=>{const tb=event.target.closest?.('.pp
 
 
 /* ---------- v5 (2026-10-20): passport object, edit in place, bio look, vertical tabs ---------- */
-const VTABS=[['show','showcase'],['explored','explored'],['wtg','my map'],['picks','picks'],['contrib','contributions'],['items','stamps']];
+const VTABS=[['show','showcase'],['explored','explored'],['wtg','my map'],['picks','picks'],['contrib','contributions'],['items','items'],['style','customize']];
 const sub=(title,body,act='')=>`<div class="pp-sub"><div class="pp-sub-h"><h3>${title}</h3>${act}</div>${body}</div>`;
 const LOOK_KEY='deepspot-bio-look-v1',PIN_KEY='deepspot-showcase-v1';
 const LOOKS={bg:[['panel','plain'],['green','green'],['cobalt','cobalt'],['aqua','aqua'],['cream','paper'],['ink','ink']],font:[['display','bold'],['serif','serif'],['mono','type'],['hand','hand']],align:[['left','left'],['center','center']]};
@@ -338,7 +314,7 @@ function wireV4(){
  selectVT('show');
  const tl=$('.pp-vtabs');
  tl.addEventListener('click',e=>{const b=e.target.closest('.pp-vtab');if(b)selectVT(b.dataset.vt);});
- tl.addEventListener('keydown',e=>{const ids=VTABS.map(v=>v[0]),cur=ids.indexOf($('.pp-vtab[aria-selected=true]').dataset.vt);let n=null;
+ tl.addEventListener('keydown',e=>{const ids=[...document.querySelectorAll('.pp-vtab')].map(b=>b.dataset.vt),cur=ids.indexOf($('.pp-vtab[aria-selected=true]').dataset.vt);let n=null;
   if(e.key==='ArrowDown'||e.key==='ArrowRight')n=(cur+1)%ids.length;else if(e.key==='ArrowUp'||e.key==='ArrowLeft')n=(cur-1+ids.length)%ids.length;else if(e.key==='Home')n=0;else if(e.key==='End')n=ids.length-1;
   if(n!==null){e.preventDefault();selectVT(ids[n],true);}});
  requestAnimationFrame(fitBio);
@@ -465,6 +441,66 @@ async function rollMole(trigger){
  finally{rolling=false;}
 }
 document.addEventListener('click',e=>{if(e.target.closest('[data-settings]'))openSettings();const rb=e.target.closest('[data-set-roll]');if(rb&&profile?.localPreview){e.preventDefault();rollMole(rb);}});
+
+/* ---------- items + card stack (2026-10-21): stamps are items; hovering one deals a card stack where the passport sits ---------- */
+const DECK_N=7;
+function allItems(){
+ const st=profile.stamps.map(s=>({id:'stamp-'+s.id,name:s.name,kind:'stamp',rarity:s.earned?'earned':'locked',color:s.color,note:s.earned?s.description:'Locked · '+s.hint,art:s.svg(),locked:!s.earned}));
+ return [...st,...profile.items.map(i=>({...i,locked:false}))];
+}
+function itemsHTML(){
+ const list=allItems();
+ return `<ul class="pp-items">${list.map(it=>`<li><button type="button" class="pp-item${it.locked?' is-locked':''}" data-item="${esc(it.id)}" style="--ic:${it.color}" aria-label="${esc(it.name)}, ${esc(it.kind)}, ${esc(it.rarity)}"><span class="pp-item-art">${it.art}</span><span class="pp-item-name">${esc(it.name)}</span><span class="pp-item-kind">${esc(it.kind)} · ${esc(it.rarity)}</span></button></li>`).join('')}</ul><p class="pp-fine">Placeholder items for the release. Names and art are not final.</p>`;
+}
+const BACK=`<span class="pp-cb-in"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 2v44M2 24h44M8.5 8.5l31 31m0-31-31 31"/></svg><b>deepspot</b><i>explorer item card</i></span>`;
+function deckHTML(){return `<div class="pp-deck" id="pp-deck" aria-hidden="true">${Array.from({length:DECK_N},(_,i)=>`<span class="pp-cb" style="--n:${i-(DECK_N-1)/2}">${BACK}</span>`).join('')}<span class="pp-cf"><span class="pp-cf-back pp-cb">${BACK}</span><span class="pp-cf-face" id="pp-cf-face"></span></span></div><p class="sr-only" id="pp-deck-live" aria-live="polite"></p>`;}
+const faceHTML=(it,n)=>`<span class="pp-cf-top"><span>deepspot · item</span><span>no. ${String(n).padStart(3,'0')}</span></span><span class="pp-cf-art" style="--ic:${it.color}">${it.art}</span><span class="pp-cf-plate"><strong>${esc(it.name)}</strong><span>${esc(it.kind)} · ${esc(it.rarity)}</span><em>${esc(it.note)}</em></span>`;
+let deckState={open:false,id:null,t:[],hideT:0};
+const calmNow=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
+function deckTimers(){deckState.t.forEach(clearTimeout);deckState.t=[];}
+function showDeck(id){
+ const field=$('.pp-field'),deck=$('#pp-deck'),face=$('#pp-cf-face');if(!field||!deck)return;
+ clearTimeout(deckState.hideT);const list=allItems(),it=list.find(i=>i.id===id);if(!it)return;
+ if(deckState.open&&deckState.id===id)return;
+ deckTimers();const calm=calmNow(),later=(f,ms)=>deckState.t.push(setTimeout(f,calm?0:ms));
+ document.querySelectorAll('.pp-item').forEach(b=>b.classList.toggle('is-on',b.dataset.item===id));
+ $('#pp-deck-live').textContent=`${it.name}, ${it.kind}, ${it.rarity}`;
+ if(!deckState.open){deckState.open=true;deckState.id=id;face.innerHTML=faceHTML(it,list.indexOf(it)+1);field.setAttribute('data-deck','in');later(()=>deck.classList.add('is-flipped'),360);return;}
+ deckState.id=id;deck.classList.remove('is-flipped');deck.classList.add('is-shuffle');
+ later(()=>{face.innerHTML=faceHTML(it,list.indexOf(it)+1);deck.classList.remove('is-shuffle');},260);
+ later(()=>deck.classList.add('is-flipped'),420);
+}
+function hideDeck(delay=220){
+ clearTimeout(deckState.hideT);
+ deckState.hideT=setTimeout(()=>{deckTimers();const field=$('.pp-field'),deck=$('#pp-deck');if(!field||!deck)return;deck.classList.remove('is-flipped','is-shuffle');document.querySelectorAll('.pp-item').forEach(b=>b.classList.remove('is-on'));
+  deckState.t.push(setTimeout(()=>{field.removeAttribute('data-deck');deckState.open=false;deckState.id=null;},calmNow()?0:240));},delay);
+}
+document.addEventListener('pointerover',e=>{const b=e.target.closest?.('.pp-item');if(b&&e.pointerType==='mouse')showDeck(b.dataset.item);});
+document.addEventListener('pointerout',e=>{if(e.pointerType!=='mouse')return;const from=e.target.closest?.('.pp-items'),to=e.relatedTarget?.closest?.('.pp-items');if(from&&!to)hideDeck();});
+document.addEventListener('focusin',e=>{const b=e.target.closest?.('.pp-item');if(b)showDeck(b.dataset.item);else if(deckState.open&&!e.target.closest?.('.pp-items'))hideDeck(0);});
+document.addEventListener('click',e=>{const b=e.target.closest('.pp-item');if(b){if(deckState.open&&deckState.id===b.dataset.item&&matchMedia('(hover: none)').matches)hideDeck(0);else showDeck(b.dataset.item);if(innerWidth<1100)$('.pp-field')?.scrollIntoView({behavior:calmNow()?'auto':'smooth',block:'start'});}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&deckState.open&&!document.querySelector('dialog[open]'))hideDeck(0);});
+
+/* ---------- customize (2026-10-21): backgrounds for the left pane, a name flair, a foil on the passport. Placeholders; locked ones say how they will be earned ---------- */
+const STYLE_KEY='deepspot-passport-style-v1';
+const ICON=d=>`<svg viewBox="0 0 24 24" aria-hidden="true">${d}</svg>`;
+const STYLE={
+ bg:[['halftone','earth halftone','',''],['night','night field','',''],['green','green field','',''],['cobalt','cobalt field','',''],['paper','paper','',''],['dusk','dusk','','reach level 5'],['aurora','aurora','','join a monthly race'],['topo','topo lines','','post 10 spots']],
+ flair:[['none','none','',''],['star','star',ICON('<path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9Z"/>'),''],['compass','compass',ICON('<circle cx="12" cy="12" r="9"/><path d="m15 9-2 4-4 2 2-4Z"/>'),''],['mole','mole',ICON('<circle cx="12" cy="13" r="7"/><circle cx="9.5" cy="12" r="1"/><circle cx="14.5" cy="12" r="1"/><path d="M11 15.5h2"/>'),''],['flame','flame',ICON('<path d="M12 3c3 4 6 6 6 11a6 6 0 0 1-12 0c0-3 2-5 3-6 0 2 1 3 2 3 0-3 0-5 1-8Z"/>'),'a 7-day streak'],['crown','crown',ICON('<path d="m3 8 4 4 5-7 5 7 4-4-2 11H5Z"/>'),'win a monthly race']],
+ foil:[['none','none','',''],['holo','holo','',''],['gold','gold','',''],['chrome','chrome','',''],['cobalt','cobalt shine','','founding members'],['prism','prism','','reach level 10']]
+};
+function readStyle(){const d={bg:'halftone',flair:'none',foil:'none'};if(!profile?.localPreview)return d;try{const v=JSON.parse(localStorage.getItem(STYLE_KEY))||{};for(const k in d)if(STYLE[k].some(o=>o[0]===v[k]&&!o[3]))d[k]=v[k];}catch{}return d;}
+function writeStyle(v){try{localStorage.setItem(STYLE_KEY,JSON.stringify(v));}catch{}}
+function customizeHTML(){
+ const st=readStyle(),grp=(k,title,hint)=>`<fieldset class="pp-cz"><legend>${title}</legend><p class="pp-fine">${hint}</p><div class="pp-cz-opts">${STYLE[k].map(([id,label,icon,lock])=>`<label class="pp-cz-o pp-cz-${k}${lock?' is-locked':''}" data-v="${id}"><input type="radio" name="cz-${k}" value="${id}"${st[k]===id?' checked':''}${lock?' disabled':''}><span class="pp-cz-sw">${icon}</span><span class="pp-cz-l">${label}</span>${lock?`<span class="pp-cz-lock">🔒 ${lock}</span>`:''}</label>`).join('')}</div></fieldset>`;
+ return `<p class="pp-mono pp-cz-k">customize your passport · placeholders, more to unlock at launch</p>${grp('bg','background','The field behind your passport.')}${grp('flair','flair','A small mark next to your name.')}${grp('foil','foil','A finish on your passport card. Tilt it to see it.')}`;
+}
+const flairHTML=st=>{const f=STYLE.flair.find(o=>o[0]===st.flair);return f&&f[0]!=='none'?`<span class="pp-flair" title="${f[1]} flair" role="img" aria-label="${f[1]} flair">${f[2]}</span>`:'';};
+function applyStyle(){
+ const st=readStyle(),field=$('.pp-field'),obj=$('.pp-passobj-in');if(field)field.dataset.bg=st.bg;if(obj)obj.dataset.foil=st.foil;
+ document.querySelectorAll('.pp-flair').forEach(f=>f.remove());const fl=flairHTML(st);if(fl){$('.pp-bio-name')?.insertAdjacentHTML('beforeend',fl);$('#pp-name')?.insertAdjacentHTML('beforeend',fl);}
+}
+document.addEventListener('change',e=>{const m=e.target.name?.match(/^cz-(\w+)$/);if(!m||!profile?.localPreview)return;const st=readStyle();st[m[1]]=e.target.value;writeStyle(st);applyStyle();});
 
 try{
  profile=await loadProfile(params.get('user')||'wayfarer');
