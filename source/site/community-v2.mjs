@@ -139,5 +139,5 @@ export async function renderCommunityV2(root,data){
  $$('[data-jump]',root).forEach(l=>l.addEventListener('click',e=>{const t=document.getElementById(l.dataset.jump);if(!t)return;e.preventDefault();t.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});}));
  const scope=$('.cv',root);
  wirePoll(scope);wireSpots(scope,data,acct);wireVotes(scope);
- const {renderGiveaway}=await import('./giveaway-hero.mjs?v=12');renderGiveaway($('[data-giveaway]',scope),data,gv);
+ const {renderGiveaway}=await import('./giveaway-hero.mjs?v=13');renderGiveaway($('[data-giveaway]',scope),data,gv);
 }

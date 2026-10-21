@@ -17,10 +17,13 @@ html.tr-lock ds-site-header{position:relative;z-index:20}
 .tr-f-card i{height:16px;margin:16px 16px 0;width:60%}
 
 /* giant title, top of the stage */
-.tr-stage .tr-title{position:absolute;left:0;right:0;top:1%;margin:0;padding:0;z-index:1;text-align:center;font:800 min(29vw,52vh)/.9 Arial,Helvetica,sans-serif;letter-spacing:-.07em;color:var(--br-text);white-space:nowrap;max-width:none}
+.tr-stage .tr-title{position:absolute;left:0;right:0;top:calc(1% + .30 * min(29vw,52vh) * .5);margin:0;padding:0;z-index:1;text-align:center;font:800 min(29vw,52vh)/.9 Arial,Helvetica,sans-serif;letter-spacing:-.07em;color:var(--br-text);white-space:nowrap;max-width:none}
 
-/* the construction mole: in front of the title, behind the tape */
-.tr-mole{position:absolute;left:42%;top:20%;z-index:2;height:50%;aspect-ratio:585/720;transform:translateX(-50%)}
+/* three working moles: in front of the title, behind the tape; tours.mjs sets left/top/height from the letters */
+.tr-mole{position:absolute;z-index:2;left:0;top:0;height:0}
+.tr-mole[data-mole=supervisor]{z-index:4}   /* stands in front of the corner tape, like the sketch */
+/* contact shadow where the supervisor's feet meet the top of the "u" */
+.tr-mole-shadow{position:absolute;z-index:2;display:block;pointer-events:none;border-radius:50%;background:radial-gradient(closest-side,rgba(5,9,18,.8),rgba(5,9,18,.45) 55%,transparent);filter:blur(2px)}
 
 .tr-mole picture{display:contents}
 .tr-mole img{display:block;width:100%;height:100%}
@@ -44,7 +47,8 @@ html.tr-lock ds-site-header{position:relative;z-index:20}
 .tr-cta .ds-button{white-space:nowrap;height:clamp(64px,10vh,96px);min-height:0;border-radius:99px;padding:0 clamp(32px,4vw,56px);gap:16px;font-size:clamp(20px,2.4vw,34px);border-width:3px;background:var(--tr-ink);color:#f5f4ee;border:2px solid var(--tr-green);box-shadow:0 18px 30px -10px rgba(0,0,0,.55)}
 .tr-cta .ds-button:hover{background:#13293a}
 
-@media(max-width:700px){.tr-f-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.tr-stage .tr-title{top:8%}.tr-mole{height:42%;top:24%;left:46%}}
+@media(max-width:700px){.tr-f-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px),(orientation:portrait){.tr-stage .tr-title{top:24%;font-size:min(35vw,40vh)}}   /* phones and portrait tablets */
 @media(prefers-reduced-motion:reduce){.tr-run{animation:none}}
 .tr-tape[data-tape=c]{width:120vw}
 .tr-cta .ds-button svg{width:1em;height:1em}

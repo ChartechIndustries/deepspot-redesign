@@ -1,5 +1,5 @@
 import {esc,$,$$,icon,localURL} from './core.mjs';
-import {people,passCard,fmt} from './community-v2.mjs?v=14';
+import {people,passCard,fmt} from './community-v2.mjs?v=15';
 import {halftoneField} from './halftone-field.mjs?v=2';
 
 /* Community giveaway hero (2026-10-19): 10 race-graph versions. Real data only (content.json leaderboard, this month). Bar length = sqrt(points). */
@@ -36,7 +36,8 @@ function head(v,now,{title=true}={}){
 }
 const tools=()=>`<div class="gv-tools"><span class="gv-ends"><i>ends in</i><b data-cd>—</b></span><button type="button" class="gv-ghost" data-more>read more</button><button type="button" class="gv-ghost gv-rep" data-replay>${ico.replay}<span>run it again</span></button></div>`;
 const ctaHTML=()=>`<div class="gv-cta"><div class="gv-cta-t"><h3>your spot could be next.</h3><p>Every approved spot earns 50 points, every story 100, every upvote 10. Start now and you are on the board today.</p></div><div class="gv-cta-b"><a class="ds-button gv-join" href="${esc(localURL('/contribute/'))}">join now ${icon('arrow')}</a><button type="button" class="gv-ghost" data-more>read more</button></div></div>`;
-const bandHTML=(D,v)=>`<section class="gv-band" aria-labelledby="gv-pt-${v}"><div class="gv-band-l"><h3 id="gv-pt-${v}">participants</h3><p>${D.length} explorers this month. Tap a card for the passport.</p><div class="gv-arrows"><button type="button" class="cv-round sm" data-pp-prev aria-label="Previous participants">${ico.prev}</button><button type="button" class="cv-round sm" data-pp-next aria-label="Next participants">${ico.next}</button></div></div><div class="gv-band-r"><ul class="cv-pp-track" data-pp>${D.map(passCard).join('')}</ul></div></section>`;
+/* participants: a fanned 3D deck of passport cards, seated under the discord panel. Tap cycles; it also cycles on its own. */
+const bandHTML=(D,v)=>`<section class="gv-fan" aria-labelledby="gv-pt-${v}" aria-roledescription="carousel"><div class="gv-fan-head"><h3 id="gv-pt-${v}">participants</h3><p>${D.length} explorers this month.</p><div class="gv-fan-ctl"><button type="button" class="cv-round sm" data-pp-prev aria-label="Previous participant">${ico.prev}</button><button type="button" class="cv-round sm" data-pp-next aria-label="Next participant">${ico.next}</button><a class="gv-fan-open" data-pp-open href="${esc(D[0].href)}">${esc(D[0].name)}’s passport ↗</a></div></div><div class="gv-fan-stage"><ul class="gv-fan-deck" data-pp aria-live="off">${D.map(passCard).join('')}</ul></div></section>`;
 
 /* vertical plot (G1, G2, G5, G6) */
 const vplot=(D,{order,col,extra='',cls=''})=>`<p class="gv-hint" aria-hidden="true">swipe sideways to see all ten →</p><div class="gv-scroll"><div class="gv-plot ${cls}">${extra}${ticks(D,'v')}<ol class="gv-cols" aria-label="Giveaway standings, this month">${D.map((r,i)=>col(r,order?order.indexOf(i):i)).join('')}</ol></div></div>`;
@@ -169,6 +170,31 @@ V.g8=(D,n,now)=>{
 };
 
 /* ---------- render ---------- */
+function wireFan(sec,D,rm){
+ const deck=$('[data-pp]',sec);if(!deck)return;
+ const cards=[...deck.children],N=cards.length,open=$('[data-pp-open]',sec);let at=0,timer=0,hover=false,seen=false;
+ const lay=()=>{
+  cards.forEach((li,i)=>{let k=((i-at)%N+N)%N;if(k>N/2)k-=N;const a=Math.abs(k);
+   li.style.setProperty('--k',k);li.style.setProperty('--a',a);li.style.zIndex=String(50-a);
+   li.classList.toggle('is-front',k===0);li.classList.toggle('is-off',a>4);
+   const link=li.querySelector('a');link.tabIndex=k===0?0:-1;li.setAttribute('aria-hidden',k===0?'false':'true');});
+  const f=D[at];if(open){open.href=f.href;open.textContent=`${f.name}’s passport ↗`;}
+ };
+ const go=d=>{at=((at+d)%N+N)%N;lay();};
+ const tick=()=>{clearTimeout(timer);if(rm||!seen||hover||document.hidden)return;timer=setTimeout(()=>{go(1);tick();},3400);};
+ deck.addEventListener('click',e=>{const li=e.target.closest('li');if(!li)return;
+  /* keyboard activation (detail 0) on the front card opens the passport; pointer taps cycle */
+  if(e.detail===0&&li.classList.contains('is-front'))return;
+  e.preventDefault();const i=cards.indexOf(li);if(i===at)go(1);else{at=i;lay();}tick();});
+ $('[data-pp-prev]',sec).onclick=()=>{go(-1);tick();};$('[data-pp-next]',sec).onclick=()=>{go(1);tick();};
+ deck.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();go(e.key==='ArrowRight'?1:-1);cards[at].querySelector('a').focus({preventScroll:true});}});
+ const fan=$('.gv-fan',sec);
+ fan.addEventListener('pointerenter',()=>{hover=true;clearTimeout(timer);});fan.addEventListener('pointerleave',()=>{hover=false;tick();});
+ fan.addEventListener('focusin',()=>{hover=true;clearTimeout(timer);});fan.addEventListener('focusout',e=>{if(!fan.contains(e.relatedTarget)){hover=false;tick();}});
+ document.addEventListener('visibilitychange',tick);
+ if('IntersectionObserver'in window)new IntersectionObserver(([en])=>{seen=en.isIntersecting;tick();},{threshold:.25}).observe(fan);else{seen=true;tick();}
+ lay();
+}
 export function renderGiveaway(root,data,variant='g1',opt={}){
  const v=V[variant]?variant:'g1',D=giveawayData(data),now=new Date(),lim=variant==='g9'?1280:(variant==='g4'||variant==='g8')?900:NARROW,narrow=root.clientWidth>0&&root.clientWidth<lim;
  const mode=opt.mode||new URLSearchParams(location.search).get('race')||'';
@@ -179,11 +205,7 @@ export function renderGiveaway(root,data,variant='g1',opt={}){
  /* G1: ambient turbulent noise in the Earth's halftone glyphs, barely visible behind the race */
  if(v==='g1'){root._hf?.stop();const dark=()=>document.documentElement.dataset.theme!=='light';root._hf=halftoneField(stage,{cell:10,ink:()=>dark()?[146/255,193/255,228/255]:[24/255,48/255,86/255]});}
  sec.addEventListener('click',e=>{const m=e.target.closest('[data-more]');if(m)return openDetails(m);if(e.target.closest('[data-replay]'))race.play();});
- /* participants arrows */
- const tr=$('[data-pp]',sec),step=()=>{const c=tr.firstElementChild;return c?c.getBoundingClientRect().width+parseFloat(getComputedStyle(tr).columnGap||12):200;},pv=$('[data-pp-prev]',sec),nx=$('[data-pp-next]',sec);
- const upd=()=>{const max=tr.scrollWidth-tr.clientWidth-2;pv.disabled=tr.scrollLeft<=2;nx.disabled=tr.scrollLeft>=max;};
- const go=d=>tr.scrollBy({left:d*step()*Math.max(1,Math.floor(tr.clientWidth/step())-0),behavior:rm?'auto':'smooth'});
- pv.onclick=()=>go(-1);nx.onclick=()=>go(1);tr.addEventListener('scroll',()=>requestAnimationFrame(upd),{passive:true});upd();setTimeout(upd,400);
+ wireFan(sec,D,rm);
  /* scrollable plot: keyboard reachable only when it scrolls */
  const sc=$('.gv-scroll',sec);if(sc){const chk=()=>{const s=sc.scrollWidth>sc.clientWidth+2;if(s){sc.tabIndex=0;sc.setAttribute('role','region');sc.setAttribute('aria-label','Giveaway chart, scrolls sideways');}else{sc.removeAttribute('tabindex');sc.removeAttribute('role');sc.removeAttribute('aria-label');}};chk();if(sc.scrollWidth>sc.clientWidth+2){if(v==='g5')sc.scrollLeft=sc.scrollWidth;else if(v==='g1'){const lead=$('.is-lead',sc);if(lead)sc.scrollLeft=lead.offsetLeft+lead.offsetWidth/2-sc.clientWidth/2;}}}
  /* race */
