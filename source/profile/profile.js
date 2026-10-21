@@ -173,7 +173,7 @@ function render(){
    <div class="pp-pane" id="pp-pane-mark" hidden>${own?mark+'<div class="pp-markdone"><button type="button" class="pp-chipbtn" data-mark-done>back to passport</button></div>':''}</div>
   </div></div></aside>
  <div class="pp-rec">
-  <section class="pp-sec pp-biosec" aria-labelledby="pp-bio" data-bg="${lk.bg}" data-font="${lk.font}" data-align="${lk.align}"><header class="pp-bar"><h2 id="pp-bio">bio</h2>${own?'<button type="button" class="pp-chipbtn pp-editbtn" data-edit aria-expanded="false">edit profile</button>':''}</header>
+  <section class="pp-sec pp-biosec" aria-labelledby="pp-bio" data-bg="${lk.bg}" data-font="${lk.font}" data-align="${lk.align}"><header class="pp-bar"><h2 id="pp-bio">bio</h2>${own?`<div class="pp-bar-acts"><button type="button" class="pp-chipbtn pp-editbtn" data-edit aria-expanded="false">edit profile</button><button type="button" class="pp-cog" data-settings aria-label="Settings" title="Settings">${COG}</button></div>`:''}</header>
    <div class="pp-body pp-bio-body" id="pp-bio-view">
     <div class="pp-bio-top">${mini}<div class="pp-bio-id"><h1 class="pp-bio-name">${esc(profile.name)}</h1><span class="pp-handle">${profile.handle?'@'+esc(profile.handle):'DeepSpot contributor'}</span></div>${lv?`<span class="pp-badge" role="img" aria-label="Level ${lv.level}"><b>${lv.level}</b><i>level</i></span>`:''}</div>
     <div class="pp-bio-fit">${profile.bio?`<p class="pp-bio-text">${esc(profile.bio)}</p>`:`<p class="pp-bio-text pp-bio-empty">${own?'say something. edit profile to write your bio.':'no bio yet.'}</p>`}</div>
@@ -342,6 +342,56 @@ function wgSync(){
  if(on.length&&(wg.sel<0||!on.includes(wg.sel)))wg.focus(on[0]);if(!on.length)wgCard(-1);
  clearInterval(wgTimer);if(on.length>1&&!matchMedia('(prefers-reduced-motion: reduce)').matches)wgTimer=setInterval(()=>{if(document.hidden||$('#wg')?.matches(':hover'))return;const k=on.indexOf(wg.sel);wg.focus(on[(k+1)%on.length]);},6000);
 }
+/* ---------- settings (2026-10-20): the cog on your own passport holds what the old account profile tab had ---------- */
+const COG='<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg>';
+const SESSION_KEY='deepspot-session-preview';
+const readSess=()=>{try{const v=JSON.parse(localStorage.getItem(SESSION_KEY))||{};return {state:['free','member'].includes(v.state)?v.state:'out',email:typeof v.email==='string'?v.email:''};}catch{return {state:'out',email:''};}};
+const ACCOUNT_LINKS=[['progress','travel stats'],['trips','my trips'],['submissions','my submissions'],['placements','my placements'],['billing','membership'],['notifications','notifications'],['security','account settings']];
+function settingsHTML(){
+ const d=readAccount(),s=readSess(),moleImg=d.mole?.png;
+ const styles=travelerStyles.map(t=>`<label class="pp-look-o pp-set-style"><input type="radio" name="style" value="${t.id}"${d.style===t.id?' checked':''}><span>${travelerMark(t.id)}${esc(t.name.replace(/^the /,''))}</span></label>`).join('');
+ return `<button class="pp-dialog-close" type="button" aria-label="Close settings">×</button><p class="pp-small">your passport</p><h2 id="pp-set-title">settings.</h2>
+ <section class="pp-set-sec"><h3>profile picture</h3><div class="pp-set-mole"><span class="pp-set-av">${moleImg?`<img src="${esc(moleImg)}" alt="Your mole">`:travelerMark(d.style)}</span><div><p>${moleImg?'Your mole is your passport picture.':'Roll a mole from the DeepSpot collection to be your passport picture.'}</p><button type="button" class="pp-chipbtn pp-editbtn" data-set-roll>${moleImg?'roll a new mole':'roll my mole'}</button></div></div></section>
+ <form id="pp-set-form" novalidate>
+ <section class="pp-set-sec"><h3>find you elsewhere</h3><div class="pp-set-grid">
+  <label class="pp-f"><span>instagram</span><input name="instagram" maxlength="60" value="${esc(d.instagram)}" placeholder="@handle"></label>
+  <label class="pp-f"><span>x / twitter</span><input name="twitter" maxlength="60" value="${esc(d.twitter)}" placeholder="@handle"></label>
+  <label class="pp-f pp-f-wide"><span>website</span><input name="website" type="url" maxlength="300" value="${esc(d.website)}" placeholder="https://"></label></div></section>
+ <section class="pp-set-sec"><h3>traveler type</h3><p class="pp-fine">Used until your postings decide it for you.</p><fieldset class="pp-look"><legend class="sr-only">traveler type</legend>${styles}</fieldset></section>
+ <div class="pp-set-save"><button type="submit" class="pp-savebtn">save settings</button><span class="pp-fine" id="pp-set-msg" role="status"></span></div>
+ </form>
+ <section class="pp-set-sec"><h3>account</h3><p class="pp-set-sess">preview session: <b>${s.state==='member'?'founding member':s.state==='free'?'free account':'signed out'}</b>${s.email?' · '+esc(s.email):''}</p>
+  <div class="pp-set-links">${ACCOUNT_LINKS.map(([id,l])=>`<a class="pp-chipbtn" href="/account/?tab=${id}">${l} ↗</a>`).join('')}<a class="pp-chipbtn" href="/inbox/">inbox ↗</a><a class="pp-chipbtn" href="/invites/">invites ↗</a></div>
+  <div class="pp-set-links">${s.state==='out'?'':'<button type="button" class="pp-chipbtn" data-set-out>sign out of preview</button>'}<button type="button" class="pp-chipbtn" data-set-export>download my data</button><button type="button" class="pp-chipbtn" data-set-clear>clear this passport</button></div></section>`;
+}
+function openSettings(){
+ let dlg=$('.pp-settings');
+ if(!dlg){dlg=document.createElement('dialog');dlg.className='pp-settings';dlg.setAttribute('aria-labelledby','pp-set-title');document.body.append(dlg);
+  dlg.addEventListener('click',async e=>{
+   if(e.target===dlg||e.target.closest('.pp-dialog-close'))return dlg.close();
+   if(e.target.closest('[data-set-roll]')){
+    try{const {openMoleReveal}=await import('../site/mole/mole-reveal.mjs?v=rules1');dlg.close();const res=await openMoleReveal({trigger:$('[data-settings]')});dlg.showModal();
+     if(res){const next=normalizeAccount({...readAccount(),avatarMode:'mole',mole:{traits:res.traits,png:res.png,rolledAt:res.rolledAt}});if(!next.mole){notify('That mole picture was too large to save.');return;}
+      localStorage.setItem(accountKey,JSON.stringify(next));profile=await loadProfile('preview');render();dlg.innerHTML=settingsHTML();notify('Mole kept. Your passport picture is updated.');}}
+    catch(err){console.error(err);notify('The mole roll could not load. Try again.');}
+   }
+   if(e.target.closest('[data-set-out]')){try{localStorage.setItem(SESSION_KEY,JSON.stringify({state:'out',email:''}));}catch{}dlg.innerHTML=settingsHTML();notify('Signed out of the preview.');}
+   if(e.target.closest('[data-set-export]')){const data={profile:readAccount(),look:readLook(),showcase:readPins(),wantToGo:wtgList};const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='deepspot-passport.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),60000);}
+   const clr=e.target.closest('[data-set-clear]');
+   if(clr){if(clr.dataset.sure!=='1'){clr.dataset.sure='1';clr.textContent='press again to clear';return;}
+    for(const k of [accountKey,LOOK_KEY,PIN_KEY,'deepspot-want-to-go-v1'])try{localStorage.removeItem(k);}catch{}
+    wtgList=[];profile=await loadProfile('preview');render();dlg.close();notify('This passport is cleared on this browser.');}
+  });
+  dlg.addEventListener('submit',async e=>{e.preventDefault();const f=e.target,fd=Object.fromEntries(new FormData(f));
+   const next=normalizeAccount({...readAccount(),instagram:fd.instagram,twitter:fd.twitter,website:fd.website,style:fd.style||readAccount().style});
+   if(fd.website&&!next.website){$('#pp-set-msg').textContent='Websites need to start with https://';return;}
+   try{localStorage.setItem(accountKey,JSON.stringify(next));}catch{notify('This browser could not save your settings.');return;}
+   profile=await loadProfile('preview');render();$('#pp-set-msg').textContent='Saved.';});
+ }
+ dlg.innerHTML=settingsHTML();dlg.showModal();dlg.querySelector('.pp-dialog-close').focus();
+}
+document.addEventListener('click',e=>{if(e.target.closest('[data-settings]'))openSettings();});
+
 try{
  profile=await loadProfile(params.get('user')||'wayfarer');
  if(profile?.localPreview){wtgList=readWantToGo();await Promise.all([wtgLoadCatalog(),wtgLoadCoords()]);}
