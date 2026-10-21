@@ -35,6 +35,19 @@ const RANKC=['#07d653','#3c60ff','#f2c14e'],CATS=['#3c60ff','#07d653','#f2c14e',
 const sec=(id,label,count,body,act='')=>`<section class="pp-sec" aria-labelledby="pp-${id}"><header class="pp-bar"><h2 id="pp-${id}">${label}${count==null?'':` <span>(${count})</span>`}</h2>${act}</header><div class="pp-body">${body}</div></section>`;
 const empty=(title,text,link='')=>`<div class="pp-empty"><strong>${title}</strong><span>${text}</span>${link}</div>`;
 const moleHTML=(cls='')=>profile.mole?`<span class="pp-mole ${cls}" style="--mx:${moleCrop.x};--my:${moleCrop.y};--mw:${moleCrop.w}"><img src="${esc(profile.mole)}" alt="${cls?'':esc(profile.name)+'’s mole'}" ${cls?'aria-hidden="true"':''} width="512" height="512"></span>`:'';
+/* guilloche: the fine security curves printed on real passports (two rosettes, drawn once) */
+const GUILLOCHE=(()=>{const band=(y0,amp,f,ph,n)=>{let out='';for(let k=0;k<n;k++){let d='';for(let x=-10;x<=450;x+=6){const y=y0+amp*Math.sin(x*f+k*ph)+amp*.45*Math.sin(x*f*2.3-k*ph*1.7)+k*1.6;d+=(x<-9?'M':'L')+x+' '+y.toFixed(1);}out+=`<path d="${d}"/>`;}return out;};
+ return `<svg class="pp-id9-gu" viewBox="0 0 440 300" preserveAspectRatio="none" aria-hidden="true"><g class="g1">${band(40,14,.028,.32,16)}</g><g class="g2">${band(170,18,.021,.27,18)}</g><g class="g3">${band(250,10,.035,.4,10)}</g></svg>`;})();
+const mrzPad=(t,n)=>(t+'<'.repeat(n)).slice(0,n);
+const mrzName=n=>String(n||'').normalize('NFKD').replace(/[^\w ]/g,'').toUpperCase().trim().replace(/\s+/g,'<');
+function mrz(p,rank,lv){const l1=mrzPad('P<DSP'+mrzName(p.name)+'<<'+mrzName(p.handle||''),36),l2=mrzPad((rank?String(rank).padStart(3,'0'):'DRF')+'<'+mrzName(p.joined||'')+'<LVL'+String(lv?.level||1).padStart(2,'0')+'<'+mrzName(p.member||''),36);return `${esc(l1)}<br>${esc(l2)}`.replaceAll('<br>','\n').replace(/</g,'&lt;').replace(/\n/g,'<br>');}
+function factsHTML(){
+ const own=profile.localPreview,t=profile.type||{},cat=t.cats?.[0]?.[0],rec=profile.records?.[0];
+ const next=own?readWantToGo()[0]:null,nextName=next?(next.type==='spot'?(wtgBySlug.get(next.id)?.title||'a deep spot'):next.name):null;
+ const facts=own?[['next up',nextName||'add a place to my map'],['top category',cat||'post a spot to find out'],['level',`${profile.level?.level||1} · ${profile.member}`]]
+  :[['latest find',rec?.name||'nothing posted yet'],['top category',cat||'—'],['level',`${profile.level?.level||1} · ${profile.member}`]];
+ return `<dl class="pp-facts">${facts.map(([k,v])=>`<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl>`;
+}
 const sigHTML=art=>art?`<img src="${esc(art)}" alt="${esc(profile.name)}’s mark" width="512" height="256">`:'<span>no mark yet</span>';
 function typeHTML(){
  const t=profile.type,id=t.id||(profile.localPreview?profile.style:null),style=travelerStyles.find(s=>s.id===id);
@@ -197,12 +210,13 @@ function render(){
   <div class="pp-stage">
    <div class="pp-pane" id="pp-pane-pass">
     <div class="pp-passobj"><div class="pp-passobj-in">
-    <div class="pp-card pp-idcard"><div class="pp-id-top"><span>deepspot · explorer passport</span><span>${rank?'no. '+String(rank).padStart(3,'0'):own?'draft':''}</span></div>
-     <div class="pp-id-body"><div class="pp-molebox">${mole}${lv?`<span class="pp-lvl" role="img" aria-label="Level ${lv.level}"><b>${lv.level}</b><i>lvl</i></span>`:''}</div>
+    <div class="pp-card pp-idcard pp-id9">${GUILLOCHE}<span class="pp-id9-wm" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M24 2v44M2 24h44M8.5 8.5l31 31m0-31-31 31"/></svg></span>
+     <div class="pp-id-top"><span class="pp-id9-crest" aria-hidden="true"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="21"/><path d="M24 8v32M8 24h32M12.7 12.7l22.6 22.6m0-22.6L12.7 35.3"/></svg></span><span class="pp-id9-title"><b>deepspot</b><i>explorer passport · pasaporte · パスポート</i></span><span class="pp-id9-no">${rank?'no. '+String(rank).padStart(3,'0'):own?'draft':''}</span></div>
+     <div class="pp-id-body"><div class="pp-molebox">${mole}${lv?`<span class="pp-lvl" role="img" aria-label="Level ${lv.level}"><b>${lv.level}</b><i>lvl</i></span>`:''}<span class="pp-id9-stamp" aria-hidden="true"><b>${esc((travelerStyles.find(x=>x.id===(profile.type.id||(own?profile.style:null)))?.name||'explorer').replace(/^the /,''))}</b><i>${esc(profile.member)}</i></span></div>
       <dl class="pp-rows"><div><dt>name</dt><dd id="pp-name">${esc(profile.name)}</dd></div><div><dt>user</dt><dd>${profile.handle?'@'+esc(profile.handle):'—'}</dd></div><div><dt>since</dt><dd>${esc(profile.joined||'—')}</dd></div><div><dt>level</dt><dd>${esc(profile.member)}</dd></div></dl></div>
+     <div class="pp-sig pp-id9-sig" id="pp-sig"><span class="pp-sig-l">${own?'my mark':'their mark'}</span>${sigHTML(profile.signatureArt)}</div>
      ${lv?`<div class="pp-prog"><div class="pp-bar4" role="progressbar" aria-label="Progress to level ${lv.level+1}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${lv.pct}"><i style="width:${Math.max(lv.pct,2)}%"></i></div><span>${fmt(lv.points)} / ${fmt(lv.to)} pts</span></div>`:''}
-     <span class="pp-readable-code" aria-hidden="true">DEEP&lt;SPOT&lt;&lt;${esc(profile.name.toUpperCase().replaceAll(' ','<'))}&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;</span></div>
-    <div class="pp-sig" id="pp-sig"><span class="pp-sig-l">${own?'my mark':'their mark'}</span>${sigHTML(profile.signatureArt)}</div>
+     <span class="pp-readable-code pp-id9-mrz" aria-hidden="true">${mrz(profile,rank,lv)}</span></div>
     </div></div>
    </div>
    ${deckHTML()}
@@ -213,7 +227,7 @@ function render(){
    <div class="pp-body pp-bio-body" id="pp-bio-view">
     <div class="pp-bio-top">${mini}<div class="pp-bio-id"><h1 class="pp-bio-name">${esc(profile.name)}</h1><div class="ps-idrow"><span class="pp-handle">${profile.handle?'@'+esc(profile.handle):'DeepSpot contributor'}</span>${followHTML(profile,own)}</div></div>${lv?`<span class="pp-badge" role="img" aria-label="Level ${lv.level}"><b>${lv.level}</b><i>level</i></span>`:''}</div>
     <div class="pp-bio-fit">${profile.bio?`<p class="pp-bio-text">${esc(profile.bio)}</p>`:`<p class="pp-bio-text pp-bio-empty">${own?'say something. edit profile to write your bio.':'no bio yet.'}</p>`}</div>
-    <div class="pp-chips-row"><ul class="pp-chips">${profile.points==null?'':`<li>${fmt(profile.points)} pts</li>`}${profile.joined?`<li>since ${esc(profile.joined.toLowerCase())}</li>`:''}<li>${esc(profile.member)}</li></ul>${soc&&(soc.instagram||soc.twitter||soc.website)?`<div class="pp-social-links">${soc.instagram?`<a href="https://www.instagram.com/${encodeURIComponent(soc.instagram.replace(/^@/,''))}/" target="_blank" rel="noopener">instagram ↗</a>`:''}${soc.twitter?`<a href="https://x.com/${encodeURIComponent(soc.twitter.replace(/^@/,''))}" target="_blank" rel="noopener">x ↗</a>`:''}${soc.website?`<a href="${esc(soc.website)}" target="_blank" rel="noopener">website ↗</a>`:''}</div>`:''}</div>
+    ${factsHTML()}
    </div>
    ${own?editHTML(lk):''}
   </section>
@@ -234,7 +248,7 @@ function render(){
  wireV4();applyStyle();
  $('#passport').setAttribute('aria-busy','false');$('.pp-share').disabled=false;
  /* soft ambient field: Earth glyphs on slow turbulent noise (same module as the community race), very low strength, fills the whole left column (sticky viewport-sized layer, so the cost stays one screen) */
- window._ppField?.stop();window._ppField=halftoneField($('.pp-bg-in'),{cell:8,fps:20,ink:()=>document.documentElement.dataset.theme==='light'?[24/255,48/255,86/255]:[146/255,193/255,228/255]});
+ window._ppField?.stop();window._ppField=null;window._ppFieldBg=null;setField(readStyle().bg);
  if(profile.localPreview)initPad($('#pp-pad'),{art:profile.signatureArt,onSave:url=>{profile.signatureArt=url||null;$('#pp-sig').innerHTML=`<span class="pp-sig-l">my mark</span>${sigHTML(profile.signatureArt)}`;exportPromise=null;if(exportImage){URL.revokeObjectURL(exportImage.url);exportImage=null;}if(url)setTab('passport');}});
  if(profile.localPreview)wtgBind();
  bindSocial($('#passport'),profile,own,wtgCatalog.map(s=>s.title));
@@ -301,7 +315,7 @@ function showcaseHTML(){
 function fitBio(){
  const box=$('.pp-bio-fit'),t=box?.querySelector('.pp-bio-text');if(!t)return;
  if(innerWidth<1100||box.clientHeight<20){t.style.fontSize='';return;}
- let lo=16,hi=t.classList.contains('pp-bio-empty')?72:140;
+ let lo=16,hi=t.classList.contains('pp-bio-empty')?36:44;
  for(let i=0;i<14;i++){const m=(lo+hi)/2;t.style.fontSize=m+'px';if(t.scrollHeight<=box.clientHeight&&t.scrollWidth<=box.clientWidth)lo=m;else hi=m;}
  t.style.fontSize=Math.floor(lo)+'px';
 }
@@ -360,7 +374,7 @@ function appShell(){
  /* tilt: the whole passport (card + mark) is one object that leans toward the pointer; eased, small angles, no skew */
  const stage=$('.pp-stage'),obj=$('.pp-passobj-in');if(!stage||!obj)return;
  const calm=matchMedia('(prefers-reduced-motion: reduce)');let tx=0,ty=0,x=0,y=0,raf=0;
- const loop=()=>{x+=(tx-x)*.12;y+=(ty-y)*.12;obj.style.transform=`perspective(1600px) rotateX(${(-y*7).toFixed(3)}deg) rotateY(${(x*9).toFixed(3)}deg)`;obj.style.setProperty('--gx',((x+.5)*100).toFixed(1)+'%');obj.style.setProperty('--gy',((y+.5)*100).toFixed(1)+'%');
+ const loop=()=>{x+=(tx-x)*.12;y+=(ty-y)*.12;obj.style.transform=`perspective(1600px) rotateX(${(-y*7).toFixed(3)}deg) rotateY(${(x*9).toFixed(3)}deg)`;obj.style.setProperty('--gx',Math.max(0,Math.min(100,(x+.5)*100)).toFixed(1)+'%');obj.style.setProperty('--gy',Math.max(0,Math.min(100,(y+.5)*100)).toFixed(1)+'%');
   if(Math.abs(tx-x)>.001||Math.abs(ty-y)>.001)raf=requestAnimationFrame(loop);else{raf=0;if(!tx&&!ty)obj.style.transform='';}};
  const kick=()=>{if(!raf)raf=requestAnimationFrame(loop);};
  stage.addEventListener('pointermove',e=>{if(e.pointerType!=='mouse'||calm.matches)return;const r=obj.getBoundingClientRect();tx=Math.max(-.6,Math.min(.6,(e.clientX-r.left)/r.width-.5));ty=Math.max(-.6,Math.min(.6,(e.clientY-r.top)/r.height-.5));obj.classList.add('is-tilt');kick();});
@@ -485,7 +499,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&deckState.open&&!do
 const STYLE_KEY='deepspot-passport-style-v1';
 const ICON=d=>`<svg viewBox="0 0 24 24" aria-hidden="true">${d}</svg>`;
 const STYLE={
- bg:[['halftone','earth halftone','',''],['night','night field','',''],['green','green field','',''],['cobalt','cobalt field','',''],['paper','paper','',''],['dusk','dusk','','reach level 5'],['aurora','aurora','','join a monthly race'],['topo','topo lines','','post 10 spots']],
+ bg:[['halftone','earth halftone','',''],['dither-green','green dither','',''],['dither-cobalt','cobalt dither','',''],['night','night field','',''],['stars','starfield','',''],['aurora','aurora','',''],['dusk','dusk','',''],['grain','grain gradient','',''],['topo','topo lines','',''],['blueprint','blueprint','',''],['oya','oya quarry','',''],['xwejni','salt pans','',''],['green','green field','',''],['cobalt','cobalt field','',''],['paper','paper','','']],
  foil:[['none','none','',''],['holo','holo','',''],['gold','gold','',''],['chrome','chrome','',''],['cobalt','cobalt shine','','founding members'],['prism','prism','','reach level 10']]
 };
 function readStyle(){const d={bg:'halftone',foil:'none'};if(!profile?.localPreview)return d;try{const v=JSON.parse(localStorage.getItem(STYLE_KEY))||{};for(const k in d)if(STYLE[k].some(o=>o[0]===v[k]&&!o[3]))d[k]=v[k];}catch{}return d;}
@@ -494,8 +508,14 @@ function customizeHTML(){
  const st=readStyle(),grp=(k,title,hint)=>`<fieldset class="pp-cz"><legend>${title}</legend><p class="pp-fine">${hint}</p><div class="pp-cz-opts">${STYLE[k].map(([id,label,icon,lock])=>`<label class="pp-cz-o pp-cz-${k}${lock?' is-locked':''}" data-v="${id}"><input type="radio" name="cz-${k}" value="${id}"${st[k]===id?' checked':''}${lock?' disabled':''}><span class="pp-cz-sw">${icon}</span><span class="pp-cz-l">${label}</span>${lock?`<span class="pp-cz-lock">🔒 ${lock}</span>`:''}</label>`).join('')}</div></fieldset>`;
  return `<p class="pp-mono pp-cz-k">customize your passport · placeholders, more unlock at launch</p>${grp('bg','background','The field behind your passport.')}${grp('foil','foil','A finish on your passport card. Move your mouse over it.')}`;
 }
+const FIELD_INK={'halftone':[[146,193,228],[24,48,86]],'dither-green':[[7,214,83],[8,120,47]],'dither-cobalt':[[120,150,255],[60,96,255]]};
+function setField(bg){
+ const host=$('.pp-bg-in');if(!host)return;const ink=FIELD_INK[bg];
+ if(window._ppFieldBg===bg&&window._ppField)return;window._ppField?.stop();window._ppField=null;window._ppFieldBg=bg;if(!ink)return;
+ window._ppField=halftoneField(host,{cell:bg==='halftone'?8:7,fps:20,ink:()=>(document.documentElement.dataset.theme==='light'?ink[1]:ink[0]).map(v=>v/255)});
+}
 function applyStyle(st=readStyle()){
- const field=$('.pp-field'),obj=$('.pp-passobj-in');if(field)field.dataset.bg=st.bg;if(obj)obj.dataset.foil=st.foil;
+ setField(st.bg);const field=$('.pp-field'),obj=$('.pp-passobj-in');if(field)field.dataset.bg=st.bg;if(obj)obj.dataset.foil=st.foil;
 }
 /* in edit profile the choices preview live; save profile keeps them, cancel puts the saved look back */
 const czPick=()=>{const st=readStyle();document.querySelectorAll('#pp-edit [name^=cz-]:checked').forEach(i=>st[i.name.slice(3)]=i.value);return st;};

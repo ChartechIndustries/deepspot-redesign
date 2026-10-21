@@ -716,3 +716,80 @@ button.pp-mole-empty span{font:600 12px/1.3 ui-monospace,Menlo,Consolas,monospac
 .pp-passobj-in[data-foil=chrome] .pp-idcard::before{mix-blend-mode:multiply;opacity:.45;filter:none}
 .pp-passobj-in[data-foil=chrome] .pp-idcard::after{background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.95) 48%,transparent 60%) calc(var(--gx,50%) * 1.4 - 20%) 0/250% 100% no-repeat;mix-blend-mode:normal;opacity:.55}
 .pp-passobj-in[data-foil=gold] .pp-idcard::before{mix-blend-mode:multiply;filter:saturate(1.2);opacity:.5;background-image:repeating-linear-gradient(115deg,#e8c25a 0%,#fff3c4 6%,#d4a537 12%,#f7e3a0 18%,#b8862a 24%,#fff3c4 30%,#e8c25a 36%);background-size:260% 260%}.pp-passobj-in[data-foil=gold] .pp-idcard::after{background:linear-gradient(115deg,transparent 35%,rgba(255,250,225,.95) 48%,transparent 60%) calc(var(--gx,50%) * 1.4 - 20%) 0/250% 100% no-repeat;mix-blend-mode:normal;opacity:.6}
+/* ================= passport card v9 (2026-10-21): security print, crest, ink stamp, the mark inside, two-line MRZ ================= */
+.pp-id9{position:relative;overflow:hidden;isolation:isolate;padding:22px 24px 18px!important;
+ background:linear-gradient(160deg,#f7f6f0 0%,#efede3 55%,#f4f1e6 100%)!important;
+ box-shadow:inset 0 0 0 1px rgba(255,255,255,.7),inset 0 0 0 6px rgba(7,214,83,.06)}
+.pp-id9::selection{background:#07d65355}
+.pp-id9-gu{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
+.pp-id9-gu path{fill:none;stroke:#07a84a;stroke-width:.45;opacity:.28}
+.pp-id9-gu path:nth-child(2){stroke:#3c60ff;opacity:.2}
+.pp-id9-gu path:nth-child(3){stroke:#83cdce;opacity:.35}
+.pp-id9-wm{position:absolute;right:-30px;bottom:-40px;width:230px;height:230px;z-index:-1;opacity:.07;pointer-events:none}
+.pp-id9-wm svg{width:100%;height:100%;fill:none;stroke:#0b1b27;stroke-width:2.6}
+.pp-id9 .pp-id-top{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;padding-bottom:12px;margin-bottom:14px;border-bottom:1.5px solid #0b1b27}
+.pp-id9-crest{width:34px;height:34px;display:grid;place-items:center;border-radius:50%;background:#0b1b27}
+.pp-id9-crest svg{width:26px;height:26px;fill:none;stroke:#07d653;stroke-width:2.4}
+.pp-id9-title{display:flex;flex-direction:column;gap:3px;min-width:0}
+.pp-id9-title b{font:800 20px/1 Arial,Helvetica,sans-serif;letter-spacing:-.05em;text-transform:uppercase;color:#0b1b27}
+.pp-id9-title i{font:600 10px/1 ui-monospace,Menlo,Consolas,monospace;font-style:normal;letter-spacing:.12em;text-transform:uppercase;color:#4a5a68;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pp-id9-no{font:700 12px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.12em;text-transform:uppercase;color:#c2352f;border:1.5px solid #c2352f;border-radius:4px;padding:5px 7px;transform:rotate(-2deg)}
+.pp-id9 .pp-molebox{box-shadow:0 0 0 4px #f7f6f0,0 0 0 5px rgba(11,27,39,.25);border-radius:10px}
+.pp-id9-stamp{position:absolute;right:-26px;top:-14px;z-index:3;width:76px;height:76px;border-radius:50%;border:2px solid rgba(60,96,255,.75);color:rgba(60,96,255,.85);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;transform:rotate(-14deg);background:radial-gradient(circle,transparent 58%,rgba(60,96,255,.06) 60%);box-shadow:inset 0 0 0 3px rgba(247,246,240,.9),inset 0 0 0 4px rgba(60,96,255,.6);mix-blend-mode:multiply;pointer-events:none}
+.pp-id9-stamp b{font:800 12px/1 Arial,Helvetica,sans-serif;letter-spacing:-.01em;text-transform:uppercase}
+.pp-id9-stamp i{font:600 8px/1 ui-monospace,Menlo,Consolas,monospace;font-style:normal;letter-spacing:.1em;text-transform:uppercase}
+/* the mark lives on the card now */
+.pp-id9 .pp-id9-sig{position:relative;height:74px;margin:14px 0 0;border:0;border-radius:0;border-bottom:1.5px solid #0b1b27;background:repeating-linear-gradient(0deg,transparent 0 17px,rgba(11,27,39,.08) 17px 18px);box-shadow:none;display:block}
+.pp-id9 .pp-id9-sig .pp-sig-l{left:0;top:0}
+.pp-id9 .pp-id9-sig img{position:absolute;inset:14px 0 2px;width:100%;height:calc(100% - 16px);object-fit:contain;object-position:left center}
+.pp-id9 .pp-id9-sig>span:not(.pp-sig-l){position:absolute;left:0;bottom:6px;font:600 12px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.1em;text-transform:uppercase;color:#8a98a6}
+.pp-passobj>.pp-passobj-in>.pp-sig{display:none}
+.pp-id9-mrz{margin:12px -24px -18px!important;padding:10px 24px 12px;background:rgba(11,27,39,.05);border-top:1px solid rgba(11,27,39,.1);font:600 12.5px/1.5 ui-monospace,"OCR A Std",Menlo,Consolas,monospace!important;letter-spacing:.2em!important;color:#33434f!important;white-space:nowrap;overflow:hidden}
+/* ================= bio: smaller, plus quick facts ================= */
+@media(min-width:1100px){html.pp-app .pp-biosec{height:clamp(220px,30%,330px)}}
+.pp-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0}
+.pp-facts>div{min-width:0;padding:10px 12px;border:1px solid var(--bm,var(--br-line));border-radius:10px;background:color-mix(in srgb,var(--bb,var(--br-panel)) 70%,transparent)}
+.pp-facts dt{font:600 11px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--bm,var(--br-muted))}
+.pp-facts dd{margin:6px 0 0;font:800 15px/1.15 Arial,Helvetica,sans-serif;letter-spacing:-.02em;color:var(--bt,var(--br-text));white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pp-bio-fit{max-height:96px}
+/* ================= holo v3: no texture edges, plus a fine bump texture ================= */
+.pp-passobj-in:not([data-foil=none]) .pp-idcard::before{background-repeat:no-repeat!important;background-size:300% 300%!important;background-position:var(--gx,50%) var(--gy,50%)!important}
+.pp-passobj-in[data-foil=holo] .pp-idcard::before{background-image:linear-gradient(115deg,transparent 0%,#ff9ec4 5%,#ffe08a 8%,#a8f08c 11%,#8ce9f0 14%,#a9b9ff 17%,#d9a8ff 20%,transparent 25%,transparent 33%,#ff9ec4 38%,#ffe08a 41%,#a8f08c 44%,#8ce9f0 47%,#a9b9ff 50%,#d9a8ff 53%,transparent 58%,transparent 66%,#ff9ec4 71%,#ffe08a 74%,#a8f08c 77%,#8ce9f0 80%,#a9b9ff 83%,#d9a8ff 86%,transparent 91%)!important}
+.pp-passobj-in[data-foil=gold] .pp-idcard::before{background-image:linear-gradient(115deg,#e8c25a 0%,#fff3c4 8%,#d4a537 16%,#f7e3a0 24%,#b8862a 32%,#fff3c4 40%,#e8c25a 48%,#fff3c4 56%,#d4a537 64%,#f7e3a0 72%,#b8862a 80%,#fff3c4 88%,#e8c25a 100%)!important}
+.pp-passobj-in[data-foil=chrome] .pp-idcard::before{background-image:linear-gradient(115deg,#5c6670 0%,#e9eef3 9%,#ffffff 12%,#9aa6b2 20%,#4d5761 28%,#dfe5ea 36%,#5c6670 44%,#e9eef3 53%,#fff 56%,#9aa6b2 64%,#4d5761 72%,#dfe5ea 80%,#5c6670 100%)!important}
+.pp-passobj-in:not([data-foil=none]) .pp-idcard::after{background-size:300% 100%!important;background-repeat:no-repeat!important;background-position:var(--gx,50%) 0!important}
+/* bump: a fine embossed grain (lit noise) that shifts a touch against the tilt, like a textured foil */
+.pp-passobj-in:not([data-foil=none]) .pp-id9{background-image:var(--bump),linear-gradient(160deg,#f7f6f0 0%,#efede3 55%,#f4f1e6 100%)!important;background-blend-mode:soft-light,normal;background-size:150px 150px,auto;background-position:calc(var(--gx,50%) * -.08) calc(var(--gy,50%) * -.08),0 0}
+.pp-passobj-in[data-foil=gold] .pp-id9{background-image:var(--bump),linear-gradient(135deg,#fbf3d6,#f5f4ee 50%,#f4e7bd)!important}
+.pp-passobj-in[data-foil=chrome] .pp-id9{background-image:var(--bump),linear-gradient(135deg,#f3f5f7,#f5f4ee 50%,#e6ebef)!important}
+.pp-passobj-in{--bump:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Cfilter id='n' x='0' y='0'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeDiffuseLighting lighting-color='%23fff' surfaceScale='1.6'%3E%3CfeDistantLight azimuth='225' elevation='52'/%3E%3C/feDiffuseLighting%3E%3C/filter%3E%3Crect width='150' height='150' filter='url(%23n)'/%3E%3C/svg%3E")}
+/* ================= backgrounds (all unlocked for testing) ================= */
+.pp-field:not([data-bg=halftone]):not([data-bg^=dither]) .pp-bg{display:none}
+.pp-field[data-bg^=dither]{background:#05080f}
+:root[data-theme=light] .pp-field[data-bg^=dither]{background:#f4f2ea}
+.pp-field[data-bg=stars]{background:radial-gradient(1px 1px at 10% 20%,#fff,transparent),radial-gradient(1px 1px at 30% 70%,#fff,transparent),radial-gradient(1.5px 1.5px at 55% 35%,#cfe3ff,transparent),radial-gradient(1px 1px at 80% 80%,#fff,transparent),radial-gradient(1px 1px at 70% 15%,#fff,transparent),radial-gradient(1.5px 1.5px at 90% 50%,#fff,transparent),radial-gradient(1px 1px at 20% 90%,#cfe3ff,transparent),radial-gradient(ellipse at 50% 120%,#1b2e8f 0%,transparent 60%),#04060c;background-size:220px 220px,260px 260px,300px 300px,240px 240px,200px 200px,280px 280px,320px 320px,100% 100%,auto;animation:pp-stars 60s linear infinite}
+@keyframes pp-stars{to{background-position:220px 220px,-260px 260px,300px -300px,-240px -240px,200px 200px,280px -280px,-320px 320px,0 0,0 0}}
+.pp-field[data-bg=aurora]{background:radial-gradient(ellipse 80% 50% at 20% 10%,rgba(7,214,83,.55),transparent 60%),radial-gradient(ellipse 70% 50% at 80% 30%,rgba(131,205,206,.5),transparent 60%),radial-gradient(ellipse 90% 60% at 50% 110%,rgba(60,96,255,.45),transparent 65%),#05080f;background-size:200% 200%,200% 200%,200% 200%,auto;animation:pp-aurora 18s ease-in-out infinite alternate}
+@keyframes pp-aurora{to{background-position:100% 30%,0 70%,40% 0,0 0}}
+.pp-field[data-bg=dusk]{background:linear-gradient(170deg,#1b2e8f 0%,#3c60ff 30%,#b69cff 62%,#f28cb1 85%,#ffb38a 100%)}
+.pp-field[data-bg=grain]{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g)'/%3E%3C/svg%3E"),radial-gradient(circle at 25% 20%,#07d653,transparent 55%),radial-gradient(circle at 80% 85%,#3c60ff,transparent 55%),#0b1b27;background-blend-mode:overlay,normal,normal,normal}
+.pp-field[data-bg=topo]{background:repeating-radial-gradient(ellipse at 30% 60%,transparent 0 14px,rgba(131,205,206,.35) 14px 15px),repeating-radial-gradient(ellipse at 78% 20%,transparent 0 18px,rgba(7,214,83,.22) 18px 19px),#0b1520}
+.pp-field[data-bg=blueprint]{background:linear-gradient(rgba(255,255,255,.18) 1px,transparent 1px) 0 0/80px 80px,linear-gradient(90deg,rgba(255,255,255,.18) 1px,transparent 1px) 0 0/80px 80px,linear-gradient(rgba(255,255,255,.07) 1px,transparent 1px) 0 0/16px 16px,linear-gradient(90deg,rgba(255,255,255,.07) 1px,transparent 1px) 0 0/16px 16px,#1f3fbf}
+.pp-field[data-bg=oya],.pp-field[data-bg=xwejni]{background:linear-gradient(rgba(5,8,15,.35),rgba(5,8,15,.55)),var(--photo) center/cover no-repeat}
+.pp-field[data-bg=oya]{--photo:url(/spots/oya.jpg)}
+.pp-field[data-bg=xwejni]{--photo:url(/spots/xwejni.jpg)}
+.pp-field:is([data-bg=stars],[data-bg=aurora],[data-bg=dusk],[data-bg=grain],[data-bg=topo],[data-bg=blueprint],[data-bg=oya],[data-bg=xwejni]) .pp-tabs-back,.pp-field:is([data-bg=stars],[data-bg=aurora],[data-bg=dusk],[data-bg=grain],[data-bg=topo],[data-bg=blueprint],[data-bg=oya],[data-bg=xwejni]) .pp-sharebar .pp-mono{color:#f5f4ee}
+@media(prefers-reduced-motion:reduce){.pp-field[data-bg=stars],.pp-field[data-bg=aurora]{animation:none}}
+/* swatches */
+.pp-cz-bg[data-v=dither-green] .pp-cz-sw{background:radial-gradient(circle,#07d653 1.2px,transparent 1.7px) 0 0/6px 6px,#05080f}
+.pp-cz-bg[data-v=dither-cobalt] .pp-cz-sw{background:radial-gradient(circle,#7896ff 1.2px,transparent 1.7px) 0 0/6px 6px,#05080f}
+.pp-cz-bg[data-v=stars] .pp-cz-sw{background:radial-gradient(1px 1px at 20% 30%,#fff,transparent),radial-gradient(1px 1px at 70% 60%,#fff,transparent),radial-gradient(1px 1px at 45% 80%,#fff,transparent),#04060c}
+.pp-cz-bg[data-v=aurora] .pp-cz-sw{background:radial-gradient(ellipse at 20% 10%,rgba(7,214,83,.8),transparent 60%),radial-gradient(ellipse at 80% 90%,rgba(60,96,255,.7),transparent 60%),#05080f}
+.pp-cz-bg[data-v=grain] .pp-cz-sw{background:radial-gradient(circle at 25% 20%,#07d653,transparent 60%),radial-gradient(circle at 80% 85%,#3c60ff,transparent 60%),#0b1b27}
+.pp-cz-bg[data-v=topo] .pp-cz-sw{background:repeating-radial-gradient(ellipse at 30% 60%,transparent 0 5px,rgba(131,205,206,.5) 5px 6px),#0b1520}
+.pp-cz-bg[data-v=blueprint] .pp-cz-sw{background:linear-gradient(rgba(255,255,255,.25) 1px,transparent 1px) 0 0/12px 12px,linear-gradient(90deg,rgba(255,255,255,.25) 1px,transparent 1px) 0 0/12px 12px,#1f3fbf}
+.pp-cz-bg[data-v=oya] .pp-cz-sw{background:url(/spots/oya.jpg) center/cover}
+.pp-cz-bg[data-v=xwejni] .pp-cz-sw{background:url(/spots/xwejni.jpg) center/cover}
+.pp-id9-gu path{stroke-width:.55}.pp-id9-gu .g1 path{stroke:#07a84a;opacity:.22}.pp-id9-gu .g2 path{stroke:#3c60ff;opacity:.16}.pp-id9-gu .g3 path{stroke:#83cdce;opacity:.3}
+.pp-id9-stamp{right:auto;left:-10px;top:auto;bottom:-30px;width:70px;height:70px;transform:rotate(-12deg)}
+.pp-id9 .pp-molebox{margin-bottom:22px}
