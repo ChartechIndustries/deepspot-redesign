@@ -408,7 +408,7 @@ a.pp-wtg-link:hover img{transform:scale(1.04)}
  html.pp-app .pp-book{grid-template-rows:minmax(0,1fr)}
  html.pp-app .pp-field,html.pp-app .pp-rec{min-height:0}
  html.pp-app .pp-statsrow .pp-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}
- html.pp-app .pp-statsrow .pp-legend,html.pp-app .pp-statsrow .pp-type .pp-mono{display:none}
+ html.pp-app .pp-statsrow .pp-type .pp-mono{display:none}   /* legend stays visible: it explains the bar colours */
  html.pp-app .pp-statsrow .pp-type{display:flex;flex-direction:column;gap:12px;height:100%}
  html.pp-app .pp-statsrow .pp-type-row p{font-size:14px}
  html.pp-app .pp-statsrow .pp-body{height:calc(100% - 40px)}

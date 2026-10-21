@@ -8,6 +8,7 @@ import {loadProfile} from './data.mjs?v=pv3';
 import {halftoneField} from '../site/halftone-field.mjs?v=2';
 import {mountGlobe} from './wtg-globe.mjs?v=wg8';
 import {itemsFor} from './items.mjs?v=it1';
+import {followHTML,exploredHTML,picksHTML,collectionsHTML,updatesHTML,counts as psCounts,bindSocial} from './profile-social.mjs?v=ps3';
 import {readWantToGo,writeWantToGo,addItem,removeAt,moveItem,WTG_MAX,WTG_NAME_MAX} from './want-to-go.mjs?v=wtg1';
 const $=selector=>document.querySelector(selector);
 let profile,toastTimer,exportPromise,exportImage;
@@ -40,7 +41,7 @@ function typeHTML(){
  if(!style)return empty('no type yet.','A traveler type shows up after the first posting. It is worked out from the categories of what is posted.','<a href="/contribute/" class="pp-link">add a spot ↗</a>');
  const top=t.cats.slice(0,6),rest=t.cats.slice(6).reduce((n,c)=>n+c[1],0),parts=[...top.map(([k,n],i)=>[k,n,CATS[i]]),...(rest?[['other',rest,'#8a98a6']]:[])];
  return `<div class="pp-card pp-type"><div class="pp-type-row"><span class="pp-type-mark">${travelerMark(style.id)}</span><div><h3>${esc(style.name)}.</h3><p>${esc(style.description)}</p></div></div>
- ${parts.length?`<div class="pp-catbar" role="img" aria-label="Posting categories: ${esc(parts.map(p=>p[0]+' '+p[1]).join(', '))}">${parts.map(([k,n,c])=>`<i style="flex:${n};background:${c}"></i>`).join('')}</div><ul class="pp-legend">${parts.map(([k,n,c])=>`<li><i style="background:${c}" aria-hidden="true"></i>${esc(k)} <b>${n}</b></li>`).join('')}</ul>`:''}
+ ${parts.length?`<div class="pp-catbar" role="img" aria-label="Posting categories: ${esc(parts.map(p=>p[0]+' '+p[1]).join(', '))}">${parts.map(([k,n,c])=>`<i style="flex:${n};background:${c}"></i>`).join('')}</div><ul class="pp-legend">${parts.map(([k,n,c])=>`<li><i style="background:${c}" aria-hidden="true"></i>${esc(k)} <b>${n}</b><em>${Math.round(n/parts.reduce((a,p)=>a+p[1],0)*100)}%</em></li>`).join('')}</ul>`:''}
  <p class="pp-mono">${t.postings?`based on ${t.postings} ${t.postings===1?'posting':'postings'}${t.ranked.length>1?' · also '+t.ranked.slice(1).map(([sid,n])=>esc(travelerStyles.find(s=>s.id===sid).name.replace('the ',''))+' '+n).join(' · '):''}`:'your pick · postings will refine it'}</p></div>`;
 }
 function statsHTML(){
@@ -203,7 +204,7 @@ function render(){
  <div class="pp-rec">
   <section class="pp-sec pp-biosec" aria-labelledby="pp-bio" data-bg="${lk.bg}" data-font="${lk.font}" data-align="${lk.align}"><header class="pp-bar"><h2 id="pp-bio">bio</h2>${own?`<div class="pp-bar-acts"><button type="button" class="pp-chipbtn pp-editbtn" data-edit aria-expanded="false">edit profile</button><button type="button" class="pp-cog" data-settings aria-label="Settings" title="Settings">${COG}</button></div>`:''}</header>
    <div class="pp-body pp-bio-body" id="pp-bio-view">
-    <div class="pp-bio-top">${mini}<div class="pp-bio-id"><h1 class="pp-bio-name">${esc(profile.name)}</h1><span class="pp-handle">${profile.handle?'@'+esc(profile.handle):'DeepSpot contributor'}</span></div>${lv?`<span class="pp-badge" role="img" aria-label="Level ${lv.level}"><b>${lv.level}</b><i>level</i></span>`:''}</div>
+    <div class="pp-bio-top">${mini}<div class="pp-bio-id"><h1 class="pp-bio-name">${esc(profile.name)}</h1><div class="ps-idrow"><span class="pp-handle">${profile.handle?'@'+esc(profile.handle):'DeepSpot contributor'}</span>${followHTML(profile,own)}</div></div>${lv?`<span class="pp-badge" role="img" aria-label="Level ${lv.level}"><b>${lv.level}</b><i>level</i></span>`:''}</div>
     <div class="pp-bio-fit">${profile.bio?`<p class="pp-bio-text">${esc(profile.bio)}</p>`:`<p class="pp-bio-text pp-bio-empty">${own?'say something. edit profile to write your bio.':'no bio yet.'}</p>`}</div>
     <div class="pp-chips-row"><ul class="pp-chips">${profile.points==null?'':`<li>${fmt(profile.points)} pts</li>`}${profile.joined?`<li>since ${esc(profile.joined.toLowerCase())}</li>`:''}<li>${esc(profile.member)}</li></ul>${soc&&(soc.instagram||soc.twitter||soc.website)?`<div class="pp-social-links">${soc.instagram?`<a href="https://www.instagram.com/${encodeURIComponent(soc.instagram.replace(/^@/,''))}/" target="_blank" rel="noopener">instagram ↗</a>`:''}${soc.twitter?`<a href="https://x.com/${encodeURIComponent(soc.twitter.replace(/^@/,''))}" target="_blank" rel="noopener">x ↗</a>`:''}${soc.website?`<a href="${esc(soc.website)}" target="_blank" rel="noopener">website ↗</a>`:''}</div>`:''}</div>
    </div>
@@ -211,13 +212,16 @@ function render(){
   </section>
   <div class="pp-statsrow">${sec('type','traveler type',null,typeHTML())}${sec('stats','contributions',null,statsHTML())}</div>
   ${sec('trophies',`${own?'my':esc(profile.name.split(/\s+/)[0].toLowerCase())+'’s'} trophy case`,profile.items.length,shelfHTML(),'<span class="pp-mono pp-ph">placeholder</span>')}
-  <section class="pp-sec pp-tabsec" aria-label="Passport contents"><div class="pp-vtabs" role="tablist" aria-orientation="vertical" aria-label="Passport contents">${VTABS.map(([id,label],i)=>`<button type="button" role="tab" class="pp-vtab" id="pp-vt-${id}" data-vt="${id}" aria-controls="pp-vp-${id}" aria-selected="${i===0}" tabindex="${i===0?0:-1}">${label}${id==='wtg'&&own&&wtgList.length?` <span>${wtgList.length}</span>`:id==='contrib'&&profile.records.length?` <span>${profile.records.length}</span>`:''}</button>`).join('')}</div>
+  <section class="pp-sec pp-tabsec" aria-label="Passport contents"><div class="pp-vtabs" role="tablist" aria-orientation="vertical" aria-label="Passport contents">${VTABS.map(([id,label],i)=>`<button type="button" role="tab" class="pp-vtab" id="pp-vt-${id}" data-vt="${id}" aria-controls="pp-vp-${id}" aria-selected="${i===0}" tabindex="${i===0?0:-1}">${label}${id==='wtg'&&own&&wtgList.length?` <span>${wtgList.length}</span>`:id==='contrib'&&profile.records.length?` <span>${profile.records.length}</span>`:psCounts(own)[id]?` <span>${psCounts(own)[id]}</span>`:''}</button>`).join('')}</div>
    <div class="pp-vpanels">
     <div class="pp-vpanel" role="tabpanel" id="pp-vp-show" aria-labelledby="pp-vt-show" tabindex="0">${showcaseHTML()}</div>
     <div class="pp-vpanel" role="tabpanel" id="pp-vp-contrib" aria-labelledby="pp-vt-contrib" tabindex="0" hidden>
-     ${sub(`postings <span>(${profile.records.length})</span>`,postingsHTML(),profile.records.length>6?'<button type="button" class="pp-chipbtn" data-more aria-expanded="false">show all</button>':'')}${sub(`places <span>(${profile.places.length})</span>`,placesHTML())}
+     ${sub(`postings <span>(${profile.records.length})</span>`,postingsHTML(),profile.records.length>6?'<button type="button" class="pp-chipbtn" data-more aria-expanded="false">show all</button>':'')}${sub(`places <span>(${profile.places.length})</span>`,placesHTML())}${sub('updates',updatesHTML(profile))}
     </div>
+    <div class="pp-vpanel" role="tabpanel" id="pp-vp-explored" aria-labelledby="pp-vt-explored" tabindex="0" hidden>${sub('explored',exploredHTML(own))}</div>
     <div class="pp-vpanel" role="tabpanel" id="pp-vp-wtg" aria-labelledby="pp-vt-wtg" tabindex="0" hidden>${wtgHTML()}</div>
+    <div class="pp-vpanel" role="tabpanel" id="pp-vp-coll" aria-labelledby="pp-vt-coll" tabindex="0" hidden>${sub('collections',collectionsHTML(own))}</div>
+    <div class="pp-vpanel" role="tabpanel" id="pp-vp-picks" aria-labelledby="pp-vt-picks" tabindex="0" hidden>${sub('picks',picksHTML(own))}</div>
     <div class="pp-vpanel" role="tabpanel" id="pp-vp-items" aria-labelledby="pp-vt-items" tabindex="0" hidden>${sub(`stamps <span>(${profile.stamps.filter(s=>s.earned).length}/${profile.stamps.length})</span>`,stampsHTML())}${sub('giveaway',giveawayHTML())}</div>
    </div>
   </section>
@@ -228,6 +232,7 @@ function render(){
  window._ppField?.stop();window._ppField=halftoneField($('.pp-bg-in'),{cell:8,fps:20,ink:()=>document.documentElement.dataset.theme==='light'?[24/255,48/255,86/255]:[146/255,193/255,228/255]});
  if(profile.localPreview)initPad($('#pp-pad'),{art:profile.signatureArt,onSave:url=>{profile.signatureArt=url||null;$('#pp-sig').innerHTML=`<span class="pp-sig-l">my mark</span>${sigHTML(profile.signatureArt)}`;exportPromise=null;if(exportImage){URL.revokeObjectURL(exportImage.url);exportImage=null;}if(url)setTab('passport');}});
  if(profile.localPreview)wtgBind();
+ bindSocial($('#passport'),profile,own,wtgCatalog.map(s=>s.title));
  if(location.hash==='#pp-pad')setTab('mark');
  applyTheme(document.documentElement.dataset.theme);
  appShell();
@@ -261,7 +266,7 @@ document.addEventListener('keydown',event=>{const tb=event.target.closest?.('.pp
 
 
 /* ---------- v5 (2026-10-20): passport object, edit in place, bio look, vertical tabs ---------- */
-const VTABS=[['show','showcase'],['contrib','contributions'],['wtg','want to go'],['items','stamps']];
+const VTABS=[['show','showcase'],['explored','explored'],['wtg','want to go'],['coll','collections'],['picks','picks'],['contrib','contributions'],['items','stamps']];
 const sub=(title,body,act='')=>`<div class="pp-sub"><div class="pp-sub-h"><h3>${title}</h3>${act}</div>${body}</div>`;
 const LOOK_KEY='deepspot-bio-look-v1',PIN_KEY='deepspot-showcase-v1';
 const LOOKS={bg:[['panel','plain'],['green','green'],['cobalt','cobalt'],['aqua','aqua'],['cream','paper'],['ink','ink']],font:[['display','bold'],['serif','serif'],['mono','type'],['hand','hand']],align:[['left','left'],['center','center']]};

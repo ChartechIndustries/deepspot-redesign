@@ -1,0 +1,34 @@
+/* profile-social.mjs: follow row, explored / picks / collections lists (2026-10-21) */
+.ps-idrow{display:flex;align-items:center;flex-wrap:wrap;gap:6px 14px}
+.ps-follow{display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px}
+.ps-counts{display:flex;align-items:baseline;gap:8px;margin:0;font:600 11px/1 var(--pp-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--br-muted)}
+.ps-counts b{font-size:13px;color:var(--br-text)}
+.ps-followbtn{height:26px;padding:0 14px;border:1px solid var(--br-green);border-radius:99px;background:var(--br-green);color:#0b1b27;font:600 11px/1 var(--pp-mono);letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+.ps-followbtn[aria-pressed=true]{background:transparent;color:var(--br-text)}
+.ps-followbtn:hover{filter:brightness(1.08)}
+html[data-panel-color=off] .ps-followbtn[aria-pressed=false]{background:var(--br-text);border-color:var(--br-text);color:var(--br-bg)}
+.ps-form{display:grid;gap:8px;margin:0 0 18px}
+.ps-row{display:flex;gap:8px;flex-wrap:wrap}
+.ps-row input{flex:1 1 180px;min-width:0;height:40px;padding:0 14px;border:1px solid var(--br-line);border-radius:99px;background:transparent;color:var(--br-text);font:inherit;font-size:14px}
+.ps-row input:focus-visible{outline:2px solid var(--br-aqua);outline-offset:2px}
+.ps-form-sm .ps-row input{height:32px;font-size:13px}
+.ps-tally{margin:0 0 10px}
+.ps-list{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+.ps-list li{display:inline-flex;align-items:center;gap:6px;min-height:30px;padding:0 6px 0 14px;border:1px solid var(--br-line);border-radius:99px;font-size:13px}
+.ps-x{display:grid;place-items:center;width:22px;height:22px;border:0;border-radius:50%;background:transparent;color:var(--br-muted);font-size:16px;line-height:1;cursor:pointer}
+.ps-x:hover{background:var(--br-line);color:var(--br-text)}
+.ps-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin:0;padding:0;list-style:none}
+.ps-card{position:relative;padding:16px 40px 16px 16px;border:1px solid var(--br-line);border-radius:8px;background:var(--br-card)}
+.ps-card strong{display:block;font-size:16px;letter-spacing:-.01em}
+.ps-card p{margin:8px 0 0;color:var(--br-muted);font-size:14px;line-height:1.45}
+.ps-card .ps-x{position:absolute;top:10px;right:10px}
+.ps-colls{display:grid;gap:14px;margin:0;padding:0;list-style:none}
+.ps-coll{padding:16px;border:1px solid var(--br-line);border-radius:8px;background:var(--br-card)}
+.ps-coll-h{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+.ps-coll-h h4{margin:0;font-size:16px}.ps-coll-h h4 span{color:var(--br-muted);font-weight:400}
+.ps-coll .ps-form{margin:10px 0 0}
+/* traveler-type legend: share of postings next to the count */
+.pp-legend em{font-style:normal;color:var(--br-muted);margin-left:2px}
+.pp-type .pp-legend{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px 14px;margin-top:12px}
+.pp-type .pp-legend li{height:auto;padding:0;border:0;gap:6px;font-size:10px}
+.pp-type .pp-legend b{margin-left:auto}
