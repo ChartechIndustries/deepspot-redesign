@@ -6,7 +6,7 @@ import {memberLevels,memberRange,POINTS} from './passport-rules.mjs?v=pv2';
 import {escapeHTML as esc,safeReturn} from './identity.mjs';
 import {loadProfile} from './data.mjs?v=pv3';
 import {halftoneField} from '../site/halftone-field.mjs?v=2';
-import {mountGlobe} from './wtg-globe.mjs?v=wg2';
+import {mountGlobe} from './wtg-globe.mjs?v=wg5';
 import {readWantToGo,writeWantToGo,addItem,removeAt,moveItem,WTG_MAX,WTG_NAME_MAX} from './want-to-go.mjs?v=wtg1';
 const $=selector=>document.querySelector(selector);
 let profile,toastTimer,exportPromise,exportImage;
@@ -92,7 +92,7 @@ function wtgListHTML(){return wtgList.length?`<ul class="pp-wtg">${wtgList.map((
 const wtgStatus=()=>`${wtgList.length}/${WTG_MAX} places. Saved on this browser.`;
 function wtgHTML(){
  if(!profile.localPreview)return empty('no want-to-go list yet.','Lists are not shared from live accounts yet.');
- return `<div class="wg" id="wg"><div class="wg-card" id="wg-card" aria-live="polite"></div><svg class="wg-stem" aria-hidden="true"><line id="wg-line"/></svg><p class="wg-note pp-mono" id="wg-note"></p></div><form class="pp-wtg-form" id="pp-wtg-form" autocomplete="off" novalidate><label class="pp-mono" for="pp-wtg-in">add a place</label>
+ return `<div class="wg" id="wg"><p class="wg-note pp-mono" id="wg-note"></p><p class="sr-only" id="wg-card" aria-live="polite"></p></div><form class="pp-wtg-form" id="pp-wtg-form" autocomplete="off" novalidate><label class="pp-mono" for="pp-wtg-in">add a place</label>
  <div class="pp-wtg-row"><div class="pp-wtg-combo"><input id="pp-wtg-in" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="pp-wtg-lb" maxlength="${WTG_NAME_MAX}" placeholder="a spot, a city, anywhere" enterkeyhint="done"><ul id="pp-wtg-lb" class="pp-wtg-lb" role="listbox" aria-label="Matching deep spots" hidden></ul></div><button type="submit" class="pp-wtg-add">add</button></div>
  <p class="pp-fine pp-wtg-msg" id="pp-wtg-msg" role="status" aria-live="polite">${wtgStatus()}</p></form><div id="pp-wtg-list">${wtgListHTML()}</div>`;
 }
@@ -151,7 +151,7 @@ function render(){
  document.title=`${profile.name} — DeepSpot Passport`;
  const initials=profile.name.split(/\s+/).slice(0,2).map(word=>word[0]).join('').toUpperCase(),lv=profile.level,st=profile.standing,soc=profile.socials;
  const rank=st?.rankAll;profile.field=rank&&rank<=3?RANKC[rank-1]:'#dfe6e4';
- const mole=profile.mole?moleHTML():profile.localPreview?'<a class="pp-mole pp-mole-empty" href="/account/"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="4"/><path d="M4 21c1-5 4-7 8-7s7 2 8 7"/></svg><span>roll your mole ↗</span></a>':`<span class="pp-mole pp-mole-empty" role="img" aria-label="${esc(profile.name)}’s initials"><b>${esc(initials)}</b></span>`;
+ const mole=profile.mole?moleHTML():profile.localPreview?'<button type="button" class="pp-mole pp-mole-empty" data-set-roll><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="4"/><path d="M4 21c1-5 4-7 8-7s7 2 8 7"/></svg><span>roll your mole</span></button>':`<span class="pp-mole pp-mole-empty" role="img" aria-label="${esc(profile.name)}’s initials"><b>${esc(initials)}</b></span>`;
  const mini=profile.mole?moleHTML('pp-mole-mini'):`<span class="pp-mole pp-mole-mini pp-mole-empty" aria-hidden="true"><b>${esc(initials)}</b></span>`;
  const mark=padHTML(profile),label=profile.localPreview?'my mark':'their mark';
  {const ks=$('.pp-share'),kb=$('.pp-back');if(ks)$('.pp-tools')?.append(ks);if(kb)$('.pp-toolbar')?.prepend(kb);}
@@ -197,7 +197,7 @@ function render(){
  $('#passport').setAttribute('aria-busy','false');$('.pp-share').disabled=false;
  /* soft ambient field: Earth glyphs on slow turbulent noise (same module as the community race), very low strength, fills the whole left column (sticky viewport-sized layer, so the cost stays one screen) */
  window._ppField?.stop();window._ppField=halftoneField($('.pp-bg-in'),{cell:8,fps:20,ink:()=>document.documentElement.dataset.theme==='light'?[24/255,48/255,86/255]:[146/255,193/255,228/255]});
- if(profile.localPreview)initPad($('#pp-pad'),{art:profile.signatureArt,onSave:url=>{profile.signatureArt=url||null;$('#pp-sig').innerHTML=sigHTML(profile.signatureArt);exportPromise=null;if(exportImage){URL.revokeObjectURL(exportImage.url);exportImage=null;}if(url)setTab('passport');}});
+ if(profile.localPreview)initPad($('#pp-pad'),{art:profile.signatureArt,onSave:url=>{profile.signatureArt=url||null;$('#pp-sig').innerHTML=`<span class="pp-sig-l">my mark</span>${sigHTML(profile.signatureArt)}`;exportPromise=null;if(exportImage){URL.revokeObjectURL(exportImage.url);exportImage=null;}if(url)setTab('passport');}});
  if(profile.localPreview)wtgBind();
  if(location.hash==='#pp-pad')setTab('mark');
  applyTheme(document.documentElement.dataset.theme);
@@ -248,7 +248,7 @@ function editHTML(lk){
   <label class="pp-f pp-f-wide"><span>bio <i id="pp-bio-n">${d.bio.length}/400</i></span><textarea name="bio" maxlength="400" rows="3" placeholder="who you are, where you go, what you look for.">${esc(d.bio)}</textarea></label>
  </div>
  ${grp('bg','background')}${grp('font','type')}${grp('align','align')}
- <div class="pp-edit-acts"><button type="button" class="pp-chipbtn" data-draw>draw my mark</button><a class="pp-chipbtn" href="/account/#mole">change my mole ↗</a><span class="pp-edit-sp"></span><button type="button" class="pp-chipbtn" data-cancel>cancel</button><button type="submit" class="pp-savebtn">save profile</button></div></form>`;
+ <div class="pp-edit-acts"><button type="button" class="pp-chipbtn" data-draw>draw my mark</button><button type="button" class="pp-chipbtn" data-set-roll>${readAccount().mole?'roll a new mole':'roll my mole'}</button><span class="pp-edit-sp"></span><button type="button" class="pp-chipbtn" data-cancel>cancel</button><button type="submit" class="pp-savebtn">save profile</button></div></form>`;
 }
 function showcaseHTML(){
  const t=profile.type||{},sid=t.id||(profile.localPreview?profile.style:null),style=sid&&travelerStyles.find(s=>s.id===sid);
@@ -331,12 +331,11 @@ function appShell(){
 let wg=null,wgPins=[],wgTimer=0;
 function wgPinsFrom(){return wtgList.map(it=>{const spot=it.type==='spot'?wtgBySlug.get(it.id):null,slug=it.type==='spot'?wtgSlug(it.id):null,c=slug&&spotCoords[slug];
  return {name:spot?spot.title:it.name,place:spot?spot.place:'your pick',href:spot?wtgURL(slug):null,img:spot?(spot.card||spot.image):'',lat:c?c[0]:null,lon:c?c[1]:null,exact:c?.[2]==='exact'};});}
-function wgCard(i){const p=wgPins[i],box=$('#wg-card');if(!box)return;if(!p){box.innerHTML='';box.hidden=true;return;}box.hidden=false;
- box.innerHTML=`${p.img?`<img src="${esc(p.img)}" alt="" width="160" height="120">`:''}<div><span class="pp-mono">${esc(p.place||'')}</span><strong>${p.href?`<a href="${esc(p.href)}">${esc(p.name)}</a>`:esc(p.name)}</strong><span class="pp-mono wg-n">${i+1} of ${wgPins.filter(x=>x.lat!=null).length} on the globe${p.exact?'':' · pin is approximate'}</span></div>`;}
+function wgCard(i){const p=wgPins[i],box=$('#wg-card');if(box)box.textContent=p?`${p.name}, ${p.place||''}`:'';}
 function wgSync(){
  const host=$('#wg');if(!host)return;wgPins=wgPinsFrom();const on=wgPins.map((p,i)=>p.lat!=null?i:-1).filter(i=>i>=0),off=wgPins.length-on.length;
- $('#wg-note').textContent=!wgPins.length?'add places below and they land on the globe as pins.':off?`${off} ${off===1?'place has':'places have'} no location yet, so ${off===1?'it is':'they are'} only in the list.`:'drag to turn the globe. tap a pin.';
- if(!wg)wg=mountGlobe(host,{pins:wgPins,onSelect:wgCard,onStem:(pt,{w})=>{const l=$('#wg-line'),c=$('#wg-card');if(!l||!c)return;if(!pt||c.hidden){l.setAttribute('x1',0);l.setAttribute('x2',0);l.setAttribute('y1',0);l.setAttribute('y2',0);return;}
+ $('#wg-note').textContent=!wgPins.length?'add places below and they land on the globe as pins.':off?`${off} ${off===1?'place has':'places have'} no location yet, so ${off===1?'it is':'they are'} only in the list.`:'drag to turn · scroll or pinch to zoom · tap a pin';
+ if(!wg)wg=mountGlobe(host,{pins:wgPins,onSelect:wgCard,_old:(pt,{w})=>{const l=$('#wg-line'),c=$('#wg-card');if(!l||!c)return;if(!pt||c.hidden){l.setAttribute('x1',0);l.setAttribute('x2',0);l.setAttribute('y1',0);l.setAttribute('y2',0);return;}
   const hb=host.getBoundingClientRect(),cb=c.getBoundingClientRect(),x1=cb.left-hb.left+cb.width/2,y1=cb.bottom-hb.top;l.setAttribute('x1',x1);l.setAttribute('y1',y1);l.setAttribute('x2',pt.x);l.setAttribute('y2',pt.y);}});
  else wg.set(wgPins);
  if(on.length&&(wg.sel<0||!on.includes(wg.sel)))wg.focus(on[0]);if(!on.length)wgCard(-1);
@@ -369,12 +368,6 @@ function openSettings(){
  if(!dlg){dlg=document.createElement('dialog');dlg.className='pp-settings';dlg.setAttribute('aria-labelledby','pp-set-title');document.body.append(dlg);
   dlg.addEventListener('click',async e=>{
    if(e.target===dlg||e.target.closest('.pp-dialog-close'))return dlg.close();
-   if(e.target.closest('[data-set-roll]')){
-    try{const {openMoleReveal}=await import('../site/mole/mole-reveal.mjs?v=rules1');dlg.close();const res=await openMoleReveal({trigger:$('[data-settings]')});dlg.showModal();
-     if(res){const next=normalizeAccount({...readAccount(),avatarMode:'mole',mole:{traits:res.traits,png:res.png,rolledAt:res.rolledAt}});if(!next.mole){notify('That mole picture was too large to save.');return;}
-      localStorage.setItem(accountKey,JSON.stringify(next));profile=await loadProfile('preview');render();dlg.innerHTML=settingsHTML();notify('Mole kept. Your passport picture is updated.');}}
-    catch(err){console.error(err);notify('The mole roll could not load. Try again.');}
-   }
    if(e.target.closest('[data-set-out]')){try{localStorage.setItem(SESSION_KEY,JSON.stringify({state:'out',email:''}));}catch{}dlg.innerHTML=settingsHTML();notify('Signed out of the preview.');}
    if(e.target.closest('[data-set-export]')){const data={profile:readAccount(),look:readLook(),showcase:readPins(),wantToGo:wtgList};const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='deepspot-passport.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),60000);}
    const clr=e.target.closest('[data-set-clear]');
@@ -390,7 +383,19 @@ function openSettings(){
  }
  dlg.innerHTML=settingsHTML();dlg.showModal();dlg.querySelector('.pp-dialog-close').focus();
 }
-document.addEventListener('click',e=>{if(e.target.closest('[data-settings]'))openSettings();});
+let rolling=false;
+async function rollMole(trigger){
+ if(rolling)return;rolling=true;const dlg=$('.pp-settings'),wasOpen=dlg?.open;
+ try{const {openMoleReveal}=await import('../site/mole/mole-reveal.mjs?v=rules1');if(wasOpen)dlg.close();
+  const res=await openMoleReveal({trigger:trigger?.isConnected?trigger:$('[data-settings]')});
+  if(res){const next=normalizeAccount({...readAccount(),avatarMode:'mole',mole:{traits:res.traits,png:res.png,rolledAt:res.rolledAt}});
+   if(!next.mole)notify('That mole picture was too large to save.');
+   else{localStorage.setItem(accountKey,JSON.stringify(next));profile=await loadProfile('preview');render();notify('Mole kept. Your passport picture is updated.');}}
+  if(wasOpen){dlg.innerHTML=settingsHTML();dlg.showModal();}
+ }catch(err){console.error(err);notify('The mole roll could not load. Try again.');}
+ finally{rolling=false;}
+}
+document.addEventListener('click',e=>{if(e.target.closest('[data-settings]'))openSettings();const rb=e.target.closest('[data-set-roll]');if(rb&&profile?.localPreview){e.preventDefault();rollMole(rb);}});
 
 try{
  profile=await loadProfile(params.get('user')||'wayfarer');

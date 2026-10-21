@@ -452,3 +452,41 @@ a.pp-wtg-link:hover img{transform:scale(1.04)}
 .pp-settings .pp-f input{width:100%;padding:10px 12px;border:1px solid var(--br-line);border-radius:8px;background:var(--br-bg);color:var(--br-text);font:500 15px/1.4 Arial,Helvetica,sans-serif}
 .pp-settings .pp-small{margin:0;font:600 11px/1 var(--pp-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--br-muted)}
 .pp-settings .pp-fine{margin:0;font-size:13px;color:var(--br-muted)}
+/* fixed layout when switching tabs; mark never cropped; mole slot is a button (2026-10-20) */
+@media(min-width:1100px){
+ html.pp-app .pp-rec:has(.pp-tabsec[data-vt=wtg]) .pp-biosec{height:clamp(220px,31%,340px)}
+ html.pp-app .pp-rec:has(.pp-tabsec[data-vt=wtg]) .pp-statsrow{display:grid}
+ html.pp-app .pp-rec:has(.pp-tabsec[data-vt=wtg]) .pp-bio-fit{display:flex}
+ html.pp-app .pp-vtabs{position:absolute;bottom:16px;top:auto}
+ .wg{height:clamp(320px,40vh,460px)}
+}
+.pp-sig{position:relative;overflow:hidden;height:96px}
+.pp-sig img{position:absolute;inset:18px 12px 8px;width:calc(100% - 24px);height:calc(100% - 26px);padding:0;object-fit:contain}
+button.pp-mole-empty{font:inherit;cursor:pointer;background:transparent;color:inherit}
+button.pp-mole-empty:hover{border-color:var(--pp-ink)}
+/* want-to-go globe v2: the home Earth; small pins, one clean tag for the selected place */
+.wg{background:#0c101b;border-radius:12px;height:clamp(360px,46vh,520px)}
+:root[data-theme=light] .wg{background:#f6f3ec}
+.wg-pins{position:absolute;inset:0;pointer-events:none;z-index:2}
+.wg-pin{position:absolute;left:0;top:0;width:0;height:0;padding:0;border:0;background:none;pointer-events:auto;cursor:pointer}
+.wg-pin[hidden]{display:none}
+.wg-pin>i{position:absolute;left:-7px;top:-7px;width:14px;height:14px;border-radius:99px;background:#f5f4ee;border:2px solid #0b1b27;box-shadow:0 2px 6px rgba(0,0,0,.5)}
+.wg-pin::after{content:'';position:absolute;left:-14px;top:-14px;width:28px;height:28px}
+.wg-pin.is-sel>i{left:-9px;top:-9px;width:18px;height:18px;background:#07d653;box-shadow:0 0 0 6px rgba(7,214,83,.25),0 2px 8px rgba(0,0,0,.5)}
+.wg-tag{display:none;position:absolute;left:0;bottom:16px;transform:translateX(-50%);flex-direction:column;align-items:center;gap:2px;padding:6px 10px;border-radius:8px;background:#0b1b27;color:#f5f4ee;white-space:nowrap;max-width:240px;box-shadow:0 8px 18px -6px rgba(0,0,0,.6);pointer-events:none}
+.wg-pin.is-sel .wg-tag{display:flex}
+.wg-tag b{font:800 13px/1.15 Arial,Helvetica,sans-serif;letter-spacing:-.01em;max-width:220px;overflow:hidden;text-overflow:ellipsis}
+.wg-tag small{font:500 9px/1.2 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.06em;text-transform:uppercase;color:#a7b5bf;max-width:220px;overflow:hidden;text-overflow:ellipsis}
+.wg-zoom{position:absolute;right:12px;top:12px;z-index:3;display:flex;flex-direction:column;border:1px solid var(--br-line);border-radius:10px;overflow:hidden;background:var(--br-panel)}
+.wg-zoom button{width:36px;height:36px;border:0;background:transparent;color:var(--br-text);font:700 18px/1 Arial,Helvetica,sans-serif;cursor:pointer}
+.wg-zoom button+button{border-top:1px solid var(--br-line)}
+.wg-zoom button:hover{background:var(--br-card)}
+.wg-canvas{touch-action:none}
+.wg-nogl::after{content:'The globe needs WebGL.';position:absolute;inset:0;display:grid;place-items:center;color:var(--br-muted)}
+@media(min-width:1100px){html.pp-app .pp-vtab,html.pp-app .pp-vtab[aria-selected=true]{padding:16px 0;font-size:13px;transition:width .2s,background .2s}html.pp-app .pp-vtab{width:36px}html.pp-app .pp-vtab[aria-selected=true]{width:48px}}
+@media(min-width:1100px){
+ html.pp-app .pp-vpanels{container-type:size}
+ html.pp-app #pp-vp-wtg .wg{height:calc(100cqh - 48px);min-height:240px}
+}
+button.pp-mole-empty span{font:600 10px/1.3 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.08em;text-transform:uppercase}
+.wg-note{left:16px;top:14px;bottom:auto;max-width:calc(100% - 80px)}
