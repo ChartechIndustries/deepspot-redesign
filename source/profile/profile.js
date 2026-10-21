@@ -181,11 +181,12 @@ function render(){
    </div>
    ${own?editHTML(lk):''}
   </section>
+  <div class="pp-statsrow">${sec('type','traveler type',null,typeHTML())}${sec('stats','contributions',null,statsHTML())}</div>
   <section class="pp-sec pp-tabsec" aria-label="Passport contents"><div class="pp-vtabs" role="tablist" aria-orientation="vertical" aria-label="Passport contents">${VTABS.map(([id,label],i)=>`<button type="button" role="tab" class="pp-vtab" id="pp-vt-${id}" data-vt="${id}" aria-controls="pp-vp-${id}" aria-selected="${i===0}" tabindex="${i===0?0:-1}">${label}${id==='wtg'&&own&&wtgList.length?` <span>${wtgList.length}</span>`:id==='contrib'&&profile.records.length?` <span>${profile.records.length}</span>`:''}</button>`).join('')}</div>
    <div class="pp-vpanels">
     <div class="pp-vpanel" role="tabpanel" id="pp-vp-show" aria-labelledby="pp-vt-show" tabindex="0">${showcaseHTML()}</div>
     <div class="pp-vpanel" role="tabpanel" id="pp-vp-contrib" aria-labelledby="pp-vt-contrib" tabindex="0" hidden>
-     ${sub('traveler type',typeHTML())}${sub('contributions',statsHTML())}${sub(`postings <span>(${profile.records.length})</span>`,postingsHTML(),profile.records.length>6?'<button type="button" class="pp-chipbtn" data-more aria-expanded="false">show all</button>':'')}${sub(`places <span>(${profile.places.length})</span>`,placesHTML())}
+     ${sub(`postings <span>(${profile.records.length})</span>`,postingsHTML(),profile.records.length>6?'<button type="button" class="pp-chipbtn" data-more aria-expanded="false">show all</button>':'')}${sub(`places <span>(${profile.places.length})</span>`,placesHTML())}
     </div>
     <div class="pp-vpanel" role="tabpanel" id="pp-vp-wtg" aria-labelledby="pp-vt-wtg" tabindex="0" hidden>${wtgHTML()}</div>
     <div class="pp-vpanel" role="tabpanel" id="pp-vp-items" aria-labelledby="pp-vt-items" tabindex="0" hidden>${sub(`stamps <span>(${profile.stamps.filter(s=>s.earned).length}/${profile.stamps.length})</span>`,stampsHTML())}${sub('giveaway',giveawayHTML())}</div>
@@ -256,7 +257,7 @@ function showcaseHTML(){
  const grid=list.length?`<ul class="pp-posts pp-show-posts">${list.map(r=>`<li class="pp-post"><a href="${esc(r.href)}"><span class="pp-post-img">${r.image?`<img src="${esc(r.card||r.image)}" data-orig="${esc(r.image)}" alt="" width="400" height="300" loading="lazy" decoding="async">`:'<span class="pp-no-photo" aria-hidden="true">deep<br>spot.</span>'}</span><span class="pp-post-copy"><span class="pp-mono">${esc(r.place||'')}</span><strong>${esc(r.name)}</strong></span></a></li>`).join('')}</ul>`:'';
  const wtg=profile.localPreview&&!recs.length&&wtgList.length?`<div class="pp-sub-h"><h3>next on my list</h3></div><ul class="pp-chips pp-show-wtg">${wtgList.slice(0,8).map(it=>`<li>${esc(it.type==='spot'?(wtgBySlug.get(it.id)?.title||'a deep spot'):it.name)}</li>`).join('')}</ul>`:'';
  const hint=profile.localPreview?`<p class="pp-fine">${recs.length?'Edit profile, then pick postings with ☆ show in contributions.':'Your showcase fills up as you post spots. Add places in want to go to show them here.'}</p>`:'';
- return (tcard||grid||wtg)?`${tcard}${grid}${wtg}${hint}`:empty(profile.localPreview?'nothing to show yet.':'nothing here yet.',profile.localPreview?'Post a spot or add places to want to go.':'This explorer has not posted in this collection yet.');
+ return (grid||wtg)?`${grid}${wtg}${hint}`:empty(profile.localPreview?'nothing to show yet.':'nothing here yet.',profile.localPreview?'Post a spot or add places to want to go.':'This explorer has not posted in this collection yet.');
 }
 function fitBio(){
  const box=$('.pp-bio-fit'),t=box?.querySelector('.pp-bio-text');if(!t)return;
@@ -299,12 +300,20 @@ document.addEventListener('click',e=>{
  pin.setAttribute('aria-pressed',String(on));pin.textContent=on?'★ showing':'☆ show';$('#pp-vp-show').innerHTML=showcaseHTML();
 });
 addEventListener('resize',()=>requestAnimationFrame(fitBio));
+/* the passport object is drawn at 440px and scaled up to fill its pane */
+function fitPassport(){
+ const obj=$('.pp-passobj'),field=$('.pp-field');if(!obj||!field)return;
+ obj.style.zoom='';if(innerWidth<1100){return;}
+ const w=obj.offsetWidth,h=obj.offsetHeight+110,fw=field.clientWidth-120,fh=field.clientHeight-60;
+ const z=Math.max(1,Math.min(fw/w,fh/h,1.75));obj.style.zoom=z.toFixed(3);
+}
+addEventListener('resize',()=>requestAnimationFrame(fitPassport));
 function appShell(){
  const field=$('.pp-field-in'),back=$('.pp-back'),share=$('.pp-share'),pane=$('#pp-pane-pass');
  if(back&&field){back.classList.add('pp-tabs-back');field.append(back);}
  if(share&&pane&&!pane.querySelector('.pp-sharebar')){const bar=document.createElement('div');bar.className='pp-sharebar';bar.append(share);const hint=document.createElement('span');hint.className='pp-mono';hint.textContent='share it, or save it as an image';bar.append(hint);pane.append(bar);}
  $('.pp-toolbar')?.setAttribute('hidden','');
- document.documentElement.classList.add('pp-app');requestAnimationFrame(fitBio);document.fonts?.ready.then(()=>requestAnimationFrame(fitBio));
+ document.documentElement.classList.add('pp-app');requestAnimationFrame(fitBio);requestAnimationFrame(fitPassport);document.fonts?.ready.then(()=>requestAnimationFrame(fitBio));
  const header=document.querySelector('.br-header');
  const fit=()=>document.documentElement.style.setProperty('--pp-top',Math.max(0,Math.round(header?.getBoundingClientRect().bottom||0))+'px');
  fit();if(!window._ppFit){window._ppFit=1;addEventListener('resize',fit);}

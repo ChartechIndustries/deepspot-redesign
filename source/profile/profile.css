@@ -371,3 +371,55 @@ a.pp-wtg-link:hover img{transform:scale(1.04)}
 @media(min-width:1100px){html.pp-app .pp-rec:has(.pp-tabsec[data-vt=wtg]) .pp-bio-fit{display:none}html.pp-app .pp-rec:has(.pp-tabsec[data-vt=wtg]) .pp-bio-body{justify-content:space-between}}
 @media(min-width:1100px){html.pp-app .pp-book[data-editing] .pp-biosec{flex-basis:60%!important}html.pp-app .pp-book[data-editing] .pp-bio-fit{display:flex}}
 .pp-bio-text.pp-bio-empty{opacity:1}
+/* ================= v7 (2026-10-20): stats boxes back on top, index tabs reaching into the passport pane, bigger passport ================= */
+.pp-statsrow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);border-top:1px solid var(--br-line)}
+.pp-statsrow>.pp-sec+.pp-sec{border-left:1px solid var(--br-line)}
+.pp-statsrow .pp-bar{border-top:0}
+.pp-statsrow .pp-body{padding:16px 24px}
+.pp-statsrow .pp-type{padding:16px}
+.pp-statsrow .pp-type-row h3{font-size:26px}
+.pp-statsrow .pp-tiles{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.pp-statsrow .pp-tiles>div{padding:12px}
+.pp-statsrow .pp-tiles dd{font-size:30px}
+.pp-statsrow .pp-ladder,.pp-statsrow .pp-fine{display:none}
+/* the bio sits above the boxes and fills its own height */
+@media(min-width:1100px){
+ html.pp-app .pp-book{overflow:visible}
+ html.pp-app .pp-rec{overflow:visible;position:relative;z-index:3}
+ html.pp-app .pp-biosec{flex:0 0 auto;height:clamp(220px,31%,340px)}
+ html.pp-app .pp-rec:has(.pp-tabsec[data-vt=wtg]) .pp-biosec{flex-basis:auto;height:clamp(150px,20%,220px)}
+ html.pp-app .pp-rec:has(.pp-tabsec[data-vt=wtg]) .pp-statsrow{display:none}
+ html.pp-app .pp-book[data-editing] .pp-biosec{flex:1 1 auto!important;height:auto}
+ html.pp-app .pp-book[data-editing] .pp-statsrow{display:none}
+ html.pp-app .pp-statsrow{flex:0 0 auto}
+ /* index tabs: hang off the left edge of the record, over the passport pane */
+ html.pp-app .pp-tabsec{display:block;position:relative;flex:1;min-height:0}
+ html.pp-app .pp-vtabs{position:absolute;top:24px;right:100%;width:auto;flex-direction:column;align-items:flex-end;gap:6px;padding:0;border:0;background:none;z-index:4}
+ html.pp-app .pp-vpanels{height:100%;overflow-y:auto;overscroll-behavior:contain}
+ html.pp-app .pp-vtab{writing-mode:vertical-rl;transform:rotate(180deg);min-height:0;height:auto;width:40px;padding:18px 0;justify-content:center;gap:8px;border-radius:0 10px 10px 0;margin:0;font-size:13px;letter-spacing:0;box-shadow:-6px 0 14px -6px rgba(0,0,0,.45);background:color-mix(in srgb,var(--c) 55%,var(--br-panel));color:var(--br-text);transition:width .2s,padding .2s,font-size .2s,background .2s}
+ html.pp-app .pp-vtab span{display:none}
+ html.pp-app .pp-vtab:hover{background:color-mix(in srgb,var(--c) 75%,var(--br-panel))}
+ html.pp-app .pp-vtab[aria-selected=true]{width:50px;padding:26px 0;font-size:16px;background:var(--c);color:var(--ci);margin-right:-1px}
+ /* passport sits a little left so the tabs never cover it */
+ html.pp-app .pp-field .pp-stage{padding-right:56px}
+}
+@media(max-width:1099px){.pp-statsrow{grid-template-columns:1fr}.pp-statsrow>.pp-sec+.pp-sec{border-left:0;border-top:1px solid var(--br-line)}}
+@media(min-width:1100px){
+ html.pp-app .pp-book{grid-template-rows:minmax(0,1fr)}
+ html.pp-app .pp-field,html.pp-app .pp-rec{min-height:0}
+ html.pp-app .pp-statsrow .pp-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}
+ html.pp-app .pp-statsrow .pp-legend,html.pp-app .pp-statsrow .pp-type .pp-mono{display:none}
+ html.pp-app .pp-statsrow .pp-type{display:flex;flex-direction:column;gap:12px;height:100%}
+ html.pp-app .pp-statsrow .pp-type-row p{font-size:14px}
+ html.pp-app .pp-statsrow .pp-body{height:calc(100% - 40px)}
+}
+@media(min-width:1100px){
+ html.pp-app .pp-field #pp-pane-pass{width:auto;max-width:none}
+ html.pp-app .pp-field .pp-passobj{width:440px}
+ html.pp-app .pp-tabsec{position:static}
+ html.pp-app .pp-vtabs{top:auto;bottom:16px}
+ html.pp-app .pp-vtab{width:36px;padding:12px 0;font-size:12px}
+ html.pp-app .pp-vtab[aria-selected=true]{width:46px;padding:18px 0;font-size:14px}
+}
+@media(min-width:1100px){html.pp-app .pp-vtab{background:color-mix(in srgb,var(--c) 82%,var(--br-panel));color:var(--ci)}html.pp-app .pp-vtab:hover{background:var(--c)}}
+@media(min-width:1100px){html.pp-app .pp-vtab#pp-vt-contrib{background:color-mix(in srgb,#3c60ff 88%,#0b1b27)}html.pp-app .pp-vtab#pp-vt-contrib[aria-selected=true]{background:#3c60ff}}
