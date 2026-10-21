@@ -49,8 +49,22 @@ html[data-theme=light] .tr-art-shadow{opacity:.55}
 .tr-cta .ds-button:hover{background:#13293a}
 
 @media(max-width:700px){.tr-f-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:700px),(orientation:portrait){.tr-stage .tr-title{top:26%;font-size:min(26vw,40vh)}}   /* phones and portrait tablets: the render (hammer mole left of the "t") must fit the width */
+/* phones and portrait tablets: the artwork (2.87em of content) fills ~92% of the width, sits in the upper middle;
+   corner band runs across the top, the two low bands stay under the word */
+@media(max-width:700px),(orientation:portrait){
+ .tr-stage .tr-title{top:36%;font-size:min(28vw,28vh)}   /* word centred; 28vw leaves room for the hammer mole on the left */
+ .tr-tape{--h:clamp(56px,9vh,96px)}
+ .tr-tape[data-tape=c]{width:160vw}
+}
 @media(prefers-reduced-motion:reduce){.tr-run{animation:none}}
 .tr-tape[data-tape=c]{width:120vw}
 .tr-cta .ds-button svg{width:1em;height:1em}
 .tr-base{display:inline-block;width:0;height:0;vertical-align:baseline}
+
+/* opening move: the camera starts tight on the main tape and snaps out (tours.mjs sets the origin, angle and zoom) */
+.tr-cam{position:absolute;inset:0}
+.tr-zoom .tr-cam{transform-origin:var(--ox) var(--oy);animation:tr-pull .55s cubic-bezier(.85,0,.15,1) .9s both}
+@keyframes tr-cta-in{from{opacity:0;translate:0 12px}}
+.tr-zoom~.tr-cta,.tr-stage.tr-zoom .tr-cta{animation:tr-cta-in .3s ease-out 1.3s both}
+@keyframes tr-pull{from{transform:translate(calc(50% - var(--ox)),calc(50% - var(--oy))) rotate(calc(-1 * var(--r0))) scale(var(--z0))}to{transform:none}}
+@media(prefers-reduced-motion:reduce){.tr-zoom .tr-cam{animation:none}}
