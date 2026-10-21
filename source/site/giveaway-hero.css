@@ -560,9 +560,10 @@
 
 /* A · hangs from under the giveaway panel: card tops tucked under the "your spot could be next" box, the fan opens downward */
 .gv-fan-a{display:flex;flex-direction:column}
-.gv-fan-a .gv-fan-stage{order:1;height:calc(var(--fh) * .9);margin-top:calc(var(--fh) * -.1)}
+.gv-fan-a .gv-fan-stage{order:1;height:calc(var(--fh) * .99);margin-top:-1px;overflow:clip}
+.gv-fan-a .gv-fan-deck{top:calc(var(--fh) * -.03)}
 .gv-fan-a .gv-fan-head{order:2;padding:32px 2px 0}
-.gv-fan-a .gv-fan-deck .cv-pp{transform-origin:50% 0;transform:translateX(calc(var(--k) * var(--fw) * .56)) translateY(calc(var(--a) * var(--a) * -7px)) rotate(calc(var(--k) * -3deg)) translateZ(calc(var(--a) * -40px)) rotateY(calc(var(--k) * -5deg))}
+.gv-fan-a .gv-fan-deck .cv-pp{transform-origin:50% 0;transform:translateX(calc(var(--k) * var(--fw) * .56)) translateY(calc(var(--a) * var(--a) * -2.5px)) rotate(calc(var(--k) * -1.6deg)) translateZ(calc(var(--a) * -40px)) rotateY(calc(var(--k) * -5deg))}
 .gv:has(.gv-fan-a) .gv-cta{position:relative;z-index:80;box-shadow:0 22px 40px -18px rgba(0,0,0,.55)}
 .gv:has(.gv-fan-a) .gv-cta{background:var(--gv-bg,var(--br-panel))}
 
@@ -582,7 +583,7 @@
 @container gv (max-width:700px){
  .gv-fan{--fw:clamp(170px,46cqw,220px)}
  .gv-fan-ctl{margin-left:0;width:100%}
- .gv-fan-a .gv-fan-deck .cv-pp{transform:translateX(calc(var(--k) * var(--fw) * .5)) translateY(calc(var(--a) * var(--a) * -6px)) rotate(calc(var(--k) * -4deg)) translateZ(calc(var(--a) * -36px))}
+ .gv-fan-a .gv-fan-deck .cv-pp{transform:translateX(calc(var(--k) * var(--fw) * .5)) translateY(calc(var(--a) * var(--a) * -2.5px)) rotate(calc(var(--k) * -2.5deg)) translateZ(calc(var(--a) * -36px))}
  .gv-fan-b .gv-fan-deck .cv-pp{transform-origin:50% 200%;transform:rotate(calc(var(--k) * 10deg)) translateZ(calc(var(--a) * -30px))}
  .gv-fan-c{--fw:clamp(150px,40cqw,190px);--R:calc(var(--fw) * 1.4)}
  .gv-fan-c .gv-fan-deck .cv-pp{transform:rotateY(calc(var(--k) * 40deg)) translateZ(var(--R))}
