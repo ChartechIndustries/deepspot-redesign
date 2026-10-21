@@ -6,7 +6,7 @@ import {memberLevels,memberRange,POINTS} from './passport-rules.mjs?v=pv2';
 import {escapeHTML as esc,safeReturn} from './identity.mjs';
 import {loadProfile} from './data.mjs?v=pv3';
 import {halftoneField} from '../site/halftone-field.mjs?v=2';
-import {mountGlobe} from './wtg-globe.mjs?v=wg5';
+import {mountGlobe} from './wtg-globe.mjs?v=wg7';
 import {readWantToGo,writeWantToGo,addItem,removeAt,moveItem,WTG_MAX,WTG_NAME_MAX} from './want-to-go.mjs?v=wtg1';
 const $=selector=>document.querySelector(selector);
 let profile,toastTimer,exportPromise,exportImage;
@@ -92,7 +92,7 @@ function wtgListHTML(){return wtgList.length?`<ul class="pp-wtg">${wtgList.map((
 const wtgStatus=()=>`${wtgList.length}/${WTG_MAX} places. Saved on this browser.`;
 function wtgHTML(){
  if(!profile.localPreview)return empty('no want-to-go list yet.','Lists are not shared from live accounts yet.');
- return `<div class="wg" id="wg"><p class="wg-note pp-mono" id="wg-note"></p><p class="sr-only" id="wg-card" aria-live="polite"></p></div><form class="pp-wtg-form" id="pp-wtg-form" autocomplete="off" novalidate><label class="pp-mono" for="pp-wtg-in">add a place</label>
+ return `<div class="wg-wrap"><div class="wg" id="wg"><p class="wg-note pp-mono" id="wg-note"></p></div><aside class="wg-side" aria-label="Selected place"><div class="wg-info" id="wg-card" aria-live="polite"></div><p class="wg-sidenote" id="wg-note2"></p></aside></div><form class="pp-wtg-form" id="pp-wtg-form" autocomplete="off" novalidate><label class="pp-mono" for="pp-wtg-in">add a place</label>
  <div class="pp-wtg-row"><div class="pp-wtg-combo"><input id="pp-wtg-in" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="pp-wtg-lb" maxlength="${WTG_NAME_MAX}" placeholder="a spot, a city, anywhere" enterkeyhint="done"><ul id="pp-wtg-lb" class="pp-wtg-lb" role="listbox" aria-label="Matching deep spots" hidden></ul></div><button type="submit" class="pp-wtg-add">add</button></div>
  <p class="pp-fine pp-wtg-msg" id="pp-wtg-msg" role="status" aria-live="polite">${wtgStatus()}</p></form><div id="pp-wtg-list">${wtgListHTML()}</div>`;
 }
@@ -331,14 +331,18 @@ function appShell(){
 let wg=null,wgPins=[],wgTimer=0;
 function wgPinsFrom(){return wtgList.map(it=>{const spot=it.type==='spot'?wtgBySlug.get(it.id):null,slug=it.type==='spot'?wtgSlug(it.id):null,c=slug&&spotCoords[slug];
  return {name:spot?spot.title:it.name,place:spot?spot.place:'your pick',href:spot?wtgURL(slug):null,img:spot?(spot.card||spot.image):'',lat:c?c[0]:null,lon:c?c[1]:null,exact:c?.[2]==='exact'};});}
-function wgCard(i){const p=wgPins[i],box=$('#wg-card');if(box)box.textContent=p?`${p.name}, ${p.place||''}`:'';}
+function wgCard(i){const p=wgPins[i],box=$('#wg-card');if(!box)return;
+ if(!p){box.innerHTML=`<p class="pp-mono wg-k">want to go</p><p class="wg-empty">${wgPins.length?'Tap a pin on the globe.':'Add a place below. It lands on the globe as a pin.'}</p>`;return;}
+ const on=wgPins.map((x,k)=>x.lat!=null?k:-1).filter(k=>k>=0),n=on.indexOf(i);
+ box.innerHTML=`<p class="pp-mono wg-k">want to go · ${n+1} of ${on.length}</p><div class="wg-row">${p.img?`<img class="wg-img" src="${esc(p.img)}" alt="" width="400" height="300">`:'<span class="wg-img wg-img-none" aria-hidden="true">deep<br>spot.</span>'}<div><p class="pp-mono wg-place">${esc(p.place||'')}</p><h3 class="wg-name">${esc(p.name)}</h3>${p.exact?'':'<p class="pp-fine">The pin is approximate.</p>'}</div></div><div class="wg-acts">${p.href?`<a class="pp-chipbtn pp-editbtn" href="${esc(p.href)}">open the spot ↗</a>`:''}${on.length>1?`<button type="button" class="pp-chipbtn" data-wg-step="-1" aria-label="Previous place">←</button><button type="button" class="pp-chipbtn" data-wg-step="1" aria-label="Next place">→</button>`:''}</div>`;}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-wg-step]');if(!b||!wg)return;const on=wgPins.map((x,k)=>x.lat!=null?k:-1).filter(k=>k>=0),n=on.indexOf(wg.sel);wg.focus(on[(n+ +b.dataset.wgStep+on.length)%on.length]);});
 function wgSync(){
  const host=$('#wg');if(!host)return;wgPins=wgPinsFrom();const on=wgPins.map((p,i)=>p.lat!=null?i:-1).filter(i=>i>=0),off=wgPins.length-on.length;
- $('#wg-note').textContent=!wgPins.length?'add places below and they land on the globe as pins.':off?`${off} ${off===1?'place has':'places have'} no location yet, so ${off===1?'it is':'they are'} only in the list.`:'drag to turn · scroll or pinch to zoom · tap a pin';
+ $('#wg-note2').textContent=$('#wg-note').textContent=!wgPins.length?'add places below and they land on the globe as pins.':off?`${off} ${off===1?'place has':'places have'} no location yet, so ${off===1?'it is':'they are'} only in the list.`:'drag to turn · scroll or pinch to zoom · tap a pin';
  if(!wg)wg=mountGlobe(host,{pins:wgPins,onSelect:wgCard,_old:(pt,{w})=>{const l=$('#wg-line'),c=$('#wg-card');if(!l||!c)return;if(!pt||c.hidden){l.setAttribute('x1',0);l.setAttribute('x2',0);l.setAttribute('y1',0);l.setAttribute('y2',0);return;}
   const hb=host.getBoundingClientRect(),cb=c.getBoundingClientRect(),x1=cb.left-hb.left+cb.width/2,y1=cb.bottom-hb.top;l.setAttribute('x1',x1);l.setAttribute('y1',y1);l.setAttribute('x2',pt.x);l.setAttribute('y2',pt.y);}});
  else wg.set(wgPins);
- if(on.length&&(wg.sel<0||!on.includes(wg.sel)))wg.focus(on[0]);if(!on.length)wgCard(-1);
+ if(on.length&&(wg.sel<0||!on.includes(wg.sel)))wg.focus(on[0]);if(!on.length)wgCard(-1);else if(wg.sel>=0)wgCard(wg.sel);
  clearInterval(wgTimer);if(on.length>1&&!matchMedia('(prefers-reduced-motion: reduce)').matches)wgTimer=setInterval(()=>{if(document.hidden||$('#wg')?.matches(':hover'))return;const k=on.indexOf(wg.sel);wg.focus(on[(k+1)%on.length]);},6000);
 }
 /* ---------- settings (2026-10-20): the cog on your own passport holds what the old account profile tab had ---------- */

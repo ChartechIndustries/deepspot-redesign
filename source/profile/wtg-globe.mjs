@@ -56,7 +56,7 @@ void main(){
  if(rr>=1.){
   float dd=sqrt(rr)-1.;
   vec2 nn=n/sqrt(rr);
-  float le=smoothstep(.05,.85,max(0.,dot(vec3(nn,0.),vec3(-.92,.36,.15))));
+  float le=smoothstep(.05,.85,max(0.,dot(vec3(nn,0.),vec3(0.,.62,.78))));
   float glow=exp(-dd*24.)*le*.32;
   gl_FragColor=vec4(mix(bg,glowC,glow),1.);return;
  }
@@ -70,7 +70,7 @@ void main(){
  float cl=texture2D(clouds,cuv).r*cloudAmt;
  surface=1.-(1.-surface)*(1.-cl);
  float lum=dot(surface,vec3(.2126,.7152,.0722));
- float lam=max(0.,dot(vec3(n,z),vec3(-.92,.36,.15)));float light=smoothstep(.22,.86,lam);
+ float lam=max(0.,dot(vec3(n,z),vec3(0.,.62,.78)));float light=smoothstep(.22,.86,lam);
  float rim=pow(1.-z,2.5);
  float rimLit=pow(1.-z,4.)*smoothstep(.1,.72,lam);
  float tone=pow(clamp((lum-.07)/(useSrc>.5?.95:.72),0.,1.),1.05)*max(light,min(1.,rim*1.1));
@@ -123,7 +123,7 @@ export function mountGlobe(host,{pins=[],onSelect=()=>{}}={}){
    if(im)gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,gl.RGB,gl.UNSIGNED_BYTE,im);else gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,1,1,0,gl.RGB,gl.UNSIGNED_BYTE,new Uint8Array([0,0,0]));};
   Promise.all([img('/earth-day.jpg'),img('/earth-clouds.jpg')]).then(([e,c])=>{tex(0,e,gl.CLAMP_TO_EDGE);tex(1,c,gl.REPEAT);gl.uniform1i(U.earth,0);gl.uniform1i(U.clouds,1);gl.activeTexture(gl.TEXTURE0);ready=!!e;kick();});
  }
- const geom=()=>{const base=Math.max(Math.min(W*.42,H*.42),Math.min(W*.3,H*.72)),r=base*zoom;return {r,cx:W/2,cy:H/2};};
+ const geom=()=>{const r=Math.min(W,H)*.4*zoom;return {r,cx:W/2,cy:H/2};};
  function fit(){dpr=Math.min(devicePixelRatio||1,2);W=host.clientWidth;H=host.clientHeight;cv.width=Math.max(1,Math.round(W*dpr));cv.height=Math.max(1,Math.round(H*dpr));cv.style.width=W+'px';cv.style.height=H+'px';}
  const proj=(lat,lon)=>{const {r,cx,cy}=geom(),f=lat*D2R,a=lon*D2R-yaw*D2R,p=pitch*D2R,nx=Math.cos(f)*Math.sin(a),tx=Math.sin(f),ty=Math.cos(f)*Math.cos(a),ny=tx*Math.cos(p)-ty*Math.sin(p),z=tx*Math.sin(p)+ty*Math.cos(p);return {x:cx+nx*r,y:cy-ny*r,z};};
  function drawGL(now){
