@@ -136,7 +136,7 @@ export function mountGlobe(host,{pins=[],onSelect=()=>{},onPin=()=>{}}={}){
  function drawPins(){
   if(layer.childElementCount!==P.length){layer.innerHTML=P.map((p,i)=>`<button type="button" class="wg-pin" data-i="${i}" tabindex="-1"><i aria-hidden="true"></i><span class="wg-tag"><b></b><small></small></span></button>`).join('');}
   [...layer.children].forEach((el,i)=>{const p=P[i];if(p.lat==null){el.hidden=true;return;}const v=proj(p.lat,p.lon);const show=v.z>.05;el.hidden=!show;if(!show){if(i===sel)onPin(null);return;}
-   el.style.transform=`translate(${v.x.toFixed(1)}px,${v.y.toFixed(1)}px)`;el.style.opacity=Math.min(1,.4+v.z).toFixed(2);el.classList.toggle('is-sel',i===sel);el.style.zIndex=i===sel?50:Math.round(v.z*10);
+   el.style.transform=`translate(${v.x.toFixed(1)}px,${v.y.toFixed(1)}px)`;el.style.setProperty('--pc',p.color||'');el.style.opacity=Math.min(1,.4+v.z).toFixed(2);el.classList.toggle('is-sel',i===sel);el.style.zIndex=i===sel?50:Math.round(v.z*10);
    if(i===sel)onPin({x:v.x,y:v.y});
    const t=el.querySelector('.wg-tag');if(i===sel){t.querySelector('b').textContent=p.name;t.querySelector('small').textContent=p.place||'';}el.setAttribute('aria-label',p.name);});
  }
@@ -159,7 +159,7 @@ export function mountGlobe(host,{pins=[],onSelect=()=>{},onPin=()=>{}}={}){
   if(touches.size===2){const [a,b]=[...touches.values()];pinch={d:Math.hypot(a.x-b.x,a.y-b.y),z:zoom};drag=null;}else drag={x:e.clientX,y:e.clientY,yaw,pitch};tYaw=tPitch=null;kick();});
  cv.addEventListener('pointermove',e=>{if(!touches.has(e.pointerId))return;touches.set(e.pointerId,{x:e.clientX,y:e.clientY});
   if(pinch&&touches.size===2){const [a,b]=[...touches.values()];zoom=Math.max(1,Math.min(6,pinch.z*Math.hypot(a.x-b.x,a.y-b.y)/pinch.d));tZoom=null;kick();return;}
-  if(drag){const {r}=geom(),k=57.3/r;yaw=drag.yaw-(e.clientX-drag.x)*k;pitch=Math.max(-80,Math.min(80,drag.pitch-(e.clientY-drag.y)*k));kick();}});
+  if(drag){const {r}=geom(),k=57.3/r;yaw=drag.yaw-(e.clientX-drag.x)*k;pitch=Math.max(-80,Math.min(80,drag.pitch+(e.clientY-drag.y)*k));kick();}});
  const up=e=>{touches.delete(e.pointerId);if(touches.size<2)pinch=null;if(!touches.size)drag=null;kick();};
  cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);
  const ro=new ResizeObserver(()=>{fit();kick();});ro.observe(host);

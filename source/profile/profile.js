@@ -6,7 +6,7 @@ import {memberLevels,memberRange,POINTS} from './passport-rules.mjs?v=pv2';
 import {escapeHTML as esc,safeReturn} from './identity.mjs';
 import {loadProfile} from './data.mjs?v=pv3';
 import {halftoneField} from '../site/halftone-field.mjs?v=2';
-import {mountGlobe} from './wtg-globe.mjs?v=wg8';
+import {mountGlobe} from './wtg-globe.mjs?v=wg9';
 import {itemsFor} from './items.mjs?v=it1';
 import {followHTML,exploredHTML,picksHTML,collectionsHTML,updatesHTML,counts as psCounts,bindSocial} from './profile-social.mjs?v=ps3';
 import {readWantToGo,writeWantToGo,addItem,removeAt,moveItem,WTG_MAX,WTG_NAME_MAX} from './want-to-go.mjs?v=wtg1';
@@ -103,6 +103,14 @@ const wtgURL=slug=>{const u=new URL('/spot/',location.origin);u.searchParams.set
 const wtgStem=src=>src.split('/').pop().replace(/\.[a-z]+$/i,'');
 function wtgSpot(s){const img=typeof s.image==='string'&&(s.image.startsWith('/')||/^https:\/\/[a-z0-9.-]+\.r2\.dev\//i.test(s.image))?s.image:'',loc=img.startsWith('/')?img:'';return {id:s.id,slug:wtgSlug(s.id),title:s.title,place:s.place||'',image:img,card:loc?'/editorial-assets/cards/'+wtgStem(loc)+'.webp':''};}
 let spotCoords={};
+document.addEventListener('click',e=>{
+ const ch=e.target.closest('[data-wg-list]');if(ch){wgSwitch(ch.dataset.wgList);return;}
+ if(e.target.closest('[data-wg-new]')){const box=$('.wg-lists');box.querySelector('[data-wg-new]').outerHTML=`<form class="wg-newform" data-wg-newform><input name="t" maxlength="40" placeholder="name it, e.g. abandoned rail lines" aria-label="New collection name" required><button type="submit" class="pp-chipbtn pp-editbtn">create</button></form>`;box.querySelector('[data-wg-newform] input').focus();return;}
+ const del=e.target.closest('[data-wg-del]');if(del){if(del.dataset.sure!=='1'){del.dataset.sure='1';del.textContent='press again to delete';return;}const cs=readColls();cs.splice(+wgActive,1);writeColls(cs);wgSwitch('wtg');wtgSay('Collection deleted. Its places stay in want to go.');}
+});
+document.addEventListener('submit',e=>{const f=e.target.closest('[data-wg-newform]');if(!f)return;e.preventDefault();const t=f.t.value.replace(/\s+/g,' ').trim().slice(0,40);if(!t)return;const cs=readColls();
+ if(cs.some(c=>c.title.toLowerCase()===t.toLowerCase())){f.t.setCustomValidity('You already have a collection with that name.');f.reportValidity();f.t.setCustomValidity('');return;}
+ const used=new Set(cs.map(c=>c.color)),color=COLL_COLORS.find(c=>!used.has(c))||COLL_COLORS[cs.length%COLL_COLORS.length];cs.push({title:t,color,items:[]});writeColls(cs);wgSwitch(String(cs.length-1));$('#pp-wtg-in')?.focus();});
 /* tap a list card (not its buttons) to show that place on the globe */
 document.addEventListener('click',e=>{const li=e.target.closest('.pp-wtg-item');if(!li||!wg||e.target.closest('button'))return;const k=[...li.parentElement.children].indexOf(li);if(wgPins[k]?.lat==null)return;e.preventDefault();wg.focus(k);});
 async function wtgLoadCoords(){try{const r=await fetch('/site/spot-coords.json');if(r.ok)spotCoords=await r.json();}catch{}}
@@ -117,16 +125,39 @@ function wtgCard(item,i,n){
  <div class="pp-wtg-ctl"><span class="pp-mono" aria-hidden="true">${String(i+1).padStart(2,'0')}</span><span class="pp-wtg-btns">${wtgBtn('up',i,`move ${name} up`,'<path d="m6 15 6-6 6 6"/>',i===0)}${wtgBtn('down',i,`move ${name} down`,'<path d="m6 9 6 6 6-6"/>',i===n-1)}${wtgBtn('rm',i,`remove ${name}`,'<path d="m6 6 12 12M18 6 6 18"/>')}</span></div></div></li>`;
 }
 function wtgListHTML(){return wtgList.length?`<ul class="pp-wtg">${wtgList.map((it,i)=>wtgCard(it,i,wtgList.length)).join('')}</ul>`:empty('no places yet.','add the first one above.');}
-const wtgStatus=()=>`${wtgList.length}/${WTG_MAX} places. Saved on this browser.`;
+const wtgStatus=()=>wgActive==='wtg'?`${wtgList.length}/${WTG_MAX} places. Saved on this browser.`:'Added places also go to want to go.';
+/* my map (2026-10-21): "want to go" is the catch-all (like liked songs); collections are named, coloured sets (like playlists).
+   Adding a place to a collection also adds it to want to go. Collections live in deepspot-collections-v1 as {title,color,items:[{type,id}|{type:'place',name}]};
+   older entries stored as plain names are matched to catalog spots by title. */
+const COLL_KEY='deepspot-collections-v1',COLL_MAX=12,COLL_COLORS=['#f28cb1','#3c60ff','#f2c14e','#b69cff','#e57a8a','#6fa8dc','#ff8a3d','#9be15d'];
+let wgActive='wtg';
+const wgAll=()=>wgActive==='wtg'?wtgList:readWantToGo();
+function readColls(){let v;try{v=JSON.parse(localStorage.getItem(COLL_KEY)||'[]');}catch{v=[];}if(!Array.isArray(v))return [];
+ return v.filter(c=>c&&typeof c.title==='string').slice(0,COLL_MAX).map((c,i)=>({title:c.title.slice(0,40),color:COLL_COLORS.includes(c.color)?c.color:COLL_COLORS[i%COLL_COLORS.length],
+  items:normalizeListAny((c.items||[]).map(it=>typeof it==='string'?(()=>{const s=wtgCatalog.find(x=>x.title.toLowerCase()===it.trim().toLowerCase());return s?{type:'spot',id:s.id}:{type:'place',name:it};})():it))}));}
+function writeColls(v){try{localStorage.setItem(COLL_KEY,JSON.stringify(v));return true;}catch{return false;}}
+const normalizeListAny=l=>{const out=[];let cur=[];for(const it of l){const r=addItem(cur,it);if(r.ok){cur=r.list;}}return cur;};
+const wgColl=()=>wgActive==='wtg'?null:readColls()[+wgActive]||null;
+function wgSwitch(id){
+ if(id!=='wtg'&&!readColls()[+id])id='wtg';
+ wgActive=id;wtgList=id==='wtg'?readWantToGo():readColls()[+id].items;
+ const side=$('.wg-side');if(side){side.querySelector('.wg-lists').outerHTML=wgListsHTML();side.querySelector('.wg-listh').outerHTML=wgHeadHTML();}
+ wtgRefresh();wgSync();
+}
+const wgListsHTML=()=>{const cs=readColls(),all=wgActive==='wtg'?wtgList:readWantToGo();
+ return `<div class="wg-lists" role="group" aria-label="Your lists"><button type="button" class="wg-chip" data-wg-list="wtg" aria-pressed="${wgActive==='wtg'}" style="--lc:#07d653"><i aria-hidden="true">♥</i>want to go <span>${all.length}</span></button>${cs.map((c,i)=>`<button type="button" class="wg-chip" data-wg-list="${i}" aria-pressed="${wgActive===String(i)}" style="--lc:${c.color}"><i aria-hidden="true"></i>${esc(c.title)} <span>${c.items.length}</span></button>`).join('')}${cs.length<COLL_MAX?`<button type="button" class="wg-chip wg-chip-new" data-wg-new>+ new collection</button>`:''}</div>`;};
+const wgHeadHTML=()=>{const c=wgColl();return `<div class="wg-listh"><h3>${c?esc(c.title):'want to go'}</h3>${c?`<button type="button" class="pp-chipbtn" data-wg-del>delete collection</button>`:''}</div>`;};
 function wtgHTML(){
  if(!profile.localPreview)return empty('no want-to-go list yet.','Lists are not shared from live accounts yet.');
- return `<div class="wg-wrap"><div class="wg" id="wg"><div class="wg-pop" id="wg-pop" hidden></div><p class="sr-only" id="wg-card" aria-live="polite"></p></div><aside class="wg-side" aria-label="Your want-to-go list"><form class="pp-wtg-form" id="pp-wtg-form" autocomplete="off" novalidate><label class="pp-mono" for="pp-wtg-in">add a place</label>
+ return `<div class="wg-wrap"><div class="wg" id="wg"><div class="wg-pop" id="wg-pop" hidden></div><p class="sr-only" id="wg-card" aria-live="polite"></p></div><aside class="wg-side" aria-label="Your lists">${wgListsHTML()}<form class="pp-wtg-form" id="pp-wtg-form" autocomplete="off" novalidate><label class="pp-mono" for="pp-wtg-in">add a place</label>
  <div class="pp-wtg-row"><div class="pp-wtg-combo"><input id="pp-wtg-in" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="pp-wtg-lb" maxlength="${WTG_NAME_MAX}" placeholder="a spot, a city, anywhere" enterkeyhint="done"><ul id="pp-wtg-lb" class="pp-wtg-lb" role="listbox" aria-label="Matching deep spots" hidden></ul></div><button type="submit" class="pp-wtg-add">add</button></div>
- <p class="pp-fine pp-wtg-msg" id="pp-wtg-msg" role="status" aria-live="polite">${wtgStatus()}</p></form><h3 class="wg-listh">my list</h3><div id="pp-wtg-list">${wtgListHTML()}</div><p class="wg-sidenote" id="wg-note2"></p></aside></div>`;
+ <p class="pp-fine pp-wtg-msg" id="pp-wtg-msg" role="status" aria-live="polite">${wtgStatus()}</p></form>${wgHeadHTML()}<div id="pp-wtg-list">${wtgListHTML()}</div><p class="wg-sidenote" id="wg-note2"></p></aside></div>`;
 }
 function wtgRefresh(){const box=$('#pp-wtg-list');if(!box)return;box.innerHTML=wtgListHTML();const s=document.querySelector('#pp-wtg span');if(s)s.textContent=`(${wtgList.length})`;const m=$('#pp-wtg-msg');if(m&&!m.dataset.keep)m.textContent=wtgStatus();}
 function wtgSay(text){const m=$('#pp-wtg-msg');if(!m)return;m.textContent=text;m.dataset.keep='1';clearTimeout(wtgSay.t);wtgSay.t=setTimeout(()=>{delete m.dataset.keep;m.textContent=wtgStatus();},3500);}
-function wtgCommit(next){wtgList=next;if(!writeWantToGo(wtgList))wtgSay('Could not save on this browser.');wtgRefresh();wgSync();}
+function wtgCommit(next){wtgList=next;let ok;
+ if(wgActive==='wtg')ok=writeWantToGo(wtgList);else{const cs=readColls();cs[+wgActive].items=wtgList;ok=writeColls(cs);}
+ if(!ok)wtgSay('Could not save on this browser.');wtgRefresh();wgSync();const l=$('.wg-lists');if(l)l.outerHTML=wgListsHTML();}
 function wtgClose(){const lb=$('#pp-wtg-lb'),inp=$('#pp-wtg-in');if(!lb)return;lb.hidden=true;inp.setAttribute('aria-expanded','false');inp.removeAttribute('aria-activedescendant');wtgActive=-1;}
 function wtgSuggest(){
  const inp=$('#pp-wtg-in'),lb=$('#pp-wtg-lb'),q=inp.value.trim().toLowerCase();wtgPick=null;
@@ -146,7 +177,7 @@ function wtgSubmit(){
  else if(text){const exact=wtgCatalog.find(s=>s.title.trim().toLowerCase()===text.toLowerCase());raw=exact?{type:'spot',id:exact.id}:{type:'place',name:text};}
  const r=addItem(wtgList,raw);
  if(!r.ok){wtgSay(r.reason==='duplicate'?'Already on your list.':r.reason==='full'?`List is full. ${WTG_MAX} places max.`:'Type a place first.');inp.focus();return;}
- inp.value='';wtgPick=null;wtgClose();wtgCommit(r.list);
+ inp.value='';wtgPick=null;wtgClose();if(wgActive!=='wtg'){const a=addItem(readWantToGo(),r.item);if(a.ok)writeWantToGo(a.list);}wtgCommit(r.list);
  wtgSay(`Added ${r.item.type==='spot'?(wtgBySlug.get(r.item.id)?.title||'spot'):r.item.name}.`);inp.focus();
 }
 function wtgBind(){
@@ -212,7 +243,7 @@ function render(){
   </section>
   <div class="pp-statsrow">${sec('type','traveler type',null,typeHTML())}${sec('stats','contributions',null,statsHTML())}</div>
   ${sec('trophies',`${own?'my':esc(profile.name.split(/\s+/)[0].toLowerCase())+'’s'} trophy case`,profile.items.length,shelfHTML(),'<span class="pp-mono pp-ph">placeholder</span>')}
-  <section class="pp-sec pp-tabsec" aria-label="Passport contents"><div class="pp-vtabs" role="tablist" aria-orientation="vertical" aria-label="Passport contents">${VTABS.map(([id,label],i)=>`<button type="button" role="tab" class="pp-vtab" id="pp-vt-${id}" data-vt="${id}" aria-controls="pp-vp-${id}" aria-selected="${i===0}" tabindex="${i===0?0:-1}">${label}${id==='wtg'&&own&&wtgList.length?` <span>${wtgList.length}</span>`:id==='contrib'&&profile.records.length?` <span>${profile.records.length}</span>`:psCounts(own)[id]?` <span>${psCounts(own)[id]}</span>`:''}</button>`).join('')}</div>
+  <section class="pp-sec pp-tabsec" aria-label="Passport contents"><div class="pp-vtabs" role="tablist" aria-orientation="vertical" aria-label="Passport contents">${VTABS.map(([id,label],i)=>`<button type="button" role="tab" class="pp-vtab" id="pp-vt-${id}" data-vt="${id}" aria-controls="pp-vp-${id}" aria-selected="${i===0}" tabindex="${i===0?0:-1}">${label}${id==='wtg'&&own&&wgAll().length?` <span>${wgAll().length}</span>`:id==='contrib'&&profile.records.length?` <span>${profile.records.length}</span>`:psCounts(own)[id]?` <span>${psCounts(own)[id]}</span>`:''}</button>`).join('')}</div>
    <div class="pp-vpanels">
     <div class="pp-vpanel" role="tabpanel" id="pp-vp-show" aria-labelledby="pp-vt-show" tabindex="0">${showcaseHTML()}</div>
     <div class="pp-vpanel" role="tabpanel" id="pp-vp-contrib" aria-labelledby="pp-vt-contrib" tabindex="0" hidden>
@@ -220,7 +251,6 @@ function render(){
     </div>
     <div class="pp-vpanel" role="tabpanel" id="pp-vp-explored" aria-labelledby="pp-vt-explored" tabindex="0" hidden>${sub('explored',exploredHTML(own))}</div>
     <div class="pp-vpanel" role="tabpanel" id="pp-vp-wtg" aria-labelledby="pp-vt-wtg" tabindex="0" hidden>${wtgHTML()}</div>
-    <div class="pp-vpanel" role="tabpanel" id="pp-vp-coll" aria-labelledby="pp-vt-coll" tabindex="0" hidden>${sub('collections',collectionsHTML(own))}</div>
     <div class="pp-vpanel" role="tabpanel" id="pp-vp-picks" aria-labelledby="pp-vt-picks" tabindex="0" hidden>${sub('picks',picksHTML(own))}</div>
     <div class="pp-vpanel" role="tabpanel" id="pp-vp-items" aria-labelledby="pp-vt-items" tabindex="0" hidden>${sub(`stamps <span>(${profile.stamps.filter(s=>s.earned).length}/${profile.stamps.length})</span>`,stampsHTML())}${sub('giveaway',giveawayHTML())}</div>
    </div>
@@ -266,7 +296,7 @@ document.addEventListener('keydown',event=>{const tb=event.target.closest?.('.pp
 
 
 /* ---------- v5 (2026-10-20): passport object, edit in place, bio look, vertical tabs ---------- */
-const VTABS=[['show','showcase'],['explored','explored'],['wtg','want to go'],['coll','collections'],['picks','picks'],['contrib','contributions'],['items','stamps']];
+const VTABS=[['show','showcase'],['explored','explored'],['wtg','my map'],['picks','picks'],['contrib','contributions'],['items','stamps']];
 const sub=(title,body,act='')=>`<div class="pp-sub"><div class="pp-sub-h"><h3>${title}</h3>${act}</div>${body}</div>`;
 const LOOK_KEY='deepspot-bio-look-v1',PIN_KEY='deepspot-showcase-v1';
 const LOOKS={bg:[['panel','plain'],['green','green'],['cobalt','cobalt'],['aqua','aqua'],['cream','paper'],['ink','ink']],font:[['display','bold'],['serif','serif'],['mono','type'],['hand','hand']],align:[['left','left'],['center','center']]};
@@ -289,7 +319,7 @@ function showcaseHTML(){
  const pins=readPins(),recs=profile.records,picked=pins.map(h=>recs.find(r=>r.href===h)).filter(Boolean),list=picked.length?picked:recs.slice(0,6);
  const tcard=style?`<div class="pp-show-type"><span class="pp-type-mark">${travelerMark(style.id)}</span><div><span class="pp-mono">traveler type</span><strong>${esc(style.name)}.</strong></div></div>`:'';
  const grid=list.length?`<ul class="pp-posts pp-show-posts">${list.map(r=>`<li class="pp-post"><a href="${esc(r.href)}"><span class="pp-post-img">${r.image?`<img src="${esc(r.card||r.image)}" data-orig="${esc(r.image)}" alt="" width="400" height="300" loading="lazy" decoding="async">`:'<span class="pp-no-photo" aria-hidden="true">deep<br>spot.</span>'}</span><span class="pp-post-copy"><span class="pp-mono">${esc(r.place||'')}</span><strong>${esc(r.name)}</strong></span></a></li>`).join('')}</ul>`:'';
- const wtg=profile.localPreview&&!recs.length&&wtgList.length?`<div class="pp-sub-h"><h3>next on my list</h3></div><ul class="pp-chips pp-show-wtg">${wtgList.slice(0,8).map(it=>`<li>${esc(it.type==='spot'?(wtgBySlug.get(it.id)?.title||'a deep spot'):it.name)}</li>`).join('')}</ul>`:'';
+ const wtgAllList=readWantToGo(),wtg=profile.localPreview&&!recs.length&&wtgAllList.length?`<div class="pp-sub-h"><h3>next on my list</h3></div><ul class="pp-chips pp-show-wtg">${wtgAllList.slice(0,8).map(it=>`<li>${esc(it.type==='spot'?(wtgBySlug.get(it.id)?.title||'a deep spot'):it.name)}</li>`).join('')}</ul>`:'';
  const hint=profile.localPreview?`<p class="pp-fine">${recs.length?'Edit profile, then pick postings with ☆ show in contributions.':'Your showcase fills up as you post spots. Add places in want to go to show them here.'}</p>`:'';
  return (grid||wtg)?`${grid}${wtg}${hint}`:empty(profile.localPreview?'nothing to show yet.':'nothing here yet.',profile.localPreview?'Post a spot or add places to want to go.':'This explorer has not posted in this collection yet.');
 }
@@ -363,8 +393,8 @@ function appShell(){
 
 /* ---------- want-to-go globe ---------- */
 let wg=null,wgPins=[],wgTimer=0;
-function wgPinsFrom(){return wtgList.map(it=>{const spot=it.type==='spot'?wtgBySlug.get(it.id):null,slug=it.type==='spot'?wtgSlug(it.id):null,c=slug&&spotCoords[slug];
- return {name:spot?spot.title:it.name,place:spot?spot.place:'your pick',href:spot?wtgURL(slug):null,img:spot?(spot.card||spot.image):'',lat:c?c[0]:null,lon:c?c[1]:null,exact:c?.[2]==='exact'};});}
+function wgPinsFrom(){const cs=readColls(),c=wgColl(),key=it=>it.type==='spot'?'s:'+it.id:'p:'+(it.name||'').toLowerCase(),colorOf=it=>c?c.color:(cs.find(x=>x.items.some(y=>key(y)===key(it)))?.color||'');return wtgList.map(it=>{const spot=it.type==='spot'?wtgBySlug.get(it.id):null,slug=it.type==='spot'?wtgSlug(it.id):null,c=slug&&spotCoords[slug];
+ return {color:colorOf(it),name:spot?spot.title:it.name,place:spot?spot.place:'your pick',href:spot?wtgURL(slug):null,img:spot?(spot.card||spot.image):'',lat:c?c[0]:null,lon:c?c[1]:null,exact:c?.[2]==='exact'};});}
 function wgCard(i){const p=wgPins[i],pop=$('#wg-pop'),sr=$('#wg-card');if(sr)sr.textContent=p?`${p.name}, ${p.place||''}`:'';if(!pop)return;
  if(!p||p.lat==null){pop.hidden=true;return;}
  pop.innerHTML=`${p.img?`<img src="${esc(p.img)}" alt="" width="120" height="90">`:''}<div><span class="pp-mono">${esc(p.place||'')}</span><strong>${esc(p.name)}</strong>${p.href?`<a href="${esc(p.href)}">open the spot ↗</a>`:''}</div>`;pop.hidden=false;
@@ -408,7 +438,7 @@ function openSettings(){
   dlg.addEventListener('click',async e=>{
    if(e.target===dlg||e.target.closest('.pp-dialog-close'))return dlg.close();
    if(e.target.closest('[data-set-out]')){try{localStorage.setItem(SESSION_KEY,JSON.stringify({state:'out',email:''}));}catch{}dlg.innerHTML=settingsHTML();notify('Signed out of the preview.');}
-   if(e.target.closest('[data-set-export]')){const data={profile:readAccount(),look:readLook(),showcase:readPins(),wantToGo:wtgList};const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='deepspot-passport.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),60000);}
+   if(e.target.closest('[data-set-export]')){const data={profile:readAccount(),look:readLook(),showcase:readPins(),wantToGo:readWantToGo(),collections:readColls()};const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='deepspot-passport.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),60000);}
    const clr=e.target.closest('[data-set-clear]');
    if(clr){if(clr.dataset.sure!=='1'){clr.dataset.sure='1';clr.textContent='press again to clear';return;}
     for(const k of [accountKey,LOOK_KEY,PIN_KEY,'deepspot-want-to-go-v1'])try{localStorage.removeItem(k);}catch{}
