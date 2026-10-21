@@ -19,14 +19,15 @@ html.tr-lock ds-site-header{position:relative;z-index:20}
 /* giant title, top of the stage */
 .tr-stage .tr-title{position:absolute;left:0;right:0;top:calc(1% + .30 * min(29vw,52vh) * .5);margin:0;padding:0;z-index:1;text-align:center;font:800 min(29vw,52vh)/.9 Arial,Helvetica,sans-serif;letter-spacing:-.07em;color:var(--br-text);white-space:nowrap;max-width:none}
 
-/* three working moles: in front of the title, behind the tape; tours.mjs sets left/top/height from the letters */
-.tr-mole{position:absolute;z-index:2;left:0;top:0;height:0}
-.tr-mole[data-mole=supervisor]{z-index:4}   /* stands in front of the corner tape, like the sketch */
-/* contact shadow where the supervisor's feet meet the top of the "u" */
-.tr-mole-shadow{position:absolute;z-index:2;display:block;pointer-events:none;border-radius:50%;background:radial-gradient(closest-side,rgba(5,9,18,.8),rgba(5,9,18,.45) 55%,transparent);filter:blur(2px)}
-
-.tr-mole picture{display:contents}
-.tr-mole img{display:block;width:100%;height:100%}
+/* the Blender render: type + shadows + moles (behind the tape), supervisor (in front of the tape). The h1 stays for layout and screen readers. */
+.tr-stage .tr-title{color:transparent}
+.tr-art{position:absolute;display:block;pointer-events:none}
+.tr-art img{display:block;width:100%;height:100%}
+.tr-art-type,.tr-art-shadow,.tr-art-moles{z-index:2}
+.tr-art-super{z-index:4}
+.tr-art-light{display:none}
+html[data-theme=light] .tr-art-dark{display:none}html[data-theme=light] .tr-art-light{display:block}
+html[data-theme=light] .tr-art-shadow{opacity:.55}
 
 /* two green tape bands, an X across the full width */
 .tr-tapes{position:absolute;inset:0;z-index:3;pointer-events:none}
@@ -48,7 +49,7 @@ html.tr-lock ds-site-header{position:relative;z-index:20}
 .tr-cta .ds-button:hover{background:#13293a}
 
 @media(max-width:700px){.tr-f-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:700px),(orientation:portrait){.tr-stage .tr-title{top:24%;font-size:min(35vw,40vh)}}   /* phones and portrait tablets */
+@media(max-width:700px),(orientation:portrait){.tr-stage .tr-title{top:26%;font-size:min(26vw,40vh)}}   /* phones and portrait tablets: the render (hammer mole left of the "t") must fit the width */
 @media(prefers-reduced-motion:reduce){.tr-run{animation:none}}
 .tr-tape[data-tape=c]{width:120vw}
 .tr-cta .ds-button svg{width:1em;height:1em}

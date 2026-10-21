@@ -383,7 +383,7 @@
 .gv.is-narrow .gv-cv{max-width:540px;margin-inline:auto}
 
 /* ===== G1 v2 (picked): prize lockup, wide bars, tape + sparks ===== */
-.gv-g1 .gv-stage{--m:clamp(52px,5.1cqw,72px);--ml:clamp(76px,7.2cqw,100px);--ph:clamp(560px,50cqw,700px);--hr:clamp(236px,19.8cqw,268px);--fn:clamp(12.5px,1.05cqw,15px);--fp:clamp(14px,1.25cqw,18px);--gv-barink:#0b1b27;--gv-hi:color-mix(in srgb,var(--gv-bar) 86%,#fff);--gv-lo:color-mix(in srgb,var(--gv-bar) 64%,#000);--gv-r1:var(--gv-hl);--gv-r2:var(--gv-aq);--gv-r3:var(--gv-cob);padding:clamp(20px,2.2cqw,32px) clamp(16px,3.2cqw,46px) clamp(12px,1.4cqw,18px)}
+.gv-g1 .gv-stage{--m:clamp(52px,5.1cqw,72px);--ml:clamp(76px,7.2cqw,100px);--ph:clamp(440px,38cqw,540px);--hr:clamp(168px,14cqw,196px);--fn:clamp(12.5px,1.05cqw,15px);--fp:clamp(14px,1.25cqw,18px);--gv-barink:#0b1b27;--gv-hi:color-mix(in srgb,var(--gv-bar) 86%,#fff);--gv-lo:color-mix(in srgb,var(--gv-bar) 64%,#000);--gv-r1:var(--gv-hl);--gv-r2:var(--gv-aq);--gv-r3:var(--gv-cob);padding:clamp(20px,2.2cqw,32px) clamp(16px,3.2cqw,46px) clamp(12px,1.4cqw,18px)}
 :root[data-panel-color=off][data-theme=light] .gv-g1 .gv-stage{--gv-barink:#fff;--gv-hi:color-mix(in srgb,var(--gv-bar) 92%,#fff);--gv-lo:color-mix(in srgb,var(--gv-bar) 80%,#000)}
 .gv-g1 .gv-stage::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(ellipse 36% 52% at 55% 40%,rgba(60,96,255,.42),transparent 72%)}
 :root[data-theme=light] .gv-g1 .gv-stage::before{background:radial-gradient(ellipse 36% 52% at 55% 40%,rgba(60,96,255,.2),transparent 72%)}
@@ -455,7 +455,7 @@
 @container gv (max-width:1000px){
  .gv-g1 .gv-p1{min-width:0;width:auto}
  .gv-g1 .gv-tag{left:0;transform:translateX(-50%);top:calc(var(--m)/2 + 34px);font-size:10px;padding:3px 6px}
- .gv-g1 .gv-stage{--ph:500px;--hr:140px;--m:46px;--ml:66px;--fn:12px;--fp:13px}
+ .gv-g1 .gv-stage{--ph:420px;--hr:132px;--m:46px;--ml:66px;--fn:12px;--fp:13px}
  .gv-g1 .gv-hero1{position:static;flex-wrap:wrap;margin-bottom:18px;pointer-events:auto}
  .gv-g1 .gv-h1l{max-width:none;flex:1 1 320px}
  .gv-g1 .gv-h1r{width:auto;flex:1 1 300px;max-width:440px}
@@ -463,7 +463,7 @@
  .gv-g1 .gv-name{padding:2px 6px}
 }
 @container gv (max-width:650px){
- .gv-g1 .gv-stage{--ph:360px;--hr:92px;--m:30px;--ml:44px;--fn:11.5px;padding:16px 14px 14px}
+ .gv-g1 .gv-stage{--ph:320px;--hr:92px;--m:30px;--ml:44px;--fn:11.5px;padding:16px 14px 14px}
  .gv-g1 .gv-stage h2{font-size:clamp(38px,12.5cqw,56px)}
  .gv-g1 .gv-prizebig strong{font-size:84px}
  .gv-g1 .gv-bar{width:calc(var(--m) - 8px);margin-left:calc((var(--m) - 8px)/-2)}
@@ -589,3 +589,8 @@
  .gv-fan-c .gv-fan-deck .cv-pp{transform:rotateY(calc(var(--k) * 40deg)) translateZ(var(--R))}
 }
 @media(prefers-reduced-motion:reduce){.gv-fan .gv-fan-deck .cv-pp{transition:none}}
+/* g1 (2026-10-20): shorter graphic; every bar starts from a floor so short bars keep room for their points */
+.gv-g1 .gv-stage{--bmin:46px}
+.gv-g1 .gv-bar{height:calc(var(--bmin) + var(--p)*(100cqh - var(--hr) - var(--bmin)))}
+.gv-g1 .gv-cols .gv-pin{bottom:calc(var(--bmin) + var(--p)*(100cqh - var(--hr) - var(--bmin)));transform:translateY(calc((1 - var(--t))*(var(--bmin) + var(--p)*(100cqh - var(--hr) - var(--bmin)))))}
+@container gv (max-width:650px){.gv-g1 .gv-stage{--bmin:0px}}
