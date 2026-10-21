@@ -1,9 +1,9 @@
 /* profile-social.mjs: follow row, explored / picks / collections lists (2026-10-21) */
 .ps-idrow{display:flex;align-items:center;flex-wrap:wrap;gap:6px 14px}
 .ps-follow{display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px}
-.ps-counts{display:flex;align-items:baseline;gap:8px;margin:0;font:600 11px/1 var(--pp-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--br-muted)}
+.ps-counts{display:flex;align-items:baseline;gap:8px;margin:0;font:600 12.5px/1 var(--pp-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--br-muted)}
 .ps-counts b{font-size:13px;color:var(--br-text)}
-.ps-followbtn{height:26px;padding:0 14px;border:1px solid var(--br-green);border-radius:99px;background:var(--br-green);color:#0b1b27;font:600 11px/1 var(--pp-mono);letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+.ps-followbtn{height:26px;padding:0 14px;border:1px solid var(--br-green);border-radius:99px;background:var(--br-green);color:#0b1b27;font:600 12.5px/1 var(--pp-mono);letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
 .ps-followbtn[aria-pressed=true]{background:transparent;color:var(--br-text)}
 .ps-followbtn:hover{filter:brightness(1.08)}
 html[data-panel-color=off] .ps-followbtn[aria-pressed=false]{background:var(--br-text);border-color:var(--br-text);color:var(--br-bg)}
@@ -30,5 +30,5 @@ html[data-panel-color=off] .ps-followbtn[aria-pressed=false]{background:var(--br
 /* traveler-type legend: share of postings next to the count */
 .pp-legend em{font-style:normal;color:var(--br-muted);margin-left:2px}
 .pp-type .pp-legend{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px 14px;margin-top:12px}
-.pp-type .pp-legend li{height:auto;padding:0;border:0;gap:6px;font-size:10px}
+.pp-type .pp-legend li{height:auto;padding:0;border:0;gap:6px;font-size:12px}
 .pp-type .pp-legend b{margin-left:auto}
