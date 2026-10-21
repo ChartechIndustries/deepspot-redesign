@@ -1,5 +1,5 @@
 import {esc,$,$$,icon,localURL} from './core.mjs';
-import {people,passCard,fmt} from './community-v2.mjs?v=15';
+import {people,passCard,fmt} from './community-v2.mjs?v=16';
 import {halftoneField} from './halftone-field.mjs?v=2';
 
 /* Community giveaway hero (2026-10-19): 10 race-graph versions. Real data only (content.json leaderboard, this month). Bar length = sqrt(points). */
@@ -37,7 +37,7 @@ function head(v,now,{title=true}={}){
 const tools=()=>`<div class="gv-tools"><span class="gv-ends"><i>ends in</i><b data-cd>—</b></span><button type="button" class="gv-ghost" data-more>read more</button><button type="button" class="gv-ghost gv-rep" data-replay>${ico.replay}<span>run it again</span></button></div>`;
 const ctaHTML=()=>`<div class="gv-cta"><div class="gv-cta-t"><h3>your spot could be next.</h3><p>Every approved spot earns 50 points, every story 100, every upvote 10. Start now and you are on the board today.</p></div><div class="gv-cta-b"><a class="ds-button gv-join" href="${esc(localURL('/contribute/'))}">join now ${icon('arrow')}</a><button type="button" class="gv-ghost" data-more>read more</button></div></div>`;
 /* participants: a fanned 3D deck of passport cards, seated under the discord panel. Tap cycles; it also cycles on its own. */
-const bandHTML=(D,v)=>`<section class="gv-fan" aria-labelledby="gv-pt-${v}" aria-roledescription="carousel"><div class="gv-fan-head"><h3 id="gv-pt-${v}">participants</h3><p>${D.length} explorers this month.</p><div class="gv-fan-ctl"><button type="button" class="cv-round sm" data-pp-prev aria-label="Previous participant">${ico.prev}</button><button type="button" class="cv-round sm" data-pp-next aria-label="Next participant">${ico.next}</button><a class="gv-fan-open" data-pp-open href="${esc(D[0].href)}">${esc(D[0].name)}’s passport ↗</a></div></div><div class="gv-fan-stage"><ul class="gv-fan-deck" data-pp aria-live="off">${D.map(passCard).join('')}</ul></div></section>`;
+const bandHTML=(D,v,f='a')=>`<section class="gv-fan gv-fan-${f}" data-fan="${f}" aria-labelledby="gv-pt-${v}" aria-roledescription="carousel"><div class="gv-fan-head"><h3 id="gv-pt-${v}">participants</h3><p>${D.length} explorers this month.</p><div class="gv-fan-ctl"><button type="button" class="cv-round sm" data-pp-prev aria-label="Previous participant">${ico.prev}</button><button type="button" class="cv-round sm" data-pp-next aria-label="Next participant">${ico.next}</button><a class="gv-fan-open" data-pp-open href="${esc(D[0].href)}">${esc(D[0].name)}’s passport ↗</a></div></div><div class="gv-fan-stage"><ul class="gv-fan-deck" data-pp aria-live="off">${D.map(passCard).join('')}</ul></div></section>`;
 
 /* vertical plot (G1, G2, G5, G6) */
 const vplot=(D,{order,col,extra='',cls=''})=>`<p class="gv-hint" aria-hidden="true">swipe sideways to see all ten →</p><div class="gv-scroll"><div class="gv-plot ${cls}">${extra}${ticks(D,'v')}<ol class="gv-cols" aria-label="Giveaway standings, this month">${D.map((r,i)=>col(r,order?order.indexOf(i):i)).join('')}</ol></div></div>`;
@@ -173,19 +173,30 @@ V.g8=(D,n,now)=>{
 function wireFan(sec,D,rm){
  const deck=$('[data-pp]',sec);if(!deck)return;
  const cards=[...deck.children],N=cards.length,open=$('[data-pp-open]',sec);let at=0,timer=0,hover=false,seen=false;
+ const lim=$('[data-fan]',sec)?.dataset.fan==='c'?3:4;
  const lay=()=>{
   cards.forEach((li,i)=>{let k=((i-at)%N+N)%N;if(k>N/2)k-=N;const a=Math.abs(k);
    li.style.setProperty('--k',k);li.style.setProperty('--a',a);li.style.zIndex=String(50-a);
-   li.classList.toggle('is-front',k===0);li.classList.toggle('is-off',a>4);
+   li.classList.toggle('is-front',k===0);li.classList.toggle('is-off',a>lim);
    const link=li.querySelector('a');link.tabIndex=k===0?0:-1;li.setAttribute('aria-hidden',k===0?'false':'true');});
   const f=D[at];if(open){open.href=f.href;open.textContent=`${f.name}’s passport ↗`;}
  };
  const go=d=>{at=((at+d)%N+N)%N;lay();};
  const tick=()=>{clearTimeout(timer);if(rm||!seen||hover||document.hidden)return;timer=setTimeout(()=>{go(1);tick();},3400);};
+ /* drag sideways to cycle; a drag never counts as a tap */
+ let x0=null,moved=false,pid=null;const stepPx=()=>Math.max(60,cards[at].getBoundingClientRect().width*.42);
+ deck.addEventListener('pointerdown',e=>{if(e.button!==0)return;x0=e.clientX;moved=false;pid=e.pointerId;});
+ deck.addEventListener('pointermove',e=>{if(x0===null||e.pointerId!==pid)return;const dx=e.clientX-x0;
+  if(!moved&&Math.abs(dx)>8){moved=true;try{deck.setPointerCapture(pid);}catch{}deck.classList.add('is-drag');}
+  if(moved&&Math.abs(dx)>=stepPx()){go(dx<0?1:-1);x0=e.clientX;}});
+ const end=()=>{x0=null;pid=null;deck.classList.remove('is-drag');if(moved)tick();};
+ deck.addEventListener('pointerup',end);deck.addEventListener('pointercancel',end);
+ deck.addEventListener('dragstart',e=>e.preventDefault());
+ /* tap the top card: open the passport. tap any other card: bring it to the top */
  deck.addEventListener('click',e=>{const li=e.target.closest('li');if(!li)return;
-  /* keyboard activation (detail 0) on the front card opens the passport; pointer taps cycle */
-  if(e.detail===0&&li.classList.contains('is-front'))return;
-  e.preventDefault();const i=cards.indexOf(li);if(i===at)go(1);else{at=i;lay();}tick();});
+  if(moved){e.preventDefault();moved=false;return;}
+  if(li.classList.contains('is-front'))return;
+  e.preventDefault();at=cards.indexOf(li);lay();tick();});
  $('[data-pp-prev]',sec).onclick=()=>{go(-1);tick();};$('[data-pp-next]',sec).onclick=()=>{go(1);tick();};
  deck.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();go(e.key==='ArrowRight'?1:-1);cards[at].querySelector('a').focus({preventScroll:true});}});
  const fan=$('.gv-fan',sec);
@@ -198,8 +209,9 @@ function wireFan(sec,D,rm){
 export function renderGiveaway(root,data,variant='g1',opt={}){
  const v=V[variant]?variant:'g1',D=giveawayData(data),now=new Date(),lim=variant==='g9'?1280:(variant==='g4'||variant==='g8')?900:NARROW,narrow=root.clientWidth>0&&root.clientWidth<lim;
  const mode=opt.mode||new URLSearchParams(location.search).get('race')||'';
+ const fan=['a','b','c'].includes(opt.fan||new URLSearchParams(location.search).get('fan'))?(opt.fan||new URLSearchParams(location.search).get('fan')):'a';
  const T=V[v](D,narrow,now);
- root.innerHTML=`<section class="gv gv-${v}${narrow?' is-narrow':''}" data-gv="${v}" aria-labelledby="gv-t-${v}" style="--mx:${CROP.x};--my:${CROP.y};--mw:${CROP.w}"><div class="gv-stage">${T.noHead?'':head(v,now,{title:!T.noHeadTitle})}${T.body}${T.note||''}</div>${T.noCta?'':ctaHTML()}${bandHTML(D,v)}</section>`;
+ root.innerHTML=`<section class="gv gv-${v}${narrow?' is-narrow':''}" data-gv="${v}" aria-labelledby="gv-t-${v}" style="--mx:${CROP.x};--my:${CROP.y};--mw:${CROP.w}"><div class="gv-stage">${T.noHead?'':head(v,now,{title:!T.noHeadTitle})}${T.body}${T.note||''}</div>${T.noCta?'':ctaHTML()}${bandHTML(D,v,fan)}</section>`;
  const sec=$('.gv',root),stage=$('.gv-stage',sec),race=racer(stage,T.move,T.race),rm=reduced();
  startCountdown(sec);
  /* G1: ambient turbulent noise in the Earth's halftone glyphs, barely visible behind the race */

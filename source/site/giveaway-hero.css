@@ -537,25 +537,54 @@
 /* 2026-10-20: G1 bars are clean (no halftone dots inside); no foot note / replay button */
 .gv-g1 .gv-bar{background:linear-gradient(var(--gv-hi),var(--gv-bar) 38%,var(--gv-lo))}
 .gv-g1 .gv-wrap{margin-bottom:48px}
-/* participants: fanned 3D deck (2026-10-20). No section background; the cards sit under the discord panel. */
-.gv-fan{position:relative;padding-top:clamp(32px,4vw,56px);overflow-x:clip;--fw:clamp(200px,17cqw,252px)}
-.gv-fan-head{position:relative;z-index:60;display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 24px;padding:0 0 0 2px}
+/* participants: 3D passport deck (2026-10-20 v2). Three layouts, all part of the giveaway: ?fan=a|b|c */
+.gv-fan{position:relative;--fw:clamp(220px,19cqw,280px);--fh:calc(var(--fw) * 1.97)}
+.gv-fan-head{position:relative;z-index:60;display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 24px}
 .gv-fan-head h3{margin:0;font-size:clamp(34px,3.6cqw,56px);letter-spacing:-.07em;font-weight:800;line-height:.95}
 .gv-fan-head p{margin:0;color:var(--br-muted);font-size:14px}
 .gv-fan-ctl{display:flex;align-items:center;gap:8px;margin-left:auto}
 .gv-fan-ctl .cv-round{color:var(--br-text);border-color:var(--br-line)}
 .gv-fan-open{margin-left:8px;font:600 12px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.06em;text-transform:uppercase;color:var(--br-text);text-decoration:underline;text-underline-offset:4px}
-.gv-fan-stage{position:relative;height:calc(var(--fw) * 1.62);margin-top:clamp(8px,1.4vw,20px);perspective:1400px;perspective-origin:50% 20%}
-.gv-fan-deck{list-style:none;margin:0;padding:0;position:absolute;left:50%;top:calc(var(--fw) * .16);width:0;height:0;transform-style:preserve-3d}
-.gv-fan .gv-fan-deck .cv-pp{position:absolute;left:calc(var(--fw) / -2);top:0;width:var(--fw);height:calc(var(--fw) * 1.97);flex:none;display:flex;cursor:pointer;
- transform-origin:50% 230%;transform:rotate(calc(var(--k) * 7.5deg)) translateZ(calc(var(--a) * -46px)) rotateY(calc(var(--k) * -7deg));
- transition:transform .62s cubic-bezier(.2,.9,.25,1.12),opacity .4s,filter .4s;filter:brightness(calc(1 - var(--a) * .09));opacity:1;will-change:transform}
+.gv-fan-stage{position:relative;perspective:1600px;perspective-origin:50% 30%;overflow-x:clip}
+.gv-fan-deck{list-style:none;margin:0;padding:0;position:absolute;left:50%;top:0;width:0;height:0;transform-style:preserve-3d;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.gv-fan .gv-fan-deck .cv-pp{position:absolute;left:calc(var(--fw) / -2);top:0;width:var(--fw);height:var(--fh);flex:none;display:flex;cursor:pointer;
+ transition:transform .6s cubic-bezier(.2,.9,.25,1.1),opacity .4s,filter .4s;filter:brightness(calc(1 - var(--a) * .07));will-change:transform}
+.gv-fan .gv-fan-deck.is-drag .cv-pp{transition-duration:.32s;cursor:grabbing}
 .gv-fan .gv-fan-deck .cv-pp.is-off{opacity:0;pointer-events:none}
-.gv-fan .gv-fan-deck .cv-pp a{height:100%;box-shadow:0 22px 40px -14px rgba(0,0,0,.6),0 3px 8px rgba(0,0,0,.25);transition:box-shadow .3s}
-.gv-fan .gv-fan-deck .cv-pp.is-front a{box-shadow:0 34px 60px -16px rgba(0,0,0,.7),0 4px 10px rgba(0,0,0,.3)}
+.gv-fan .gv-fan-deck .cv-pp a{height:100%;box-shadow:0 22px 40px -14px rgba(0,0,0,.55),0 3px 8px rgba(0,0,0,.22);-webkit-user-drag:none}
+.gv-fan .gv-fan-deck .cv-pp a img{-webkit-user-drag:none;pointer-events:none}
+.gv-fan .gv-fan-deck .cv-pp.is-front a{box-shadow:0 34px 60px -16px rgba(0,0,0,.65),0 4px 10px rgba(0,0,0,.28)}
+.gv-fan .gv-fan-deck .cv-pp.is-front{cursor:pointer}
 .gv-fan .gv-fan-deck .cv-pp a:hover{transform:none}
 .gv-fan .gv-fan-deck .cv-pp.is-front a:focus-visible{outline:3px solid var(--br-green,#07d653);outline-offset:4px}
-/* the discord panel sits on top of the deck */
-.cv [data-giveaway]+.cv-disc{position:relative;z-index:70;margin-top:0;box-shadow:0 -18px 40px -10px rgba(0,0,0,.45)}
-@container gv (max-width:700px){.gv-fan{--fw:clamp(160px,42cqw,210px)}.gv-fan .gv-fan-deck .cv-pp{transform-origin:50% 180%;transform:rotate(calc(var(--k) * 15deg)) translateZ(calc(var(--a) * -40px)) rotateY(calc(var(--k) * -6deg))}.gv-fan-ctl{margin-left:0;width:100%}}
+
+/* A · hangs from under the giveaway panel: card tops tucked under the "your spot could be next" box, the fan opens downward */
+.gv-fan-a{display:flex;flex-direction:column}
+.gv-fan-a .gv-fan-stage{order:1;height:calc(var(--fh) * .9);margin-top:calc(var(--fh) * -.1)}
+.gv-fan-a .gv-fan-head{order:2;padding:32px 2px 0}
+.gv-fan-a .gv-fan-deck .cv-pp{transform-origin:50% 0;transform:translateX(calc(var(--k) * var(--fw) * .56)) translateY(calc(var(--a) * var(--a) * -7px)) rotate(calc(var(--k) * -3deg)) translateZ(calc(var(--a) * -40px)) rotateY(calc(var(--k) * -5deg))}
+.gv:has(.gv-fan-a) .gv-cta{position:relative;z-index:80;box-shadow:0 22px 40px -18px rgba(0,0,0,.55)}
+.gv:has(.gv-fan-a) .gv-cta{background:var(--gv-bg,var(--br-panel))}
+
+/* B · inside the giveaway frame: cards rise out of the panel's bottom edge */
+.gv-fan-b{border:1px solid var(--br-line);border-top:0;background:var(--br-panel);overflow:hidden;padding:clamp(24px,2.8cqw,40px) clamp(16px,3.2cqw,46px) 0}
+.gv-fan-b .gv-fan-stage{height:calc(var(--fh) * .78);margin:clamp(16px,2cqw,28px) calc(clamp(16px,3.2cqw,46px) * -1) 0}
+.gv-fan-b .gv-fan-deck{top:calc(var(--fh) * .06)}
+.gv-fan-b .gv-fan-deck .cv-pp{transform-origin:50% 300%;transform:rotate(calc(var(--k) * 4.4deg)) translateZ(calc(var(--a) * -34px)) rotateY(calc(var(--k) * -4deg))}
+
+/* C · a 3D ring inside the giveaway frame, standing on a floor shadow */
+.gv-fan-c{border:1px solid var(--br-line);border-top:0;background:var(--br-panel);padding:clamp(24px,2.8cqw,40px) clamp(16px,3.2cqw,46px) 8px;--fw:clamp(210px,18cqw,262px);--R:calc(var(--fw) * 2.3)}
+.gv-fan-c .gv-fan-stage{height:calc(var(--fh) + 40px);margin-top:clamp(16px,2cqw,28px);perspective:1800px;perspective-origin:50% 10%}
+.gv-fan-c .gv-fan-stage::after{content:'';position:absolute;left:50%;bottom:6px;width:min(96%,calc(var(--fw) * 5));height:60px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.42),transparent);z-index:-1}
+.gv-fan-c .gv-fan-deck{top:12px;transform:translateZ(calc(var(--R) * -1))}
+.gv-fan-c .gv-fan-deck .cv-pp{transform:rotateY(calc(var(--k) * 27deg)) translateZ(var(--R));filter:brightness(calc(1 - var(--a) * .12))}
+
+@container gv (max-width:700px){
+ .gv-fan{--fw:clamp(170px,46cqw,220px)}
+ .gv-fan-ctl{margin-left:0;width:100%}
+ .gv-fan-a .gv-fan-deck .cv-pp{transform:translateX(calc(var(--k) * var(--fw) * .5)) translateY(calc(var(--a) * var(--a) * -6px)) rotate(calc(var(--k) * -4deg)) translateZ(calc(var(--a) * -36px))}
+ .gv-fan-b .gv-fan-deck .cv-pp{transform-origin:50% 200%;transform:rotate(calc(var(--k) * 10deg)) translateZ(calc(var(--a) * -30px))}
+ .gv-fan-c{--fw:clamp(150px,40cqw,190px);--R:calc(var(--fw) * 1.4)}
+ .gv-fan-c .gv-fan-deck .cv-pp{transform:rotateY(calc(var(--k) * 40deg)) translateZ(var(--R))}
+}
 @media(prefers-reduced-motion:reduce){.gv-fan .gv-fan-deck .cv-pp{transition:none}}
