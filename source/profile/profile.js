@@ -185,6 +185,7 @@ function render(){
  if(profile.localPreview)wtgBind();
  if(location.hash==='#pp-pad')setTab('mark');
  applyTheme(document.documentElement.dataset.theme);
+ appShell();
 }
 $('.pp-share').addEventListener('click',async()=>{
  $('#pp-share-url').value=profileURL();const local=['localhost','127.0.0.1'].includes(location.hostname);
@@ -218,3 +219,21 @@ try{
 const footer=$('deepspot-cta');footer?.querySelectorAll('.ds-footer-logo,.ds-footer-nav a').forEach(a=>{if(a.classList.contains('ds-footer-logo')||a.textContent.trim()==='home')a.href='/?theme='+document.documentElement.dataset.theme;});
 
 document.addEventListener('keydown',event=>{const tb=event.target.closest?.('.pp-tab');if(!tb||!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;event.preventDefault();setTab(event.key==='ArrowLeft'||event.key==='Home'?'passport':'mark',true);});
+
+/* v4 composition (2026-10-20): full-page two panes on desktop; the passport is the shareable object (share bar under it, 3D tilt on hover) */
+function appShell(){
+ const tabs=$('.pp-tabs'),back=$('.pp-back'),share=$('.pp-share'),pane=$('#pp-pane-pass');
+ if(back&&tabs&&!back.classList.contains('pp-tabs-back')){back.classList.add('pp-tabs-back');tabs.after(back);}
+ if(share&&pane&&!pane.querySelector('.pp-sharebar')){const bar=document.createElement('div');bar.className='pp-sharebar';bar.append(share);const hint=document.createElement('span');hint.className='pp-mono';hint.textContent='share it, or save it as an image';bar.append(hint);pane.append(bar);}
+ $('.pp-toolbar')?.setAttribute('hidden','');
+ document.documentElement.classList.add('pp-app');
+ const header=document.querySelector('.br-header');
+ const fit=()=>document.documentElement.style.setProperty('--pp-top',Math.max(0,Math.round(header?.getBoundingClientRect().bottom||0))+'px');
+ fit();addEventListener('resize',fit);
+ /* tilt: the card leans toward the pointer, like a held object */
+ const stage=$('.pp-stage'),obj=$('.pp-idcard');if(!stage||!obj||stage.dataset.tilt)return;stage.dataset.tilt='1';
+ const calm=matchMedia('(prefers-reduced-motion: reduce)');let raf=0;
+ stage.addEventListener('pointermove',e=>{if(e.pointerType!=='mouse'||calm.matches)return;cancelAnimationFrame(raf);raf=requestAnimationFrame(()=>{const r=obj.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+  const cx=Math.max(-.8,Math.min(.8,x)),cy=Math.max(-.8,Math.min(.8,y));obj.style.setProperty('--ry',(cx*14).toFixed(2)+'deg');obj.style.setProperty('--rx',(-cy*12).toFixed(2)+'deg');obj.style.setProperty('--gx',((cx+.5)*100).toFixed(1)+'%');obj.style.setProperty('--gy',((cy+.5)*100).toFixed(1)+'%');obj.classList.add('is-tilt');});});
+ stage.addEventListener('pointerleave',()=>{cancelAnimationFrame(raf);obj.classList.remove('is-tilt');obj.style.setProperty('--rx','0deg');obj.style.setProperty('--ry','0deg');});
+}
