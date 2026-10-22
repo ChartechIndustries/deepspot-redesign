@@ -15,3 +15,9 @@ export const signatureMark='<svg viewBox="0 0 40 40" aria-hidden="true"><path d=
 
 // Head-and-shoulders crop of the square mole render, as fractions of the source (x, y, width).
 export const moleCrop={x:.17,y:0,w:.66};
+
+// The own mole comes from the reveal snapshot (data: URL, camera ~1.11x closer, shifted down by ~19px of 512 vs the community renders).
+// Landmark match (helmet/glasses) against /community-assets/moles/wayfarer.webp, same traits: scale 0.9, offset (26,-17).
+// This crop shows the same head + shirt as `moleCrop` does on the community renders.
+export const ownMoleCrop={x:.132,y:.037,w:.734};
+export const cropFor=src=>/^(data:|blob:)/.test(String(src||''))?ownMoleCrop:moleCrop;

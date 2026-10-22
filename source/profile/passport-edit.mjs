@@ -1,6 +1,6 @@
 /* Shared passport editing pieces (2026-10-21): used by the edit-profile dialog (profile.js) and the /welcome/ onboarding.
    Archetype picker, bio look + passport style swatches, the passport card markup, live-preview sync, fit + tilt. */
-import {moleCrop} from './passport-art.mjs?v=pad1';
+import {cropFor} from './passport-art.mjs?v=r22a';
 import {travelerStyles,travelerMark} from '../site/account-state.mjs?v=icons2';
 import {escapeHTML as esc} from './identity.mjs';
 
@@ -40,7 +40,7 @@ export function wireArch(form){
 export function archCardsHTML(sel){
  const groups=[...new Set(travelerStyles.map(t=>t.group))];
  const card=t=>`<label class="ob-ac" data-arch="${t.id}" title="${esc(t.description)}"><input type="radio" name="pp-arch" value="${t.id}"${t.id===sel?' checked':''}><span class="ob-ac-i">${travelerMark(t.id)}</span><b>${esc(t.name.replace(/^the /,''))}</b><span class="ob-ac-d">${esc(t.description)}</span><i class="ed-ck" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></i></label>`;
- return groups.map((g,i)=>`<div class="ob-ag" role="tabpanel" id="ob-ag-${i}" aria-labelledby="ob-at-${i}" data-group="${esc(g)}"${i?' hidden':''}>${travelerStyles.filter(t=>t.group===g).map(card).join('')}</div>`).join('');
+ return groups.map((g,i)=>`<section class="ob-ag" id="ob-ag-${i}" aria-labelledby="ob-agh-${i}" data-group="${esc(g)}"><h3 class="ob-ag-h" id="ob-agh-${i}">${esc(g)}</h3><div class="ob-ag-l">${travelerStyles.filter(t=>t.group===g).map(card).join('')}</div></section>`).join('');
 }
 export const archGroups=()=>[...new Set(travelerStyles.map(t=>t.group))];
 
@@ -59,7 +59,7 @@ export const BUMP=bump();
 const mrzPad=(t,n)=>(t+'<'.repeat(n)).slice(0,n);
 const mrzName=n=>String(n||'').normalize('NFKD').replace(/[^\w ]/g,'').toUpperCase().trim().replace(/\s+/g,'<');
 export function mrz(p,rank,lv){const l1=mrzPad('P<DSP'+mrzName(p.name)+'<<'+mrzName(p.handle||''),30),l2=mrzPad((rank?String(rank).padStart(3,'0'):'DRF')+'<'+mrzName(p.joined||'')+'<LVL'+String(lv?.level||1).padStart(2,'0')+'<'+mrzName(p.member||''),30);return `${esc(l1)}<br>${esc(l2)}`.replaceAll('<br>','\n').replace(/</g,'&lt;').replace(/\n/g,'<br>');}
-export const moleImgHTML=(src,{cls='',alt=''}={})=>src?`<span class="pp-mole ${cls}" style="--mx:${moleCrop.x};--my:${moleCrop.y};--mw:${moleCrop.w}"><img src="${esc(src)}" alt="${cls?'':esc(alt)}" ${cls?'aria-hidden="true"':''} width="512" height="512" decoding="async"></span>`:'';
+export const moleImgHTML=(src,{cls='',alt=''}={})=>src?`<span class="pp-mole ${cls}" style="--mx:${cropFor(src).x};--my:${cropFor(src).y};--mw:${cropFor(src).w}"><img src="${esc(src)}" alt="${cls?'':esc(alt)}" ${cls?'aria-hidden="true"':''} width="512" height="512" decoding="async"></span>`:'';
 const fmt=n=>new Intl.NumberFormat('en-US').format(n);
 export const stampSize=n=>{const w=Math.max(1,...String(n).split(/\s+/).map(x=>x.length));return w<=6?12:w<=8?10.5:w<=10?9:8;};
 export const stampName=id=>(travelerStyles.find(x=>x.id===id)?.name||'explorer').replace(/^the /,'');

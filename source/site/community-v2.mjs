@@ -3,7 +3,7 @@ import {profileHref,profileId} from '../profile/identity.mjs';
 import {readAccount,avatarImage} from './account-state.mjs?v=icons2';
 import {COMMUNITY_METRICS} from './community-hub.mjs';
 import {avatarHTML} from '../profile/identity.mjs';
-import {passportModels,participantsHTML,wirePassports} from './passport-mini.mjs?v=un1';
+import {passportModels,participantsHTML,wirePassports} from './passport-mini.mjs?v=r22a';
 
 /* Community hub v2 (2026-10-19). Real data only: leaderboard, forum snapshot, catalog. Votes live in this browser. The giveaway hero lives in giveaway-hero.mjs. */
 const DISCORD_URL='https://www.deepspot.io/community'; // TODO: replace with the real Discord invite when Charlie supplies it
@@ -39,7 +39,7 @@ export function people(data){
 }
 const viewerAvatar=(acct,cls='')=>{const src=avatarImage(acct);return `<span class="cv-av ${cls}">${src?`<img src="${esc(src)}" alt="" loading="lazy" decoding="async">`:`<span aria-hidden="true">${initial(acct.name||acct.username||'you')}</span>`}</span>`;};
 
-/* ---------- 3. discord: full-bleed showpiece ---------- */
+/* ---------- 3. discord: original content, asymmetric composition ---------- */
 /* one forum post shown as a chat message: avatar, handle, #channel, replies, the first lines of the post */
 const replies=n=>`${n} ${n===1?'reply':'replies'}`;
 const msg=f=>{const text=f.body.split(/\n\s*\n/)[0].replace(/^\s*[-*•]\s+/gm,'').replace(/\s+/g,' ').trim();
@@ -52,16 +52,15 @@ function discordHTML(content){
  const options=(poll?.body||'').split('\n').map(l=>l.match(/^\s*[-*•]\s+(.+)$/)?.[1]?.trim()).filter(Boolean);
  const pv=votes('poll')[poll?.id];
  const pollTitle=(poll?.title||'').replace(/^poll:\s*/i,'');
- return `<section class="dc" id="cv-dc" aria-labelledby="cv-dct"><div class="dc-in">
- <header class="dc-head"><div class="dc-ttl"><span class="dc-livetag"><i class="dc-live" aria-hidden="true"></i>live now</span><h2 id="cv-dct">live from<br>the discord.</h2></div>
-  <div class="dc-stats"><p><b data-count="${COMMUNITY_METRICS.month}">${fmt(COMMUNITY_METRICS.month)}</b><span>new spots this month</span></p><p><b data-count="${COMMUNITY_METRICS.members}">${fmt(COMMUNITY_METRICS.members)}</b><span>members</span></p></div>
-  <a class="dc-join" href="${esc(DISCORD_URL)}" data-original target="_blank" rel="noopener">join now ${icon('arrow')}</a></header>
- <div class="dc-grid">
-  <div class="dc-wall"><div class="dc-wall-top"><h3><i class="dc-live" aria-hidden="true"></i>featured messages</h3><span>from across the forum</span></div><ol class="dc-feed" data-feed aria-label="Featured messages from the forum">${forum.map(msg).join('')}</ol><a class="dc-more" href="${esc(localURL('/forum/'))}">open the forum ↗</a></div>
-  <div class="dc-side">
+ return `<section class="dc" id="cv-dc" aria-labelledby="cv-dct"><div class="dc-bar">
+  <div class="dc-ttl"><span class="dc-kick"><i class="dc-live" aria-hidden="true"></i>live now</span><h2 id="cv-dct">live from<br>the discord.</h2></div>
+  <div class="dc-head dc-stats"><p><b data-count="${COMMUNITY_METRICS.month}">${fmt(COMMUNITY_METRICS.month)}</b><span>new spots this month</span></p><p><b data-count="${COMMUNITY_METRICS.members}">${fmt(COMMUNITY_METRICS.members)}</b><span>members</span></p></div>
+  <a class="dc-join" href="${esc(DISCORD_URL)}" data-original target="_blank" rel="noopener">join now ${icon('arrow')}</a></div>
+ <div class="dc-body">
+  <div class="dc-wall"><div class="dc-wall-top"><h3>featured messages</h3><span>from across the forum</span></div><ol class="dc-feed" data-feed aria-label="Featured messages from the forum">${forum.map(msg).join('')}</ol><a class="dc-more" href="${esc(localURL('/forum/'))}">open the forum ↗</a></div>
   ${ann?`<article class="dc-ticket"><span class="dc-pin" aria-hidden="true">${PIN}</span><div class="dc-tk-top"><span>#announcements</span><span>pinned</span></div><h3>${esc(ann.title)}</h3><p>${esc(clip(ann.body.split(/\n\s*\n/)[0].replace(/\s+/g,' ').trim(),170))}</p><div class="dc-tk-foot"><span>${replies(ann.replies)}</span><a href="${href(ann)}">read it ↗</a></div></article>`:''}
   ${poll?`<article class="dc-poll" data-poll="${esc(poll.id)}"><div class="dc-poll-top"><span>#polls</span><span>open</span></div><h3>${esc(pollTitle)}</h3><div class="dc-opts" role="group" aria-label="${esc(pollTitle)}">${options.map((o,i)=>`<button type="button" class="dc-opt" data-opt="${i}" aria-pressed="${pv===i}"><span class="dc-fill" aria-hidden="true"></span><span class="dc-opt-t">${esc(o)}</span><span class="dc-opt-m">${CHECK}<span>your vote</span></span></button>`).join('')}</div><div class="dc-poll-foot"><span>${replies(poll.replies)} on the forum</span><a href="${href(poll)}">vote on the forum ↗</a></div></article>`:''}
-  </div></div></div></section>`;
+ </div></section>`;
 }
 
 /* ---------- 4. spots ---------- */
@@ -112,7 +111,7 @@ function wireFeed(scope){
   for(const li of ol.children){if(li===last)continue;const dy=tops.get(li)-li.getBoundingClientRect().top;li.style.transition='none';li.style.transform=`translateY(${dy}px)`;}
   void ol.offsetHeight;
   requestAnimationFrame(()=>{for(const li of ol.children){li.style.transition='';li.style.transform='';}last.classList.remove('is-new');});};
- const tick=()=>{clearTimeout(t);if(hold||!seen||document.hidden)return;t=setTimeout(()=>{step();tick();},3500);};
+ const tick=()=>{clearTimeout(t);if(hold||!seen||document.hidden)return;t=setTimeout(()=>{step();tick();},4000);};
  const box=ol.parentElement;
  box.addEventListener('pointerenter',()=>{hold=true;clearTimeout(t);});box.addEventListener('pointerleave',()=>{hold=false;tick();});
  box.addEventListener('focusin',()=>{hold=true;clearTimeout(t);});box.addEventListener('focusout',e=>{if(!box.contains(e.relatedTarget)){hold=false;tick();}});
@@ -170,5 +169,5 @@ export async function renderCommunityV2(root,data){
  const scope=$('.cv',root);
  wirePoll(scope);wireFeed(scope);wireCounts(scope);wireSpots(scope,data,acct);wireVotes(scope);
  const pm=$('[data-pm]',scope);if(pm)wirePassports(pm,models);
- const {renderGiveaway}=await import('./giveaway-hero.mjs?v=17');renderGiveaway($('[data-giveaway]',scope),data,gv);
+ const {renderGiveaway}=await import('./giveaway-hero.mjs?v=r22a');renderGiveaway($('[data-giveaway]',scope),data,gv);
 }

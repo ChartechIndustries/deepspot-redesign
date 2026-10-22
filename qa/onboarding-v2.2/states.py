@@ -15,7 +15,7 @@ async def main():
     await shot('01-A')
     await pg.evaluate("document.querySelector('#ob-form .ob-go').click()")
     await pg.wait_for_timeout(300); await shot('01b-A-errors')
-    await pg.fill('#ob-pw',PW); await js_click(pg,'#ob-terms'); await shot('01c-A-filled')
+    await open_email(pg); await pg.fill('#ob-pw',PW); await js_click(pg,'#ob-terms'); await shot('01c-A-filled')
     await js_click(pg,'#ob-form .ob-go')
     await pg.wait_for_selector('.ob-stage',state='visible',timeout=5000)
     for i,t in enumerate([250,500,450,300]):

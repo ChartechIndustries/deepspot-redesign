@@ -6,7 +6,8 @@ import {FINISH,SLOTS,slotProgress,readProgress,writeProgress,isOnboarded,markOnb
 import {accountKey,readAccount,normalizeAccount,travelerStyles} from './account-state.mjs?v=icons2';
 import {readSession,writeSession} from './gate-state.mjs?v=gate1';
 import {G_ICON,A_ICON} from './brand-icons.mjs?v=ob1';
-import {readStyle,writeStyle,archCardsHTML,archGroups,styleGroupHTML,pickStyle,cardHTML,moleImgHTML,mrz,syncPreview,bindTilt} from '../profile/passport-edit.mjs?v=un1';
+const MAIL_ICON='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7.5 8 6 8-6"/></svg>';
+import {readStyle,writeStyle,archCardsHTML,archGroups,styleGroupHTML,pickStyle,cardHTML,moleImgHTML,mrz,syncPreview,bindTilt} from '../profile/passport-edit.mjs?v=r22a';
 import {padHTML,initPad,inkURL} from '../profile/sign-pad.mjs?v=pv4';
 import {escapeHTML as esc,safeReturn} from '../profile/identity.mjs';
 
@@ -68,15 +69,33 @@ function buildA(){
  const e=readSession().email,done=prog.done.includes('account');
  A.innerHTML=`<form class="ob-form" id="ob-form" novalidate aria-labelledby="ob-h">
   <h1 class="ob-h" id="ob-h" tabindex="-1">let’s get you <em>a passport.</em></h1>
+  <div class="ob-pan ob-pan-choose" id="ob-choose"><div class="ob-pan-in"><div class="ob-big-l">
+   <a class="ob-big" href="${LOGIN}" data-original target="_blank" rel="noopener" aria-label="Continue with Google (opens the DeepSpot sign-in in a new tab)">${G_ICON}<span>continue with Google</span></a>
+   <a class="ob-big" href="${LOGIN}" data-original target="_blank" rel="noopener" aria-label="Continue with Apple (opens the DeepSpot sign-in in a new tab)">${A_ICON}<span>continue with Apple</span></a>
+   <button type="button" class="ob-big ob-email-btn" aria-expanded="false" aria-controls="ob-emailf">${MAIL_ICON}<span>use email</span></button></div></div></div>
+  <div class="ob-pan ob-pan-email" id="ob-emailf"><div class="ob-pan-in"><div class="ob-emailf">
+  <button type="button" class="ob-prevlink"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m6-6-6 6 6 6"/></svg>back</button>
   ${field('ob-email','email',`<input class="ob-in" id="ob-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com" value="${esc(e)}" required>`)}
   <div class="ob-f"><label for="ob-pw">password</label><div class="ob-pwrow"><input class="ob-in" id="ob-pw" name="password" type="password" autocomplete="new-password" placeholder="${done?'already set — leave empty':'10+ characters, mixed'}" aria-describedby="ob-pw-h"><button type="button" class="ob-show" aria-pressed="false" aria-controls="ob-pw">show</button></div><div class="ob-meter" data-score="0" aria-hidden="true"><i></i><i></i><i></i><i></i></div><p class="ob-hint" id="ob-pw-h" role="status" aria-live="polite">at least 10 characters, mixed.</p></div>
   <div class="ob-check"><input type="checkbox" id="ob-terms" name="terms"${prog.data.terms?' checked':''}><label for="ob-terms">I agree to the <a href="/terms/" target="_blank" rel="noopener">terms</a> and <a href="/privacy/" target="_blank" rel="noopener">privacy policy</a></label></div><p class="ob-hint" id="ob-terms-h" role="status" aria-live="polite"></p>
-  <button type="submit" class="ob-go"><span>issue my passport</span>${ARROW}</button>
-  <p class="ob-or"><span>or</span></p>
-  <div class="ob-prov"><a class="ob-ghost" href="${LOGIN}" data-original target="_blank" rel="noopener" aria-label="Continue with Google (opens the DeepSpot sign-in in a new tab)">${G_ICON}Google</a><a class="ob-ghost" href="${LOGIN}" data-original target="_blank" rel="noopener" aria-label="Continue with Apple (opens the DeepSpot sign-in in a new tab)">${A_ICON}Apple</a></div>
+  <button type="submit" class="ob-go"><span>issue my passport</span>${ARROW}</button></div></div></div>
   <p class="ob-note">preview: accounts connect at launch. your password is not kept.</p>
  </form>`;
  const f=$('#ob-form',A),pw=f.password,meter=$('.ob-meter',f);
+
+ /* sign-up order: Google / Apple / use email first; the email fields open only after "use email" (back returns) */
+ const emailBtn=$('.ob-email-btn',f),chooseP=$('#ob-choose',f),emailP=$('#ob-emailf',f);
+ const setEmail=(on,focus=true)=>{
+  f.classList.toggle('is-email',on);emailBtn.setAttribute('aria-expanded',String(on));
+  chooseP.inert=on;emailP.inert=!on;
+  if(!focus)return;
+  const go=()=>(on?(f.email.value?pw:f.email):emailBtn).focus({preventScroll:true});
+  calm()?go():setTimeout(go,on?120:60);
+ };
+ emailBtn.addEventListener('click',()=>setEmail(true));
+ $('.ob-prevlink',f).addEventListener('click',()=>setEmail(false));
+ f.addEventListener('keydown',e=>{if(e.key==='Escape'&&f.classList.contains('is-email')){e.preventDefault();setEmail(false);}});
+ setEmail(done,false);
  pw.addEventListener('input',()=>{const s=passwordStrength(pw.value);meter.dataset.score=s.score;const h=$('#ob-pw-h',f);h.classList.remove('is-bad');pw.removeAttribute('aria-invalid');h.textContent=s.score?`${s.label}${s.ok?'.':' — use 10+ characters, mixed letters and numbers.'}`:'at least 10 characters, mixed.';});
  $('.ob-show',f).addEventListener('click',e=>{const b=e.currentTarget,on=pw.type==='password';pw.type=on?'text':'password';b.textContent=on?'hide':'show';b.setAttribute('aria-pressed',String(on));});
  f.email.addEventListener('input',()=>setHint(f.email,''));
@@ -94,7 +113,7 @@ function buildA(){
   if(!prog.done.includes('account'))prog.done.push('account');
   issue();
  });
- if(matchMedia('(pointer:fine)').matches)(f.email.value?pw:f.email).focus({preventScroll:true});
+ if(done&&matchMedia('(pointer:fine)').matches)(f.email.value?pw:f.email).focus({preventScroll:true});
 }
 
 /* ================= SCREEN B: the passport ================= */
@@ -157,7 +176,7 @@ function buildB(){
 /* ---------- fit the card to the screen ---------- */
 function fit(){
  if(!builtB||B.hidden)return;
- const nh=flip.offsetHeight||668,wide=wideMode(),pop=popMode();
+ const nh=flip.offsetHeight||690,wide=wideMode(),pop=popMode();
  let s;
  if(wide){   /* desktop: the card is the page. tip + progress on the left, finish on the right */
   const maxH=Math.min(innerHeight*.92,stage.clientHeight-16),maxW=stage.clientWidth-2*230-48;
@@ -290,20 +309,34 @@ E.arch={
  title:'your explorer type',
  html(){
   const a=readAccount(),sel=prog.data.arch?a.style:'',groups=archGroups(),g0=Math.max(0,groups.indexOf(travelerStyles.find(t=>t.id===sel)?.group));
-  return `<div class="ob-tabs" role="tablist" aria-label="Archetype groups">${groups.map((g,i)=>`<button type="button" role="tab" class="ob-tab" id="ob-at-${i}" aria-controls="ob-ag-${i}" aria-selected="${i===g0}" tabindex="${i===g0?0:-1}">${esc(g)}</button>`).join('')}</div>
-  <fieldset class="ob-arch"><legend class="sr-only">Traveler archetype</legend>${archCardsHTML(sel)}</fieldset>
-  <p class="ob-hint ob-pick" id="ob-arch-h" role="status" aria-live="polite">${sel?pickText(sel):'pick the one that fits best. your posts refine it later.'}</p>`;
+  return `<p class="ob-hint ob-pick" id="ob-arch-h" role="status" aria-live="polite">${sel?pickText(sel):'pick the one that fits best. your posts refine it later.'}</p>
+  <div class="ob-tabbar"><nav class="ob-tabs" aria-label="Archetype groups">${groups.map((g,i)=>`<button type="button" class="ob-tab" id="ob-at-${i}" aria-controls="ob-ag-${i}" aria-current="${i===g0}">${esc(g)}</button>`).join('')}</nav></div>
+  <fieldset class="ob-arch"><legend class="sr-only">Traveler archetype</legend>${archCardsHTML(sel)}</fieldset>`;
  },
  mount(h){
-  const tabs=$$('.ob-tab',h),panels=$$('.ob-ag',h);
-  const open=i=>{tabs.forEach((t,n)=>{t.setAttribute('aria-selected',String(n===i));t.tabIndex=n===i?0:-1;});panels.forEach((p,n)=>p.hidden=n!==i);const t=tabs[i];t.scrollIntoView?.({block:'nearest',inline:'center',behavior:calm()?'auto':'smooth'});};
-  open(Math.max(0,tabs.findIndex(t=>t.getAttribute('aria-selected')==='true')));
-  $('.ob-tabs',h).addEventListener('click',e=>{const t=e.target.closest('.ob-tab');if(t)open(tabs.indexOf(t));});
-  $('.ob-tabs',h).addEventListener('keydown',e=>{const i=tabs.indexOf(D.activeElement);if(i<0)return;let n=null;if(e.key==='ArrowRight')n=(i+1)%tabs.length;else if(e.key==='ArrowLeft')n=(i-1+tabs.length)%tabs.length;else if(e.key==='Home')n=0;else if(e.key==='End')n=tabs.length-1;if(n!==null){e.preventDefault();open(n);tabs[n].focus();}});
+  const tabs=$$('.ob-tab',h),secs=$$('.ob-ag',h),bar=$('.ob-tabbar',h),nav=$('.ob-tabs',h);
+  let lock=0,cur=-1;
+  const mark=i=>{if(i===cur)return;cur=i;tabs.forEach((t,n)=>t.setAttribute('aria-current',String(n===i)));const t=tabs[i];if(t){const l=t.offsetLeft-(nav.clientWidth-t.offsetWidth)/2;nav.scrollTo({left:Math.max(0,l),behavior:calm()?'auto':'smooth'});}};
+  const secTop=s=>s.getBoundingClientRect().top-h.getBoundingClientRect().top+h.scrollTop-bar.offsetHeight-10;
+  /* the last group must be able to reach the top, so its tab can be reached too */
+  const pad=()=>{const last=secs[secs.length-1];last.style.minHeight=Math.max(0,h.clientHeight-bar.offsetHeight)+'px';};
+  const spy=()=>{
+   if(performance.now()<lock)return;
+   const y=h.scrollTop+6;let n=0;secs.forEach((s,i)=>{if(secTop(s)<=y)n=i;});
+   if(h.scrollTop+h.clientHeight>=h.scrollHeight-2)n=secs.length-1;
+   mark(n);
+  };
+  const go=i=>{mark(i);lock=performance.now()+(calm()?60:700);h.scrollTo({top:secTop(secs[i]),behavior:calm()?'auto':'smooth'});};
+  pad();addEventListener('resize',pad);
+  h.addEventListener('scroll',spy,{passive:true});
+  nav.addEventListener('click',e=>{const t=e.target.closest('.ob-tab');if(t)go(tabs.indexOf(t));});
+  nav.addEventListener('keydown',e=>{const i=tabs.indexOf(D.activeElement);if(i<0)return;let n=null;if(e.key==='ArrowRight')n=(i+1)%tabs.length;else if(e.key==='ArrowLeft')n=(i-1+tabs.length)%tabs.length;else if(e.key==='Home')n=0;else if(e.key==='End')n=tabs.length-1;if(n!==null){e.preventDefault();tabs[n].focus();go(n);}});
   h.addEventListener('change',e=>{if(e.target.name!=='pp-arch')return;saveAccount({style:e.target.value});prog.data.arch=true;saveProg();paint();$('#ob-arch-h',h).innerHTML=pickText(e.target.value);});
+  const g0=Math.max(0,tabs.findIndex(t=>t.getAttribute('aria-current')==='true'));cur=-1;mark(g0);
+  if(g0>0)requestAnimationFrame(()=>{h.scrollTop=secTop(secs[g0]);spy();});
  },
  done(){return true;},
- focus:'.ob-tab[aria-selected=true]'
+ focus:'.ob-tab[aria-current=true]'
 };
 
 E.mark={
@@ -428,7 +461,7 @@ function onKey(e){
  else if(!e.shiftKey&&D.activeElement===last){e.preventDefault();first.focus();}
 }
 const vvH=()=>visualViewport?visualViewport.height:innerHeight;
-const maxSheetH=()=>Math.round(Math.min(innerHeight*(openId==='style'&&!popMode()?.46:.7),vvH()-16,popMode()?640:9999));
+const maxSheetH=()=>Math.round(openId==='arch'?(popMode()?Math.min(innerHeight*.8,760,vvH()-16):Math.min(innerHeight*.92,vvH()-16)):Math.min(innerHeight*(openId==='style'&&!popMode()?.46:.7),vvH()-16,popMode()?640:9999));
 /* the soft keyboard on a phone: keep the sheet above it */
 function keyboard(){
  const sh=sheetEl();if(!sh||!openId)return;
@@ -436,7 +469,16 @@ function keyboard(){
  sh.style.setProperty('--kb',kb+'px');sh.style.maxHeight=maxSheetH()+'px';
 }
 /* phone: the card shrinks into the space above the sheet so the live change stays visible */
+let liftDX=0;
+const popW=()=>openId==='arch'?Math.min(560,innerWidth-32):Math.min(400,innerWidth-32);
 function relift(){
+ if(openId&&popMode()&&builtB&&openId==='arch'){   /* desktop, big sheet: slide the card left so the sheet fits beside it */
+  lift.style.transition='none';lift.style.transform='';const cr=cardw.getBoundingClientRect();void lift.offsetWidth;lift.style.transition='';
+  const need=popW()+26+16,room=innerWidth-cr.right;
+  liftDX=-Math.min(Math.max(0,need-room),Math.max(0,cr.left-16));
+  lift.style.transform=liftDX?`translateX(${liftDX.toFixed(1)}px)`:'';return;
+ }
+ liftDX=0;
  if(!openId||popMode()||!builtB){lift&&(lift.style.transform='');return;}
  const sh=sheetEl(),kb=parseInt(sh.style.getPropertyValue('--kb'))||0,h=sh.offsetHeight;
  const botY=vvH()-kb*0-h-8;
@@ -450,11 +492,13 @@ function relift(){
 /* desktop: popover next to the card, level with the slot */
 function placePop(){
  if(!openId||!popMode())return;
- const sh=sheetEl(),slot=trigger&&trigger.isConnected?trigger:slotEls[openId][0],cr=cardw.getBoundingClientRect(),sr=slot.getBoundingClientRect();
- const H=sh.offsetHeight,gap=26,roomR=innerWidth-cr.right-gap-16,roomL=cr.left-gap-16;
- let W=Math.min(400,innerWidth-32),x,side='left';
- if(roomR>=330){W=Math.min(400,roomR);x=cr.right+gap;side='left';}
- else if(roomL>=330){W=Math.min(400,roomL);x=cr.left-gap-W;side='right';}
+ const sh=sheetEl(),slot=trigger&&trigger.isConnected?trigger:slotEls[openId][0],cr0=cardw.getBoundingClientRect(),sr0=slot.getBoundingClientRect();
+ const curX=new DOMMatrix(getComputedStyle(lift).transform).m41||0,dx=liftDX-curX;   /* where the card ends up once the slide finishes */
+ const cr={left:cr0.left+dx,right:cr0.right+dx,width:cr0.width};const sr={left:sr0.left+dx,top:sr0.top,width:sr0.width,height:sr0.height};
+ const H=sh.offsetHeight,gap=26,roomR=innerWidth-cr.right-gap-16,roomL=cr.left-gap-16,WM=popW();
+ let W=WM,x,side='left';
+ if(roomR>=Math.min(330,WM)){W=Math.min(WM,roomR);x=cr.right+gap;side='left';}
+ else if(roomL>=Math.min(330,WM)){W=Math.min(WM,roomL);x=cr.left-gap-W;side='right';}
  else{x=Math.max(16,Math.min(innerWidth-W-16,sr.left+sr.width/2-W/2));side='';}
  const hb=wideMode()?(B.getBoundingClientRect().top+4):(topEl.getBoundingClientRect().bottom||0);
  const y=Math.max(hb+8,Math.min(innerHeight-H-12,sr.top+sr.height/2-H/2));

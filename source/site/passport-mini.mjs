@@ -1,7 +1,7 @@
 import {esc} from './core.mjs';
 import {profileHref,profileId} from '../profile/identity.mjs';
 import {travelerStyles} from './account-state.mjs?v=icons2';
-import {cardHTML,mrz,moleSlotHTML,stampName,variety,fitBands} from '../profile/passport-edit.mjs?v=un1';
+import {cardHTML,mrz,moleSlotHTML,stampName,variety,fitBands} from '../profile/passport-edit.mjs?v=r22a';
 import {levelFor,memberLevel,travelerType,standing} from '../profile/passport-rules.mjs?v=pv2';
 import {normalizedTags} from '../browse/catalog.mjs';
 

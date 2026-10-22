@@ -1,4 +1,4 @@
-import {moleCrop} from './passport-art.mjs?v=pad1';
+import {cropFor} from './passport-art.mjs?v=r22a';
 import {travelerStyles} from '../site/account-state.mjs?v=icons2';
 
 // The share image is drawn from the same profile and contribution records as the page.
@@ -37,7 +37,7 @@ export async function createPassportImage(profile,spots,url){
  // identity column: mole avatar, level bubble, name, chips, progress, bio, art, MRZ
  const cx=190,cy=232,r=88;
  ctx.fillStyle=profile.field||'#07d653';ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.fill();
- if(mole){ctx.save();ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.clip();const sw=moleCrop.w*mole.width;ctx.drawImage(mole,moleCrop.x*mole.width,moleCrop.y*mole.height,sw,sw,cx-r,cy-r,r*2,r*2);ctx.restore();}
+ if(mole){ctx.save();ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.clip();const mc=cropFor(profile.mole),sw=mc.w*mole.width;ctx.drawImage(mole,mc.x*mole.width,mc.y*mole.height,sw,sw,cx-r,cy-r,r*2,r*2);ctx.restore();}
  else{ctx.textAlign='center';text(profile.name.split(/\s+/).slice(0,2).map(n=>n[0]).join('').toUpperCase(),cx,cy+22,64,ink,700);ctx.textAlign='left';}
  ctx.strokeStyle=ink;ctx.lineWidth=3;ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.stroke();
  if(profile.level){const bx=cx+r*.78,by=cy+r*.72;ctx.fillStyle=blue;ctx.beginPath();ctx.arc(bx,by,40,0,Math.PI*2);ctx.fill();ctx.strokeStyle=aqua;ctx.lineWidth=6;ctx.stroke();ctx.textAlign='center';text(String(profile.level.level),bx,by+8,28,'#fff',800);mono('lvl',bx,by+26,11,'#fff',700);ctx.textAlign='left';}

@@ -1,9 +1,8 @@
-import {moleCrop} from './passport-art.mjs?v=pad1';
-import {createPassportImage} from './passport-export.mjs?v=pv3';
+import {createPassportImage} from './passport-export.mjs?v=r22a';
 import {padHTML,initPad} from './sign-pad.mjs?v=pv4';
 import {travelerStyles,travelerMark,accountKey,readAccount,normalizeAccount} from '../site/account-state.mjs?v=icons2';
 import {memberLevels,memberRange,POINTS} from './passport-rules.mjs?v=pv2';
-import {LOOK_KEY,readLook as _readLook,readStyle as _readStyle,writeStyle,archHTML,wireArch,lookTilesHTML,styleTilesHTML,pickLook,pickStyle,mrz,moleImgHTML,stampName,cardHTML,biopHTML,syncPreview,fitPreview,bindTilt,addBioBand,fitBandText,fitBands,moleSlotHTML,variety} from './passport-edit.mjs?v=un1';
+import {LOOK_KEY,readLook as _readLook,readStyle as _readStyle,writeStyle,archHTML,wireArch,lookTilesHTML,styleTilesHTML,pickLook,pickStyle,mrz,moleImgHTML,stampName,cardHTML,biopHTML,syncPreview,fitPreview,bindTilt,addBioBand,fitBandText,fitBands,moleSlotHTML,variety} from './passport-edit.mjs?v=r22a';
 import {escapeHTML as esc,safeReturn} from './identity.mjs';
 import {loadProfile} from './data.mjs?v=ob1';
 import {halftoneField} from '../site/halftone-field.mjs?v=2';
@@ -39,13 +38,6 @@ const moleHTML=(cls='')=>moleImgHTML(profile.mole,{cls,alt:profile.name+'’s mo
 /* guilloche: the fine security curves printed on real passports (two rosettes, drawn once) */
 /* foil bump: a fractal-noise height map lit by an SVG point light; the light follows the pointer, so the grain catches light like a real embossed foil */
 
-function factsHTML(){
- const own=profile.localPreview,t=profile.type||{},cat=t.cats?.[0]?.[0],rec=profile.records?.[0];
- const next=own?readWantToGo()[0]:null,nextName=next?(next.type==='spot'?(wtgBySlug.get(next.id)?.title||'a deep spot'):next.name):null;
- const facts=own?[['next up',nextName||'add a place to my map'],['top category',cat||'post a spot to find out'],['level',`${profile.level?.level||1} · ${profile.member}`]]
-  :[['latest find',rec?.name||'nothing posted yet'],['top category',cat||'—'],['level',`${profile.level?.level||1} · ${profile.member}`]];
- return `<dl class="pp-facts">${facts.map(([k,v])=>`<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl>`;
-}
 const sigHTML=art=>art?`<img src="${esc(art)}" alt="${esc(profile.name)}’s mark" width="512" height="256">`:'<span>no mark yet</span>';
 function typeHTML(){
  const t=profile.type,id=(profile.localPreview&&profile.style)||t.id,style=travelerStyles.find(s=>s.id===id);
@@ -222,7 +214,6 @@ function render(){
    <div class="pp-body pp-bio-body" id="pp-bio-view">
     <div class="pp-bio-top">${mini}<div class="pp-bio-id"><h1 class="pp-bio-name">${esc(profile.name)}</h1><div class="ps-idrow"><span class="pp-handle">${profile.handle?'@'+esc(profile.handle):'DeepSpot contributor'}</span>${followHTML(profile,own)}</div></div>${lv?`<span class="pp-badge" role="img" aria-label="Level ${lv.level}"><b>${lv.level}</b><i>level</i></span>`:''}</div>
     <div class="pp-bio-fit">${profile.bio?`<p class="pp-bio-text">${esc(profile.bio)}</p>`:`<p class="pp-bio-text pp-bio-empty">${own?'say something. edit profile to write your bio.':'no bio yet.'}</p>`}</div>
-    ${factsHTML()}
    </div>
   </section>
   <div class="pp-statsrow">${sec('type','traveler type',null,typeHTML())}${sec('stats','contributions',null,statsHTML())}</div>

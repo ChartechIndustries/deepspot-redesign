@@ -334,3 +334,52 @@ html[data-panel-color=off] .ob-ac:has(input:checked){border-color:var(--br-text)
 /* 2026-10-21 (Opus review): bio "add bio" pill sits in the bottom-right corner at every size, never over the placeholder */
 .ob-s-bio.is-empty::after{left:auto!important;top:auto!important;right:10px!important;bottom:9px!important;transform:none!important;translate:none!important}
 .ob-s-bio .ob-bio-t{padding-right:84px}
+
+/* ===== round 1022: sign-up order (Google / Apple / use email first) ===== */
+.ob-pan{display:grid;grid-template-rows:1fr;opacity:1;visibility:visible;transition:grid-template-rows .42s cubic-bezier(.2,.8,.3,1),margin .42s cubic-bezier(.2,.8,.3,1),opacity .3s,visibility 0s}
+.ob-pan>.ob-pan-in{min-height:0;overflow:hidden;margin:-4px;padding:4px}
+.ob-form:not(.is-email) .ob-pan-email,.ob-form.is-email .ob-pan-choose{grid-template-rows:0fr;opacity:0;visibility:hidden;pointer-events:none;transition:grid-template-rows .42s cubic-bezier(.2,.8,.3,1),margin .42s cubic-bezier(.2,.8,.3,1),opacity .25s,visibility 0s .42s}
+.ob-form:not(.is-email) .ob-pan-email,.ob-form.is-email .ob-pan-choose{margin-block:calc(-.5*var(--ob-g))}
+.ob-big-l{display:flex;flex-direction:column;gap:clamp(10px,1.8vh,16px)}
+.ob-big{display:flex;align-items:center;justify-content:center;gap:14px;width:100%;min-height:clamp(54px,9.4vh,76px);padding:0 22px;border:2px solid var(--br-line);border-radius:99px;background:var(--br-panel);color:var(--br-text);font:800 clamp(18px,2.9vh,23px)/1 Arial,Helvetica,sans-serif;letter-spacing:-.015em;text-decoration:none;cursor:pointer;transition:border-color .15s,background .15s,transform .15s}
+.ob-big:hover{border-color:var(--br-text);transform:translateY(-2px)}
+.ob-big:active{transform:scale(.985)}
+.ob-big>span{white-space:nowrap}
+.ob-big svg{width:26px;height:26px;flex:none;fill:currentColor;stroke:none}
+.ob-big.ob-email-btn svg{fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.ob-emailf{display:flex;flex-direction:column;gap:var(--ob-g)}
+.ob-prevlink{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;min-height:36px;margin:-4px 0 -2px -6px;padding:0 10px;border:0;border-radius:99px;background:transparent;color:var(--br-muted);font:800 15px/1 Arial,Helvetica,sans-serif;cursor:pointer}
+.ob-prevlink svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.ob-prevlink:hover{color:var(--br-text);background:color-mix(in srgb,var(--br-text) 8%,transparent)}
+.ob-big:focus-visible,.ob-prevlink:focus-visible{outline:3px solid #3c60ff;outline-offset:3px}
+:root[data-theme=dark] .ob-main :is(.ob-big,.ob-prevlink):focus-visible{outline-color:#8fa5ff}
+@media(max-height:620px){.ob-big{min-height:48px;font-size:17px}.ob-prevlink{min-height:30px}}
+@media(max-width:360px){.ob-big{font-size:16px;gap:10px;padding:0 14px}.ob-big svg{width:22px;height:22px}}
+@media(prefers-reduced-motion:reduce){.ob-pan,.ob-form:not(.is-email) .ob-pan-email,.ob-form.is-email .ob-pan-choose{transition:none}.ob-big:hover{transform:none}}
+
+/* ===== round 1022: explorer-type sheet — big, sticky group tabs, one scrolling list ===== */
+.ob-sheet[data-open=arch] .ob-sh-b{padding-top:0;padding-bottom:20px;gap:0;scroll-padding-top:70px}
+.ob-sheet[data-open=arch] .ob-pick{padding:2px 0 10px;font-size:15.5px}
+.ob-tabbar{position:sticky;top:0;z-index:4;flex:none;margin:0 -20px;padding:10px 0 4px;background:var(--br-panel)}
+.ob-tabbar::after{content:'';position:absolute;left:0;right:0;top:100%;height:18px;background:linear-gradient(var(--br-panel),transparent);box-shadow:0 -1px 0 var(--br-line);pointer-events:none}
+.ob-tabbar .ob-tabs{margin:0;padding:6px 20px 10px;overflow-x:auto}
+.ob-tab{min-height:46px;padding:0 18px;font-size:16px}
+.ob-tab[aria-selected=true],.ob-tab[aria-current=true]{background:var(--br-text);border-color:var(--br-text);color:var(--br-bg)}
+.ob-sheet[data-open=arch] .ob-arch{margin-top:14px}
+.ob-ag{display:block;margin:0 0 22px}
+.ob-ag-h{margin:0 0 10px;font:800 14px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--br-muted)}
+.ob-ag-l{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+.ob-ac{grid-template-columns:56px minmax(0,1fr);column-gap:16px;row-gap:5px;padding:14px 16px;min-height:104px;border-radius:18px}
+.ob-ac-i{width:56px;height:56px}
+.ob-ac-i svg{width:40px;height:40px}
+.ob-ac b{font-size:20px;font-weight:800;letter-spacing:-.03em;line-height:1.1}
+.ob-ac-d{font-size:15.5px;line-height:1.35;-webkit-line-clamp:2}
+.ob-ac:has(input:checked) .ed-ck{right:12px;top:12px}
+.ob-layer[data-mode=pop] .ob-sheet[data-open=arch]{overflow:hidden}
+.ob-layer[data-mode=pop] .ob-sheet[data-open=arch] .ob-ag-l{grid-template-columns:repeat(2,minmax(0,1fr))}
+.ob-layer[data-mode=pop] .ob-sheet[data-open=arch] .ob-ac{grid-template-columns:48px minmax(0,1fr);column-gap:12px;min-height:112px}
+.ob-layer[data-mode=pop] .ob-sheet[data-open=arch] .ob-ac-i{width:48px;height:48px;align-self:start}
+.ob-layer[data-mode=pop] .ob-sheet[data-open=arch] .ob-ac b{font-size:19px}
+.ob-layer[data-mode=pop] .ob-sheet.is-pop[data-open=arch] .ob-arrow{display:none}
+@media(min-width:620px){.ob-ag-l{grid-template-columns:repeat(2,minmax(0,1fr))}}
+body:has(.ob-sheet[data-open=arch].is-open) .ob-tip{opacity:0;visibility:hidden;transition:opacity .15s}

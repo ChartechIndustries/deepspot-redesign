@@ -19,7 +19,11 @@ async def newpage(b,w,h,theme='dark',color='on',touch=None):
   await pg.goto(BASE+'/welcome/?theme='+theme,wait_until='load'); await pg.wait_for_selector('#ob-form,.ob-stage',timeout=20000); await pg.wait_for_timeout(500)
   if color=='off': await pg.evaluate("document.documentElement.dataset.panelColor='off'")
   return ctx,pg
+async def open_email(pg):
+  if await pg.evaluate("!document.querySelector('#ob-form').classList.contains('is-email')"):
+    await js_click(pg,'.ob-email-btn'); await pg.wait_for_function("()=>getComputedStyle(document.querySelector('#ob-pw')).visibility==='visible'",timeout=3000); await pg.wait_for_timeout(500)
 async def fill_account(pg):
+  await open_email(pg)
   await pg.fill('#ob-pw',PW); await js_click(pg,'#ob-terms')
 async def to_b(pg,wait=2600):
   await fill_account(pg); await js_click(pg,'#ob-form .ob-go')
