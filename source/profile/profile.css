@@ -1148,3 +1148,23 @@ html[data-panel-color=off] .ed-n{background:transparent;color:var(--br-text);bor
  box-shadow:inset 2px 3px 5px rgba(0,0,0,.5),inset -1px -2px 3px rgba(255,255,255,.22),0 0 0 1.5px rgba(255,255,255,.4),0 1.5px 1px rgba(255,255,255,.7),0 -1px 1px rgba(11,27,39,.18)}
 /* icon: soft engraved strokes, light edge below, shadow above */
 .pp-id9 .pp-id9-crest.is-arch svg{opacity:.94;filter:drop-shadow(0 1px 0 rgba(255,255,255,.35)) drop-shadow(0 -.6px .4px rgba(0,0,0,.35))}
+
+/* ===== mobile fixes 1022: my map on phones. The .wg-wrap two-column rule (auto + 1fr, later in the file) beat the phone one-column
+   rule, so the globe got a thin tall column and the side box was crushed to 26px. One column: globe (square) on top, lists below. ===== */
+@media(max-width:700px){
+ .wg-wrap{grid-template-columns:minmax(0,1fr);gap:12px}
+ .wg-wrap .wg{width:100%;max-width:100%;height:auto;min-height:0;aspect-ratio:1/1}
+ .wg-wrap .wg-side{max-height:none;overflow:visible;min-width:0}
+ .wg-wrap .wg-canvas{touch-action:pan-y}   /* drag sideways to turn, drag up/down still scrolls the page */
+ .wg-wrap .wg-zoom button{width:40px;height:40px}
+ .wg-wrap .wg-zoom{top:10px;right:10px}
+}
+.wg-solo .wg-side .pp-empty,.wg-solo .wg-side>*{margin:0}
+/* desktop, my map: people with many posting categories pushed the globe panel to ~0px; the colour bar stays, the long legend waits for the other tabs */
+@media(min-width:1100px){html.pp-app .pp-rec:has(.pp-tabsec[data-vt=wtg]) .pp-statsrow .pp-legend{display:none}}
+/* 320px: no sideways scroll (stats grid track blew out on long legends; follower counts did not wrap) */
+@media(max-width:1099px){.pp-statsrow{grid-template-columns:minmax(0,1fr)}}
+.ps-counts{flex-wrap:wrap;max-width:100%}
+.wg-pop::after{left:calc(50% + var(--ax,0px))}
+.wg-pop.is-below{translate:-50% 22px}
+.wg-pop.is-below::after{bottom:auto;top:-8px;border:0;border-left:1px solid var(--br-line);border-top:1px solid var(--br-line)}

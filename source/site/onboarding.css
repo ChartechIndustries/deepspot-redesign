@@ -107,9 +107,9 @@ html[data-panel-color=off] .ob-fin:not([aria-disabled=true]){background:var(--br
 .ob-face.is-editing .ob-dm:not(.is-lit){opacity:.26;filter:saturate(.3)}
 .ob-front .pp-id-body{position:relative;flex:none;grid-template-columns:176px minmax(0,1fr);gap:16px}
 .ob-front .pp-molebox{width:176px;height:176px;margin-bottom:0}
-.ob-front .pp-rows>div{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:5px;height:44px;grid-template-columns:none}
+.ob-front .pp-rows>div{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:4px;height:44px;grid-template-columns:none;min-width:0}
 .ob-front .pp-rows dt{font-size:12px;line-height:1;width:auto}
-.ob-front .pp-rows dd{max-width:100%;font-size:19px;line-height:1.1}
+.ob-front .pp-rows dd{max-width:100%;min-width:0;font-size:18px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pp-id9 .pp-rows dd.is-ph{opacity:.5;font-weight:600}
 .pp-id9 .pp-id9-stamp.is-ph{display:none}
 .ob-front .pp-id9-sig{flex:none;height:124px;margin:0}
@@ -129,8 +129,8 @@ html[data-panel-color=off] .ob-fin:not([aria-disabled=true]){background:var(--br
    A filled slot has no outline at all. */
 .ob-slot{position:absolute;z-index:4;margin:0;padding:0;border:0;border-radius:12px;background:transparent;color:inherit;font:inherit;text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .ob-s-photo{inset:0;border-radius:12px}
-.ob-s-name{left:184px;right:-4px;top:-2px;height:86px}
-.ob-s-arch{left:184px;right:-4px;top:94px;height:40px}
+.ob-s-name{left:184px;right:-4px;top:-3px;height:86px}
+.ob-s-arch{left:184px;right:-4px;top:88px;height:42px}
 .ob-s-mark{inset:-3px -5px -3px -5px;border-radius:12px}
 .ob-front .pp-molebox:has(.ob-s-photo.is-empty){box-shadow:none}
 .ob-sticker-in{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;border-radius:50%;background:conic-gradient(from 20deg,#ff9ec4,#ffe08a,#a8f08c,#8ce9f0,#a9b9ff,#d9a8ff,#ff9ec4);box-shadow:inset 0 0 0 3px rgba(255,255,255,.85),0 2px 6px rgba(11,27,39,.3);color:#0b1b27;transform:rotate(-10deg)}
@@ -140,7 +140,7 @@ html[data-panel-color=off] .ob-sticker-in{background:conic-gradient(from 20deg,#
 .ob-slot::after{content:'';position:absolute;display:none;pointer-events:none;z-index:3}
 .ob-slot.is-empty:not(.ob-s-style)::after{content:attr(data-lab);display:block;padding:4px 10px 5px;border-radius:99px;background:#d9f6e2;color:#08782f;font:800 14px/1.1 Arial,Helvetica,sans-serif;letter-spacing:.01em;white-space:nowrap;box-shadow:0 0 0 1px rgba(8,120,47,.18)}
 .ob-s-photo.is-empty::after{left:50%;bottom:10px;translate:-50% 0}
-.ob-s-name.is-empty::after{right:8px;top:9px}
+.ob-s-name.is-empty::after{right:10px;top:-12px}   /* straddles the top edge: the NAME label is on the left, no text is under it */
 .ob-s-arch.is-empty::after{right:8px;top:50%;translate:0 -50%}
 .ob-s-mark.is-empty::after{right:10px;top:50%;translate:0 -50%}
 .ob-s-bio.is-empty::after{right:10px;bottom:9px}
@@ -358,7 +358,7 @@ html[data-panel-color=off] .ob-ac:has(input:checked){border-color:var(--br-text)
 @media(prefers-reduced-motion:reduce){.ob-pan,.ob-form:not(.is-email) .ob-pan-email,.ob-form.is-email .ob-pan-choose{transition:none}.ob-big:hover{transform:none}}
 
 /* ===== round 1022: explorer-type sheet — big, sticky group tabs, one scrolling list ===== */
-.ob-sheet[data-open=arch] .ob-sh-b{padding-top:0;padding-bottom:20px;gap:0;scroll-padding-top:70px}
+.ob-sheet:is([data-open=arch],[data-open=style]) .ob-sh-b{padding-top:0;padding-bottom:20px;gap:0;scroll-padding-top:70px}
 .ob-sheet[data-open=arch] .ob-pick{padding:2px 0 10px;font-size:15.5px}
 .ob-tabbar{position:sticky;top:0;z-index:4;flex:none;margin:0 -20px;padding:10px 0 4px;background:var(--br-panel)}
 .ob-tabbar::after{content:'';position:absolute;left:0;right:0;top:100%;height:18px;background:linear-gradient(var(--br-panel),transparent);box-shadow:0 -1px 0 var(--br-line);pointer-events:none}
@@ -383,3 +383,19 @@ html[data-panel-color=off] .ob-ac:has(input:checked){border-color:var(--br-text)
 .ob-layer[data-mode=pop] .ob-sheet.is-pop[data-open=arch] .ob-arrow{display:none}
 @media(min-width:620px){.ob-ag-l{grid-template-columns:repeat(2,minmax(0,1fr))}}
 body:has(.ob-sheet[data-open=arch].is-open) .ob-tip{opacity:0;visibility:hidden;transition:opacity .15s}
+
+/* ===== mobile fixes 1022: style sheet = the same sticky tabs as the explorer-type sheet, big swatch tiles ===== */
+.ob-sheet[data-open=style] .ob-sg{margin:14px 0 22px}
+.ob-sheet[data-open=style] .ob-sg:first-child{margin-top:16px}
+.ob-sheet[data-open=style] .ob-sg .ed-set{border:0;padding:0;min-width:0}
+.ob-sheet[data-open=style] .ob-sg .ed-set legend{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.ob-sheet[data-open=style] .ed-hint{margin:0 0 14px;font-size:15px}
+.ob-sheet[data-open=style] .ed-tiles,.ob-sheet[data-open=style] .ed-tiles-cz{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px 12px}
+.ob-sheet[data-open=style] .ed-sw,.ob-sheet[data-open=style] .ed-tiles-cz .ed-sw{height:84px;border-radius:14px}
+.ob-sheet[data-open=style] .ed-tl{font-size:15.5px;font-weight:800}
+.ob-layer[data-mode=pop] .ob-sheet[data-open=style]{overflow:visible}
+.ob-layer[data-mode=pop] .ob-sheet[data-open=style] .ed-sw,.ob-layer[data-mode=pop] .ob-sheet[data-open=style] .ed-tiles-cz .ed-sw{height:76px}
+@media(max-width:340px){.ob-sheet[data-open=style] .ed-tiles,.ob-sheet[data-open=style] .ed-tiles-cz{gap:16px 9px}.ob-sheet[data-open=style] .ed-sw,.ob-sheet[data-open=style] .ed-tiles-cz .ed-sw{height:68px}.ob-sheet[data-open=style] .ed-tl{font-size:14px}}
+body:has(.ob-sheet[data-open=style].is-open) .ob-tip{opacity:0;visibility:hidden;transition:opacity .15s}
+@media(max-width:620px){.ob-layer[data-mode=sheet] .ob-sheet[data-open=style] .ed-hint{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}.ob-layer[data-mode=sheet] .ob-sheet[data-open=style] .ob-ag-h{margin-bottom:12px}}
+@media(max-height:640px){.ob-sheet[data-open=style] .ob-sg{margin-top:10px}.ob-sheet[data-open=style] .ed-sw,.ob-sheet[data-open=style] .ed-tiles-cz .ed-sw{height:60px}.ob-sheet[data-open=style] .ed-tiles,.ob-sheet[data-open=style] .ed-tiles-cz{gap:12px 9px}.ob-sheet[data-open=style] .ob-tab{min-height:40px}.ob-sheet[data-open=style] .ob-tabbar{padding-top:4px}.ob-sheet[data-open=style] .ob-sh-f{padding-top:8px;padding-bottom:calc(8px + env(safe-area-inset-bottom))}}

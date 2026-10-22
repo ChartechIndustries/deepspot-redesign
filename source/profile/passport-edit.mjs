@@ -94,6 +94,13 @@ export function cardHTML(o){
      <span class="pp-readable-code pp-id9-mrz" aria-hidden="true">${o.mrz}</span>
      <span class="pp-id9-stamp${o.noStamp?' is-ph':''}" aria-hidden="true"><b style="font-size:${stampSize(o.stamp.name)}px">${esc(o.stamp.name)}</b><i>${esc(o.stamp.sub)}</i></span></div>`;
 }
+/* v2.3: a long name / @username / type shrinks (down to 14px) to fit its row; the CSS ellipsis is the last resort. Call when laid out. */
+export function fitRowText(dd,min=14){
+ if(!dd||!dd.clientWidth)return;
+ dd.style.fontSize='';const base=parseFloat(getComputedStyle(dd).fontSize)||17;
+ for(let sz=base;sz>=min;sz-=.5){if(sz<base)dd.style.fontSize=sz+'px';if(dd.scrollWidth<=dd.clientWidth+.5)break;}
+}
+export const fitRows=root=>root?.querySelectorAll('.pp-rows dd').forEach(d=>fitRowText(d));
 /* fit every bio band inside a root (call once the card is laid out) */
 export const fitBands=root=>root.querySelectorAll('.pp-id9-bio-t>p').forEach(fitBandText);
 /* v2.2: the taller card with a full-width bio band between the photo block and the mark line (edit-dialog preview; onboarding builds its own slot band) */
@@ -120,6 +127,7 @@ export function syncPreview({stage,pobj,biop},v,{empty='—'}={}){
   const dd=c.querySelectorAll('.pp-rows dd'),nm=(v.name??'').trim(),un=(v.username??'').trim().replace(/^@/,'');
   if('name' in v&&dd[0]){dd[0].textContent=nm||empty;dd[0].classList.toggle('is-ph',!nm);}
   if('username' in v&&dd[1]){dd[1].textContent=un?'@'+un:empty;dd[1].classList.toggle('is-ph',!un);}
+  if('name' in v||'username' in v)fitRows(c);
   if(v.arch!==undefined){const sb=c.querySelector('.pp-id9-stamp b');if(sb){const t=v.arch?stampName(v.arch):'explorer';sb.textContent=t;sb.style.fontSize=stampSize(t)+'px';}c.querySelector('.pp-id9-stamp')?.classList.toggle('is-ph',!v.arch);
    const cr=c.querySelector('.pp-id9-crest');if(cr){cr.innerHTML=crestHTML(v.arch);cr.classList.toggle('is-arch',!!v.arch);}const gk=groupKey(v.arch);if(gk)c.dataset.g=gk;else delete c.dataset.g;}
  }

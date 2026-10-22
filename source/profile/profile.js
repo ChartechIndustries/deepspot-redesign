@@ -2,11 +2,11 @@ import {createPassportImage} from './passport-export.mjs?v=r22a';
 import {padHTML,initPad} from './sign-pad.mjs?v=pv4';
 import {travelerStyles,travelerMark,accountKey,readAccount,normalizeAccount} from '../site/account-state.mjs?v=icons2';
 import {memberLevels,memberRange,POINTS} from './passport-rules.mjs?v=pv2';
-import {LOOK_KEY,readLook as _readLook,readStyle as _readStyle,writeStyle,archHTML,wireArch,lookTilesHTML,styleTilesHTML,pickLook,pickStyle,mrz,moleImgHTML,stampName,cardHTML,biopHTML,syncPreview,fitPreview,bindTilt,addBioBand,fitBandText,fitBands,moleSlotHTML,variety} from './passport-edit.mjs?v=r22a';
+import {LOOK_KEY,readLook as _readLook,readStyle as _readStyle,writeStyle,archHTML,wireArch,lookTilesHTML,styleTilesHTML,pickLook,pickStyle,mrz,moleImgHTML,stampName,cardHTML,biopHTML,syncPreview,fitPreview,bindTilt,addBioBand,fitBandText,fitBands,moleSlotHTML,variety} from './passport-edit.mjs?v=mf1';
 import {escapeHTML as esc,safeReturn} from './identity.mjs';
 import {loadProfile} from './data.mjs?v=ob1';
 import {halftoneField} from '../site/halftone-field.mjs?v=2';
-import {mountGlobe} from './wtg-globe.mjs?v=wg9';
+import {mountGlobe} from './wtg-globe.mjs?v=mf1';
 import {itemsFor} from './items.mjs?v=it1';
 import {followHTML,exploredHTML,picksHTML,collectionsHTML,updatesHTML,counts as psCounts,bindSocial} from './profile-social.mjs?v=ps4';
 import {readWantToGo,writeWantToGo,addItem,removeAt,moveItem,WTG_MAX,WTG_NAME_MAX} from './want-to-go.mjs?v=wtg1';
@@ -127,10 +127,10 @@ const wgListsHTML=()=>{const cs=readColls(),all=wgActive==='wtg'?wtgList:readWan
  return `<div class="wg-lists" role="group" aria-label="Your lists"><button type="button" class="wg-chip" data-wg-list="wtg" aria-pressed="${wgActive==='wtg'}" style="--lc:#07d653"><i aria-hidden="true">♥</i>want to go <span>${all.length}</span></button>${cs.map((c,i)=>`<button type="button" class="wg-chip" data-wg-list="${i}" aria-pressed="${wgActive===String(i)}" style="--lc:${c.color}"><i aria-hidden="true"></i>${esc(c.title)} <span>${c.items.length}</span></button>`).join('')}${cs.length<COLL_MAX?`<button type="button" class="wg-chip wg-chip-new" data-wg-new>+ new collection</button>`:''}</div>`;};
 const wgHeadHTML=()=>{const c=wgColl();return `<div class="wg-listh"><h3>${c?esc(c.title):'want to go'}</h3>${c?`<button type="button" class="pp-chipbtn" data-wg-del>delete collection</button>`:''}</div>`;};
 function wtgHTML(){
- if(!profile.localPreview)return empty('no want-to-go list yet.','Lists are not shared from live accounts yet.');
- return `<div class="wg-wrap"><div class="wg" id="wg"><div class="wg-pop" id="wg-pop" hidden></div><p class="sr-only" id="wg-card" aria-live="polite"></p></div><aside class="wg-side" aria-label="Your lists">${wgListsHTML()}<form class="pp-wtg-form" id="pp-wtg-form" autocomplete="off" novalidate><label class="pp-mono" for="pp-wtg-in">add a place</label>
+ if(!profile.localPreview)return `<div class="wg-wrap wg-solo"><div class="wg" id="wg"><div class="wg-pop" id="wg-pop" hidden></div><p class="sr-only" id="wg-card" aria-live="polite"></p></div><div class="wg-side" role="group" aria-label="Want to go">${empty('no want-to-go list yet.','Lists are not shared from live accounts yet.')}</div></div>`;
+ return `<div class="wg-wrap"><div class="wg" id="wg"><div class="wg-pop" id="wg-pop" hidden></div><p class="sr-only" id="wg-card" aria-live="polite"></p></div><div class="wg-side" role="group" aria-label="Your lists">${wgListsHTML()}<form class="pp-wtg-form" id="pp-wtg-form" autocomplete="off" novalidate><label class="pp-mono" for="pp-wtg-in">add a place</label>
  <div class="pp-wtg-row"><div class="pp-wtg-combo"><input id="pp-wtg-in" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="pp-wtg-lb" maxlength="${WTG_NAME_MAX}" placeholder="a spot, a city, anywhere" enterkeyhint="done"><ul id="pp-wtg-lb" class="pp-wtg-lb" role="listbox" aria-label="Matching deep spots" hidden></ul></div><button type="submit" class="pp-wtg-add">add</button></div>
- <p class="pp-fine pp-wtg-msg" id="pp-wtg-msg" role="status" aria-live="polite">${wtgStatus()}</p></form>${wgHeadHTML()}<div id="pp-wtg-list">${wtgListHTML()}</div><p class="wg-sidenote" id="wg-note2"></p></aside></div>`;
+ <p class="pp-fine pp-wtg-msg" id="pp-wtg-msg" role="status" aria-live="polite">${wtgStatus()}</p></form>${wgHeadHTML()}<div id="pp-wtg-list">${wtgListHTML()}</div><p class="wg-sidenote" id="wg-note2"></p></div></div>`;
 }
 function wtgRefresh(){const box=$('#pp-wtg-list');if(!box)return;box.innerHTML=wtgListHTML();const s=document.querySelector('#pp-wtg span');if(s)s.textContent=`(${wtgList.length})`;const m=$('#pp-wtg-msg');if(m&&!m.dataset.keep)m.textContent=wtgStatus();}
 function wtgSay(text){const m=$('#pp-wtg-msg');if(!m)return;m.textContent=text;m.dataset.keep='1';clearTimeout(wtgSay.t);wtgSay.t=setTimeout(()=>{delete m.dataset.keep;m.textContent=wtgStatus();},3500);}
@@ -321,7 +321,7 @@ function fitBio(){
 }
 function selectVT(id,focus){
  document.querySelectorAll('.pp-vtab').forEach(b=>{const on=b.dataset.vt===id;b.setAttribute('aria-selected',String(on));b.tabIndex=on?0:-1;if(on&&focus)b.focus();});
- document.querySelectorAll('.pp-vpanel').forEach(p=>p.hidden=p.id!=='pp-vp-'+id);$('.pp-tabsec').dataset.vt=id;if(id==='wtg'&&profile.localPreview)requestAnimationFrame(wgSync);requestAnimationFrame(fitBio);
+ document.querySelectorAll('.pp-vpanel').forEach(p=>p.hidden=p.id!=='pp-vp-'+id);$('.pp-tabsec').dataset.vt=id;if(id==='wtg')requestAnimationFrame(wgSync);requestAnimationFrame(fitBio);
 }
 function wireV4(){
  selectVT('wtg');
@@ -436,11 +436,16 @@ function wgCard(i){const p=wgPins[i],pop=$('#wg-pop'),sr=$('#wg-card');if(sr)sr.
  if(!p||p.lat==null){pop.hidden=true;return;}
  pop.innerHTML=`${p.img?`<img src="${esc(p.img)}" alt="" width="120" height="90">`:''}<div><span class="pp-mono">${esc(p.place||'')}</span><strong>${esc(p.name)}</strong>${p.href?`<a href="${esc(p.href)}">open the spot ↗</a>`:''}</div>`;pop.hidden=false;
  document.querySelectorAll('.pp-wtg-item').forEach((li,k)=>li.classList.toggle('is-on',k===i));}
-function wgPlace(pt){const pop=$('#wg-pop');if(!pop||pop.hidden)return;if(!pt){pop.style.visibility='hidden';return;}pop.style.visibility='';pop.style.transform=`translate(${pt.x.toFixed(1)}px,${pt.y.toFixed(1)}px)`;}
+function wgPlace(pt){const pop=$('#wg-pop');if(!pop||pop.hidden)return;if(!pt){pop.style.visibility='hidden';return;}pop.style.visibility='';
+ /* keep the card inside the globe box: slide it sideways (the arrow keeps pointing at the pin), flip it below the pin near the top */
+ const host=$('#wg'),hw=host?host.clientWidth:0,pw=pop.offsetWidth,ph=pop.offsetHeight;let x=pt.x;
+ if(hw&&pw){x=Math.max(pw/2+6,Math.min(hw-pw/2-6,pt.x));pop.style.setProperty('--ax',Math.max(-(pw/2-18),Math.min(pw/2-18,pt.x-x)).toFixed(1)+'px');}
+ pop.classList.toggle('is-below',pt.y-ph-30<4);
+ pop.style.transform=`translate(${x.toFixed(1)}px,${pt.y.toFixed(1)}px)`;}
 document.addEventListener('click',e=>{const b=e.target.closest('[data-wg-step]');if(!b||!wg)return;const on=wgPins.map((x,k)=>x.lat!=null?k:-1).filter(k=>k>=0),n=on.indexOf(wg.sel);wg.focus(on[(n+ +b.dataset.wgStep+on.length)%on.length]);});
 function wgSync(){
  const host=$('#wg');if(!host)return;wgPins=wgPinsFrom();const on=wgPins.map((p,i)=>p.lat!=null?i:-1).filter(i=>i>=0),off=wgPins.length-on.length;
- $('#wg-note2').textContent=!wgPins.length?'add places below and they land on the globe as pins.':off?`${off} ${off===1?'place has':'places have'} no location yet, so ${off===1?'it is':'they are'} only in the list.`:'drag to turn · scroll or pinch to zoom · tap a pin';
+ {const nt=$('#wg-note2');if(nt)nt.textContent=!wgPins.length?'add places below and they land on the globe as pins.':off?`${off} ${off===1?'place has':'places have'} no location yet, so ${off===1?'it is':'they are'} only in the list.`:'drag to turn · scroll or pinch to zoom · tap a pin';}
  if(!wg)wg=mountGlobe(host,{pins:wgPins,onSelect:wgCard,onPin:wgPlace,_old:(pt,{w})=>{const l=$('#wg-line'),c=$('#wg-card');if(!l||!c)return;if(!pt||c.hidden){l.setAttribute('x1',0);l.setAttribute('x2',0);l.setAttribute('y1',0);l.setAttribute('y2',0);return;}
   const hb=host.getBoundingClientRect(),cb=c.getBoundingClientRect(),x1=cb.left-hb.left+cb.width/2,y1=cb.bottom-hb.top;l.setAttribute('x1',x1);l.setAttribute('y1',y1);l.setAttribute('x2',pt.x);l.setAttribute('y2',pt.y);}});
  else wg.set(wgPins);

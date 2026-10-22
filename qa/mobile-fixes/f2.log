@@ -1,0 +1,8 @@
+preview 390 profile axe [] ovf [390, 390] errs [] canvas True
+preview 360 profile axe [] ovf [360, 360] errs [] canvas True
+preview 320 profile axe [] ovf [320, 320] errs [] canvas True
+preview 1440 profile axe [] ovf [1440, 1440] errs [] canvas True
+kisekikana 390 profile axe [] ovf [390, 390] errs [] canvas True
+kisekikana 360 profile axe [] ovf [360, 360] errs [] canvas True
+kisekikana 320 profile axe [] ovf [320, 320] errs [] canvas True
+kisekikana 1440 profile axe [] ovf [1440, 1440] errs [] canvas True

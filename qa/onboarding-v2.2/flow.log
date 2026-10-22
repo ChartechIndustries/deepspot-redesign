@@ -1,6 +1,15 @@
 --- viewport 390x844
 PASS gate continue lands on /welcome/
 PASS from= carries the spot
+PASS A choose no scroll
+PASS order google, apple, use email
+PASS email fields hidden before use email
+PASS three equal buttons
+PASS axe 0 A choose
+PASS use email opens the fields
+PASS google/apple hidden after use email
+PASS back returns to the buttons
+PASS focus back on use email
 PASS email prefilled
 PASS A no scroll
 PASS axe 0 A
@@ -69,6 +78,15 @@ PASS console 0 errors
 --- viewport 1440x900
 PASS gate continue lands on /welcome/
 PASS from= carries the spot
+PASS A choose no scroll
+PASS order google, apple, use email
+PASS email fields hidden before use email
+PASS three equal buttons
+PASS axe 0 A choose
+PASS use email opens the fields
+PASS google/apple hidden after use email
+PASS back returns to the buttons
+PASS focus back on use email
 PASS email prefilled
 PASS A no scroll
 PASS axe 0 A
@@ -112,3 +130,32 @@ PASS refresh lands on B
 PASS refresh keeps name
 PASS arch on card
 PASS axe 0 sheet arch
+PASS mole saved
+PASS chip 3/6
+PASS finish ready after required
+PASS mark saved
+PASS axe 0 sheet mark
+PASS style saved
+PASS foil on card
+PASS axe 0 sheet style
+PASS bio saved
+PASS bio on the card front
+PASS bio fits (no overflow)
+PASS axe 0 sheet bio
+PASS chip 6/6
+PASS B filled no scroll
+PASS axe 0 B filled
+PASS big ISSUED stamp shown
+PASS onboarded flag set
+PASS passport shows name
+PASS passport shows bio
+PASS passport shows handle
+PASS welcome redirects when finished
+PASS console 0 errors
+--- keyboard + skip issue
+PASS tap skips the issue animation
+PASS Enter opens a slot
+PASS popover on desktop
+PASS reduced motion: B within 2s
+
+156 pass, 0 fail

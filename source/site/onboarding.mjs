@@ -7,7 +7,7 @@ import {accountKey,readAccount,normalizeAccount,travelerStyles} from './account-
 import {readSession,writeSession} from './gate-state.mjs?v=gate1';
 import {G_ICON,A_ICON} from './brand-icons.mjs?v=ob1';
 const MAIL_ICON='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7.5 8 6 8-6"/></svg>';
-import {readStyle,writeStyle,archCardsHTML,archGroups,styleGroupHTML,pickStyle,cardHTML,moleImgHTML,mrz,syncPreview,bindTilt} from '../profile/passport-edit.mjs?v=r22a';
+import {readStyle,writeStyle,archCardsHTML,archGroups,styleGroupHTML,pickStyle,cardHTML,moleImgHTML,mrz,syncPreview,bindTilt,fitRows} from '../profile/passport-edit.mjs?v=mf1';
 import {padHTML,initPad,inkURL} from '../profile/sign-pad.mjs?v=pv4';
 import {escapeHTML as esc,safeReturn} from '../profile/identity.mjs';
 
@@ -188,7 +188,7 @@ function fit(){
  s=Math.max(.3,s);
  scale.style.transform=`scale(${s.toFixed(4)})`;cardw.style.width=(440*s).toFixed(1)+'px';cardw.style.height=(nh*s).toFixed(1)+'px';
  zone.style.setProperty('--k',Math.max(1,s).toFixed(3));
- fitBio();
+ fitBio();fitRows(front);
 }
 /* bio on the card: biggest size that fits the band (2 to 3 lines), never cut mid-word; an ellipsis only as the last resort */
 function fitBio(){
@@ -239,6 +239,7 @@ function paint(changed={}){
  /* bio: on the front, between the photo and the mark */
  const bt=$('[data-bio]',front),bio=(a.bio||'').trim();
  if(shown.bio!==bio){shown.bio=bio;bt.textContent=bio||'say hi. a few lines about you.';bt.classList.toggle('is-ph',!bio);fitBio();}
+ fitRows(front);
  slots(changed);
 }
 /* slot outlines, labels, progress chip, finish button */
@@ -304,17 +305,9 @@ E.name={
  focus:'#ob-name'
 };
 
-const pickText=id=>{const t=travelerStyles.find(x=>x.id===id);return t?`<b>${esc(t.name)}.</b> ${esc(t.description)}`:'';};
-E.arch={
- title:'your explorer type',
- html(){
-  const a=readAccount(),sel=prog.data.arch?a.style:'',groups=archGroups(),g0=Math.max(0,groups.indexOf(travelerStyles.find(t=>t.id===sel)?.group));
-  return `<p class="ob-hint ob-pick" id="ob-arch-h" role="status" aria-live="polite">${sel?pickText(sel):'pick the one that fits best. your posts refine it later.'}</p>
-  <div class="ob-tabbar"><nav class="ob-tabs" aria-label="Archetype groups">${groups.map((g,i)=>`<button type="button" class="ob-tab" id="ob-at-${i}" aria-controls="ob-ag-${i}" aria-current="${i===g0}">${esc(g)}</button>`).join('')}</nav></div>
-  <fieldset class="ob-arch"><legend class="sr-only">Traveler archetype</legend>${archCardsHTML(sel)}</fieldset>`;
- },
- mount(h){
-  const tabs=$$('.ob-tab',h),secs=$$('.ob-ag',h),bar=$('.ob-tabbar',h),nav=$('.ob-tabs',h);
+/* shared sticky tab bar for the long sheets (explorer type, style): tap = scroll to the group, scroll-spy marks the tab, arrow keys move */
+function wireTabs(h,secSel,g0){
+  const tabs=$$('.ob-tab',h),secs=$$(secSel,h),bar=$('.ob-tabbar',h),nav=$('.ob-tabs',h);
   let lock=0,cur=-1;
   const mark=i=>{if(i===cur)return;cur=i;tabs.forEach((t,n)=>t.setAttribute('aria-current',String(n===i)));const t=tabs[i];if(t){const l=t.offsetLeft-(nav.clientWidth-t.offsetWidth)/2;nav.scrollTo({left:Math.max(0,l),behavior:calm()?'auto':'smooth'});}};
   const secTop=s=>s.getBoundingClientRect().top-h.getBoundingClientRect().top+h.scrollTop-bar.offsetHeight-10;
@@ -331,9 +324,22 @@ E.arch={
   h.addEventListener('scroll',spy,{passive:true});
   nav.addEventListener('click',e=>{const t=e.target.closest('.ob-tab');if(t)go(tabs.indexOf(t));});
   nav.addEventListener('keydown',e=>{const i=tabs.indexOf(D.activeElement);if(i<0)return;let n=null;if(e.key==='ArrowRight')n=(i+1)%tabs.length;else if(e.key==='ArrowLeft')n=(i-1+tabs.length)%tabs.length;else if(e.key==='Home')n=0;else if(e.key==='End')n=tabs.length-1;if(n!==null){e.preventDefault();tabs[n].focus();go(n);}});
-  h.addEventListener('change',e=>{if(e.target.name!=='pp-arch')return;saveAccount({style:e.target.value});prog.data.arch=true;saveProg();paint();$('#ob-arch-h',h).innerHTML=pickText(e.target.value);});
-  const g0=Math.max(0,tabs.findIndex(t=>t.getAttribute('aria-current')==='true'));cur=-1;mark(g0);
+  cur=-1;mark(g0);
   if(g0>0)requestAnimationFrame(()=>{h.scrollTop=secTop(secs[g0]);spy();});
+}
+
+const pickText=id=>{const t=travelerStyles.find(x=>x.id===id);return t?`<b>${esc(t.name)}.</b> ${esc(t.description)}`:'';};
+E.arch={
+ title:'your explorer type',
+ html(){
+  const a=readAccount(),sel=prog.data.arch?a.style:'',groups=archGroups(),g0=Math.max(0,groups.indexOf(travelerStyles.find(t=>t.id===sel)?.group));
+  return `<p class="ob-hint ob-pick" id="ob-arch-h" role="status" aria-live="polite">${sel?pickText(sel):'pick the one that fits best. your posts refine it later.'}</p>
+  <div class="ob-tabbar"><nav class="ob-tabs" aria-label="Archetype groups">${groups.map((g,i)=>`<button type="button" class="ob-tab" id="ob-at-${i}" aria-controls="ob-ag-${i}" aria-current="${i===g0}">${esc(g)}</button>`).join('')}</nav></div>
+  <fieldset class="ob-arch"><legend class="sr-only">Traveler archetype</legend>${archCardsHTML(sel)}</fieldset>`;
+ },
+ mount(h){
+  wireTabs(h,'.ob-ag',Math.max(0,$$('.ob-tab',h).findIndex(t=>t.getAttribute('aria-current')==='true')));
+  h.addEventListener('change',e=>{if(e.target.name!=='pp-arch')return;saveAccount({style:e.target.value});prog.data.arch=true;saveProg();paint();$('#ob-arch-h',h).innerHTML=pickText(e.target.value);});
  },
  done(){return true;},
  focus:'.ob-tab[aria-current=true]'
@@ -364,17 +370,23 @@ E.mark={
  close(h){h._save?.();}
 };
 
+const STYLE_GROUPS=[['bg','backgrounds','The field behind your passport.'],['foil','foils','A finish on the card. Move your mouse over the card to see it shine.']];
 E.style={
  title:'your style',
- html(){const st=readStyle(true);return styleGroupHTML(st,'foil','passport foil','Move your mouse over the card to see it shine.')+styleGroupHTML(st,'bg','background','The field behind your passport.');},
+ html(){
+  const st=readStyle(true);
+  return `<div class="ob-tabbar"><nav class="ob-tabs" aria-label="Style groups">${STYLE_GROUPS.map(([k,l],i)=>`<button type="button" class="ob-tab" id="ob-st-${i}" aria-controls="ob-sg-${i}" aria-current="${i===0}">${l}</button>`).join('')}</nav></div>
+  <div class="ob-sgs">${STYLE_GROUPS.map(([k,l,hint],i)=>`<section class="ob-ag ob-sg" id="ob-sg-${i}" aria-labelledby="ob-sgh-${i}"><h3 class="ob-ag-h" id="ob-sgh-${i}">${l}</h3>${styleGroupHTML(st,k,l,hint)}</section>`).join('')}</div>`;
+ },
  mount(h){
+  wireTabs(h,'.ob-sg',0);
   h.addEventListener('change',e=>{
    if(!/^cz-/.test(e.target.name||''))return;
    writeStyle(pickStyle(h.closest('form'),readStyle(true)));prog.data.style=true;saveProg();paint({foil:e.target.name==='cz-foil'});
   });
  },
  done(){return true;},
- focus:'[name=cz-foil]:checked'
+ focus:'.ob-tab[aria-current=true]'
 };
 
 E.bio={
@@ -461,7 +473,7 @@ function onKey(e){
  else if(!e.shiftKey&&D.activeElement===last){e.preventDefault();first.focus();}
 }
 const vvH=()=>visualViewport?visualViewport.height:innerHeight;
-const maxSheetH=()=>Math.round(openId==='arch'?(popMode()?Math.min(innerHeight*.8,760,vvH()-16):Math.min(innerHeight*.92,vvH()-16)):Math.min(innerHeight*(openId==='style'&&!popMode()?.46:.7),vvH()-16,popMode()?640:9999));
+const maxSheetH=()=>Math.round(openId==='arch'?(popMode()?Math.min(innerHeight*.8,760,vvH()-16):Math.min(innerHeight*.92,vvH()-16)):Math.min(innerHeight*(openId==='style'&&!popMode()?(innerHeight>=780?.56:innerHeight>=640?.62:.7):.7),vvH()-16,popMode()?640:9999));
 /* the soft keyboard on a phone: keep the sheet above it */
 function keyboard(){
  const sh=sheetEl();if(!sh||!openId)return;
@@ -486,7 +498,7 @@ function relift(){
  const r=cardw.getBoundingClientRect(),topY=topEl.getBoundingClientRect().bottom+4,avail=botY-topY;
  const s=Math.min(1,avail/r.height),ty=topY+(avail-r.height*s)/2-r.top;
  void lift.offsetWidth;lift.style.transition='';
- if(s<.42){lift.style.transform='';return;}   /* too little room: the sheet covers the card */
+ if(s<(openId==='style'?.26:.42)){lift.style.transform='';return;}   /* too little room: the sheet covers the card */
  lift.style.transform=`translateY(${ty.toFixed(1)}px) scale(${s.toFixed(4)})`;
 }
 /* desktop: popover next to the card, level with the slot */

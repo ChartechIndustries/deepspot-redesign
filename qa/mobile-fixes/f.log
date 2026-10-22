@@ -1,0 +1,41 @@
+390 onb rows axe [] ovf [390, 390]
+390 onb style axe [] ovf [390, 390]
+390 arrow key moved tab false,true
+390 errs []
+360 onb rows axe [] ovf [360, 360]
+360 onb style axe [] ovf [360, 360]
+360 arrow key moved tab false,true
+360 errs []
+320 onb rows axe [] ovf [320, 320]
+320 onb style axe [] ovf [320, 320]
+320 arrow key moved tab false,true
+320 errs []
+1440 onb rows axe [] ovf [1440, 1440]
+1440 onb style axe [] ovf [1440, 1440]
+1440 arrow key moved tab false,true
+1440 errs []
+preview 390 profile axe ['landmark-complementary-is-top-level:1:.wg-side'] ovf [390, 390] errs [] canvas True
+preview 360 profile axe ['landmark-complementary-is-top-level:1:.wg-side'] ovf [360, 360] errs [] canvas True
+Traceback (most recent call last):
+  File "C:\Users\CharD\Desktop\DeepSpot Globe\qa\mobile-fixes\final.py", line 34, in <module>
+    asyncio.run(main())
+  File "C:\Users\CharD\AppData\Local\Programs\Python\Python310\lib\asyncio\runners.py", line 44, in run
+    return loop.run_until_complete(main)
+  File "C:\Users\CharD\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 646, in run_until_complete
+    return future.result()
+  File "C:\Users\CharD\Desktop\DeepSpot Globe\qa\mobile-fixes\final.py", line 28, in main
+    await pg.goto(BASE+'/welcome/?reset=1',wait_until='load')
+  File "C:\Users\CharD\AppData\Local\Programs\Python\Python310\lib\site-packages\playwright\async_api\_generated.py", line 9764, in goto
+    await self._impl_obj.goto(
+  File "C:\Users\CharD\AppData\Local\Programs\Python\Python310\lib\site-packages\playwright\_impl\_page.py", line 560, in goto
+    return await self._main_frame.goto(**locals_to_params(locals()))
+  File "C:\Users\CharD\AppData\Local\Programs\Python\Python310\lib\site-packages\playwright\_impl\_frame.py", line 156, in goto
+    await self._channel.send(
+  File "C:\Users\CharD\AppData\Local\Programs\Python\Python310\lib\site-packages\playwright\_impl\_connection.py", line 69, in send
+    return await self._connection.wrap_api_call(
+  File "C:\Users\CharD\AppData\Local\Programs\Python\Python310\lib\site-packages\playwright\_impl\_connection.py", line 563, in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+playwright._impl._errors.Error: Page.goto: Page crashed
+Call log:
+  - navigating to "http://localhost:8766/welcome/?reset=1", waiting until "load"
+
