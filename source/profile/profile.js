@@ -222,8 +222,8 @@ function render(){
     <div class="pp-vpanel" role="tabpanel" id="pp-vp-contrib" aria-labelledby="pp-vt-contrib" tabindex="0" hidden>
      ${sub(`postings <span>(${profile.records.length})</span>`,postingsHTML(),profile.records.length>6?'<button type="button" class="pp-chipbtn" data-more aria-expanded="false">show all</button>':'')}${sub(`places <span>(${profile.places.length})</span>`,placesHTML())}${sub('updates',updatesHTML(profile))}
     </div>
-    <div class="pp-vpanel" role="tabpanel" id="pp-vp-explored" aria-labelledby="pp-vt-explored" tabindex="0">${sub('explored',exploredHTML(own))}</div>
-    <div class="pp-vpanel" role="tabpanel" id="pp-vp-wtg" aria-labelledby="pp-vt-wtg" tabindex="0" hidden>${wtgHTML()}</div>
+    <div class="pp-vpanel" role="tabpanel" id="pp-vp-explored" aria-labelledby="pp-vt-explored" tabindex="0" hidden>${sub('explored',exploredHTML(own))}</div>
+    <div class="pp-vpanel" role="tabpanel" id="pp-vp-wtg" aria-labelledby="pp-vt-wtg" tabindex="0">${wtgHTML()}</div>
     <div class="pp-vpanel" role="tabpanel" id="pp-vp-picks" aria-labelledby="pp-vt-picks" tabindex="0" hidden>${sub('picks',picksHTML(own))}</div>
     <div class="pp-vpanel" role="tabpanel" id="pp-vp-items" aria-labelledby="pp-vt-items" tabindex="0" hidden>${sub(`items <span>(${allItems().filter(x=>!x.locked).length}/${allItems().length})</span>`,itemsHTML(),'<span class="pp-mono pp-ph">placeholder</span>')}${sub('giveaway',giveawayHTML())}</div>
    </div>
@@ -269,7 +269,7 @@ document.addEventListener('keydown',event=>{const tb=event.target.closest?.('.pp
 
 
 /* ---------- v5 (2026-10-20): passport object, edit in place, bio look, vertical tabs ---------- */
-const VTABS=[['explored','explored'],['wtg','my map'],['picks','picks'],['contrib','contributions'],['items','items']];
+const VTABS=[['wtg','my map'],['explored','explored'],['picks','picks'],['contrib','contributions'],['items','items']];
 const sub=(title,body,act='')=>`<div class="pp-sub"><div class="pp-sub-h"><h3>${title}</h3>${act}</div>${body}</div>`;
 const PIN_KEY='deepspot-showcase-v1';
 
@@ -324,7 +324,7 @@ function selectVT(id,focus){
  document.querySelectorAll('.pp-vpanel').forEach(p=>p.hidden=p.id!=='pp-vp-'+id);$('.pp-tabsec').dataset.vt=id;if(id==='wtg'&&profile.localPreview)requestAnimationFrame(wgSync);requestAnimationFrame(fitBio);
 }
 function wireV4(){
- selectVT('explored');
+ selectVT('wtg');
  const tl=$('.pp-vtabs');
  tl.addEventListener('click',e=>{const b=e.target.closest('.pp-vtab');if(b)selectVT(b.dataset.vt);});
  tl.addEventListener('keydown',e=>{const ids=[...document.querySelectorAll('.pp-vtab')].map(b=>b.dataset.vt),cur=ids.indexOf($('.pp-vtab[aria-selected=true]').dataset.vt);let n=null;
