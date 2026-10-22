@@ -46,13 +46,13 @@ const msg=f=>{const text=f.body.split(/\n\s*\n/)[0].replace(/^\s*[-*•]\s+/gm,'
  return `<li class="dc-msg">${avatarHTML(f.author,{className:'dc-av'})}<div class="dc-mb"><span class="dc-m"><b>${esc(f.author)}</b><i>#${esc(f.category.replace(/\s+/g,'-'))}</i><small>${replies(f.replies)}</small></span><a href="${esc(localURL('/forum/',{id:f.id}))}">${esc(clip(text,150))}</a></div></li>`;};
 const PIN='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 3 6 6-3 1-4 4 .5 4.5L12 17l-5 5-1-1 5-5-2.5-2.5L13 9l1-3Z"/></svg>';
 const CHECK='<svg class="dc-ck" viewBox="0 0 24 24" aria-hidden="true"><path d="m4.5 12.5 5 5 10-11"/></svg>';
-function discordHTML(content){
+function discordNow(content){
  const forum=content.forum,ann=forum.find(f=>f.category==='announcement'),poll=forum.find(f=>f.category==='poll');
  const href=f=>esc(localURL('/forum/',{id:f.id}));
  const options=(poll?.body||'').split('\n').map(l=>l.match(/^\s*[-*•]\s+(.+)$/)?.[1]?.trim()).filter(Boolean);
  const pv=votes('poll')[poll?.id];
  const pollTitle=(poll?.title||'').replace(/^poll:\s*/i,'');
- return `<section class="dc" id="cv-dc" aria-labelledby="cv-dct"><div class="dc-bar">
+ return `<section class="dc" id="dc" aria-labelledby="cv-dct"><div class="dc-bar">
   <div class="dc-ttl"><span class="dc-kick"><i class="dc-live" aria-hidden="true"></i>live now</span><h2 id="cv-dct">live from<br>the discord.</h2></div>
   <div class="dc-head dc-stats"><p><b data-count="${COMMUNITY_METRICS.month}">${fmt(COMMUNITY_METRICS.month)}</b><span>new spots this month</span></p><p><b data-count="${COMMUNITY_METRICS.members}">${fmt(COMMUNITY_METRICS.members)}</b><span>members</span></p></div>
   <a class="dc-join" href="${esc(DISCORD_URL)}" data-original target="_blank" rel="noopener">join now ${icon('arrow')}</a></div>
@@ -61,6 +61,85 @@ function discordHTML(content){
   ${ann?`<article class="dc-ticket"><span class="dc-pin" aria-hidden="true">${PIN}</span><div class="dc-tk-top"><span>#announcements</span><span>pinned</span></div><h3>${esc(ann.title)}</h3><p>${esc(clip(ann.body.split(/\n\s*\n/)[0].replace(/\s+/g,' ').trim(),170))}</p><div class="dc-tk-foot"><span>${replies(ann.replies)}</span><a href="${href(ann)}">read it ↗</a></div></article>`:''}
   ${poll?`<article class="dc-poll" data-poll="${esc(poll.id)}"><div class="dc-poll-top"><span>#polls</span><span>open</span></div><h3>${esc(pollTitle)}</h3><div class="dc-opts" role="group" aria-label="${esc(pollTitle)}">${options.map((o,i)=>`<button type="button" class="dc-opt" data-opt="${i}" aria-pressed="${pv===i}"><span class="dc-fill" aria-hidden="true"></span><span class="dc-opt-t">${esc(o)}</span><span class="dc-opt-m">${CHECK}<span>your vote</span></span></button>`).join('')}</div><div class="dc-poll-foot"><span>${replies(poll.replies)} on the forum</span><a href="${href(poll)}">vote on the forum ↗</a></div></article>`:''}
  </div></section>`;
+}
+
+
+/* ---------- 3b. discord layout variations (2026-10-22): ?dc=1..10, default stays "now". Same content + handlers, only the composition changes ---------- */
+export const DC_VARIANTS=[
+ ['1','classic+','The original three columns, refined: equal cards under the cobalt bar, bigger type, clearer order.'],
+ ['2','chat window','One big Discord-style app window: channel list, live feed in the middle, poll on the right.'],
+ ['3','bento','Tiles of different sizes: two giant stat tiles, a tall feed, a wide poll, the pinned note, a green join tile.'],
+ ['4','newspaper','Editorial front page: masthead, the pinned post as the lead story, a reader poll, the feed as a wire column.'],
+ ['5','ticker + stage','A scrolling ticker of messages on top, then a big centred poll with the stats and the pinned post beside it.'],
+ ['6','phone mock','A big phone shows the feed like a real chat. Huge title, stats, poll and join sit on the left.'],
+ ['7','stacked cards','Feed messages as a fanned stack of cards that deal forward one at a time. Poll and pinned note beside it.'],
+ ['8','split cobalt / ink','A hard 50/50 split: cobalt with the giant title, stats and join; ink with pinned, poll and feed.'],
+ ['9','poll hero','The poll is the hero: giant question, four huge option bars. Pinned note and feed in a slim strip below.'],
+ ['10','marquee wall','Two opposing marquee rows of message bubbles, title, stats and join between them, poll and pinned below.']
+];
+const dcParts=content=>{
+ const forum=content.forum,ann=forum.find(f=>f.category==='announcement'),poll=forum.find(f=>f.category==='poll');
+ const href=f=>esc(localURL('/forum/',{id:f.id}));
+ const options=(poll?.body||'').split('\n').map(l=>l.match(/^\s*[-*•]\s+(.+)$/)?.[1]?.trim()).filter(Boolean);
+ const pv=votes('poll')[poll?.id],pollTitle=(poll?.title||'').replace(/^poll:\s*/i,'');
+ const kick='<span class="dc-kick"><i class="dc-live" aria-hidden="true"></i>live now</span>';
+ const h=(cls='')=>`<h2 id="cv-dct" class="dv-h ${cls}">live from <span class="dv-br">the discord.</span></h2>`;
+ const stat=(n,l)=>`<p class="dv-stat"><b data-count="${n}">${fmt(n)}</b><span>${l}</span></p>`;
+ const stats=(cls='')=>`<div class="dv-stats ${cls}">${stat(COMMUNITY_METRICS.month,'new spots this month')}${stat(COMMUNITY_METRICS.members,'members')}</div>`;
+ const join=(cls='')=>`<a class="dv-join ${cls}" href="${esc(DISCORD_URL)}" data-original target="_blank" rel="noopener">join now ${icon('arrow')}</a>`;
+ const rep=n=>replies(n);
+ const pin=(c='dv-p',cls='')=>ann?`<article class="dv-pin ${c} ${cls}"><div class="dv-k"><span class="dv-tag"><i class="dv-pinic" aria-hidden="true">${PIN}</i>#announcements</span><span>pinned</span></div><h3>${esc(ann.title)}</h3><p>${esc(clip(ann.body.split(/\n\s*\n/)[0].replace(/\s+/g,' ').trim(),170))}</p><div class="dv-f"><span>${rep(ann.replies)}</span><a href="${href(ann)}">read it ↗</a></div></article>`:'';
+ const pollH=(c='dv-t',cls='')=>poll?`<article class="dv-poll ${c} ${cls}" data-poll="${esc(poll.id)}"><div class="dv-k"><span class="dv-tag dv-pl">#polls</span><span>open</span></div><h3>${esc(pollTitle)}</h3><div class="dc-opts" role="group" aria-label="${esc(pollTitle)}">${options.map((o,i)=>`<button type="button" class="dc-opt" data-opt="${i}" aria-pressed="${pv===i}"><span class="dc-fill" aria-hidden="true"></span><span class="dv-on" aria-hidden="true">${String(i+1).padStart(2,'0')}</span><span class="dc-opt-t">${esc(o)}</span><span class="dc-opt-m">${CHECK}<span>your vote</span></span></button>`).join('')}</div><div class="dv-f"><span>${rep(poll.replies)} on the forum</span><a href="${href(poll)}">vote on the forum ↗</a></div></article>`:'';
+ const more=`<a class="dc-more dv-more" href="${esc(localURL('/forum/'))}">open the forum ↗</a>`;
+ const feed=(cls='')=>`<div class="dv-feed ${cls}"><ol class="dc-feed" data-feed aria-label="Featured messages from the forum">${forum.map(f=>msg(f)).join('')}</ol></div>`;
+ const clone=f=>msg(f).replace('<li class="dc-msg">','<li class="dc-msg" aria-hidden="true">').replace('<a href','<a tabindex="-1" href');
+ const chans=[...new Map(forum.map(f=>[f.category,f])).values()];
+ /* marquee rows: real copy first, then aria-hidden copies; two sets so the loop is seamless */
+ const mq=(list,dir,reps)=>{const real=list.map(f=>msg(f)).join(''),cl=list.map(clone).join(''),rest=Array.from({length:reps-1},()=>cl).join('');
+  return `<div class="dv-mq" data-mq data-dir="${dir}"><div class="dv-mq-track"><ul class="dv-mq-set">${real}${rest}</ul><ul class="dv-mq-set" aria-hidden="true">${Array.from({length:reps},()=>cl).join('')}</ul></div></div>`;};
+ const deck=`<div class="dv-deck" data-deck><ol class="dv-deckl" data-deckl aria-label="Featured messages from the forum">${forum.map(f=>msg(f)).join('')}</ol><div class="dv-deckc"><span data-deckn>1 of ${forum.length}</span><button type="button" class="dv-next" data-decknext>next message ${icon('arrow')}</button></div></div>`;
+ const ticker=`<div class="dv-tk" data-mq data-dir="l" aria-label="Featured messages from the forum"><div class="dv-mq-track">${[0,1,2].map(k=>`<ul class="dv-mq-set"${k?' aria-hidden="true"':''}>${[...forum,...forum].map((f,i)=>{const t=f.body.split(/\n\s*\n/)[0].replace(/^\s*[-*•]\s+/gm,'').replace(/\s+/g,' ').trim();return `<li><a ${k||i>=forum.length?'tabindex="-1" ':''}href="${href(f)}"><b>${esc(f.author)}</b><i>#${esc(f.category.replace(/\s+/g,'-'))}</i>${esc(clip(t,84))}</a></li>`;}).join('')}</ul>`).join('')}</div></div>`;
+ return {forum,ann,poll,kick,h,stat,stats,join,pin,pollH,more,feed,mq,chans,href,deck,ticker,rep};
+};
+const DCV={
+ 1:P=>`<header class="dv-bar dv-c"><div class="dv-ttl">${P.kick}${P.h()}</div>${P.stats()}${P.join()}</header>
+  <div class="dv-cards"><section class="dv-card dv-t" aria-label="featured messages"><div class="dv-ch"><span>01</span><h3>featured messages</h3><em>from across the forum</em></div>${P.feed()}${P.more}</section>
+  <div class="dv-card dv-card-pin dv-p"><div class="dv-ch"><span>02</span><h3>pinned</h3><em>from the team</em></div>${P.pin('dv-p','dv-flat')}</div>
+  <div class="dv-card dv-card-poll"><div class="dv-ch"><span>03</span><h3>open poll</h3><em>vote in your browser</em></div>${P.pollH('dv-t','dv-flat')}</div></div>`,
+ 2:P=>`<div class="dv-win dv-t"><header class="dv-title dv-c"><span class="dv-dots" aria-hidden="true"><i></i><i></i><i></i></span><div class="dv-ttl">${P.kick}${P.h()}</div>${P.stats()}${P.join()}</header>
+  <div class="dv-wbody"><nav class="dv-side dv-i" aria-label="Channels"><div class="dv-sh">deepspot</div><span class="dv-sl">channels</span><ul>${P.chans.map(f=>`<li><a href="${P.href(f)}"><i aria-hidden="true">#</i>${esc(f.category.replace(/\s+/g,'-'))}</a></li>`).join('')}</ul><a class="dv-sf" href="${esc(localURL('/forum/'))}">open the forum ↗</a></nav>
+  <div class="dv-main">${P.pin('dv-p','dv-strip')}<div class="dv-mh"><h3><i aria-hidden="true">#</i>featured messages</h3><span>from across the forum</span></div>${P.feed()}</div>
+  <div class="dv-rail">${P.pollH('dv-t','dv-flat')}</div></div></div>`,
+ 3:P=>`<div class="dv-bento"><div class="dv-tile dv-c dv-t-title">${P.kick}${P.h()}</div>
+  <div class="dv-tile dv-p dv-t-s1">${P.stat(COMMUNITY_METRICS.month,'new spots this month')}</div>
+  <div class="dv-tile dv-i dv-t-s2">${P.stat(COMMUNITY_METRICS.members,'members')}</div>
+  <section class="dv-tile dv-t dv-t-feed" aria-label="featured messages"><div class="dv-ch"><h3>featured messages</h3><em>from the forum</em></div>${P.feed()}${P.more}</section>
+  ${P.pollH('dv-t','dv-tile dv-t-poll')}
+  ${P.pin('dv-a2','dv-tile dv-t-pin')}
+  <a class="dv-tile dv-g dv-t-join" href="${esc(DISCORD_URL)}" data-original target="_blank" rel="noopener"><span>come say hi</span><b>join now</b>${icon('arrow')}</a></div>`,
+ 4:P=>`<header class="dv-mast"><div class="dv-dl"><span>${P.kick}</span><span>figures as of ${esc(COMMUNITY_METRICS.capturedLabel)}</span>${P.join()}</div><div class="dv-np3"><div class="dv-ear">${P.stat(COMMUNITY_METRICS.month,'new spots this month')}</div>${P.h()}<div class="dv-ear">${P.stat(COMMUNITY_METRICS.members,'members')}</div></div></header>
+  <div class="dv-news"><div class="dv-lead">${P.pin('dv-np','dv-flat')}</div>
+  <div class="dv-rp">${P.pollH('dv-np','dv-flat')}</div>
+  <section class="dv-wire" aria-label="the wire"><div class="dv-ch"><h3>the wire</h3><em>featured messages</em></div>${P.feed()}${P.more}</section></div>`,
+ 5:P=>`<div class="dv-tkw dv-c">${P.ticker}</div>
+  <div class="dv-stage"><header class="dv-sh5">${P.kick}${P.h()}</header>
+  <div class="dv-st3"><div class="dv-sl5">${P.stats()}${P.join()}</div><div class="dv-sc5">${P.pollH('dv-i','dv-big')}</div><div class="dv-sr5">${P.pin('dv-p','dv-flat')}${P.more}</div></div></div>`,
+ 6:P=>`<div class="dv-ph6"><div class="dv-pl6"><div class="dv-ttl">${P.kick}${P.h()}</div>${P.stats()}${P.pollH('dv-t','dv-flat')}${P.join()}</div>
+  <div class="dv-pr6 dv-c"><div class="dv-phone"><div class="dv-notch" aria-hidden="true"></div><div class="dv-scr dv-i"><div class="dv-ph-h"><b><i aria-hidden="true">#</i>featured-messages</b><span>from across the forum</span></div>${P.pin('dv-p','dv-mini')}${P.feed()}<a class="dv-more6" href="${esc(localURL('/forum/'))}">open the forum ↗</a></div></div></div></div>`,
+ 7:P=>`<header class="dv-hd7">${P.kick}${P.h()}<div class="dv-hr">${P.stats()}${P.join()}</div></header>
+  <div class="dv-b7"><div class="dv-stg7 dv-c"><span class="dv-cap7">featured messages</span>${P.deck}</div><div class="dv-r7">${P.pin('dv-p','dv-flat')}${P.pollH('dv-t','dv-flat')}</div></div>`,
+ 8:P=>`<div class="dv-sp"><div class="dv-spl dv-c"><div class="dv-spl-in">${P.kick}${P.h()}${P.stats()}${P.join()}</div></div>
+  <div class="dv-spr dv-i"><div class="dv-spr-in">${P.pin('dv-ink2','dv-flat')}${P.pollH('dv-ink2','dv-flat')}<section class="dv-fd8" aria-label="featured messages"><div class="dv-ch"><h3>featured messages</h3><em>from across the forum</em></div>${P.feed()}${P.more}</section></div></div></div>`,
+ 9:P=>`<header class="dv-hd9">${P.kick}${P.stats('dv-inl')}${P.join()}</header>
+  <div class="dv-hero9 dv-c"><div class="dv-hin9">${P.h('dv-sm')}${P.pollH('dv-c','dv-hero')}</div></div>
+  <div class="dv-strip9"><div class="dv-s9a">${P.pin('dv-p','dv-flat')}</div><section class="dv-s9b dv-t" aria-label="featured messages"><div class="dv-ch"><h3>featured messages</h3><em>from across the forum</em></div>${P.feed()}${P.more}</section></div>`,
+ 10:P=>`<div class="dv-wall">${P.mq(P.forum.slice(0,2),'l',3)}<div class="dv-mid dv-c"><div class="dv-mid-in">${P.kick}${P.h()}<div class="dv-midr">${P.stats()}${P.join()}</div></div></div>${P.mq(P.forum.slice(2),'r',3)}</div>
+  <div class="dv-two">${P.pin('dv-p','dv-flat')}${P.pollH('dv-t','dv-flat')}</div>`
+};
+function discordHTML(content,v='now'){
+ if(!DCV[v])return discordNow(content);
+ const P=dcParts(content);
+ return `<section class="dc dcv dcv${v}" id="dc" data-dcv="${v}" aria-labelledby="cv-dct">${DCV[v](P)}</section>`;
 }
 
 /* ---------- 4. spots ---------- */
@@ -106,9 +185,9 @@ function roadHTML(){
 function wireFeed(scope){
  const ol=$('[data-feed]',scope);if(!ol||ol.children.length<2||reduced())return;
  let t=0,hold=false,seen=false;
- const step=()=>{const kids=[...ol.children],tops=new Map(kids.map(li=>[li,li.getBoundingClientRect().top])),last=ol.lastElementChild;
+ const step=()=>{const kids=[...ol.children],tops=new Map(kids.map(li=>{const r=li.getBoundingClientRect();return [li,{x:r.left,y:r.top}];})),last=ol.lastElementChild;
   ol.prepend(last);last.classList.add('is-new');
-  for(const li of ol.children){if(li===last)continue;const dy=tops.get(li)-li.getBoundingClientRect().top;li.style.transition='none';li.style.transform=`translateY(${dy}px)`;}
+  for(const li of ol.children){if(li===last)continue;const r=li.getBoundingClientRect(),o=tops.get(li);li.style.transition='none';li.style.transform=`translate(${o.x-r.left}px,${o.y-r.top}px)`;}
   void ol.offsetHeight;
   requestAnimationFrame(()=>{for(const li of ol.children){li.style.transition='';li.style.transform='';}last.classList.remove('is-new');});};
  const tick=()=>{clearTimeout(t);if(hold||!seen||document.hidden)return;t=setTimeout(()=>{step();tick();},4000);};
@@ -117,6 +196,34 @@ function wireFeed(scope){
  box.addEventListener('focusin',()=>{hold=true;clearTimeout(t);});box.addEventListener('focusout',e=>{if(!box.contains(e.relatedTarget)){hold=false;tick();}});
  document.addEventListener('visibilitychange',tick);
  if('IntersectionObserver'in window)new IntersectionObserver(([en])=>{seen=en.isIntersecting;tick();},{threshold:.3}).observe(ol);
+}
+/* stacked cards: the front card flies off, then joins the back of the stack; same pause rules as the feed, button always works */
+function wireDeck(scope){
+ const box=$('[data-deck]',scope);if(!box)return;const ol=$('[data-deckl]',box),n=ol.children.length;if(n<2)return;
+ [...ol.children].forEach((li,i)=>li.dataset.i=i);
+ const place=()=>{[...ol.children].forEach((li,i)=>{li.style.setProperty('--p',i);li.toggleAttribute('inert',i>0);});$('[data-deckn]',box).textContent=`${+ol.firstElementChild.dataset.i+1} of ${n}`;};
+ place();
+ let busy=false,t=0,hold=false,seen=false;
+ const next=()=>{if(busy)return;busy=true;const f=ol.firstElementChild;
+  const done=()=>{f.style.transition='none';f.classList.remove('is-out');ol.append(f);place();void f.offsetHeight;f.style.transition='';busy=false;};
+  if(reduced()){done();return;}f.classList.add('is-out');setTimeout(done,560);};
+ const tick=()=>{clearTimeout(t);if(hold||!seen||document.hidden||reduced())return;t=setTimeout(()=>{next();tick();},4200);};
+ $('[data-decknext]',box).addEventListener('click',()=>{next();tick();});
+ box.addEventListener('pointerenter',()=>{hold=true;clearTimeout(t);});box.addEventListener('pointerleave',()=>{hold=false;tick();});
+ box.addEventListener('focusin',()=>{hold=true;clearTimeout(t);});box.addEventListener('focusout',e=>{if(!box.contains(e.relatedTarget)){hold=false;tick();}});
+ document.addEventListener('visibilitychange',tick);
+ if('IntersectionObserver'in window)new IntersectionObserver(([en])=>{seen=en.isIntersecting;tick();},{threshold:.3}).observe(box);
+}
+/* marquee rows + ticker: CSS scroll, paused on hover/focus/offscreen/hidden tab; reduced motion = static, scrolls by hand */
+function wireMarquee(scope){
+ $$('[data-mq]',scope).forEach(m=>{
+  if(reduced())return;
+  let hold=false,seen=false;const sync=()=>m.classList.toggle('is-paused',hold||!seen||document.hidden);sync();
+  m.addEventListener('pointerenter',()=>{hold=true;sync();});m.addEventListener('pointerleave',()=>{hold=false;sync();});
+  m.addEventListener('focusin',()=>{hold=true;sync();});m.addEventListener('focusout',()=>{hold=false;sync();});
+  document.addEventListener('visibilitychange',sync);
+  if('IntersectionObserver'in window)new IntersectionObserver(([en])=>{seen=en.isIntersecting;sync();},{threshold:.05}).observe(m);else{seen=true;sync();}
+ });
 }
 function wirePoll(scope){
  const art=$('[data-poll]',scope);if(!art)return;const id=art.dataset.poll;
@@ -127,8 +234,8 @@ function wireCounts(scope){
  const els=$$('[data-count]',scope).filter(e=>e.closest('.dc'));if(!els.length||reduced()||!('IntersectionObserver'in window))return;
  // real numbers stay in the markup until the count starts, so a missed observer never leaves a 0
  const io=new IntersectionObserver(([en])=>{if(!en.isIntersecting)return;io.disconnect();const t0=performance.now();
-  const f=now=>{const x=Math.min(1,(now-t0)/1500),y=1-(1-x)**3;els.forEach(e=>{e.textContent=fmt(Math.round(+e.dataset.count*y));});if(x<1)requestAnimationFrame(f);};requestAnimationFrame(f);},{threshold:.35});
- io.observe($('.dc-head',scope));
+  const f=now=>{const x=Math.min(1,(now-t0)/1500),y=1-(1-x)**3;els.forEach(e=>{e.textContent=fmt(Math.round(+e.dataset.count*y));});if(x<1)requestAnimationFrame(f);};requestAnimationFrame(f);},{threshold:.2});
+ io.observe($('.dc',scope));
 }
 function wireSpots(scope,data,acct){
  const L=spotLists(data.spots),grid=$('[data-grid]',scope),basis=$('[data-basis]',scope),tabs=$$('[data-tab]',scope);
@@ -162,12 +269,13 @@ function wireVotes(scope){
 /* your vote matters: two huge numbered cards, the same loud family as the discord stage */
 const voteHTML=()=>`<section class="vm" aria-labelledby="cv-vt"><div class="vm-in"><div class="vm-l"><span class="vm-k">two ways to shape deepspot</span><h2 id="cv-vt">your vote<br>matters.</h2><p>Nothing goes on the map and nothing gets built without the community. Pick a side.</p></div><ol class="vm-r"><li><a href="#cv-sp" data-jump="cv-sp"><span class="vm-n">01</span><b>what makes<br>the map.</b><span class="vm-d">Yes or not quite on new community spots.</span><i>vote on spots ${icon('arrow')}</i></a></li><li><a href="#cv-rd" data-jump="cv-rd"><span class="vm-n">02</span><b>what we build<br>next.</b><span class="vm-d">Up or down on the roadmap.</span><i>vote on the roadmap ${icon('arrow')}</i></a></li></ol></div></section>`;
 export async function renderCommunityV2(root,data){
- const acct=readAccount(),gv=new URLSearchParams(location.search).get('giveaway')||'g1';
+ const dcq=new URLSearchParams(location.search).get('dc'),dcv=DCV[dcq]?dcq:'now',acct=readAccount(),gv=new URLSearchParams(location.search).get('giveaway')||'g1';
  const order=people(data).monthly.slice().sort((a,b)=>b.points-a.points),models=passportModels(data,order);
- root.innerHTML=`<div class="cv"><h1 class="cv-sr">DeepSpot community</h1><div data-giveaway></div>${models.length?participantsHTML(models):''}${discordHTML(data.content)}${voteHTML()}<div class="cv-gut">${spotsHTML(data,acct)}${roadHTML()}</div></div>`;
+ root.innerHTML=`<div class="cv"><h1 class="cv-sr">DeepSpot community</h1><div data-giveaway></div>${models.length?participantsHTML(models):''}${discordHTML(data.content,dcv)}${voteHTML()}<div class="cv-gut">${spotsHTML(data,acct)}${roadHTML()}</div></div>`;
  $$('[data-jump]',root).forEach(l=>l.addEventListener('click',e=>{const t=document.getElementById(l.dataset.jump);if(!t)return;e.preventDefault();t.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});}));
  const scope=$('.cv',root);
- wirePoll(scope);wireFeed(scope);wireCounts(scope);wireSpots(scope,data,acct);wireVotes(scope);
+ wirePoll(scope);wireFeed(scope);wireDeck(scope);wireMarquee(scope);wireCounts(scope);wireSpots(scope,data,acct);wireVotes(scope);
  const pm=$('[data-pm]',scope);if(pm)wirePassports(pm,models);
- const {renderGiveaway}=await import('./giveaway-hero.mjs?v=r22a');renderGiveaway($('[data-giveaway]',scope),data,gv);
+ const {renderGiveaway}=await import('./giveaway-hero.mjs?v=dcv1');renderGiveaway($('[data-giveaway]',scope),data,gv);
+ if(location.hash==='#dc'){const go=()=>document.getElementById('dc')?.scrollIntoView({block:'start'});go();setTimeout(go,700);setTimeout(go,1800);}
 }
