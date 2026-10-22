@@ -56,7 +56,7 @@ function statsHTML(){
  <p class="pp-fine">Level = 1 + √(points ÷ 40). You earn +${POINTS.spot} points for an approved spot, +${POINTS.story} for a story and +${POINTS.upvote} for each upvote.</p>`;
 }
 function postingsHTML(){
- const list=profile.records,card=r=>`<li class="pp-post"${list.indexOf(r)>5?' data-extra hidden':''}><a href="${esc(r.href)}"><span class="pp-post-img">${r.image?`<img src="${esc(r.card||r.image)}" data-orig="${esc(r.image)}" alt="" width="400" height="300" loading="lazy" decoding="async">`:'<span class="pp-no-photo" aria-hidden="true">deep<br>spot.</span>'}</span><span class="pp-post-copy"><span class="pp-mono">${esc(r.place||'')}</span><strong>${esc(r.name)}</strong><span class="pp-post-tags">${r.kind==='story'?`<i>story · ${esc(r.tag||'')}</i>`:r.tags.filter(t=>t!=='DEEP SPOT CHOICE').slice(0,2).map(t=>`<i>${esc(t.toLowerCase())}</i>`).join('')+(r.tags.includes('DEEP SPOT CHOICE')?'<i class="pp-choice">deep spot choice</i>':'')}</span></span></a>${profile.localPreview?pinBtn(r):''}</li>`;
+ const list=profile.records,card=r=>`<li class="pp-post"${list.indexOf(r)>5?' data-extra hidden':''}><a href="${esc(r.href)}"><span class="pp-post-img">${r.image?`<img src="${esc(r.card||r.image)}" data-orig="${esc(r.image)}" alt="" width="400" height="300" loading="lazy" decoding="async">`:'<span class="pp-no-photo" aria-hidden="true">deep<br>spot.</span>'}</span><span class="pp-post-copy"><span class="pp-mono">${esc(r.place||'')}</span><strong>${esc(r.name)}</strong><span class="pp-post-tags">${r.kind==='story'?`<i>story · ${esc(r.tag||'')}</i>`:r.tags.filter(t=>t!=='DEEP SPOT CHOICE').slice(0,2).map(t=>`<i>${esc(t.toLowerCase())}</i>`).join('')+(r.tags.includes('DEEP SPOT CHOICE')?'<i class="pp-choice">deep spot choice</i>':'')}</span></span></a></li>`;
  if(!list.length)return empty(profile.localPreview?'nothing posted yet.':'no postings in this collection.',profile.localPreview?'Your spots and stories will fill this page when your account is connected.':'This explorer’s postings are not in the saved collection yet.',profile.localPreview?'<a href="/contribute/" class="pp-link">add a spot ↗</a>':`<a href="/browse/?q=${encodeURIComponent(profile.name)}" class="pp-link">search for ${esc(profile.name)} ↗</a>`);
  return `<ul class="pp-posts">${list.map(card).join('')}</ul><a class="pp-link pp-all" href="/browse/?q=${encodeURIComponent(profile.name)}">all spots by ${esc(profile.name)} ↗</a>`;
 }
@@ -219,11 +219,10 @@ function render(){
   <div class="pp-statsrow">${sec('type','traveler type',null,typeHTML())}${sec('stats','contributions',null,statsHTML())}</div>
   <section class="pp-sec pp-tabsec" aria-label="Passport contents"><div class="pp-vtabs" role="tablist" aria-orientation="vertical" aria-label="Passport contents">${VTABS.map(([id,label],i)=>`<button type="button" role="tab" class="pp-vtab" id="pp-vt-${id}" data-vt="${id}" aria-controls="pp-vp-${id}" aria-selected="${i===0}" tabindex="${i===0?0:-1}">${label}${id==='wtg'&&own&&wgAll().length?` <span>${wgAll().length}</span>`:id==='contrib'&&profile.records.length?` <span>${profile.records.length}</span>`:psCounts(own)[id]?` <span>${psCounts(own)[id]}</span>`:''}</button>`).join('')}</div>
    <div class="pp-vpanels">
-    <div class="pp-vpanel" role="tabpanel" id="pp-vp-show" aria-labelledby="pp-vt-show" tabindex="0">${showcaseHTML()}</div>
     <div class="pp-vpanel" role="tabpanel" id="pp-vp-contrib" aria-labelledby="pp-vt-contrib" tabindex="0" hidden>
      ${sub(`postings <span>(${profile.records.length})</span>`,postingsHTML(),profile.records.length>6?'<button type="button" class="pp-chipbtn" data-more aria-expanded="false">show all</button>':'')}${sub(`places <span>(${profile.places.length})</span>`,placesHTML())}${sub('updates',updatesHTML(profile))}
     </div>
-    <div class="pp-vpanel" role="tabpanel" id="pp-vp-explored" aria-labelledby="pp-vt-explored" tabindex="0" hidden>${sub('explored',exploredHTML(own))}</div>
+    <div class="pp-vpanel" role="tabpanel" id="pp-vp-explored" aria-labelledby="pp-vt-explored" tabindex="0">${sub('explored',exploredHTML(own))}</div>
     <div class="pp-vpanel" role="tabpanel" id="pp-vp-wtg" aria-labelledby="pp-vt-wtg" tabindex="0" hidden>${wtgHTML()}</div>
     <div class="pp-vpanel" role="tabpanel" id="pp-vp-picks" aria-labelledby="pp-vt-picks" tabindex="0" hidden>${sub('picks',picksHTML(own))}</div>
     <div class="pp-vpanel" role="tabpanel" id="pp-vp-items" aria-labelledby="pp-vt-items" tabindex="0" hidden>${sub(`items <span>(${allItems().filter(x=>!x.locked).length}/${allItems().length})</span>`,itemsHTML(),'<span class="pp-mono pp-ph">placeholder</span>')}${sub('giveaway',giveawayHTML())}</div>
@@ -270,7 +269,7 @@ document.addEventListener('keydown',event=>{const tb=event.target.closest?.('.pp
 
 
 /* ---------- v5 (2026-10-20): passport object, edit in place, bio look, vertical tabs ---------- */
-const VTABS=[['show','showcase'],['explored','explored'],['wtg','my map'],['picks','picks'],['contrib','contributions'],['items','items']];
+const VTABS=[['explored','explored'],['wtg','my map'],['picks','picks'],['contrib','contributions'],['items','items']];
 const sub=(title,body,act='')=>`<div class="pp-sub"><div class="pp-sub-h"><h3>${title}</h3>${act}</div>${body}</div>`;
 const PIN_KEY='deepspot-showcase-v1';
 
@@ -325,7 +324,7 @@ function selectVT(id,focus){
  document.querySelectorAll('.pp-vpanel').forEach(p=>p.hidden=p.id!=='pp-vp-'+id);$('.pp-tabsec').dataset.vt=id;if(id==='wtg'&&profile.localPreview)requestAnimationFrame(wgSync);requestAnimationFrame(fitBio);
 }
 function wireV4(){
- selectVT('show');
+ selectVT('explored');
  const tl=$('.pp-vtabs');
  tl.addEventListener('click',e=>{const b=e.target.closest('.pp-vtab');if(b)selectVT(b.dataset.vt);});
  tl.addEventListener('keydown',e=>{const ids=[...document.querySelectorAll('.pp-vtab')].map(b=>b.dataset.vt),cur=ids.indexOf($('.pp-vtab[aria-selected=true]').dataset.vt);let n=null;
@@ -396,7 +395,7 @@ document.addEventListener('click',e=>{
  if(e.target.closest('[data-mark-done]'))setTab('passport');
  const pin=e.target.closest('[data-pin]');if(!pin)return;
  const h=pin.dataset.pin,list=readPins(),on=!list.includes(h);writePins(on?[...list,h]:list.filter(x=>x!==h));
- pin.setAttribute('aria-pressed',String(on));pin.textContent=on?'★ showing':'☆ show';$('#pp-vp-show').innerHTML=showcaseHTML();
+ pin.setAttribute('aria-pressed',String(on));pin.textContent=on?'★ showing':'☆ show';
 });
 addEventListener('resize',()=>requestAnimationFrame(fitBio));
 /* the passport object is drawn at 440px and scaled up to fill its pane */
