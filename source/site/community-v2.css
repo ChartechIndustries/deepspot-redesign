@@ -854,3 +854,6 @@ html:not([data-panel-color=off]) .vm-r i{color:#83cdce}
 html[data-theme=light]:not([data-panel-color=off]) .vm{background:#d6e9e6;color:#0b1b27}
 html[data-theme=light]:not([data-panel-color=off]) .vm-k{color:#1d5f63}
 html[data-theme=light]:not([data-panel-color=off]) .vm-l p{color:#24464a}
+
+/* 2026-10-22: tab strips scroll sideways only — never up/down on phones */
+.ob-tabs,.pp-vtabs,.cv-tabs,.br-tabs,.fs-tabs{overflow-y:hidden;overscroll-behavior-x:contain;overscroll-behavior-y:none}

@@ -399,3 +399,6 @@ body:has(.ob-sheet[data-open=arch].is-open) .ob-tip{opacity:0;visibility:hidden;
 body:has(.ob-sheet[data-open=style].is-open) .ob-tip{opacity:0;visibility:hidden;transition:opacity .15s}
 @media(max-width:620px){.ob-layer[data-mode=sheet] .ob-sheet[data-open=style] .ed-hint{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}.ob-layer[data-mode=sheet] .ob-sheet[data-open=style] .ob-ag-h{margin-bottom:12px}}
 @media(max-height:640px){.ob-sheet[data-open=style] .ob-sg{margin-top:10px}.ob-sheet[data-open=style] .ed-sw,.ob-sheet[data-open=style] .ed-tiles-cz .ed-sw{height:60px}.ob-sheet[data-open=style] .ed-tiles,.ob-sheet[data-open=style] .ed-tiles-cz{gap:12px 9px}.ob-sheet[data-open=style] .ob-tab{min-height:40px}.ob-sheet[data-open=style] .ob-tabbar{padding-top:4px}.ob-sheet[data-open=style] .ob-sh-f{padding-top:8px;padding-bottom:calc(8px + env(safe-area-inset-bottom))}}
+
+/* 2026-10-22: tab strips scroll sideways only — never up/down on phones */
+.ob-tabs,.pp-vtabs,.cv-tabs,.br-tabs,.fs-tabs{overflow-y:hidden;overscroll-behavior-x:contain;overscroll-behavior-y:none}

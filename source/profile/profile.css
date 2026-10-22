@@ -1168,3 +1168,6 @@ html[data-panel-color=off] .ed-n{background:transparent;color:var(--br-text);bor
 .wg-pop::after{left:calc(50% + var(--ax,0px))}
 .wg-pop.is-below{translate:-50% 22px}
 .wg-pop.is-below::after{bottom:auto;top:-8px;border:0;border-left:1px solid var(--br-line);border-top:1px solid var(--br-line)}
+
+/* 2026-10-22: tab strips scroll sideways only — never up/down on phones */
+.ob-tabs,.pp-vtabs,.cv-tabs,.br-tabs,.fs-tabs{overflow-y:hidden;overscroll-behavior-x:contain;overscroll-behavior-y:none}

@@ -23,3 +23,6 @@ body .br-tabs button,body .br-more select{font-weight:800;font-size:18px;letter-
 body .br-card .br-place,body .br-card [class*=place]{font-size:17px}
 body .br-credit .ds-author{font-size:16px}
 @media(max-width:1100px){body .br-tabs button{font-size:16px}}
+
+/* 2026-10-22: tab strips scroll sideways only — never up/down on phones */
+.ob-tabs,.pp-vtabs,.cv-tabs,.br-tabs,.fs-tabs{overflow-y:hidden;overscroll-behavior-x:contain;overscroll-behavior-y:none}
