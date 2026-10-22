@@ -1,0 +1,9 @@
+card {'w': 363, 'h': 551, 'ratio': 1.518, 'nat': 1.518181818181818}
+pad box [324, 89.6875, 3.612543554006969]
+mark on card {'box': [321, 102], 'img': [638, 168], 'drawnW': 321, 'drawnH': 85, 'fillW': 1, 'fillH': 0.83, 'src': 20110}
+noscroll {'sh': 844, 'ih': 844, 'sw': 390, 'iw': 390, 'bh': 844}
+long bio {'fs': '19px', 'fits': True, 'clamp': 'none'}
+profile mark {'box': [274, 74], 'drawnW': 205, 'fillW': 0.75}
+edit preview {'tall': True, 'h': 668, 'w': 440, 'ratio': 1.518, 'bio': 'I go looking for abandoned quarries and ', 'bioFs': '19px', 'bioFits': True, 'sig': True}
+noscroll profile {'sh': 1767, 'ih': 844, 'sw': 390, 'iw': 390, 'bh': 1759}
+errs []

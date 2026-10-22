@@ -113,7 +113,7 @@
 .pm-rows dd{margin:0;font-size:16px;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pm-sig{position:relative;display:block;height:30px;margin-top:2px;border-bottom:1.5px solid var(--pa);box-shadow:0 1.5px 1px -.5px var(--emb-hi)}
 .pm-sig-l{position:absolute;left:0;top:7px;font:600 13px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--mu)}
-.pm-sig img{position:absolute;left:100px;right:0;top:2px;bottom:2px;width:calc(100% - 100px);height:calc(100% - 4px);object-fit:contain;object-position:left center}
+.pm-sig img{position:absolute;left:100px;right:0;top:2px;bottom:2px;width:calc(100% - 100px);height:calc(100% - 4px);object-fit:contain;object-position:left bottom}
 .pm-mrz{display:block;position:absolute!important;left:0;right:0;bottom:0;padding:7px 16px 8px;background:rgba(11,27,39,.06);border-top:1px solid rgba(11,27,39,.12);font:600 11px/1.5 ui-monospace,"OCR A Std",Menlo,Consolas,monospace;letter-spacing:.01em;color:#33434f;white-space:nowrap;overflow:hidden;user-select:none}
 
 /* controls fade in after the deal */

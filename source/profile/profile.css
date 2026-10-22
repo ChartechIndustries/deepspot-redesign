@@ -52,9 +52,9 @@ a.pp-mole-empty:hover{background:var(--pp-inkl)}
 .pp-sig img{width:100%;height:100%;object-fit:contain;padding:8px;display:block}
 
 /* art pad, ink style on the card */
-.sp-paper{position:relative;aspect-ratio:2/1;background:#fbf9f2 radial-gradient(circle at 6px 6px,#0b1b2733 .9px,transparent 1.3px) 0 0/12px 12px;border:1px solid rgba(11,27,39,.3);color:var(--pp-ink)}
+.sp-paper{position:relative;aspect-ratio:32/9;background:linear-gradient(transparent calc(78% - 1px),rgba(11,27,39,.34) calc(78% - 1px),rgba(11,27,39,.34) 78%,transparent 78%),radial-gradient(circle at 6px 6px,#0b1b2733 .9px,transparent 1.3px) 0 0/12px 12px,#fbf9f2;border:1px solid rgba(11,27,39,.3);color:var(--pp-ink)}
 .sp-paper::before{content:'';position:absolute;inset:8px;border:1px dashed #0b1b2724;pointer-events:none}
-.sp-paper canvas,.sp-paper img{position:relative;display:block;width:100%;height:100%}.sp-paper canvas{touch-action:none;cursor:crosshair}
+.sp-paper canvas,.sp-paper img{position:relative;display:block;width:100%;height:100%}.sp-paper img{object-fit:contain;object-position:left bottom}.sp-paper canvas{touch-action:none;cursor:crosshair}
 .sp-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;padding:16px}.sp-empty::before{display:none}
 .sp-empty svg{width:32px;height:32px;fill:none;stroke:currentColor;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;opacity:.7}.sp-empty strong{font-size:20px;letter-spacing:-.04em}.sp-empty span{font-size:15.5px;color:var(--pp-inkm)}
 .sp-tools{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
@@ -739,9 +739,9 @@ button.pp-mole-empty span{font:600 15px/1.3 ui-monospace,Menlo,Consolas,monospac
 .pp-id9-stamp b{font:800 15px/1 Arial,Helvetica,sans-serif;letter-spacing:-.01em;text-transform:uppercase}
 .pp-id9-stamp i{font:600 13px/1 ui-monospace,Menlo,Consolas,monospace;font-style:normal;letter-spacing:.1em;text-transform:uppercase}
 /* the mark lives on the card now */
-.pp-id9 .pp-id9-sig{position:relative;height:74px;margin:14px 0 0;border:0;border-radius:0;border-bottom:1.5px solid #0b1b27;background:repeating-linear-gradient(0deg,transparent 0 17px,rgba(11,27,39,.08) 17px 18px);box-shadow:none;display:block}
+.pp-id9 .pp-id9-sig{position:relative;height:92px;margin:14px 0 0;border:0;border-radius:0;border-bottom:1.5px solid #0b1b27;background:repeating-linear-gradient(0deg,transparent 0 17px,rgba(11,27,39,.08) 17px 18px);box-shadow:none;display:block}
 .pp-id9 .pp-id9-sig .pp-sig-l{left:0;top:0}
-.pp-id9 .pp-id9-sig img{position:absolute;inset:14px 0 2px;width:100%;height:calc(100% - 16px);object-fit:contain;object-position:left center}
+.pp-id9 .pp-id9-sig img{position:absolute;left:0;right:0;bottom:3px;top:16px;width:100%;height:calc(100% - 19px);object-fit:contain;object-position:left bottom}
 .pp-id9 .pp-id9-sig>span:not(.pp-sig-l){position:absolute;left:0;bottom:6px;font:600 15px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.1em;text-transform:uppercase;color:#8a98a6}
 .pp-passobj>.pp-passobj-in>.pp-sig{display:none}
 .pp-id9-mrz{margin:12px -24px -18px!important;padding:10px 24px 12px;background:rgba(11,27,39,.05);border-top:1px solid rgba(11,27,39,.1);font:600 15.25px/1.5 ui-monospace,"OCR A Std",Menlo,Consolas,monospace!important;letter-spacing:.2em!important;color:#33434f!important;white-space:nowrap;overflow:hidden}
@@ -1087,3 +1087,13 @@ html[data-panel-color=off] .ed-n{background:transparent;color:var(--br-text);bor
 @keyframes pp-issued-in{from{opacity:0;scale:3;rotate:-26deg}60%{opacity:1;scale:.93;rotate:-11deg}to{opacity:1;scale:1;rotate:-13deg}}
 @keyframes pp-issued-out{to{opacity:0}}
 @media(prefers-reduced-motion:reduce){.pp-issued{display:none}}
+
+/* ================= v2.2 (2026-10-21): taller passport, bio in its own full-width band ================= */
+.pp-id9.pp-id9-tall{display:flex;flex-direction:column;box-sizing:border-box;min-height:668px}
+.pp-id9-tall>.pp-id-top,.pp-id9-tall>.pp-id-body,.pp-id9-tall>.pp-id9-sig,.pp-id9-tall>.pp-prog,.pp-id9-tall>.pp-id9-mrz{flex:none}
+.pp-id9-bio{position:relative;flex:1 1 auto;min-height:92px;margin:24px 0 14px;display:flex;align-items:stretch;border-radius:12px;background:rgba(11,27,39,.025)}
+.pp-id9-bio-t{display:flex;align-items:center;flex:1;min-width:0;padding:8px 12px;overflow:hidden}
+.pp-id9-bio-t>p{margin:0;width:100%;max-height:100%;overflow:hidden;font:600 19px/1.22 Arial,Helvetica,sans-serif;color:#17304a;overflow-wrap:break-word;white-space:pre-wrap}
+.pp-id9-bio-t>p.is-ph{color:#5d6b78;font-weight:500;font-style:italic}
+.pp-id9-tall>.pp-id9-sig{height:124px;margin:0}
+.pp-id9-tall>.pp-id9-mrz{margin-top:14px!important}

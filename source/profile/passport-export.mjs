@@ -53,7 +53,7 @@ export async function createPassportImage(profile,spots,url){
  mono('art',92,ay-12,13,ink,700);
  ctx.save();ctx.beginPath();ctx.rect(92,ay,aw,ah);ctx.fillStyle='#fbf9f2';ctx.fill();ctx.clip();
  ctx.fillStyle='#0b1b2730';for(let gy=ay+8;gy<ay+ah;gy+=12)for(let gx=100;gx<92+aw;gx+=12){ctx.beginPath();ctx.arc(gx,gy,.9,0,Math.PI*2);ctx.fill();}
- if(artImage)ctx.drawImage(artImage,92,ay,aw,ah);else{ctx.textAlign='center';text('no art yet.',92+aw/2,ay+ah/2+6,20,muted);ctx.textAlign='left';}
+ if(artImage){const k=Math.min((aw-8)/artImage.naturalWidth,(ah-8)/artImage.naturalHeight),w=artImage.naturalWidth*k,h=artImage.naturalHeight*k;ctx.drawImage(artImage,92+4,ay+ah-h-4,w,h);}else{ctx.textAlign='center';text('no art yet.',92+aw/2,ay+ah/2+6,20,muted);ctx.textAlign='left';}
  ctx.restore();ctx.strokeStyle='#0b1b2760';ctx.lineWidth=1;ctx.strokeRect(92.5,ay+.5,aw-1,ah-1);
  rule(92,966,632,966);ctx.font='15px monospace';ctx.fillStyle=muted;ctx.fillText(`DEEP<SPOT<<${profile.name.toUpperCase().replaceAll(' ','<')}<<<<`,92,1006);
  // right column: traveler type, numbers, postings, stamps

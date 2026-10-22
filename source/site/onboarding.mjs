@@ -6,8 +6,8 @@ import {FINISH,SLOTS,slotProgress,readProgress,writeProgress,isOnboarded,markOnb
 import {accountKey,readAccount,normalizeAccount,travelerStyles} from './account-state.mjs?v=pad1';
 import {readSession,writeSession} from './gate-state.mjs?v=gate1';
 import {G_ICON,A_ICON} from './brand-icons.mjs?v=ob1';
-import {readStyle,writeStyle,archCardsHTML,archGroups,styleGroupHTML,pickStyle,cardHTML,moleImgHTML,mrz,syncPreview,bindTilt} from '../profile/passport-edit.mjs?v=ob1';
-import {padHTML,initPad} from '../profile/sign-pad.mjs?v=pv3';
+import {readStyle,writeStyle,archCardsHTML,archGroups,styleGroupHTML,pickStyle,cardHTML,moleImgHTML,mrz,syncPreview,bindTilt} from '../profile/passport-edit.mjs?v=ob4';
+import {padHTML,initPad,inkURL} from '../profile/sign-pad.mjs?v=pv4';
 import {escapeHTML as esc,safeReturn} from '../profile/identity.mjs';
 
 const D=document,$=(s,r=D)=>r.querySelector(s),$$=(s,r=D)=>[...r.querySelectorAll(s)];
@@ -123,7 +123,7 @@ function buildB(){
  stage=$('.ob-stage',B);zone=$('.ob-zone',B);rise=$('.ob-rise',B);lift=$('.ob-lift',B);cardw=$('.ed-cardw',B);scale=$('.ed-scale',B);pobj=$('.ed-pobj',B);flip=$('.ob-faces',B);
  front=$('.pp-id9',flip);topEl=$('.ob-top',B);tipEl=$('#ob-tip',B);chipEl=$('#ob-chip',B);finBtn=$('#ob-fin',B);slotline=$('.ob-slotline',B);
  /* front: three rows (name, user, type), then since; slots go on top of the real card parts */
- front.classList.add('ob-face','ob-front');
+ front.classList.add('ob-face','ob-front','pp-id9-tall');
  const body=$('.pp-id-body',front),rows=$$('.pp-rows>div',front);
  const lvlRow=rows[3];rows[2].before(lvlRow);lvlRow.querySelector('dt').textContent='type';lvlRow.querySelector('dd').textContent='choose';lvlRow.dataset.r='type';
  const rowsNow=$$('.pp-rows>div',front),molebox=$('.pp-molebox',front),sig=$('.pp-id9-sig',front),top=$('.pp-id-top',front),mrzEl=$('.pp-id9-mrz',front);
@@ -131,8 +131,9 @@ function buildB(){
  molebox.insertAdjacentHTML('beforeend',slotBtn('photo','ob-s-photo'));
  body.insertAdjacentHTML('beforeend',slotBtn('name','ob-s-name')+slotBtn('arch','ob-s-arch'));
  sig.insertAdjacentHTML('beforeend',slotBtn('mark','ob-s-mark'));
- /* the bio band: the empty space between the photo block and "my mark"; the style sticker sits at its right end */
- body.insertAdjacentHTML('afterend',`<div class="ob-band">${slotBtn('bio','ob-s-bio ob-dm','<span class="ob-bio-t" data-bio></span>')}<button type="button" class="ob-slot ob-s-style ob-dm" data-slot="style"><span class="ob-sticker-in" aria-hidden="true"><b>✦</b><i>style</i></span></button></div>`);
+ /* v2.2: the bio is a full-width band between the photo block and "my mark"; the style sticker sits at the bottom-right corner of the photo block */
+ body.insertAdjacentHTML('afterend',`<div class="pp-id9-bio ob-band">${slotBtn('bio','ob-s-bio ob-dm','<span class="ob-bio-t" data-bio></span>')}</div>`);
+ body.insertAdjacentHTML('beforeend',`<button type="button" class="ob-slot ob-s-style ob-dm" data-slot="style"><span class="ob-sticker-in" aria-hidden="true"><b>✦</b><i>style</i></span></button>`);
  const stl=$('.ob-s-style',front),bioBtn=$('.ob-s-bio',front),stampEl=$('.pp-id9-stamp',front);stampEl.classList.add('ob-dm');
  for(const id of Object.keys(SLOT_LABEL)){slotEls[id]=$$(`[data-slot="${id}"]`,flip);slotEls[id].forEach(b=>b.dataset.lab=SLOT_PILL[id]);}
  lit.photo=[molebox];lit.name=[rowsNow[0],rowsNow[1]];lit.arch=[rowsNow[2],stampEl];lit.bio=[bioBtn];lit.mark=[sig];lit.style=[stl];
@@ -150,16 +151,16 @@ function buildB(){
  addEventListener('resize',()=>{fit();relift();placePop();});
  if(visualViewport)visualViewport.addEventListener('resize',()=>{keyboard();relift();});
  wireDrag();
- setTimeout(()=>{import('./mole/mole-reveal.mjs?v=ld2').catch(()=>{});},600);   /* so the mole loading screen shows the instant the photo is tapped */
+ setTimeout(()=>{import('./mole/mole-reveal.mjs?v=ld3').catch(()=>{});},600);   /* so the mole loading screen shows the instant the photo is tapped */
 }
 
 /* ---------- fit the card to the screen ---------- */
 function fit(){
  if(!builtB||B.hidden)return;
- const nh=flip.offsetHeight||572,wide=wideMode(),pop=popMode();
+ const nh=flip.offsetHeight||668,wide=wideMode(),pop=popMode();
  let s;
  if(wide){   /* desktop: the card is the page. tip + progress on the left, finish on the right */
-  const maxH=Math.min(innerHeight*.86,stage.clientHeight-16),maxW=stage.clientWidth-2*230-48;
+  const maxH=Math.min(innerHeight*.92,stage.clientHeight-16),maxW=stage.clientWidth-2*230-48;
   s=Math.min(maxW/440,maxH/nh,2.6);
  }else{
   const zw=zone.clientWidth,zh=zone.clientHeight;
@@ -312,15 +313,15 @@ E.mark={
   const a=readAccount(),root=$('#pp-pad',h);
   initPad(root,{art:a.signatureArt,onSave:()=>{paint({sig:true});}});
   const cv=$('canvas',root);let t;
-  cv.addEventListener('pointerup',()=>{clearTimeout(t);t=setTimeout(()=>paint({sigLive:cv.toDataURL('image/png')}),30);});
+  cv.addEventListener('pointerup',()=>{clearTimeout(t);t=setTimeout(()=>paint({sigLive:inkURL(cv)}),30);});
   $('[data-hand]',h).addEventListener('click',async()=>{
    const name=readAccount().name||'';if(!name){$('#ob-mark-n',h).textContent='add your name first.';return;}
    try{await D.fonts.load('600 110px Caveat');}catch{}
    const ctx=cv.getContext('2d');ctx.globalCompositeOperation='source-over';ctx.clearRect(0,0,cv.width,cv.height);
-   let size=130;const fam='Caveat,"Segoe Script","Brush Script MT",cursive';ctx.font=`600 ${size}px ${fam}`;
+   let size=104;const fam='Caveat,"Segoe Script","Brush Script MT",cursive';ctx.font=`600 ${size}px ${fam}`;
    const w=ctx.measureText(name).width,max=cv.width-60;if(w>max)size=Math.floor(size*max/w);
-   ctx.font=`600 ${size}px ${fam}`;ctx.fillStyle='#111';ctx.textBaseline='middle';ctx.textAlign='center';ctx.save();ctx.translate(cv.width/2,cv.height/2+6);ctx.rotate(-.05);ctx.fillText(name,0,0);ctx.restore();
-   prog.data.sign='name';saveProg();paint({sigLive:cv.toDataURL('image/png')});
+   ctx.font=`600 ${size}px ${fam}`;ctx.fillStyle='#111';ctx.textBaseline='middle';ctx.textAlign='center';ctx.save();ctx.translate(cv.width/2,cv.height/2+4);ctx.rotate(-.05);ctx.fillText(name,0,0);ctx.restore();
+   prog.data.sign='name';saveProg();paint({sigLive:inkURL(cv)});
    $('[data-tool=save]',root).click();
    $('#ob-mark-n',h).textContent='your name is on the pad. draw over it, or press done.';
   });
@@ -375,7 +376,7 @@ function setEditing(on,id){
 async function rollMole(trig){
  let res=null;
  try{
-  const {openMoleReveal}=await import('./mole/mole-reveal.mjs?v=ld2');
+  const {openMoleReveal}=await import('./mole/mole-reveal.mjs?v=ld3');
   res=await openMoleReveal({trigger:trig});
  }catch(err){console.error(err);setTip('the mole roll could not load. try again.');return;}
  if(res){const next=saveAccount({avatarMode:'mole',mole:{traits:res.traits,png:res.png,rolledAt:res.rolledAt}});if(!next?.mole)toast('That mole picture was too large to save.');else{paint({mole:true,ck:'photo'});setTimeout(()=>stampIn(lit.photo),0);}}

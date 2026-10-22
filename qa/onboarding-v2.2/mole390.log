@@ -1,0 +1,11 @@
+wait: roll btn {'x': 18, 'y': 754, 'w': 354, 'h': 60, 'fs': '22px', 'fw': '800', 'text': 'roll your mole', 'focused': True, 'skipVis': 'hidden', 'vh': 844}
+still waiting after 2.5s: wait
+after Enter: intro skip visible visible roll hidden hidden
+intro
+charge
+skip box [195, 774, 95, 48]
+flash
+reveal
+again -> phase (no second wait): load
+after skip phase done keep enabled True
+[]

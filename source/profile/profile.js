@@ -1,9 +1,9 @@
 import {moleCrop} from './passport-art.mjs?v=pad1';
 import {createPassportImage} from './passport-export.mjs?v=pv3';
-import {padHTML,initPad} from './sign-pad.mjs?v=pv3';
+import {padHTML,initPad} from './sign-pad.mjs?v=pv4';
 import {travelerStyles,travelerMark,accountKey,readAccount,normalizeAccount} from '../site/account-state.mjs?v=pad1';
 import {memberLevels,memberRange,POINTS} from './passport-rules.mjs?v=pv2';
-import {LOOK_KEY,readLook as _readLook,readStyle as _readStyle,writeStyle,archHTML,wireArch,lookTilesHTML,styleTilesHTML,pickLook,pickStyle,mrz,moleImgHTML,stampName,cardHTML,biopHTML,syncPreview,fitPreview,bindTilt} from './passport-edit.mjs?v=ob1';
+import {LOOK_KEY,readLook as _readLook,readStyle as _readStyle,writeStyle,archHTML,wireArch,lookTilesHTML,styleTilesHTML,pickLook,pickStyle,mrz,moleImgHTML,stampName,cardHTML,biopHTML,syncPreview,fitPreview,bindTilt,addBioBand,fitBandText} from './passport-edit.mjs?v=ob4';
 import {escapeHTML as esc,safeReturn} from './identity.mjs';
 import {loadProfile} from './data.mjs?v=ob1';
 import {halftoneField} from '../site/halftone-field.mjs?v=2';
@@ -346,14 +346,14 @@ function wireV4(){
  const snap=()=>JSON.stringify([...new FormData(form)]);
  let base=snap(),keep=false,saved=false;
  const src=document.querySelector('.pp-id9');
- if(src){const c=src.cloneNode(true);c.removeAttribute('id');c.querySelectorAll('[id]').forEach(n=>n.removeAttribute('id'));c.querySelectorAll('button').forEach(b=>{const s=document.createElement('span');s.className=b.className;s.innerHTML=b.innerHTML;b.replaceWith(s);});c.querySelectorAll('[data-set-roll]').forEach(n=>n.removeAttribute('data-set-roll'));pobj.append(c);}
+ if(src){const c=src.cloneNode(true);c.removeAttribute('id');c.querySelectorAll('[id]').forEach(n=>n.removeAttribute('id'));c.querySelectorAll('button').forEach(b=>{const s=document.createElement('span');s.className=b.className;s.innerHTML=b.innerHTML;b.replaceWith(s);});c.querySelectorAll('[data-set-roll]').forEach(n=>n.removeAttribute('data-set-roll'));pobj.append(c);addBioBand(c);}
  const upd=()=>{
   const v=n=>form.elements[n]?.value||'',look=pickLook(form);
   syncPreview({stage,pobj,biop},{name:v('name'),username:v('username'),bio:v('bio'),arch:archSel(),foil:form.querySelector('[name=cz-foil]:checked')?.value||'none',bg:form.querySelector('[name=cz-bg]:checked')?.value||'halftone',look},{empty:'—'});
   const dirty=snap()!==base;dirtyEl.dataset.dirty=String(dirty);dirtyEl.querySelector('b').textContent=dirty?'unsaved changes':'no changes yet';
  };
  const scroller=()=>getComputedStyle(right).display==='contents'?main:right;
- const fit=()=>{if(!dlg.open)return;const phone=innerWidth<=900;fitPreview({stage,cardw,scale,card:pobj.firstElementChild,biop},{reserve:phone?0:150,padW:phone?64:56,maxScale:phone?.56:1,byHeight:!phone});};
+ const fit=()=>{if(!dlg.open)return;const phone=innerWidth<=900;const bp=pobj.querySelector('.pp-id9-bio-t>p');if(bp)fitBandText(bp);fitPreview({stage,cardw,scale,card:pobj.firstElementChild,biop},{reserve:phone?0:150,padW:phone?64:56,maxScale:phone?.56:1,byHeight:!phone});};
  const spy=()=>{
   const sc=scroller(),top=sc.getBoundingClientRect().top+sc.clientHeight*.42;let cur=ED_SECS[0][0];
   dlg.querySelectorAll('.ed-sec').forEach(s=>{if(s.getBoundingClientRect().top<=top)cur=s.dataset.sec;});
@@ -497,10 +497,10 @@ function openSettings(){
 }
 let rolling=false;
  /* fetch the mole roll code in the background so its loading screen shows the instant the button is tapped */
- setTimeout(()=>{import('../site/mole/mole-reveal.mjs?v=ld2').catch(()=>{});},2500);
+ setTimeout(()=>{import('../site/mole/mole-reveal.mjs?v=ld3').catch(()=>{});},2500);
 async function rollMole(trigger){
  if(rolling)return;rolling=true;const dlg=$('.pp-settings'),wasOpen=dlg?.open;
- try{const {openMoleReveal}=await import('../site/mole/mole-reveal.mjs?v=ld2');if(wasOpen)dlg.close();
+ try{const {openMoleReveal}=await import('../site/mole/mole-reveal.mjs?v=ld3');if(wasOpen)dlg.close();
   const res=await openMoleReveal({trigger:trigger?.isConnected?trigger:$('[data-settings]')});
   if(res){const next=normalizeAccount({...readAccount(),avatarMode:'mole',mole:{traits:res.traits,png:res.png,rolledAt:res.rolledAt}});
    if(!next.mole)notify('That mole picture was too large to save.');

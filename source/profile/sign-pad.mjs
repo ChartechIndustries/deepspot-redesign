@@ -1,7 +1,20 @@
 import {accountKey,readAccount,normalizeAccount,artMaxPng} from '../site/account-state.mjs?v=pad1';
 import {escapeHTML as esc} from './identity.mjs';
-// Passport art pad. Strokes live on a 512x256 canvas shown at the column width; the paper and dot grid are CSS.
-export const padSize={w:512,h:256};
+// Passport art pad. Strokes live on a 640x180 canvas (wide and short, like the passport's mark line) shown at the column width; the paper and dot grid are CSS.
+// v2.2: on save the drawing is cropped to its ink (+ small padding) so the card's mark line can scale it up to fill the line.
+export const padSize={w:640,h:180};
+export const inkPad=6;
+/* crop a canvas to the bounds of its drawn ink (alpha > 8) + padding; returns a PNG data URL, or '' when blank */
+export function inkCanvas(cv,pad=inkPad){
+ const W=cv.width,H=cv.height,d=cv.getContext('2d',{willReadFrequently:true}).getImageData(0,0,W,H).data;
+ let x0=W,y0=H,x1=-1,y1=-1;
+ for(let y=0;y<H;y++)for(let x=0;x<W;x++)if(d[(y*W+x)*4+3]>8){if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y;}
+ if(x1<0)return null;
+ x0=Math.max(0,x0-pad);y0=Math.max(0,y0-pad);x1=Math.min(W-1,x1+pad);y1=Math.min(H-1,y1+pad);
+ const c=document.createElement('canvas');c.width=x1-x0+1;c.height=y1-y0+1;c.getContext('2d').drawImage(cv,x0,y0,c.width,c.height,0,0,c.width,c.height);
+ return c;
+}
+export const inkURL=(cv,pad=inkPad)=>inkCanvas(cv,pad)?.toDataURL('image/png')||'';
 const colors=[['black','#111111'],['white','#ffffff'],['gray','#8a8f98'],['red','#e5302d'],['orange','#f28a1a'],['yellow','#f7d21b'],['green','#3fb44a'],['teal','#19b3b0'],['blue','#2a5bd7'],['indigo','#4b3fa8'],['pink','#f07db5'],['brown','#7b4a26']];
 const icons={
  free:'<path d="m4 20 1-5L16 4l4 4L9 19Z"/><path d="m13 7 4 4"/>',
@@ -60,7 +73,7 @@ export function initPad(root,{art,onSave}={}){
  }
  cv.addEventListener('pointerdown',down);cv.addEventListener('pointermove',move);cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);cv.addEventListener('contextmenu',e=>e.preventDefault());
  const blank=()=>{const d=ctx.getImageData(0,0,W,H).data;for(let i=3;i<d.length;i+=4)if(d[i])return false;return true;};
- function encode(){let url=cv.toDataURL('image/png');if(url.length<artMaxPng)return url;const t=document.createElement('canvas');t.width=W/2;t.height=H/2;t.getContext('2d').drawImage(cv,0,0,W/2,H/2);url=t.toDataURL('image/png');return url.length<artMaxPng?url:'';}
+ function encode(){const c=inkCanvas(cv);if(!c)return '';let url=c.toDataURL('image/png');if(url.length<artMaxPng)return url;const t=document.createElement('canvas');t.width=Math.max(1,c.width>>1);t.height=Math.max(1,c.height>>1);t.getContext('2d').drawImage(c,0,0,t.width,t.height);url=t.toDataURL('image/png');return url.length<artMaxPng?url:'';}
  function save(){
   const empty=blank(),url=empty?'':encode();
   if(!empty&&!url){status('Too detailed to save. Clear a little and try again.');return;}
@@ -80,6 +93,6 @@ export function initPad(root,{art,onSave}={}){
  });
  root.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'&&!e.shiftKey){e.preventDefault();$('[data-tool=undo]').click();}});
  window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue='';}});
- if(art){const img=new Image();img.onload=()=>ctx.drawImage(img,0,0,W,H);img.src=art;}
+ if(art){const img=new Image();img.onload=()=>{const m=10,k=Math.min((W-2*m)/img.naturalWidth,(H-2*m)/img.naturalHeight),w=img.naturalWidth*k,h=img.naturalHeight*k;ctx.drawImage(img,(W-w)/2,(H-h)/2,w,h);};img.src=art;}
  sync();
 }

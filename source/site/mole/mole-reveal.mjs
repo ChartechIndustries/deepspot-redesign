@@ -46,7 +46,7 @@ function loadLibs(onTick) {
 }
 
 function loadCSS() {
-  const href = new URL('mole-reveal.css?v=ld2', BASE).href;
+  const href = new URL('mole-reveal.css?v=ld3', BASE).href;
   if ([...document.styleSheets].some((s) => s.href === href) || document.querySelector(`link[data-mole-css]`)) return Promise.resolve();
   return new Promise((res) => {
     const l = document.createElement('link');
@@ -158,6 +158,7 @@ export async function openMoleReveal(opts = {}) {
     <canvas class="mr-fx mr-fx-back" aria-hidden="true"></canvas>
     <button type="button" class="mr-close" aria-label="Close">&times;</button>
     <button type="button" class="mr-skip">skip</button>
+    <button type="button" class="mr-roll" tabindex="-1">roll your mole</button>
     <div class="mr-stage"><div class="mr-view"><div class="mr-loading mr-hide" aria-hidden="true">waking the mole</div></div></div>
     <canvas class="mr-fx mr-fx-front" aria-hidden="true"></canvas>
     <div class="mr-foot">
@@ -175,7 +176,7 @@ export async function openMoleReveal(opts = {}) {
   const view = $('.mr-view'), loadingEl = $('.mr-loading'), srEl = $('.mr-sr');
   const fxBack = $('.mr-fx-back'), fxFront = $('.mr-fx-front');
   const flashEl = $('.mr-flash'), glowEl = $('.mr-glow'), traitsEl = $('.mr-traits'), titleEl = $('.mr-title');
-  const skipBtn = $('.mr-skip'), closeBtn = $('.mr-close');
+  const skipBtn = $('.mr-skip'), closeBtn = $('.mr-close'), rollBtn = $('.mr-roll');
   const actionBtns = [...root.querySelectorAll('[data-act]')];
 
   const inerted = [...document.body.children].filter((el) => el !== root && !el.hasAttribute('inert'));
@@ -661,8 +662,25 @@ export async function openMoleReveal(opts = {}) {
     renderer.domElement.style.transition = '';
     tNow = 0; lastStateIdx = -2;
     renderAt(0);
+    if (firstTime && !opts.manual) {
+      // v2.2: the first roll waits for the user. The silhouette rests, a big green button starts the roll.
+      root.dataset.phase = 'wait';
+      rollBtn.tabIndex = 0;
+      announce('Your mole is ready. Press roll your mole.');
+      rollBtn.focus({ preventScroll: true });
+      return;
+    }
     root.dataset.phase = 'intro';
     if (!opts.manual) startLoop();
+  }
+  function startRoll() {
+    if (root.dataset.phase !== 'wait' || closed) return;
+    rollBtn.tabIndex = -1;
+    root.dataset.phase = 'intro';
+    announce('Rolling your mole.');
+    tNow = 0; lastStateIdx = -2;
+    startLoop();
+    if (!skipBtn.hidden) skipBtn.focus({ preventScroll: true });
   }
   let poolBySlot = {};
 
@@ -726,6 +744,7 @@ export async function openMoleReveal(opts = {}) {
   }));
   closeBtn.addEventListener('click', () => close(null));
   skipBtn.addEventListener('click', skip);
+  rollBtn.addEventListener('click', startRoll);
 
   // focus trap + esc
   function onKey(e) {

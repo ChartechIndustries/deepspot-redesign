@@ -73,6 +73,20 @@ export function cardHTML(o){
      ${lv?`<div class="pp-prog"><div class="pp-bar4" role="progressbar" aria-label="Progress to level ${lv.level+1}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${lv.pct}"><i style="width:${Math.max(lv.pct,2)}%"></i></div><span>${fmt(lv.points)} / ${fmt(lv.to)} pts</span></div>`:''}
      <span class="pp-readable-code pp-id9-mrz" aria-hidden="true">${o.mrz}</span></div>`;
 }
+/* v2.2: the taller card with a full-width bio band between the photo block and the mark line (edit-dialog preview; onboarding builds its own slot band) */
+export function addBioBand(card){
+ card.classList.add('pp-id9-tall');
+ if(card.querySelector('.pp-id9-bio'))return;
+ card.querySelector('.pp-id-body')?.insertAdjacentHTML('afterend','<div class="pp-id9-bio" aria-hidden="true"><span class="pp-id9-bio-t"><p class="is-ph"></p></span></div>');
+}
+/* biggest size that fits the band (19 -> 11px), never cut mid-word; an ellipsis only as the last resort */
+export function fitBandText(p){
+ const box=p.parentElement;if(!box||!box.clientHeight)return;
+ const cs=getComputedStyle(box),avail=box.clientHeight-parseFloat(cs.paddingTop)-parseFloat(cs.paddingBottom);
+ p.style.display='block';p.style.webkitLineClamp='none';let sz=19;
+ for(;sz>=11;sz-=.5){p.style.fontSize=sz+'px';if(p.scrollHeight<=avail+.5&&p.scrollWidth<=p.clientWidth+1)break;}
+ if(sz<11){p.style.fontSize='11px';p.style.display='-webkit-box';p.style.webkitBoxOrient='vertical';p.style.webkitLineClamp=String(Math.max(1,Math.floor(avail/(11*1.22))));}
+}
 /* bio-look chip shown under the preview card */
 export const biopHTML=lk=>`<div class="ed-biop" data-bg="${lk.bg}" data-font="${lk.font}" data-align="${lk.align}"><b class="ed-bn"></b><span class="ed-bh"></span><p class="ed-bt"></p></div>`;
 
@@ -85,6 +99,7 @@ export function syncPreview({stage,pobj,biop},v,{empty='—'}={}){
   if('username' in v&&dd[1]){dd[1].textContent=un?'@'+un:empty;dd[1].classList.toggle('is-ph',!un);}
   if(v.arch!==undefined){const sb=c.querySelector('.pp-id9-stamp b');if(sb){const t=v.arch?stampName(v.arch):'explorer';sb.textContent=t;sb.style.fontSize=stampSize(t)+'px';}c.querySelector('.pp-id9-stamp')?.classList.toggle('is-ph',!v.arch);}
  }
+ if('bio' in v&&c){const bp=c.querySelector('.pp-id9-bio-t>p');if(bp){const b=(v.bio||'').trim();bp.textContent=b||'say hi. a few lines about you.';bp.classList.toggle('is-ph',!b);fitBandText(bp);}}
  if(v.foil!==undefined&&pobj)pobj.dataset.foil=v.foil;
  if(v.bg!==undefined&&stage)stage.dataset.bg=v.bg;
  if(biop){

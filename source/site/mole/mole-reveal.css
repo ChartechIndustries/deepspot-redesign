@@ -27,7 +27,14 @@
 .mr-close:hover{border-color:#f5f4ee}
 .mr-skip{position:absolute;z-index:5;left:50%;bottom:max(24px,calc(env(safe-area-inset-bottom) + 16px));translate:-50% 0;height:48px;padding:0 30px;border:1.5px solid #f5f4ee66;border-radius:999px;background:#0c101bcc;color:#f5f4ee;font:700 17px/1 Arial,Helvetica,sans-serif;letter-spacing:-.01em;cursor:pointer;transition:opacity .3s,background .2s,border-color .2s}
 .mr-skip:hover{border-color:#f5f4ee;background:#f5f4ee1a}
-.mr[data-phase=reveal] .mr-skip,.mr[data-phase=done] .mr-skip,.mr[data-phase=flash] .mr-skip,.mr[data-phase=load] .mr-skip{opacity:0;pointer-events:none;visibility:hidden}
+.mr[data-phase=reveal] .mr-skip,.mr[data-phase=done] .mr-skip,.mr[data-phase=flash] .mr-skip,.mr[data-phase=load] .mr-skip,.mr[data-phase=wait] .mr-skip{opacity:0;pointer-events:none;visibility:hidden}
+/* v2.2: the first roll waits for this button */
+.mr-roll{position:absolute;z-index:5;left:50%;bottom:max(32px,calc(env(safe-area-inset-bottom) + 24px));translate:-50% 0;min-height:60px;padding:0 44px;border:0;border-radius:999px;background:#07d653;color:#0b1b27;font:800 22px/1 Arial,Helvetica,sans-serif;letter-spacing:-.02em;white-space:nowrap;cursor:pointer;box-shadow:0 0 0 0 rgba(7,214,83,.55),0 14px 34px rgba(7,214,83,.28);animation:mr-roll-pulse 1.9s ease-in-out infinite;transition:background .2s,transform .2s,opacity .25s}
+.mr-roll:hover{background:#66df91}.mr-roll:active{transform:scale(.97)}
+.mr-roll:focus-visible{outline:3px solid #fff;outline-offset:4px}
+.mr:not([data-phase=wait]) .mr-roll{opacity:0;pointer-events:none;visibility:hidden;animation:none}
+@keyframes mr-roll-pulse{0%,100%{box-shadow:0 0 0 0 rgba(7,214,83,.5),0 14px 34px rgba(7,214,83,.28)}50%{box-shadow:0 0 0 12px rgba(7,214,83,0),0 14px 34px rgba(7,214,83,.28)}}
+@media(max-width:600px){.mr-roll{width:calc(100% - 40px);max-width:360px;padding:0 20px}}
 .mr-flash{position:absolute;inset:0;z-index:4;background:#fff;opacity:0;pointer-events:none}
 .mr-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 @media(max-width:600px){
@@ -41,4 +48,4 @@
  .mr{grid-template-rows:minmax(0,1fr) auto}
  .mr-title{font-size:clamp(34px,7vh,70px)}.mr-foot{gap:8px;margin-top:-20px}.mr-btn{padding:10px 18px}
 }
-@media(prefers-reduced-motion:reduce){.mr,.mr-title,.mr-actions,.mr-traits{transition-duration:.01s;transition-delay:0s}.mr-loading::after{animation:none}}
+@media(prefers-reduced-motion:reduce){.mr-roll{animation:none}.mr,.mr-title,.mr-actions,.mr-traits{transition-duration:.01s;transition-delay:0s}.mr-loading::after{animation:none}}
