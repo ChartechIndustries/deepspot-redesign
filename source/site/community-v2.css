@@ -841,3 +841,16 @@ body[data-page=community] .ds-page{max-width:none;padding-left:0;padding-right:0
 .dcv4 .dv-rp .dc-opt{font-size:18px}
 :root[data-panel-color=off] .dcv .dv-flat{color:var(--br-text)!important;--dv-m:var(--br-muted);--dv-a:var(--br-text);--dv-line:var(--br-line);--dv-fa:var(--br-text)}
 :root[data-panel-color=off] .dcv .dv-hero.dv-flat{color:var(--br-text)!important}
+
+/* 2026-10-22: "your vote matters" — space from the discord bento + a calmer deep teal (was bright green, clashed with the green join tile) */
+html:not([data-panel-color=off]) .vm{background:#123a3c;color:#f5f4ee;margin-top:clamp(56px,7vw,120px)}
+html[data-panel-color=off] .vm{margin-top:clamp(56px,7vw,120px)}
+html:not([data-panel-color=off]) .vm-k{color:#83cdce}
+html:not([data-panel-color=off]) .vm-l p{color:#d3e4e2}
+html:not([data-panel-color=off]) .vm-r a{background:#0b1b27;color:#f5f4ee;border:1px solid #2b5557}
+html:not([data-panel-color=off]) .vm-n{color:#83cdce}
+html:not([data-panel-color=off]) .vm-d{color:#b9c9cc}
+html:not([data-panel-color=off]) .vm-r i{color:#83cdce}
+html[data-theme=light]:not([data-panel-color=off]) .vm{background:#d6e9e6;color:#0b1b27}
+html[data-theme=light]:not([data-panel-color=off]) .vm-k{color:#1d5f63}
+html[data-theme=light]:not([data-panel-color=off]) .vm-l p{color:#24464a}
