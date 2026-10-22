@@ -24,11 +24,11 @@ export async function renderAccount(root,data,route){
  const panel=$('#account-panel');
  let rolling=false;
  /* fetch the mole roll code in the background so its loading screen shows the instant the button is tapped */
- setTimeout(()=>{import('./mole/mole-reveal.mjs?v=ld1').catch(()=>{});},2500);
+ setTimeout(()=>{import('./mole/mole-reveal.mjs?v=ld2').catch(()=>{});},2500);
  const rollMole=async trigger=>{
   if(rolling)return;rolling=true;
   try{
-   const {openMoleReveal}=await import('./mole/mole-reveal.mjs?v=ld1');
+   const {openMoleReveal}=await import('./mole/mole-reveal.mjs?v=ld2');
    const result=await openMoleReveal({trigger});
    if(result){
     collect();draft=normalizeAccount({...draft,avatarMode:'mole',mole:{traits:result.traits,png:result.png,rolledAt:result.rolledAt}});

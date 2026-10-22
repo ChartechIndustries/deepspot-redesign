@@ -16,20 +16,19 @@ export const STEPS=[
 ];
 export const FINISH=STEPS.length;   // step index of the finish moment
 
-/* the parts of the passport the user fills in by tapping them. face: which side of the card. */
+/* the parts of the passport the user fills in by tapping them (v2.1: all on the front, no flip; places are added later from "my map"). */
 export const SLOTS=[
- {id:'photo',face:'front',req:true,label:'your mole'},
- {id:'name',face:'front',req:true,label:'your name'},
- {id:'arch',face:'front',req:true,label:'your explorer type'},
- {id:'mark',face:'front',req:false,label:'your mark'},
- {id:'style',face:'front',req:false,label:'your style'},
- {id:'bio',face:'back',req:false,label:'your bio'},
- {id:'places',face:'back',req:false,label:'your places'}
+ {id:'photo',req:true,label:'your mole'},
+ {id:'name',req:true,label:'your name'},
+ {id:'arch',req:true,label:'your explorer type'},
+ {id:'bio',req:false,label:'your bio'},
+ {id:'mark',req:false,label:'your mark'},
+ {id:'style',req:false,label:'your style'}
 ];
-/* snap = {mole:bool, name:str, username:str, arch:bool, sig:bool, style:bool, bio:str, places:number} -> {slotId: bool} */
+/* snap = {mole:bool, name:str, username:str, arch:bool, bio:str, sig:bool, style:bool} -> {slotId: bool} */
 export function slotStates(snap={}){
  const s=snap||{};
- return {photo:!!s.mole,name:!!String(s.name||'').trim()&&!!String(s.username||'').trim(),arch:!!s.arch,mark:!!s.sig,style:!!s.style,bio:!!String(s.bio||'').trim(),places:Number(s.places)>0};
+ return {photo:!!s.mole,name:!!String(s.name||'').trim()&&!!String(s.username||'').trim(),arch:!!s.arch,bio:!!String(s.bio||'').trim(),mark:!!s.sig,style:!!s.style};
 }
 export function slotProgress(snap){
  const st=slotStates(snap);

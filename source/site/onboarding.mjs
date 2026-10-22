@@ -1,16 +1,14 @@
 // New-user onboarding v2 (/welcome/). Prototype: no backend, nothing is sent. The password is never stored.
 // Screen A = account (one screen). Then a short "issue" animation. Screen B = the passport itself: every part is a glowing
-// slot on the card (front + back), each opening a focused bottom sheet (phone) or popover (desktop).
+// slot on the card (v2.1: one face, no flip; bio sits between the photo and the mark), each opening a focused bottom sheet (phone) or popover (desktop).
 // Passport data goes through the same storage the passport page reads (account draft, passport style, want-to-go).
-import {FINISH,SLOTS,slotProgress,readProgress,writeProgress,isOnboarded,markOnboarded,resetOnboarding,passwordStrength,validateUsername,suggestUsernames,takenHandles,suggestSpots,archetypeName,validEmail} from './onboarding-state.mjs?v=ob2';
+import {FINISH,SLOTS,slotProgress,readProgress,writeProgress,isOnboarded,markOnboarded,resetOnboarding,passwordStrength,validateUsername,suggestUsernames,takenHandles,archetypeName,validEmail} from './onboarding-state.mjs?v=ob3';
 import {accountKey,readAccount,normalizeAccount,travelerStyles} from './account-state.mjs?v=pad1';
 import {readSession,writeSession} from './gate-state.mjs?v=gate1';
 import {G_ICON,A_ICON} from './brand-icons.mjs?v=ob1';
 import {readStyle,writeStyle,archCardsHTML,archGroups,styleGroupHTML,pickStyle,cardHTML,moleImgHTML,mrz,syncPreview,bindTilt} from '../profile/passport-edit.mjs?v=ob1';
 import {padHTML,initPad} from '../profile/sign-pad.mjs?v=pv3';
-import {readWantToGo,writeWantToGo,addItem,removeAt,WTG_MAX,WTG_NAME_MAX} from '../profile/want-to-go.mjs?v=wtg1';
 import {escapeHTML as esc,safeReturn} from '../profile/identity.mjs';
-import {prepareCatalog} from '../browse/catalog.mjs';
 
 const D=document,$=(s,r=D)=>r.querySelector(s),$$=(s,r=D)=>[...r.querySelectorAll(s)];
 const calm=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -19,6 +17,7 @@ const LOGIN='https://www.deepspot.io/login';
 const ARROW='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>';
 const theme=()=>D.documentElement.dataset.theme==='light'?'light':'dark';
 const popMode=()=>matchMedia('(min-width:860px) and (min-height:600px)').matches;
+const wideMode=()=>matchMedia('(min-width:1000px) and (min-height:600px) and (min-aspect-ratio:5/4)').matches;
 const wait=ms=>new Promise(r=>setTimeout(r,ms));
 D.documentElement.classList.add('ob-lock');
 
@@ -46,12 +45,8 @@ if(stepParam!==null){const m={account:0,passport:1,fill:1,finish:1},n=stepParam 
 else if(prog.step>0&&readSession().state==='out')prog.step=0;
 if(stepParam===null&&params.get('force')&&isOnboarded())prog.step=0;   /* ?onboard=1 review run starts from the top, with your data filled in */
 if(prog.step>=FINISH)prog.step=1;
-let taken=new Set(),catalog=[];
-await Promise.all([
- fetch('/profile/profiles.json').then(r=>r.ok?r.json():null).then(j=>{taken=takenHandles(j?.profiles);}).catch(()=>{}),
- fetch('/featured-spots.json').then(r=>r.ok?r.json():null).then(j=>{if(j)catalog=prepareCatalog(j);}).catch(()=>{})
-]);
-const bySlug=new Map(catalog.map(s=>[s.id,s]));
+let taken=new Set();
+await fetch('/profile/profiles.json').then(r=>r.ok?r.json():null).then(j=>{taken=takenHandles(j?.profiles);}).catch(()=>{});
 const saveProg=()=>writeProgress(prog);
 const saveAccount=patch=>{const next=normalizeAccount({...readAccount(),...patch});try{localStorage.setItem(accountKey,JSON.stringify(next));}catch{toast('This browser could not save your passport.');return null;}return next;};
 const monthLabel=()=>new Date().toLocaleDateString('en-US',{month:'short',year:'numeric'});
@@ -104,26 +99,14 @@ function buildA(){
 
 /* ================= SCREEN B: the passport ================= */
 const PH_MOLE='<span class="pp-mole pp-mole-empty ob-molePH" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="4"/><path d="M4 21c1-5 4-7 8-7s7 2 8 7"/></svg><span>your mole</span></span>';
-const PIN='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>';
-const CROSS='<svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="21"/><path d="M24 8v32M8 24h32M12.7 12.7l22.6 22.6m0-22.6L12.7 35.3"/></svg>';
-const stem=s=>s.split('/').pop().replace(/\.[a-z]+$/i,'');
-const thumbOf=s=>{const i=typeof s.image==='string'&&s.image.startsWith('/')?s.image:'';return i?`/editorial-assets/cards/${stem(i)}.webp`:'';};
-const placeName=it=>{const s=it.type==='spot'?bySlug.get(it.id):null;return it.type==='spot'?(s?.title||it.id.split('/').pop().replaceAll('-',' ')):it.name;};
-const SLOT_LABEL={photo:'your mole',name:'your name',arch:'your explorer type',mark:'your mark',style:'your style',bio:'your bio',places:'a place you want to go'};
+const SLOT_LABEL={photo:'your mole',name:'your name',arch:'your explorer type',bio:'your bio',mark:'your mark',style:'your style'};
+const SLOT_PILL={photo:'add photo',name:'add name',arch:'add type',bio:'add bio',mark:'sign here',style:'style'};
 const slotBtn=(id,cls,inner='',extra='')=>`<button type="button" class="ob-slot ${cls}" data-slot="${id}"${extra}>${inner}</button>`;
 
 function frontHTML(){
  return cardHTML({no:'draft',mole:PH_MOLE,lv:null,stamp:{name:'explorer',sub:'newcomer'},name:'—',handle:'',joined:'',member:'newcomer',sigLabel:'my mark',sig:'<span>no mark yet</span>',mrz:mrz({name:'',handle:'',joined:''},0,null)});
 }
-function backHTML(){
- return `<div class="pp-card pp-idcard pp-id9 ob-face ob-back" role="group" aria-label="Back of your passport">
-  <span class="pp-id9-wm" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M24 2v44M2 24h44M8.5 8.5l31 31m0-31-31 31"/></svg></span>
-  <div class="pp-id-top ob-dm"><span class="pp-id9-crest" aria-hidden="true">${CROSS}</span><span class="pp-id9-title"><b>deepspot</b><i>page 2 · about you</i></span><span class="pp-id9-no">p.2</span></div>
-  <section class="ob-bk ob-bk-bio ob-dm"><span class="ob-bk-l">about me</span>${slotBtn('bio','ob-s-bio','<span class="ob-bk-t" data-bio></span>')}</section>
-  <section class="ob-bk ob-bk-pl ob-dm"><span class="ob-bk-l">places i want to go</span><div class="ob-bk-grid">${[0,1,2].map(i=>slotBtn('places','ob-s-pl','',` data-i="${i}"`)).join('')}</div></section>
-  <span class="pp-readable-code pp-id9-mrz ob-dm" aria-hidden="true"></span></div>`;
-}
-let stage,zone,rise,lift,cardw,scale,pobj,flip,front,back,topEl,tipEl,chipEl,finBtn,flipBtn,slotline;
+let stage,zone,rise,lift,cardw,scale,pobj,flip,front,topEl,tipEl,chipEl,finBtn,slotline;
 const slotEls={};   // id -> [buttons]
 const lit={};       // id -> elements that stay bright while that slot is being edited
 let builtB=false;
@@ -131,14 +114,14 @@ function buildB(){
  if(builtB)return;builtB=true;
  B.innerHTML=`<div class="ed-stage ob-stage" data-bg="halftone">
   <div class="ob-top"><p class="ob-tip" id="ob-tip" role="status" aria-live="polite"></p><p class="ob-prog" id="ob-chip" role="status" aria-live="polite"></p></div>
-  <div class="ob-zone"><div class="ob-rise"><div class="ob-lift"><div class="ed-cardw"><div class="ed-scale"><div class="pp-passobj-in ed-pobj" data-foil="none"><div class="ob-flip">${frontHTML()}${backHTML()}</div></div>
+  <div class="ob-zone"><div class="ob-rise"><div class="ob-lift"><div class="ed-cardw"><div class="ed-scale"><div class="pp-passobj-in ed-pobj" data-foil="none"><div class="ob-faces">${frontHTML()}</div></div>
    <div class="ob-reg" aria-hidden="true"><b>registered</b><i></i></div><div class="ob-issued" aria-hidden="true"><span>issued</span><b></b></div></div></div></div></div>
    <span class="ob-slotline" aria-hidden="true"></span><div class="ob-conf" aria-hidden="true">${Array.from({length:12},(_,i)=>`<i style="--i:${i}"></i>`).join('')}</div></div>
-  <div class="ob-bar"><button type="button" class="ob-flipb" id="ob-flip" aria-pressed="false" aria-label="Flip the passport to the back"><span>flip</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.6-5.9M20 4v4h-4"/></svg></button><button type="button" class="ob-fin" id="ob-fin" aria-disabled="true" aria-describedby="ob-fin-h"><span>finish</span>${ARROW}</button><p class="sr-only" id="ob-fin-h"></p></div>
+  <div class="ob-bar"><button type="button" class="ob-fin" id="ob-fin" aria-disabled="true" aria-describedby="ob-fin-h"><span>finish</span>${ARROW}</button><p class="sr-only" id="ob-fin-h"></p></div>
  </div>
  <div class="ob-layer" hidden><div class="ob-scrim" data-close></div><div class="ob-sheet" role="dialog" aria-modal="true" aria-labelledby="ob-sh-t" tabindex="-1"><span class="ob-arrow" aria-hidden="true"></span><div class="ob-grab" aria-hidden="true"><i></i></div><div class="ob-sh-h"><h2 id="ob-sh-t"></h2><button type="button" class="ob-sh-x" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div><form class="ob-sh-form" novalidate><div class="ob-sh-b"></div><div class="ob-sh-f"><button type="submit" class="ob-go ob-sh-done"><span>done</span></button></div></form></div></div>`;
- stage=$('.ob-stage',B);zone=$('.ob-zone',B);rise=$('.ob-rise',B);lift=$('.ob-lift',B);cardw=$('.ed-cardw',B);scale=$('.ed-scale',B);pobj=$('.ed-pobj',B);flip=$('.ob-flip',B);
- front=$('.pp-id9:not(.ob-back)',flip);back=$('.ob-back',flip);topEl=$('.ob-top',B);tipEl=$('#ob-tip',B);chipEl=$('#ob-chip',B);finBtn=$('#ob-fin',B);flipBtn=$('#ob-flip',B);slotline=$('.ob-slotline',B);
+ stage=$('.ob-stage',B);zone=$('.ob-zone',B);rise=$('.ob-rise',B);lift=$('.ob-lift',B);cardw=$('.ed-cardw',B);scale=$('.ed-scale',B);pobj=$('.ed-pobj',B);flip=$('.ob-faces',B);
+ front=$('.pp-id9',flip);topEl=$('.ob-top',B);tipEl=$('#ob-tip',B);chipEl=$('#ob-chip',B);finBtn=$('#ob-fin',B);slotline=$('.ob-slotline',B);
  /* front: three rows (name, user, type), then since; slots go on top of the real card parts */
  front.classList.add('ob-face','ob-front');
  const body=$('.pp-id-body',front),rows=$$('.pp-rows>div',front);
@@ -148,46 +131,63 @@ function buildB(){
  molebox.insertAdjacentHTML('beforeend',slotBtn('photo','ob-s-photo'));
  body.insertAdjacentHTML('beforeend',slotBtn('name','ob-s-name')+slotBtn('arch','ob-s-arch'));
  sig.insertAdjacentHTML('beforeend',slotBtn('mark','ob-s-mark'));
- front.insertAdjacentHTML('beforeend',`<button type="button" class="ob-slot ob-s-style ob-dm" data-slot="style"><span class="ob-sticker-in" aria-hidden="true"><b>✦</b><i>style</i></span></button>`);
- const stl=$('.ob-s-style',front);
- const bio=$('.ob-bk-bio',back),pl=$('.ob-bk-pl',back);
- for(const id of Object.keys(SLOT_LABEL))slotEls[id]=$$(`[data-slot="${id}"]`,flip);
- lit.photo=[molebox];lit.name=[rowsNow[0],rowsNow[1]];lit.arch=[rowsNow[2]];lit.mark=[sig];lit.style=[stl];lit.bio=[bio];lit.places=[pl];
+ /* the bio band: the empty space between the photo block and "my mark"; the style sticker sits at its right end */
+ body.insertAdjacentHTML('afterend',`<div class="ob-band">${slotBtn('bio','ob-s-bio ob-dm','<span class="ob-bio-t" data-bio></span>')}<button type="button" class="ob-slot ob-s-style ob-dm" data-slot="style"><span class="ob-sticker-in" aria-hidden="true"><b>✦</b><i>style</i></span></button></div>`);
+ const stl=$('.ob-s-style',front),bioBtn=$('.ob-s-bio',front),stampEl=$('.pp-id9-stamp',front);stampEl.classList.add('ob-dm');
+ for(const id of Object.keys(SLOT_LABEL)){slotEls[id]=$$(`[data-slot="${id}"]`,flip);slotEls[id].forEach(b=>b.dataset.lab=SLOT_PILL[id]);}
+ lit.photo=[molebox];lit.name=[rowsNow[0],rowsNow[1]];lit.arch=[rowsNow[2],stampEl];lit.bio=[bioBtn];lit.mark=[sig];lit.style=[stl];
  /* never run into the sticker with a long type name */
  bindTilt(stage,cardw,pobj);
  /* events */
  flip.addEventListener('click',e=>{const b=e.target.closest('.ob-slot');if(b&&!finishing)openSheet(b.dataset.slot,b);});
- flipBtn.addEventListener('click',()=>flipTo(!flip.classList.contains('is-back')));
  finBtn.addEventListener('click',finish);
  $('.ob-sh-x',B).addEventListener('click',()=>closeSheet('x'));
  $('.ob-scrim',B).addEventListener('pointerdown',()=>closeSheet('x'));
  $('.ob-sh-form',B).addEventListener('submit',e=>{e.preventDefault();closeSheet('done');});
  D.addEventListener('keydown',onKey,true);
  B.addEventListener('error',e=>{const img=e.target;if(img instanceof HTMLImageElement&&img.dataset.orig&&img.getAttribute('src')!==img.dataset.orig)img.src=img.dataset.orig;},true);
- new ResizeObserver(()=>{fit();relift();placePop();}).observe(zone);
+ const ro=new ResizeObserver(()=>{fit();relift();placePop();});ro.observe(zone);ro.observe(stage);
  addEventListener('resize',()=>{fit();relift();placePop();});
  if(visualViewport)visualViewport.addEventListener('resize',()=>{keyboard();relift();});
  wireDrag();
- setTimeout(()=>{import('./mole/mole-reveal.mjs?v=ld1').catch(()=>{});},600);   /* so the mole loading screen shows the instant the photo is tapped */
- flip.querySelector('.ob-back').inert=true;back.setAttribute('aria-hidden','true');
+ setTimeout(()=>{import('./mole/mole-reveal.mjs?v=ld2').catch(()=>{});},600);   /* so the mole loading screen shows the instant the photo is tapped */
 }
 
 /* ---------- fit the card to the screen ---------- */
 function fit(){
  if(!builtB||B.hidden)return;
- const zw=zone.clientWidth,zh=zone.clientHeight,nh=flip.offsetHeight||600,wide=popMode();
- const maxH=wide?Math.min(560,innerHeight*.7,zh-12):zh-6,maxW=wide?440*1.3:zw*.93;
- const s=Math.max(.3,Math.min(maxW/440,maxH/nh,1.3));
+ const nh=flip.offsetHeight||572,wide=wideMode(),pop=popMode();
+ let s;
+ if(wide){   /* desktop: the card is the page. tip + progress on the left, finish on the right */
+  const maxH=Math.min(innerHeight*.86,stage.clientHeight-16),maxW=stage.clientWidth-2*230-48;
+  s=Math.min(maxW/440,maxH/nh,2.6);
+ }else{
+  const zw=zone.clientWidth,zh=zone.clientHeight;
+  s=Math.min((pop?zw*.9:zw*.93)/440,(zh-6)/nh,pop?2.6:1.3);
+ }
+ s=Math.max(.3,s);
  scale.style.transform=`scale(${s.toFixed(4)})`;cardw.style.width=(440*s).toFixed(1)+'px';cardw.style.height=(nh*s).toFixed(1)+'px';
+ zone.style.setProperty('--k',Math.max(1,s).toFixed(3));
+ fitBio();
+}
+/* bio on the card: biggest size that fits the band (2 to 3 lines), never cut mid-word; an ellipsis only as the last resort */
+function fitBio(){
+ if(!builtB||B.hidden)return;
+ const t=$('[data-bio]',front),btn=t?.closest('button');if(!t||!btn||!btn.clientHeight)return;
+ const cs=getComputedStyle(btn),avail=btn.clientHeight-parseFloat(cs.paddingTop)-parseFloat(cs.paddingBottom);
+ t.style.webkitLineClamp='none';t.style.display='block';
+ let sz=19;
+ for(;sz>=11;sz-=.5){t.style.fontSize=sz+'px';if(t.scrollHeight<=avail+.5&&t.scrollWidth<=t.clientWidth+1)break;}
+ if(sz<11){sz=11;t.style.fontSize='11px';const lines=Math.max(1,Math.floor(avail/(11*1.22)));t.style.display='-webkit-box';t.style.webkitLineClamp=String(lines);}
 }
 
 /* ---------- paint the card from saved data ---------- */
-let shown={mole:'',sig:'',bio:null,places:''};
+let shown={mole:'',sig:'',bio:null,arch:''};
 const pop=(el,frames,opt)=>{if(el&&!calm())el.animate(frames,opt);};
 const stampIn=els=>{for(const e of els||[])pop(e,[{transform:'scale(1.22)',opacity:.35,filter:'contrast(1.6) brightness(.8)'},{transform:'scale(.97)',opacity:1,offset:.55,filter:'none'},{transform:'scale(1)',opacity:1,filter:'none'}],{duration:440,easing:'cubic-bezier(.2,.9,.3,1)'});};
 function snap(){
  const a=readAccount();
- return {mole:!!a.mole?.png,name:a.name,username:a.username,arch:prog.data.arch,sig:!!a.signatureArt,style:prog.data.style,bio:a.bio,places:readWantToGo().length};
+ return {mole:!!a.mole?.png,name:a.name,username:a.username,arch:prog.data.arch,sig:!!a.signatureArt,style:prog.data.style,bio:a.bio,};
 }
 function paint(changed={}){
  if(!builtB)return;
@@ -215,20 +215,10 @@ function paint(changed={}){
  $$('.pp-rows dd',front)[3].textContent=fin?monthLabel():'—';
  $('.pp-id9-no',front).textContent=fin?'issued':'draft';
  const mz=mrz({name:a.name,handle:a.username,joined:fin?monthLabel():''},0,null);
- $('.pp-id9-mrz',front).innerHTML=mz;$('.pp-id9-mrz',back).innerHTML=mz;
- /* back: bio + places */
- const bt=$('[data-bio]',back),bio=(a.bio||'').trim();
- if(shown.bio!==bio){shown.bio=bio;bt.textContent=bio||'say hi. a few lines about you.';bt.classList.toggle('is-ph',!bio);}
- const list=readWantToGo(),key=list.slice(0,3).map(i=>i.type+':'+(i.id||i.name)).join('|');
- if(shown.places!==key){
-  shown.places=key;
-  slotEls.places.forEach((b,i)=>{
-   const it=list[i];
-   if(!it){b.innerHTML='<span class="ob-pl-e" aria-hidden="true">'+PIN+'</span>';b.dataset.has='';return;}
-   const s=it.type==='spot'?bySlug.get(it.id):null,th=s?thumbOf(s):'';
-   b.innerHTML=`${th?`<img src="${esc(th)}" data-orig="${esc(s.image)}" alt="" width="240" height="240" loading="lazy">`:`<span class="ob-pl-e" aria-hidden="true">${PIN}</span>`}<span class="ob-pl-n">${esc(placeName(it))}</span>`;b.dataset.has='1';
-  });
- }
+ $('.pp-id9-mrz',front).innerHTML=mz;
+ /* bio: on the front, between the photo and the mark */
+ const bt=$('[data-bio]',front),bio=(a.bio||'').trim();
+ if(shown.bio!==bio){shown.bio=bio;bt.textContent=bio||'say hi. a few lines about you.';bt.classList.toggle('is-ph',!bio);fitBio();}
  slots(changed);
 }
 /* slot outlines, labels, progress chip, finish button */
@@ -237,10 +227,9 @@ function slots(changed={}){
  for(const s of SLOTS){
   const done=p.states[s.id];
   slotEls[s.id].forEach((b,i)=>{
-   const has=s.id==='places'?!!b.dataset.has:done;
+   const has=done;
    b.classList.toggle('is-empty',!has);b.classList.toggle('is-done',has);b.classList.toggle('is-req',s.req);b.classList.toggle('is-next',s.req&&p.next===s.id&&!has&&!finishing);
-   const n=s.id==='places'?` (${i+1} of 3)`:'';
-   b.setAttribute('aria-label',`${has?'Change':'Add'} ${SLOT_LABEL[s.id]}${n}${s.req&&!done?' — required':''}`);
+   b.setAttribute('aria-label',`${has?'Change':'Add'} ${SLOT_LABEL[s.id]}${s.req&&!done?' — required':''}`);
   });
  }
  chipEl.innerHTML=`<b>${p.done}</b> / ${p.total}`;chipEl.setAttribute('aria-label',`${p.done} of ${p.total} parts filled in`);
@@ -251,20 +240,12 @@ function slots(changed={}){
 }
 let tipTimer=0;
 function setTip(text){
- const back=flip?.classList.contains('is-back');
  clearTimeout(tipTimer);
  if(text){tipEl.textContent=text;tipTimer=setTimeout(()=>setTip(),3200);return;}
- tipEl.innerHTML=back?'the back is optional. <b>tap</b> to add a bio and places.':'<b>tap the glowing parts</b> to fill in your passport.';
-}
-function flipTo(toBack){
- flip.classList.toggle('is-back',toBack);flipBtn.setAttribute('aria-pressed',String(toBack));
- flipBtn.setAttribute('aria-label',toBack?'Flip the passport back to the front':'Flip the passport to the back');
- front.inert=toBack;back.inert=!toBack;front.setAttribute('aria-hidden',String(toBack));back.setAttribute('aria-hidden',String(!toBack));
- setTip();
+ tipEl.innerHTML='<b>tap the glowing parts</b> to fill in your passport.';
 }
 function nudge(id){
- if(!id)return;const b=slotEls[id][0],face=SLOTS.find(s=>s.id===id).face;
- if(flip.classList.contains('is-back')&&face==='front')flipTo(false);
+ if(!id)return;const b=slotEls[id][0];
  const go=()=>{b.classList.remove('is-nudge');void b.offsetWidth;b.classList.add('is-nudge');setTimeout(()=>b.classList.remove('is-nudge'),900);};
  go();
  setTip(`add ${SLOT_LABEL[id]} first.`);
@@ -381,77 +362,12 @@ E.bio={
  focus:'#ob-bio'
 };
 
-const placeRow=(it,i)=>{
- const s=it.type==='spot'?bySlug.get(it.id):null,name=placeName(it),th=s?thumbOf(s):'';
- return `<li class="ob-pl"><span class="ob-pl-i">${th?`<img src="${esc(th)}" data-orig="${esc(s.image)}" alt="" width="120" height="90" loading="lazy">`:PIN}</span><span class="ob-pl-t"><b>${esc(name)}</b><i>${esc(s?s.place:'your pick')}</i></span><button type="button" class="ob-pl-x" data-rm="${i}" aria-label="Remove ${esc(name)}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button></li>`;
-};
-E.places={
- title:'places to go',
- html(){
-  return `<div class="ob-f"><label for="ob-pl-in">add a place</label><div class="ob-plrow"><div class="ob-combo"><input class="ob-in" id="ob-pl-in" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="ob-pl-lb" autocomplete="off" maxlength="${WTG_NAME_MAX}" placeholder="a spot, a city, anywhere"><ul id="ob-pl-lb" class="ob-lb" role="listbox" aria-label="Matching deep spots" hidden></ul></div><button type="button" class="ob-add" data-add>add</button></div><p class="ob-hint" id="ob-pl-in-h" role="status" aria-live="polite"></p></div>
-  <p class="ob-lab" id="ob-pl-count"></p><ul class="ob-pls" id="ob-pls"></ul>
-  <div class="ob-sug" id="ob-sugwrap"><p class="ob-lab" id="ob-sug-t"></p><ul class="ob-sp" id="ob-sp"></ul></div>`;
- },
- mount(f){
-  const inp=$('#ob-pl-in',f),lb=$('#ob-pl-lb',f);let list=readWantToGo(),matches=[],active=-1,pick=null;
-  const arch=prog.data.arch?readAccount().style:'';
-  const say=(t,bad=false)=>{const h=$('#ob-pl-in-h',f);h.textContent=t;h.classList.toggle('is-bad',bad);};
-  const commit=next=>{list=next;writeWantToGo(list);render();paint();};
-  const render=()=>{
-   $('#ob-pls',f).innerHTML=list.map(placeRow).join('');
-   $('#ob-pl-count',f).textContent=list.length?`${list.length} on your list · the first 3 go on your passport`:'none yet · the first 3 go on your passport';
-   const have=list.filter(i=>i.type==='spot').map(i=>i.id),sg=suggestSpots(catalog,arch,{n:6+have.length,have}),spots=sg.spots.slice(0,6);
-   $('#ob-sug-t',f).textContent=!spots.length?'':sg.matched>=spots.length?`picked for ${archetypeName(arch)}`:sg.matched>0?`picked for ${archetypeName(arch)}, plus popular spots`:'popular spots';
-   $('#ob-sugwrap',f).hidden=!spots.length;
-   $('#ob-sp',f).innerHTML=spots.map(s=>`<li><button type="button" class="ob-spot" data-id="${esc(s.id)}"><span class="ob-spot-i"><img src="${esc(thumbOf(s))}" data-orig="${esc(s.image)}" alt="" width="240" height="180" loading="lazy"></span><b>${esc(s.title)}</b><i>${esc(s.place||'')}</i><span class="ob-spot-a">+ add</span></button></li>`).join('');
-  };
-  const close=()=>{lb.hidden=true;inp.setAttribute('aria-expanded','false');inp.removeAttribute('aria-activedescendant');active=-1;};
-  const suggest=()=>{
-   const q=inp.value.trim().toLowerCase();pick=null;if(q.length<2){close();return;}
-   const have=new Set(list.filter(i=>i.type==='spot').map(i=>i.id)),score=s=>{const t=s.title.toLowerCase(),p=(s.place||'').toLowerCase();return t.startsWith(q)||p.startsWith(q)?0:t.includes(q)?1:p.includes(q)?2:-1;};
-   matches=catalog.filter(s=>!have.has(s.id)&&score(s)>=0).sort((a,b)=>score(a)-score(b)).slice(0,6);
-   if(!matches.length){close();return;}
-   lb.innerHTML=matches.map((s,i)=>`<li role="option" id="ob-o${i}" aria-selected="false" data-i="${i}"><strong>${esc(s.title)}</strong><span>${esc(s.place||'')}</span></li>`).join('');
-   lb.hidden=false;inp.setAttribute('aria-expanded','true');active=-1;
-  };
-  const setActive=i=>{active=i;$$('[role=option]',lb).forEach((o,n)=>o.setAttribute('aria-selected',String(n===i)));if(i>=0){inp.setAttribute('aria-activedescendant','ob-o'+i);lb.children[i].scrollIntoView({block:'nearest'});}else inp.removeAttribute('aria-activedescendant');};
-  const choose=i=>{const s=matches[i];if(!s)return;inp.value=s.title.slice(0,WTG_NAME_MAX);pick=s;close();inp.focus();};
-  const addCurrent=()=>{
-   const text=inp.value.trim();let raw=null;
-   if(pick)raw={type:'spot',id:pick.id};else if(text){const ex=catalog.find(s=>s.title.trim().toLowerCase()===text.toLowerCase());raw=ex?{type:'spot',id:ex.id}:{type:'place',name:text};}
-   const r=addItem(list,raw);
-   if(!r.ok){say(r.reason==='duplicate'?'already on your list.':r.reason==='full'?`list is full. ${WTG_MAX} places max.`:'type a place first.',true);inp.focus();return;}
-   inp.value='';pick=null;close();say('');commit(r.list);inp.focus();
-  };
-  inp.addEventListener('input',()=>{say('');suggest();});
-  inp.addEventListener('blur',()=>setTimeout(close,120));
-  inp.addEventListener('keydown',e=>{
-   const open=!lb.hidden;
-   if(e.key==='ArrowDown'&&matches.length){e.preventDefault();if(!open)suggest();if(!lb.hidden)setActive(Math.min(active+1,matches.length-1));}
-   else if(e.key==='ArrowUp'&&open){e.preventDefault();setActive(Math.max(active-1,-1));}
-   else if(e.key==='Enter'){e.preventDefault();e.stopPropagation();if(open&&active>=0)choose(active);else if(inp.value.trim())addCurrent();}
-   else if(e.key==='Escape'&&open){e.preventDefault();e.stopPropagation();close();}
-  });
-  lb.addEventListener('mousedown',e=>e.preventDefault());
-  lb.addEventListener('click',e=>{const o=e.target.closest('[role=option]');if(o){choose(+o.dataset.i);addCurrent();}});
-  $('[data-add]',f).addEventListener('click',addCurrent);
-  f.addEventListener('click',e=>{
-   const rm=e.target.closest('[data-rm]');if(rm){const i=+rm.dataset.rm;commit(removeAt(list,i));($(`[data-rm="${Math.min(i,list.length-1)}"]`,f)||inp).focus();return;}
-   const sp=e.target.closest('[data-id]');if(sp){const r=addItem(list,{type:'spot',id:sp.dataset.id});if(r.ok){commit(r.list);say('');}else say(r.reason==='full'?`list is full. ${WTG_MAX} places max.`:'already on your list.',true);}
-  });
-  render();
- },
- done(h){const inp=$('#ob-pl-in',h);if(inp.value.trim()){const r=addItem(readWantToGo(),{type:'place',name:inp.value.trim()});if(r.ok)writeWantToGo(r.list);}return true;},
- close(h){E.places.done(h);},
- focus:()=>matchMedia('(pointer:fine)').matches?'#ob-pl-in':null
-};
-
 /* ================= sheet / popover ================= */
 const layer=()=>$('.ob-layer',B),sheetEl=()=>$('.ob-sheet',B),hostEl=()=>$('.ob-sh-b',B);
 let openId=null,trigger=null,before='',closing=false,finishing=false,issuing=false;
-const relevant=id=>JSON.stringify([snap(),id==='style'?readStyle(true):0,id==='arch'?readAccount().style:0,id==='mark'?readAccount().signatureArt:0,id==='places'?readWantToGo():0,id==='photo'?readAccount().mole?.png:0]);
+const relevant=id=>JSON.stringify([snap(),id==='style'?readStyle(true):0,id==='arch'?readAccount().style:0,id==='mark'?readAccount().signatureArt:0,id==='photo'?readAccount().mole?.png:0]);
 function setEditing(on,id){
- front.classList.toggle('is-editing',on);back.classList.toggle('is-editing',on);
+ front.classList.toggle('is-editing',on);
  $$('.ob-dm.is-lit',flip).forEach(e=>e.classList.remove('is-lit'));
  $$('.ob-slot.is-active',flip).forEach(e=>e.classList.remove('is-active'));
  if(on){(lit[id]||[]).forEach(e=>e.classList.add('is-lit'));slotEls[id].forEach(e=>e.classList.add('is-active'));}
@@ -459,7 +375,7 @@ function setEditing(on,id){
 async function rollMole(trig){
  let res=null;
  try{
-  const {openMoleReveal}=await import('./mole/mole-reveal.mjs?v=ld1');
+  const {openMoleReveal}=await import('./mole/mole-reveal.mjs?v=ld2');
   res=await openMoleReveal({trigger:trig});
  }catch(err){console.error(err);setTip('the mole roll could not load. try again.');return;}
  if(res){const next=saveAccount({avatarMode:'mole',mole:{traits:res.traits,png:res.png,rolledAt:res.rolledAt}});if(!next?.mole)toast('That mole picture was too large to save.');else{paint({mole:true,ck:'photo'});setTimeout(()=>stampIn(lit.photo),0);}}
@@ -534,12 +450,12 @@ function relift(){
 function placePop(){
  if(!openId||!popMode())return;
  const sh=sheetEl(),slot=trigger&&trigger.isConnected?trigger:slotEls[openId][0],cr=cardw.getBoundingClientRect(),sr=slot.getBoundingClientRect();
- const W=Math.min(400,innerWidth-32),H=sh.offsetHeight,gap=26;
- let x,side='left';
- if(cr.right+gap+W<=innerWidth-16){x=cr.right+gap;side='left';}
- else if(cr.left-gap-W>=16){x=cr.left-gap-W;side='right';}
+ const H=sh.offsetHeight,gap=26,roomR=innerWidth-cr.right-gap-16,roomL=cr.left-gap-16;
+ let W=Math.min(400,innerWidth-32),x,side='left';
+ if(roomR>=330){W=Math.min(400,roomR);x=cr.right+gap;side='left';}
+ else if(roomL>=330){W=Math.min(400,roomL);x=cr.left-gap-W;side='right';}
  else{x=Math.max(16,Math.min(innerWidth-W-16,sr.left+sr.width/2-W/2));side='';}
- const hb=topEl.getBoundingClientRect().bottom||0;
+ const hb=wideMode()?(B.getBoundingClientRect().top+4):(topEl.getBoundingClientRect().bottom||0);
  const y=Math.max(hb+8,Math.min(innerHeight-H-12,sr.top+sr.height/2-H/2));
  sh.style.width=W+'px';sh.style.left=x+'px';sh.style.top=y+'px';sh.dataset.side=side;
  sh.style.setProperty('--ay',Math.max(28,Math.min(H-28,sr.top+sr.height/2-y))+'px');
@@ -607,7 +523,6 @@ async function finish(){
  const p=slotProgress(snap());
  if(!p.canFinish){nudge(p.next);return;}
  finishing=true;markOnboarded();
- if(flip.classList.contains('is-back'))flipTo(false);
  B.classList.add('is-finishing');
  paint();
  $('.ob-issued b',B).textContent=dayLabel();

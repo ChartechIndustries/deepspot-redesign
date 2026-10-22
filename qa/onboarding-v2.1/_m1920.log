@@ -1,0 +1,21 @@
+load
+Traceback (most recent call last):
+  File "C:\Users\CharD\Desktop\DeepSpot Globe\qa\onboarding-v2.1\mole.py", line 31, in <module>
+    asyncio.run(main())
+  File "C:\Users\CharD\AppData\Local\Programs\Python\Python310\lib\asyncio\runners.py", line 44, in run
+    return loop.run_until_complete(main)
+  File "C:\Users\CharD\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 646, in run_until_complete
+    return future.result()
+  File "C:\Users\CharD\Desktop\DeepSpot Globe\qa\onboarding-v2.1\mole.py", line 24, in main
+    await pg.wait_for_function("()=>['intro','charge'].includes(document.querySelector('.mr')?.dataset.phase)",timeout=60000)
+  File "C:\Users\CharD\AppData\Local\Programs\Python\Python310\lib\site-packages\playwright\async_api\_generated.py", line 12520, in wait_for_function
+    await self._impl_obj.wait_for_function(
+  File "C:\Users\CharD\AppData\Local\Programs\Python\Python310\lib\site-packages\playwright\_impl\_page.py", line 1144, in wait_for_function
+    return await self._main_frame.wait_for_function(**locals_to_params(locals()))
+  File "C:\Users\CharD\AppData\Local\Programs\Python\Python310\lib\site-packages\playwright\_impl\_frame.py", line 932, in wait_for_function
+    await self._channel.send("waitForFunction", self._timeout, params)
+  File "C:\Users\CharD\AppData\Local\Programs\Python\Python310\lib\site-packages\playwright\_impl\_connection.py", line 69, in send
+    return await self._connection.wrap_api_call(
+  File "C:\Users\CharD\AppData\Local\Programs\Python\Python310\lib\site-packages\playwright\_impl\_connection.py", line 563, in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+playwright._impl._errors.TimeoutError: Page.wait_for_function: Timeout 60000ms exceeded.

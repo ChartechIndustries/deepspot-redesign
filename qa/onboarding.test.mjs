@@ -9,24 +9,24 @@ test('v2: two screens (account, passport), finish after them',()=>{
  assert.equal(FINISH,2);
 });
 
-test('v2: seven slots, three required, front and back',()=>{
- assert.deepEqual(SLOTS.map(s=>s.id),['photo','name','arch','mark','style','bio','places']);
+test('v2.1: six slots, three required, all on the front',()=>{
+ assert.deepEqual(SLOTS.map(s=>s.id),['photo','name','arch','bio','mark','style']);
  assert.deepEqual(SLOTS.filter(s=>s.req).map(s=>s.id),['photo','name','arch']);
- assert.deepEqual(SLOTS.filter(s=>s.face==='back').map(s=>s.id),['bio','places']);
+ assert.ok(SLOTS.every(s=>!('face' in s)));
 });
 
 test('slot states and progress chip',()=>{
  const empty=slotProgress({});
- assert.deepEqual([empty.done,empty.total,empty.canFinish,empty.next],[0,7,false,'photo']);
+ assert.deepEqual([empty.done,empty.total,empty.canFinish,empty.next],[0,6,false,'photo']);
  assert.deepEqual(empty.missing,['photo','name','arch']);
  const half=slotProgress({mole:true,name:'Ann',username:''});   // name needs a username too
  assert.equal(half.states.name,false);assert.equal(half.done,1);assert.equal(half.next,'name');
  const req=slotProgress({mole:true,name:'Ann',username:'ann',arch:true});
- assert.deepEqual([req.done,req.canFinish,req.missing,req.next],[3,true,[],'mark']);
- const all=slotProgress({mole:true,name:'Ann',username:'ann',arch:true,sig:true,style:true,bio:' hi ',places:2});
- assert.deepEqual([all.done,all.canFinish,all.next],[7,true,'']);
+ assert.deepEqual([req.done,req.canFinish,req.missing,req.next],[3,true,[],'bio']);
+ const all=slotProgress({mole:true,name:'Ann',username:'ann',arch:true,bio:' hi ',sig:true,style:true});
+ assert.deepEqual([all.done,all.canFinish,all.next],[6,true,'']);
  assert.equal(slotProgress({bio:'   '}).states.bio,false);
- assert.equal(slotProgress({places:0}).states.places,false);
+ assert.equal(slotProgress({places:3}).done,0);   // places left onboarding
  assert.equal(slotProgress(null).done,0);
 });
 

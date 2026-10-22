@@ -1,0 +1,7 @@
+load
+intro
+charge
+skip box [195, 774, 95, 48]
+reveal
+after skip phase done keep enabled True
+['Failed to load resource: net::ERR_CONNECTION_REFUSED', 'Failed to load resource: net::ERR_CONNECTION_REFUSED', 'Failed to load resource: net::ERR_CONNECTION_REFUSED', 'Failed to load resource: net::ERR_CONNECTION_REFUSED', 'Failed to load resource: net::ERR_CONNECTION_REFUSED', 'Failed to load resource: net::ERR_CONNECTION_REFUSED', 'Failed to load resource: net::ERR_CONNECTION_REFUSED', 'Failed to load resource: net::ERR_CONNECTION_REFUSED', 'Failed to load resource: net::ERR_CONNECTION_REFUSED', 'Failed to load resource: net::ERR_CONNECTION_REFUSED', 'Failed to load resource: net::ERR_CONNECTION_REFUSED', 'Failed to load resource: net::ERR_CONNECTION_REFUSED', 'Failed to load resource: net::ERR_CONNECTION_REFUSED', 'Failed to load resource: net::ERR_CONNECTION_REFUSED', 'Failed to load resource: net::ERR_CONNECTION_REFUSED', 'Failed to load resource: net::ERR_CONNECTION_REFUSED', 'Failed to load resource: net::ERR_CONNECTION_REFUSED']

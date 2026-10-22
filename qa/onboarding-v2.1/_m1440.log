@@ -1,0 +1,7 @@
+load
+intro
+charge
+skip box [720, 830, 95, 48]
+done
+after skip phase done keep enabled True
+['Failed to load resource: net::ERR_CONNECTION_REFUSED', 'Failed to load resource: net::ERR_CONNECTION_REFUSED', 'Failed to load resource: net::ERR_CONNECTION_REFUSED', 'Failed to load resource: net::ERR_CONNECTION_REFUSED', 'Failed to load resource: net::ERR_CONNECTION_REFUSED', 'Failed to load resource: net::ERR_CONNECTION_REFUSED', 'Failed to load resource: net::ERR_CONNECTION_REFUSED', 'Failed to load resource: net::ERR_CONNECTION_REFUSED', 'Failed to load resource: net::ERR_CONNECTION_REFUSED', 'Failed to load resource: net::ERR_CONNECTION_REFUSED', 'Failed to load resource: net::ERR_CONNECTION_REFUSED', 'Failed to load resource: net::ERR_CONNECTION_REFUSED', 'Failed to load resource: net::ERR_CONNECTION_REFUSED', 'Failed to load resource: net::ERR_CONNECTION_REFUSED', 'Failed to load resource: net::ERR_CONNECTION_REFUSED', 'Failed to load resource: net::ERR_CONNECTION_REFUSED', 'Failed to load resource: net::ERR_CONNECTION_REFUSED', 'Failed to load resource: net::ERR_CONNECTION_REFUSED', 'Failed to load resource: net::ERR_CONNECTION_REFUSED', 'Failed to load resource: net::ERR_CONNECTION_REFUSED', 'Failed to load resource: net::ERR_CONNECTION_REFUSED', 'Failed to load resource: net::ERR_CONNECTION_REFUSED', 'Failed to load resource: net::ERR_CONNECTION_REFUSED', 'Failed to load resource: net::ERR_CONNECTION_REFUSED', 'Failed to load resource: net::ERR_CONNECTION_REFUSED', 'Failed to load resource: net::ERR_CONNECTION_REFUSED']

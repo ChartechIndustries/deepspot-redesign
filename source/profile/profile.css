@@ -830,17 +830,17 @@ button.pp-mole-empty span{font:600 15px/1.3 ui-monospace,Menlo,Consolas,monospac
 .pp-passobj-in:not([data-foil=none]) .pp-bump{opacity:.2!important}
 /* the photo keeps its own clean frame */
 .pp-id9 .pp-molebox{background:#f7f6f0;isolation:isolate}
-/* emboss: a light edge below, a dark edge above, like ink pressed into card stock */
-.pp-id9{--emb-hi:rgba(255,255,255,.85);--emb-lo:rgba(11,27,39,.28)}
-.pp-id9 :is(.pp-id9-title b,.pp-rows dd,.pp-rows dt,.pp-id9-title i,.pp-prog span,.pp-id9-mrz,.pp-sig-l,.pp-id9-sig>span){text-shadow:0 1px 0 var(--emb-hi),0 -1px 0 var(--emb-lo)}
+/* emboss (v2.1): a soft bevel, one faint light edge below and a faint shade above. No hard second line, so type never looks doubled. */
+.pp-id9{--emb-hi:rgba(255,255,255,.5);--emb-lo:rgba(11,27,39,.12);--emb-t:0 .5px .5px rgba(255,255,255,.55),0 -.5px .8px rgba(0,0,0,.12)}
+.pp-id9 :is(.pp-id9-title b,.pp-rows dd,.pp-rows dt,.pp-id9-title i,.pp-prog span,.pp-id9-mrz,.pp-sig-l,.pp-id9-sig>span){text-shadow:var(--emb-t)}
 .pp-id9 .pp-rows dd{color:#0b1b27}
-.pp-id9 .pp-rows>div{border-bottom-color:rgba(11,27,39,.22);box-shadow:0 1px 0 var(--emb-hi)}
-.pp-id9 .pp-id-top{box-shadow:0 1.5px 0 var(--emb-hi)}
-.pp-id9 .pp-id9-sig{box-shadow:0 1.5px 0 var(--emb-hi)}
-.pp-id9 .pp-bar4{box-shadow:inset 0 1px 1px rgba(11,27,39,.35),0 1px 0 var(--emb-hi)}
-.pp-id9 .pp-molebox{box-shadow:0 0 0 4px #f7f6f0,0 0 0 5px rgba(11,27,39,.25),inset 0 1px 2px rgba(11,27,39,.3),0 6px 0 -5px var(--emb-hi)}
-.pp-id9-crest{box-shadow:inset 0 -1px 0 rgba(255,255,255,.25),0 1px 0 var(--emb-hi),0 -1px 0 var(--emb-lo)}
-.pp-id9-no{box-shadow:0 1px 0 var(--emb-hi),inset 0 1px 0 rgba(194,53,47,.25)}
+.pp-id9 .pp-rows>div{border-bottom-color:rgba(11,27,39,.2);box-shadow:0 1px 1px -.5px var(--emb-hi)}
+.pp-id9 .pp-id-top{box-shadow:0 1.5px 1px -.5px var(--emb-hi)}
+.pp-id9 .pp-id9-sig{box-shadow:0 1.5px 1px -.5px var(--emb-hi)}
+.pp-id9 .pp-bar4{box-shadow:inset 0 1px 1.5px rgba(11,27,39,.3),0 1px 1px -.5px var(--emb-hi)}
+.pp-id9 .pp-molebox{box-shadow:0 0 0 4px #f7f6f0,0 0 0 5px rgba(11,27,39,.25),inset 0 1px 2px rgba(11,27,39,.3),0 6px 1px -5px var(--emb-hi)}
+.pp-id9-crest{box-shadow:inset 0 -1px 1px rgba(255,255,255,.2),0 1px 1px -.5px var(--emb-hi)}
+.pp-id9-no{box-shadow:0 1px 1px -.5px var(--emb-hi),inset 0 1px 1px rgba(194,53,47,.2)}
 
 /* 2026-10-21: bigger type fit — label column wide enough for SINCE/LEVEL; archetype names wrap inside the ink stamp */
 .pp-rows>div{grid-template-columns:70px minmax(0,1fr)}

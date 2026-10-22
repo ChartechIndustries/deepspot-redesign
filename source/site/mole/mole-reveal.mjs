@@ -46,7 +46,7 @@ function loadLibs(onTick) {
 }
 
 function loadCSS() {
-  const href = new URL('mole-reveal.css', BASE).href;
+  const href = new URL('mole-reveal.css?v=ld2', BASE).href;
   if ([...document.styleSheets].some((s) => s.href === href) || document.querySelector(`link[data-mole-css]`)) return Promise.resolve();
   return new Promise((res) => {
     const l = document.createElement('link');
@@ -666,7 +666,7 @@ export async function openMoleReveal(opts = {}) {
   }
   let poolBySlot = {};
 
-  function skip() { if (!timeline) return; tNow = reduced ? 1100 : T.end; frozen = false; renderAt(tNow); if (!running) startLoop(); }
+  function skip() { if (!timeline) return; const had = document.activeElement === skipBtn; tNow = reduced ? 1100 : T.end; frozen = false; renderAt(tNow); if (!running) startLoop(); if (had) (actionBtns[0].disabled ? closeBtn : actionBtns[0]).focus({ preventScroll: true }); }
 
   function downloadPNG() {
     const prev = renderer.getPixelRatio();
