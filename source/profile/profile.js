@@ -1,9 +1,9 @@
 import {moleCrop} from './passport-art.mjs?v=pad1';
 import {createPassportImage} from './passport-export.mjs?v=pv3';
 import {padHTML,initPad} from './sign-pad.mjs?v=pv4';
-import {travelerStyles,travelerMark,accountKey,readAccount,normalizeAccount} from '../site/account-state.mjs?v=pad1';
+import {travelerStyles,travelerMark,accountKey,readAccount,normalizeAccount} from '../site/account-state.mjs?v=icons2';
 import {memberLevels,memberRange,POINTS} from './passport-rules.mjs?v=pv2';
-import {LOOK_KEY,readLook as _readLook,readStyle as _readStyle,writeStyle,archHTML,wireArch,lookTilesHTML,styleTilesHTML,pickLook,pickStyle,mrz,moleImgHTML,stampName,cardHTML,biopHTML,syncPreview,fitPreview,bindTilt,addBioBand,fitBandText} from './passport-edit.mjs?v=ob4';
+import {LOOK_KEY,readLook as _readLook,readStyle as _readStyle,writeStyle,archHTML,wireArch,lookTilesHTML,styleTilesHTML,pickLook,pickStyle,mrz,moleImgHTML,stampName,cardHTML,biopHTML,syncPreview,fitPreview,bindTilt,addBioBand,fitBandText,fitBands,moleSlotHTML,variety} from './passport-edit.mjs?v=un1';
 import {escapeHTML as esc,safeReturn} from './identity.mjs';
 import {loadProfile} from './data.mjs?v=ob1';
 import {halftoneField} from '../site/halftone-field.mjs?v=2';
@@ -193,11 +193,14 @@ function setTab(name,focus){
  
  $('#pp-pane-pass').hidden=mark;$('#pp-pane-mark').hidden=!mark;$('.pp-book').dataset.tab=name;
 }
+/* the archetype on the card = what the profile shows (own: the picked one; others: worked out from their postings); others also get the same per-person look as the community deck */
+const cardArch=()=>((profile.localPreview&&profile.style)||profile.type?.id)||'';
+const cardLook=rank=>{const v=variety(profile.id,rank);return {ink:v.ink,rot:v.rot,rib:v.rib};};
 function render(){
  document.title=`${profile.name} — DeepSpot Passport`;profile.items=itemsFor(profile);
  const initials=profile.name.split(/\s+/).slice(0,2).map(word=>word[0]).join('').toUpperCase(),lv=profile.level,st=profile.standing,soc=profile.socials;
  const rank=st?.rankAll;profile.field=rank&&rank<=3?RANKC[rank-1]:'#dfe6e4';
- const mole=profile.mole?moleHTML():profile.localPreview?'<button type="button" class="pp-mole pp-mole-empty" data-set-roll><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="4"/><path d="M4 21c1-5 4-7 8-7s7 2 8 7"/></svg><span>roll your mole</span></button>':`<span class="pp-mole pp-mole-empty" role="img" aria-label="${esc(profile.name)}’s initials"><b>${esc(initials)}</b></span>`;
+ const mole=moleSlotHTML({src:profile.mole,name:profile.name,own:profile.localPreview});
  const mini=profile.mole?moleHTML('pp-mole-mini'):`<span class="pp-mole pp-mole-mini pp-mole-empty" aria-hidden="true"><b>${esc(initials)}</b></span>`;
  const mark=padHTML(profile),label=profile.localPreview?'my mark':'their mark';
  {const ks=$('.pp-share'),kb=$('.pp-back');if(ks)$('.pp-tools')?.append(ks);if(kb)$('.pp-toolbar')?.prepend(kb);}
@@ -208,7 +211,7 @@ function render(){
   <div class="pp-stage">
    <div class="pp-pane" id="pp-pane-pass">
     <div class="pp-passobj"><div class="pp-passobj-in">
-    ${cardHTML({no:rank?'no. '+String(rank).padStart(3,'0'):own?(localStorage.getItem('deepspot-onboarded-v1')?'issued':'draft'):'',mole,lv,stamp:{name:stampName((own&&profile.style)||profile.type.id),sub:profile.member},name:profile.name,nameId:'pp-name',handle:profile.handle,joined:profile.joined,member:profile.member,sigId:'pp-sig',sigLabel:own?'my mark':'their mark',sig:sigHTML(profile.signatureArt),mrz:mrz(profile,rank,lv)})}
+    ${cardHTML({no:rank?'no. '+String(rank).padStart(3,'0'):own?(localStorage.getItem('deepspot-onboarded-v1')?'issued':'draft'):'',mole,lv,arch:cardArch(),stamp:{name:stampName(cardArch()),sub:profile.member},bio:profile.bio,bioEmpty:own?'say hi. a few lines about you.':'no bio yet.',...(own?{}:cardLook(rank)),name:profile.name,nameId:'pp-name',handle:profile.handle,joined:profile.joined,member:profile.member,sigId:'pp-sig',sigLabel:own?'my mark':'their mark',sig:sigHTML(profile.signatureArt),mrz:mrz(profile,rank,lv)})}
     </div></div>
    </div>
    ${deckHTML()}
@@ -407,10 +410,11 @@ document.addEventListener('click',e=>{
 addEventListener('resize',()=>requestAnimationFrame(fitBio));
 /* the passport object is drawn at 440px and scaled up to fill its pane */
 function fitPassport(){
- const obj=$('.pp-passobj'),field=$('.pp-field');if(!obj||!field)return;
- obj.style.zoom='';if(innerWidth<1100){return;}
- const w=obj.offsetWidth,h=obj.offsetHeight+110,fw=field.clientWidth-120,fh=field.clientHeight-60;
- const z=Math.max(1,Math.min(fw/w,fh/h,1.75));obj.style.zoom=z.toFixed(3);
+ const obj=$('.pp-passobj'),pane=$('#pp-pane-pass'),field=$('.pp-field');if(!obj||!field)return;
+ obj.style.zoom='';if(pane)pane.style.zoom='';fitBands(obj);
+ if(innerWidth<1100){if(pane)pane.style.zoom=Math.min(1,(field.clientWidth-32)/440).toFixed(3);return;}   /* phones + tablets: the whole pane (card + share bar) shrinks to the width */
+ const w=obj.offsetWidth,extra=Math.max(0,(pane?.offsetHeight||0)-obj.offsetHeight)+16,h=obj.offsetHeight+extra,fw=field.clientWidth-120,fh=field.clientHeight-56;
+ obj.style.zoom=Math.max(.7,Math.min(fw/w,fh/h,1.75)).toFixed(3);
 }
 addEventListener('resize',()=>requestAnimationFrame(fitPassport));
 function moveBumpLight(e){const card=$('.pp-id9');if(!card)return;const b=card.getBoundingClientRect(),z=document.documentElement.style.zoom||1,sc=b.width/card.offsetWidth||1;
@@ -420,7 +424,7 @@ function appShell(){
  if(back&&field){back.classList.add('pp-tabs-back');field.append(back);}
  if(share&&pane&&!pane.querySelector('.pp-sharebar')){const bar=document.createElement('div');bar.className='pp-sharebar';bar.append(share);const hint=document.createElement('span');hint.className='pp-mono';hint.textContent='share it, or save it as an image';bar.append(hint);pane.append(bar);}
  $('.pp-toolbar')?.setAttribute('hidden','');
- document.documentElement.classList.add('pp-app');requestAnimationFrame(fitBio);requestAnimationFrame(fitPassport);document.fonts?.ready.then(()=>requestAnimationFrame(fitBio));
+ document.documentElement.classList.add('pp-app');requestAnimationFrame(fitBio);requestAnimationFrame(fitPassport);document.fonts?.ready.then(()=>{requestAnimationFrame(fitBio);requestAnimationFrame(fitPassport);});
  const header=document.querySelector('.br-header');
  const fit=()=>document.documentElement.style.setProperty('--pp-top',Math.max(0,Math.round(header?.getBoundingClientRect().bottom||0))+'px');
  fit();if(!window._ppFit){window._ppFit=1;addEventListener('resize',fit);}
@@ -563,7 +567,7 @@ function setField(bg){
  window._ppField=halftoneField(host,{cell:bg==='halftone'?8:7,fps:20,ink:()=>(document.documentElement.dataset.theme==='light'?ink[1]:ink[0]).map(v=>v/255)});
 }
 function applyStyle(st=readStyle()){
- setField(st.bg);const field=$('.pp-field'),obj=$('.pp-passobj-in');if(field)field.dataset.bg=st.bg;if(obj)obj.dataset.foil=st.foil;
+ setField(st.bg);const field=$('.pp-field'),obj=$('.pp-passobj-in');if(field)field.dataset.bg=st.bg;if(obj)obj.dataset.foil=profile?.localPreview?st.foil:variety(profile.id,profile.standing?.rankAll).foil;
 }
 /* in edit profile the choices preview live; save profile keeps them, cancel puts the saved look back */
 const czPick=()=>pickStyle(document.querySelector('#pp-edit'),readStyle());

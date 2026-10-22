@@ -1,9 +1,9 @@
 import {esc,$,$$,icon,localURL,action,saveButton,spotURL,readStore,writeStore} from './core.mjs';
 import {profileHref,profileId} from '../profile/identity.mjs';
-import {readAccount,avatarImage} from './account-state.mjs?v=pad1';
+import {readAccount,avatarImage} from './account-state.mjs?v=icons2';
 import {COMMUNITY_METRICS} from './community-hub.mjs';
 import {avatarHTML} from '../profile/identity.mjs';
-import {passportModels,participantsHTML,wirePassports} from './passport-mini.mjs?v=5';
+import {passportModels,participantsHTML,wirePassports} from './passport-mini.mjs?v=un1';
 
 /* Community hub v2 (2026-10-19). Real data only: leaderboard, forum snapshot, catalog. Votes live in this browser. The giveaway hero lives in giveaway-hero.mjs. */
 const DISCORD_URL='https://www.deepspot.io/community'; // TODO: replace with the real Discord invite when Charlie supplies it

@@ -121,7 +121,7 @@ async def skip_and_keys(b):
   await ctx.close()
 async def main():
   async with async_playwright() as p:
-    b=await p.chromium.launch(args=["--use-angle=swiftshader"])
+    b=await p.chromium.launch()
     for w,h in [(390,844),(1440,900)] if len(sys.argv)<2 else [(int(sys.argv[1]),int(sys.argv[2]))]:
       try: await run(b,w,h)
       except Exception as e: BAD.append(f'CRASH {w}: {e!s:.300}'); print('CRASH',e)

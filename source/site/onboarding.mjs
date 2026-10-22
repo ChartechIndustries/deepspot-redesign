@@ -3,10 +3,10 @@
 // slot on the card (v2.1: one face, no flip; bio sits between the photo and the mark), each opening a focused bottom sheet (phone) or popover (desktop).
 // Passport data goes through the same storage the passport page reads (account draft, passport style, want-to-go).
 import {FINISH,SLOTS,slotProgress,readProgress,writeProgress,isOnboarded,markOnboarded,resetOnboarding,passwordStrength,validateUsername,suggestUsernames,takenHandles,archetypeName,validEmail} from './onboarding-state.mjs?v=ob3';
-import {accountKey,readAccount,normalizeAccount,travelerStyles} from './account-state.mjs?v=pad1';
+import {accountKey,readAccount,normalizeAccount,travelerStyles} from './account-state.mjs?v=icons2';
 import {readSession,writeSession} from './gate-state.mjs?v=gate1';
 import {G_ICON,A_ICON} from './brand-icons.mjs?v=ob1';
-import {readStyle,writeStyle,archCardsHTML,archGroups,styleGroupHTML,pickStyle,cardHTML,moleImgHTML,mrz,syncPreview,bindTilt} from '../profile/passport-edit.mjs?v=ob4';
+import {readStyle,writeStyle,archCardsHTML,archGroups,styleGroupHTML,pickStyle,cardHTML,moleImgHTML,mrz,syncPreview,bindTilt} from '../profile/passport-edit.mjs?v=un1';
 import {padHTML,initPad,inkURL} from '../profile/sign-pad.mjs?v=pv4';
 import {escapeHTML as esc,safeReturn} from '../profile/identity.mjs';
 
@@ -104,7 +104,7 @@ const SLOT_PILL={photo:'add photo',name:'add name',arch:'add type',bio:'add bio'
 const slotBtn=(id,cls,inner='',extra='')=>`<button type="button" class="ob-slot ${cls}" data-slot="${id}"${extra}>${inner}</button>`;
 
 function frontHTML(){
- return cardHTML({no:'draft',mole:PH_MOLE,lv:null,stamp:{name:'explorer',sub:'newcomer'},name:'—',handle:'',joined:'',member:'newcomer',sigLabel:'my mark',sig:'<span>no mark yet</span>',mrz:mrz({name:'',handle:'',joined:''},0,null)});
+ return cardHTML({no:'draft',mole:PH_MOLE,lv:null,arch:'',noStamp:true,stamp:{name:'explorer',sub:'newcomer'},name:'—',handle:'',joined:'',member:'newcomer',sigLabel:'my mark',sig:'<span>no mark yet</span>',mrz:mrz({name:'',handle:'',joined:''},0,null)});
 }
 let stage,zone,rise,lift,cardw,scale,pobj,flip,front,topEl,tipEl,chipEl,finBtn,slotline;
 const slotEls={};   // id -> [buttons]
@@ -132,7 +132,7 @@ function buildB(){
  body.insertAdjacentHTML('beforeend',slotBtn('name','ob-s-name')+slotBtn('arch','ob-s-arch'));
  sig.insertAdjacentHTML('beforeend',slotBtn('mark','ob-s-mark'));
  /* v2.2: the bio is a full-width band between the photo block and "my mark"; the style sticker sits at the bottom-right corner of the photo block */
- body.insertAdjacentHTML('afterend',`<div class="pp-id9-bio ob-band">${slotBtn('bio','ob-s-bio ob-dm','<span class="ob-bio-t" data-bio></span>')}</div>`);
+ {const band=$('.pp-id9-bio',front);band.classList.add('ob-band');band.innerHTML=slotBtn('bio','ob-s-bio ob-dm','<span class="ob-bio-t" data-bio></span>');}
  body.insertAdjacentHTML('beforeend',`<button type="button" class="ob-slot ob-s-style ob-dm" data-slot="style"><span class="ob-sticker-in" aria-hidden="true"><b>✦</b><i>style</i></span></button>`);
  const stl=$('.ob-s-style',front),bioBtn=$('.ob-s-bio',front),stampEl=$('.pp-id9-stamp',front);stampEl.classList.add('ob-dm');
  for(const id of Object.keys(SLOT_LABEL)){slotEls[id]=$$(`[data-slot="${id}"]`,flip);slotEls[id].forEach(b=>b.dataset.lab=SLOT_PILL[id]);}

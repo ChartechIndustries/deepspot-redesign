@@ -4,7 +4,7 @@ B='https://chartechindustries.github.io/deepspot-redesign'
 R=['/','/browse/','/community/','/profile/?user=wayfarer','/profile/?user=preview','/welcome/','/spot/?id=tochigi-underground-quarry']
 async def main():
   async with async_playwright() as p:
-    b=await p.chromium.launch(args=["--use-angle=swiftshader"])
+    b=await p.chromium.launch()
     for r in R:
       pg=await b.new_page(viewport={"width":1440,"height":900}); errs=[]; bad=[]
       pg.on('pageerror',lambda e,errs=errs: errs.append(str(e)[:120]))

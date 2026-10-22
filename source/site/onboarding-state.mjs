@@ -1,6 +1,6 @@
 // New-user onboarding: pure helpers (no DOM). Prototype only: everything stays in localStorage, nothing is sent.
 import {TAG_TYPE} from '../profile/passport-rules.mjs?v=pv2';
-import {accountKey,travelerStyles} from './account-state.mjs?v=pad1';
+import {accountKey,travelerStyles} from './account-state.mjs?v=icons2';
 import {validEmail} from './gate-state.mjs?v=gate1';
 export {validEmail};
 

@@ -266,3 +266,17 @@ Open /banner-variations.html for ten independently styled banner sections beneat
 - Taller card: `.pp-id9-tall` (profile.css) 440x668 (5:7.6). Order: header, photo + rows, full-width bio band (`.pp-id9-bio`, 19 -> 11px auto-fit), mark line (124px), MRZ. Style sticker moved to the bottom-right corner of the photo block (48px). Edit-dialog preview clone gets the same band (`addBioBand`, `fitBandText` in passport-edit.mjs; live bio sync). Profile page main card unchanged except the taller mark line. Desktop card height up to 92vh.
 - Phone mark sheet compacted so the card stays visible above it.
 - Keys: onboarding css/js `ob4`, profile css/js `ob4`, passport-edit `ob4`, sign-pad `pv4`, mole-reveal `ld3`, passport-mini css `10`. QA `qa/onboarding-v2.2/` (v22.py, mole.py, flow.py, states.py, shots). Backup `backups/before-onboarding-v2.2-20261021/`. Not deployed, not committed.
+
+## One passport everywhere (2026-10-21, spec `PASSPORT-UNIFY-SPEC.md`, Sonnet build)
+- One card: `cardHTML` in `source/profile/passport-edit.mjs` (440px, 5:7.6, header DEEPSPOT / EXPLORER PASSPORT · PASAPORTE · パスポート, crest = `travelerMark(arch)` on the archetype group accent, full-width bio band, mark, progress, MRZ, archetype stamp bottom-left). Used by profile page, edit-dialog preview, onboarding and the community deck. Helpers: `variety()` (stamp ink/angle by id hash, foil by rank, 1st/2nd/3rd ribbon), `moleSlotHTML`, `fitBands`, `groupKey`. Others' profiles use the same look as their deck card.
+- Community: `passport-mini.mjs/.css` is now only the deck (stack, deal-out, restack, coverflow, tilt); cards are the shared card inside `.pp-passobj-in`. Community page now loads `/profile/profile.css`.
+- Profile left pane: tall card zoomed to fit (phones/tablets: pane zoom, whole card visible). MRZ is 30 chars, indented clear of the stamp.
+- Keys: profile css/js, welcome css/mjs, passport-edit, passport-mini, community-v2 (pages.mjs + giveaway-hero.mjs) all `un1`. Backup `backups/before-passport-unify-20261021/`. QA `qa/passport-unify/`. Not deployed.
+
+## Archetype icons v2 (2026-10-21, spec `ARCHETYPE-ICONS-SPEC.md`, Opus)
+- All 45 `travelerStyles` paths redrawn as one family: 24 grid, geometry inside 2..22, .5-snapped points, stroke 2, round caps/joins, at most one solid accent (`fill="currentColor"`). Source: `tools/archetypes.py` (now importable; `python tools/archetypes.py` writes the module). Ids/names/groups/descriptions unchanged.
+- `travelerMark` puts the stroke family on the `<svg>` and pins the weight on an inner `<g style="stroke-width:var(--arch-sw,2)">`, so every consumer renders at 2 whatever its CSS says; a host can opt out with `--arch-sw`. `travelerImage` rebuilt (stroke 2, `color` set for accents). New export `travelerStyle(id)`.
+- Hosts that set `stroke:` must set the same `color:` (accents use currentColor): appended at the end of `profile/profile.css` for `.pp-id9-crest.is-arch svg` and `.pp-set-av svg`.
+- Import key `account-state.mjs?v=icons2` on all 10 importers.
+- QA: `python tools/archetype_sheet.py <tag>` → `qa/archetype-icons/<tag>-{cream,ink,grid,small}.png` (resvg, no browser; also an edge check). Rounds r1–r5 + final. In place: `qa/archetype-icons/inplace*.py` → `qa/archetype-icons/inplace/`. Test: `qa/archetype-icons.test.mjs` (allowed elements, closed markup, keyline, grid snap, one accent).
+- Backup: `backups/before-icons-v2-20261021/`.

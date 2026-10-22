@@ -1,5 +1,5 @@
 import {moleCrop} from './passport-art.mjs?v=pad1';
-import {travelerStyles} from '../site/account-state.mjs?v=pad1';
+import {travelerStyles} from '../site/account-state.mjs?v=icons2';
 
 // The share image is drawn from the same profile and contribution records as the page.
 // It stays self-contained: all photographs are served with the site.

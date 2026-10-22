@@ -1,0 +1,75 @@
+--- viewport 1440x900
+PASS gate continue lands on /welcome/
+PASS from= carries the spot
+PASS email prefilled
+PASS A no scroll
+PASS axe 0 A
+PASS empty password blocked
+PASS pw aria-invalid
+PASS short pw blocked
+PASS meter reacts
+PASS terms required
+PASS show password
+PASS A errors no scroll
+PASS issuing class on
+PASS session free + email
+PASS password never stored
+PASS password never sent
+PASS B no scroll
+PASS chip 0/6
+PASS no flip button / back face
+PASS slots present (photo,name,type,bio,mark,style)
+PASS slot labels
+PASS name slot says required
+PASS axe 0 B
+PASS finish disabled until required
+PASS nudge on first empty required
+PASS axe 0 sheet name
+PASS sheet is dialog
+PASS focus inside sheet
+PASS focus trapped
+PASS Escape closes + focus returns to slot
+PASS username 'lampbane' -> taken
+PASS username 'admin' -> reserved
+PASS username 'ab' -> at least
+PASS username 'a b' -> letters
+PASS username '.dot' -> start and end
+PASS suggestions
+PASS taken handle blocks done
+PASS free handle ok
+PASS chip 1/6 after name
+PASS card name
+PASS card user
+PASS refresh lands on B
+PASS refresh keeps name
+PASS arch on card
+PASS axe 0 sheet arch
+PASS mole saved
+PASS chip 3/6
+PASS finish ready after required
+PASS mark saved
+PASS axe 0 sheet mark
+PASS style saved
+PASS foil on card
+PASS axe 0 sheet style
+PASS bio saved
+PASS bio on the card front
+PASS bio fits (no overflow)
+PASS axe 0 sheet bio
+PASS chip 6/6
+PASS B filled no scroll
+PASS axe 0 B filled
+PASS big ISSUED stamp shown
+PASS onboarded flag set
+PASS passport shows name
+PASS passport shows bio
+PASS passport shows handle
+PASS welcome redirects when finished
+PASS console 0 errors
+--- keyboard + skip issue
+PASS tap skips the issue animation
+PASS Enter opens a slot
+PASS popover on desktop
+PASS reduced motion: B within 2s
+
+71 pass, 0 fail

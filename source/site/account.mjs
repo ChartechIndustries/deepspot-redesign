@@ -1,6 +1,6 @@
 import {esc,$,$$,icon,localURL,action,pageTitle,readStore,writeStore,keys,notify,downloadJSON,savedIDs} from './core.mjs';
 import {readSession,setState,onGate,gateOff} from './gate.mjs?v=ob1';
-import {accountKey,readAccount,normalizeAccount,travelerStyles,travelerMark,avatarImage} from './account-state.mjs?v=pad1';
+import {accountKey,readAccount,normalizeAccount,travelerStyles,travelerMark,avatarImage} from './account-state.mjs?v=icons2';
 
 const live=(label,hash='')=>`<a class="ds-text-link" href="https://www.deepspot.io/profile${hash}" data-original target="_blank" rel="noopener">${label}${icon('arrow')}</a>`;
 const sections=[['progress','travel stats'],['trips','my trips'],['submissions','my submissions'],['placements','my placements'],['notifications','notifications'],['billing','membership'],['security','account settings']];

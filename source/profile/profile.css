@@ -1097,3 +1097,45 @@ html[data-panel-color=off] .ed-n{background:transparent;color:var(--br-text);bor
 .pp-id9-bio-t>p.is-ph{color:#5d6b78;font-weight:500;font-style:italic}
 .pp-id9-tall>.pp-id9-sig{height:124px;margin:0}
 .pp-id9-tall>.pp-id9-mrz{margin-top:14px!important}
+
+/* ================= one passport everywhere (2026-10-21): profile, edit preview, onboarding and the community deck share this card ================= */
+/* fixed card geometry: the card is always drawn at 440px and scaled, so no phone reflow rules apply to it */
+.pp-id9 .pp-id-body{grid-template-columns:132px minmax(0,1fr)}
+.pp-id9 .pp-molebox{width:132px;height:132px}
+.pp-id9 .pp-mole-empty b{font-size:40px}
+.pp-id9 .pp-rows dd{font-size:17px}
+/* header: crest (the archetype icon on its group accent) + DEEPSPOT / EXPLORER PASSPORT + red number */
+.pp-id9{--ga:#0b1b27}
+.pp-id9[data-g=weird]{--ga:#34238a}.pp-id9[data-g=nature]{--ga:#0b6a2f}.pp-id9[data-g=history]{--ga:#7a4c0c}.pp-id9[data-g=food]{--ga:#a8260f}.pp-id9[data-g=night]{--ga:#901060}
+.pp-id9[data-g=science]{--ga:#1a3bbd}.pp-id9[data-g=art]{--ga:#a8124a}.pp-id9[data-g=spirit]{--ga:#6a2a9c}.pp-id9[data-g=extra]{--ga:#3f5800}
+.pp-id9 .pp-id-top{grid-template-columns:auto minmax(0,1fr) auto;gap:12px}
+.pp-id9-crest{flex:none;width:44px;height:44px;background:var(--ga)}
+.pp-id9-crest.is-arch svg{width:30px;height:30px;fill:none;stroke:#f5f4ee;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.pp-id9-title i{display:flex;flex-direction:column;gap:3px;font-size:13.5px;letter-spacing:.1em;white-space:nowrap;overflow:visible;text-overflow:clip}
+.pp-id9-title i span{display:block}
+.pp-id9-title b{font-size:22px}
+/* archetype stamp: bottom-left corner, over the edge of the MRZ band. Ink + angle come from --st / --sr (the person) */
+.pp-id9.pp-id9-tall>.pp-id9-stamp{position:absolute;left:14px;right:auto;top:auto;bottom:0;width:80px;height:80px;z-index:8;transform:rotate(var(--sr,-14deg));
+ border-color:color-mix(in srgb,var(--st,#3c60ff) 78%,transparent);color:color-mix(in srgb,var(--st,#3c60ff) 88%,transparent);
+ background:radial-gradient(circle,transparent 58%,color-mix(in srgb,var(--st,#3c60ff) 7%,transparent) 60%);
+ box-shadow:inset 0 0 0 3px rgba(247,246,240,.9),inset 0 0 0 4px color-mix(in srgb,var(--st,#3c60ff) 62%,transparent)}
+.pp-id9-stamp b{font-size:12px;line-height:1.02;max-width:70px;text-align:center;white-space:normal;overflow-wrap:break-word;letter-spacing:-.02em}
+.pp-id9 .pp-id9-stamp.is-ph{display:none}
+/* the MRZ keeps clear of the stamp */
+.pp-id9.pp-id9-tall>.pp-id9-mrz{padding-left:104px!important;padding-right:12px!important;font-size:13px!important;letter-spacing:.14em!important}
+/* ribbon for the top three */
+.pp-id9-rib{position:absolute;left:-8px;top:-8px;z-index:5;font:800 14px/1 Arial,Helvetica,sans-serif;letter-spacing:.02em;color:#0b1b27;padding:5px 9px;border-radius:99px;box-shadow:0 1px 3px rgba(11,27,39,.4),inset 0 1px 0 rgba(255,255,255,.7);background:linear-gradient(135deg,#ffffff,#c4d0de 55%,#9fb0c6)}
+.pp-passobj-in[data-foil=gold] .pp-id9-rib{background:linear-gradient(135deg,#fff0a0,#f2c230 55%,#d9981a)}
+.pp-id9-bio-t>p{text-wrap:pretty}
+/* profile left pane: phones and tablets show the whole card, scaled to the width */
+@media(max-width:1099px){
+ html.pp-app .pp-field-in,.pp-field-in{height:auto;min-height:0}
+ html.pp-app .pp-stage,.pp-stage{overflow:visible;padding:56px 0 16px}
+ .pp-field #pp-pane-pass{width:440px;max-width:none;margin:0 auto}
+ .pp-field #pp-pane-pass .pp-passobj{width:440px}
+}
+.pp-field .pp-passobj{margin-left:auto;margin-right:auto}
+
+/* archetype icons v2 (icon builder, 2026-10-21): solid accents paint with currentColor, so hosts that set stroke must set the same color */
+.pp-id9-crest.is-arch svg{color:#f5f4ee}
+.pp-set-av svg{color:#0b1b27}

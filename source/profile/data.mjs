@@ -1,5 +1,5 @@
 import {profileId} from './identity.mjs';
-import {readAccount} from '../site/account-state.mjs?v=pad1';
+import {readAccount} from '../site/account-state.mjs?v=icons2';
 import {normalizedTags} from '../browse/catalog.mjs';
 import {levelFor,memberLevel,travelerType,standing,earnedStamps} from './passport-rules.mjs?v=pv2';
 async function json(url){const response=await fetch(url);if(!response.ok)throw Error('Profile collection unavailable');return response.json();}
