@@ -1,42 +1,60 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {STEPS,FINISH,PROGRESS_KEY,ONBOARDED_KEY,normalizeProgress,readProgress,writeProgress,isOnboarded,markOnboarded,resetOnboarding,advance,goBack,welcomeURL,passwordStrength,validateUsername,suggestUsernames,takenHandles,tagsForArchetype,suggestSpots,RESERVED} from '../source/site/onboarding-state.mjs';
+import {STEPS,FINISH,SLOTS,slotProgress,PROGRESS_KEY,ONBOARDED_KEY,normalizeProgress,readProgress,writeProgress,isOnboarded,markOnboarded,resetOnboarding,advance,goBack,welcomeURL,passwordStrength,validateUsername,suggestUsernames,takenHandles,tagsForArchetype,suggestSpots,RESERVED} from '../source/site/onboarding-state.mjs';
 import {travelerStyles} from '../source/site/account-state.mjs';
 const fake=()=>{const m=new Map();return {getItem:k=>m.has(k)?m.get(k):null,setItem:(k,v)=>m.set(k,String(v)),removeItem:k=>m.delete(k),m};};
 
-test('8 steps in the spec order, finish after them',()=>{
- assert.deepEqual(STEPS.map(s=>s.id),['account','name','mole','archetype','bio','mark','style','places']);
- assert.equal(FINISH,8);
- assert.deepEqual(STEPS.filter(s=>!s.skip).map(s=>s.id),['account','name']);
+test('v2: two screens (account, passport), finish after them',()=>{
+ assert.deepEqual(STEPS.map(s=>s.id),['account','passport']);
+ assert.equal(FINISH,2);
+});
+
+test('v2: seven slots, three required, front and back',()=>{
+ assert.deepEqual(SLOTS.map(s=>s.id),['photo','name','arch','mark','style','bio','places']);
+ assert.deepEqual(SLOTS.filter(s=>s.req).map(s=>s.id),['photo','name','arch']);
+ assert.deepEqual(SLOTS.filter(s=>s.face==='back').map(s=>s.id),['bio','places']);
+});
+
+test('slot states and progress chip',()=>{
+ const empty=slotProgress({});
+ assert.deepEqual([empty.done,empty.total,empty.canFinish,empty.next],[0,7,false,'photo']);
+ assert.deepEqual(empty.missing,['photo','name','arch']);
+ const half=slotProgress({mole:true,name:'Ann',username:''});   // name needs a username too
+ assert.equal(half.states.name,false);assert.equal(half.done,1);assert.equal(half.next,'name');
+ const req=slotProgress({mole:true,name:'Ann',username:'ann',arch:true});
+ assert.deepEqual([req.done,req.canFinish,req.missing,req.next],[3,true,[],'mark']);
+ const all=slotProgress({mole:true,name:'Ann',username:'ann',arch:true,sig:true,style:true,bio:' hi ',places:2});
+ assert.deepEqual([all.done,all.canFinish,all.next],[7,true,'']);
+ assert.equal(slotProgress({bio:'   '}).states.bio,false);
+ assert.equal(slotProgress({places:0}).states.places,false);
+ assert.equal(slotProgress(null).done,0);
 });
 
 test('progress normalizes junk to step 0',()=>{
  for(const raw of [null,undefined,'x',[],{step:'a'},{step:-4},{step:1.5},{}]){const p=normalizeProgress(raw);assert.equal(p.step,0);assert.deepEqual(p.done,[]);}
  assert.equal(normalizeProgress({step:99}).step,FINISH);
- assert.equal(normalizeProgress({step:3}).step,3);
- assert.deepEqual(normalizeProgress({done:['name','nope','name',4]}).done,['name']);
+ assert.equal(normalizeProgress({step:1}).step,1);
+ assert.deepEqual(normalizeProgress({done:['account','nope','account',4]}).done,['account']);
  assert.equal(normalizeProgress({data:{terms:'yes'}}).data.terms,false);
- assert.equal(normalizeProgress({data:{terms:true,sign:'name'}}).data.sign,'name');
+ assert.equal(normalizeProgress({data:{terms:true,sign:'name',style:true}}).data.style,true);
+ assert.equal(normalizeProgress({data:{style:'x'}}).data.style,false);
  assert.equal(normalizeProgress({data:{sign:'x'}}).data.sign,'pad');
 });
 
 test('progress reads, writes and resumes from storage',()=>{
  const s=fake();
  assert.equal(readProgress(s).step,0);
- writeProgress({step:4,done:['account','name'],skipped:['mole']},s);
- const r=readProgress(s);assert.equal(r.step,4);assert.deepEqual(r.done,['account','name']);assert.deepEqual(r.skipped,['mole']);
+ writeProgress({step:1,done:['account'],data:{arch:true}},s);
+ const r=readProgress(s);assert.equal(r.step,1);assert.deepEqual(r.done,['account']);assert.equal(r.data.arch,true);
  s.setItem(PROGRESS_KEY,'{bad');assert.equal(readProgress(s).step,0);
 });
 
-test('advance records done or skipped, back never goes below 0, finish is the top',()=>{
+test('advance and back stay inside the two screens',()=>{
  let p=normalizeProgress(null);
  p=advance(p);assert.equal(p.step,1);assert.deepEqual(p.done,['account']);
- p=advance(p);p=advance(p,{skip:true});assert.equal(p.step,3);assert.deepEqual(p.skipped,['mole']);
- p=goBack(p);assert.equal(p.step,2);
- p=advance(p);   // mole done after being skipped
- assert.deepEqual(p.skipped,[]);assert.ok(p.done.includes('mole'));
+ p=goBack(p);assert.equal(p.step,0);
  assert.equal(goBack(normalizeProgress(null)).step,0);
- let q=normalizeProgress({step:7});q=advance(q);assert.equal(q.step,FINISH);q=advance(q);assert.equal(q.step,FINISH);
+ let q=normalizeProgress({step:1});q=advance(q);assert.equal(q.step,FINISH);q=advance(q);assert.equal(q.step,FINISH);
 });
 
 test('onboarded flag and reset',()=>{

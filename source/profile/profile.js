@@ -496,9 +496,11 @@ function openSettings(){
  dlg.innerHTML=settingsHTML();dlg.showModal();dlg.querySelector('.pp-dialog-close').focus();
 }
 let rolling=false;
+ /* fetch the mole roll code in the background so its loading screen shows the instant the button is tapped */
+ setTimeout(()=>{import('../site/mole/mole-reveal.mjs?v=ld1').catch(()=>{});},2500);
 async function rollMole(trigger){
  if(rolling)return;rolling=true;const dlg=$('.pp-settings'),wasOpen=dlg?.open;
- try{const {openMoleReveal}=await import('../site/mole/mole-reveal.mjs?v=rules1');if(wasOpen)dlg.close();
+ try{const {openMoleReveal}=await import('../site/mole/mole-reveal.mjs?v=ld1');if(wasOpen)dlg.close();
   const res=await openMoleReveal({trigger:trigger?.isConnected?trigger:$('[data-settings]')});
   if(res){const next=normalizeAccount({...readAccount(),avatarMode:'mole',mole:{traits:res.traits,png:res.png,rolledAt:res.rolledAt}});
    if(!next.mole)notify('That mole picture was too large to save.');

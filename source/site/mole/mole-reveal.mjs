@@ -25,7 +25,8 @@ let active = null;
 
 export function isMoleRevealOpen() { return !!active; }
 
-function loadLibs() {
+function loadLibs(onTick) {
+  const tick = (p) => p.then((m) => { try { onTick && onTick(); } catch {} return m; });
   return libsPromise ??= (async () => {
     const hasMap = !![...document.scripts].some((s) => s.type === 'importmap');
     if (!hasMap && HTMLScriptElement.supports?.('importmap')) {
@@ -35,10 +36,10 @@ function loadLibs() {
       document.head.append(m);
     }
     const [THREE, g, d, r] = await Promise.all([
-      import('three'),
-      import('three/addons/loaders/GLTFLoader.js'),
-      import('three/addons/loaders/DRACOLoader.js'),
-      import('three/addons/loaders/HDRLoader.js')
+      tick(import('three')),
+      tick(import('three/addons/loaders/GLTFLoader.js')),
+      tick(import('three/addons/loaders/DRACOLoader.js')),
+      tick(import('three/addons/loaders/HDRLoader.js'))
     ]);
     return { THREE, GLTFLoader: g.GLTFLoader, DRACOLoader: d.DRACOLoader, RGBELoader: r.HDRLoader };
   })().catch((e) => { libsPromise = null; throw e; });
@@ -77,6 +78,63 @@ const easeOut = (x) => 1 - Math.pow(1 - x, 3);
 
 // ---------------------------------------------------------------- open
 
+// ---------------------------------------------------------------- loading screen
+// Shown the instant the reveal opens (before the CSS file, three.js or any GLB is fetched): a dark mole silhouette,
+// "rolling your mole..." and a bar that follows the real work. Everything it needs is inline.
+const SIL = 'data:image/png;base64,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';
+const LD_CSS = `.mrl{position:fixed;inset:0;z-index:2147483001;display:grid;place-items:center;background:#0c101b;color:#f5f4ee;font-family:Arial,Helvetica,sans-serif;opacity:1;transition:opacity .28s ease;overscroll-behavior:contain}
+.mrl.mrl-out{opacity:0;pointer-events:none}.mrl[hidden]{display:none}
+.mrl::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 44%,rgba(7,214,83,.2) 0,rgba(7,214,83,.07) 28%,transparent 56%)}
+.mrl-in{position:relative;display:flex;flex-direction:column;align-items:center;gap:18px;width:min(78vw,340px);padding:16px 0}
+.mrl-mole{position:relative;width:min(40vw,150px);aspect-ratio:261/382;display:block;animation:mrl-bob 1.5s ease-in-out infinite}
+.mrl-mole img{display:block;width:100%;height:100%;filter:brightness(1.12) drop-shadow(0 0 1px rgba(143,255,190,.9)) drop-shadow(0 0 22px rgba(7,214,83,.38))}
+.mrl-mole::after{content:"";position:absolute;left:12%;right:12%;bottom:-14px;height:12px;border-radius:50%;background:radial-gradient(ellipse,rgba(0,0,0,.55),transparent 70%);animation:mrl-sh 1.5s ease-in-out infinite}
+.mrl-t{margin:6px 0 0;font:800 clamp(24px,7vw,32px)/1 Arial,Helvetica,sans-serif;letter-spacing:-.05em;text-transform:lowercase;text-align:center}
+.mrl-t span{color:#66df91}
+.mrl-bar{width:100%;height:10px;border-radius:99px;background:rgba(245,244,238,.14);overflow:hidden}
+.mrl-bar i{display:block;height:100%;width:100%;border-radius:inherit;background:linear-gradient(90deg,#07d653,#66df91);transform:scaleX(0);transform-origin:0 50%}
+.mrl-p{margin:0;font:600 14px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.14em;text-transform:uppercase;color:#a4b5c6;min-height:14px}
+.mrl-x{position:absolute;z-index:2;top:max(14px,env(safe-area-inset-top));right:16px;width:44px;height:44px;border-radius:50%;border:1.5px solid #f5f4ee55;background:#0c101bcc;color:#f5f4ee;font-size:26px;line-height:1;cursor:pointer;display:grid;place-items:center;padding:0 0 3px}
+.mr-pre>:not(.mrl){visibility:hidden}
+.mrl-x:hover{border-color:#f5f4ee}.mrl-x:focus-visible{outline:2px solid #66df91;outline-offset:3px}
+@keyframes mrl-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes mrl-sh{0%,100%{transform:scaleX(1);opacity:.9}50%{transform:scaleX(.8);opacity:.6}}
+@media(prefers-reduced-motion:reduce){.mrl-mole,.mrl-mole::after{animation:none}.mrl{transition-duration:.01s}}`;
+function makeLoader(reduced) {
+  if (!document.querySelector('style[data-mole-ld]')) { const st = document.createElement('style'); st.dataset.moleLd = '1'; st.textContent = LD_CSS; document.head.append(st); }
+  const el = document.createElement('div');
+  el.className = 'mrl'; el.setAttribute('role', 'status'); el.setAttribute('aria-busy', 'true');
+  el.innerHTML = `<button type="button" class="mrl-x" aria-label="Close">&times;</button><div class="mrl-in"><span class="mrl-mole" aria-hidden="true"><img src="${SIL}" alt="" width="261" height="382"></span><p class="mrl-t">rolling your <span>mole&hellip;</span></p><div class="mrl-bar" role="progressbar" aria-label="Rolling your mole" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i></i></div><p class="mrl-p" aria-hidden="true">0%</p></div>`;
+  document.body.append(el);
+  const fill = el.querySelector('.mrl-bar i'), bar = el.querySelector('.mrl-bar'), pct = el.querySelector('.mrl-p');
+  // value = measured work done (0..1). The shown value eases up to it and never jumps back.
+  let target = 0, shown = 0, raf = 0, on = true, last = performance.now();
+  const paint = () => { const v = Math.round(shown * 100); fill.style.transform = `scaleX(${shown.toFixed(3)})`; bar.setAttribute('aria-valuenow', String(v)); pct.textContent = v + '%'; };
+  const tick = (now) => {
+    raf = 0; if (!on) return;
+    const dt = Math.min(64, now - last); last = now;
+    if (shown < target) shown = Math.min(target, shown + Math.max(0.004, (target - shown) * Math.min(1, dt / 90)));
+    paint();
+    if (shown < target || target < 1) raf = requestAnimationFrame(tick);
+  };
+  const kick = () => { if (!raf && on) { last = performance.now(); raf = requestAnimationFrame(tick); } };
+  paint(); kick();
+  return {
+    el,
+    set(v) { target = Math.max(target, Math.min(1, v)); kick(); },
+    reset() { target = 0; shown = 0; on = true; el.hidden = false; el.classList.remove('mrl-out'); el.setAttribute('aria-busy', 'true'); paint(); kick(); },
+    async finish() {
+      target = 1; kick();
+      for (let i = 0; i < 24 && shown < 0.995; i++) await new Promise((r) => setTimeout(r, 16));
+      shown = 1; paint(); el.setAttribute('aria-busy', 'false');
+      el.classList.add('mrl-out');
+      await new Promise((r) => setTimeout(r, reduced ? 20 : 280));
+      on = false; el.hidden = true;
+    },
+    remove() { on = false; if (raf) cancelAnimationFrame(raf); el.remove(); }
+  };
+}
+
 export async function openMoleReveal(opts = {}) {
   if (active) return active.promise;
   const reduced = typeof opts.reducedMotion === 'boolean' ? opts.reducedMotion : matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -86,10 +144,12 @@ export async function openMoleReveal(opts = {}) {
   const run = { promise, close: () => {} };
   active = run;
 
-  // ---- dom
-  await loadCSS();
+  // ---- dom (built at once: the loading screen shows before the CSS file, three.js or any model has arrived)
+  const cssReady = loadCSS();
+  const loader = makeLoader(reduced);
   const root = document.createElement('div');
-  root.className = 'mr';
+  root.className = 'mr mr-pre';
+  root.style.cssText = 'position:fixed;inset:0;z-index:2147483000;background:#0c101b;opacity:1;overflow:hidden';
   root.setAttribute('role', 'dialog');
   root.setAttribute('aria-modal', 'true');
   root.setAttribute('aria-label', 'Roll a mole');
@@ -98,7 +158,7 @@ export async function openMoleReveal(opts = {}) {
     <canvas class="mr-fx mr-fx-back" aria-hidden="true"></canvas>
     <button type="button" class="mr-close" aria-label="Close">&times;</button>
     <button type="button" class="mr-skip">skip</button>
-    <div class="mr-stage"><div class="mr-view"><div class="mr-loading" aria-hidden="true">waking the mole</div></div></div>
+    <div class="mr-stage"><div class="mr-view"><div class="mr-loading mr-hide" aria-hidden="true">waking the mole</div></div></div>
     <canvas class="mr-fx mr-fx-front" aria-hidden="true"></canvas>
     <div class="mr-foot">
       <h2 class="mr-title" aria-hidden="true"><span class="mr-t1">meet your</span> <span class="mr-t2">mole.</span></h2>
@@ -122,11 +182,21 @@ export async function openMoleReveal(opts = {}) {
   inerted.forEach((el) => el.setAttribute('inert', ''));
   const prevOverflow = document.documentElement.style.overflow;
   document.documentElement.style.overflow = 'hidden';
+  root.append(loader.el);
   document.body.append(root);
   root.dataset.phase = 'load';
-  requestAnimationFrame(() => root.classList.add('mr-in'));
-  closeBtn.focus({ preventScroll: true });
+  const loaderX = loader.el.querySelector('.mrl-x');
+  loaderX.addEventListener('click', () => run.close(null));
+  loaderX.focus({ preventScroll: true });
   srEl.textContent = 'Rolling your mole.';
+  cssReady.then(() => { root.classList.remove('mr-pre'); root.classList.add('mr-in'); root.style.cssText = ''; });
+
+  // ---- real progress: libs + scene.json + base model + environment + trait models. The value only goes up.
+  const W = { libs: 0.18, scene: 0.04, base: 0.30, env: 0.14, traits: 0.34 };
+  const P = { libs: 0, scene: 0, base: 0, env: 0, traits: 0 };
+  let rerollOnly = false;
+  const setP = (k, v) => { P[k] = Math.max(P[k], Math.min(1, v)); loader.set(rerollOnly ? P.traits : Object.keys(W).reduce((a, x) => a + W[x] * P[x], 0)); };
+  const fileProg = (k) => (e) => { if (e && e.lengthComputable && e.total) setP(k, e.loaded / e.total * 0.95); };
 
   // ---- state
   let closed = false;
@@ -167,7 +237,7 @@ export async function openMoleReveal(opts = {}) {
     return rootObj;
   }
   let gltfLoader;
-  const loadGLB = (url, id) => new Promise((res, rej) => gltfLoader.load(url, (g) => res(prepare(g.scene, id)), undefined, rej));
+  const loadGLB = (url, id, onProg) => new Promise((res, rej) => gltfLoader.load(url, (g) => res(prepare(g.scene, id)), onProg, rej));
   function getTrait(slot, id) {
     if (cache.has(id)) return Promise.resolve(cache.get(id));
     if (pendingLoads.has(id)) return pendingLoads.get(id);
@@ -242,7 +312,8 @@ export async function openMoleReveal(opts = {}) {
     const { THREE, RGBELoader } = lib;
     const pmrem = new THREE.PMREMGenerator(renderer);
     pmrem.compileEquirectangularShader();
-    const tex = await new RGBELoader().loadAsync(new URL((sceneJson.world && sceneJson.world.file) || 'env.hdr', ASSETS).href);
+    const tex = await new RGBELoader().loadAsync(new URL((sceneJson.world && sceneJson.world.file) || 'env.hdr', ASSETS).href, fileProg('env'));
+    setP('env', 1);
     const rt = pmrem.fromEquirectangular(tex);
     envTex = rt.texture;
     tex.dispose(); pmrem.dispose();
@@ -553,6 +624,7 @@ export async function openMoleReveal(opts = {}) {
     traitsEl.innerHTML = '&nbsp;'; titleEl.setAttribute('aria-hidden', 'true'); traitsEl.setAttribute('aria-hidden', 'true');
     root.dataset.phase = 'load';
     flashEl.style.opacity = '0';
+    P.traits = 0;
     // clear previous state
     equipped.forEach((o) => outfitGroup.remove(o)); equipped.clear();
     lastStateIdx = -2; isReal = true; setReal(false);
@@ -561,20 +633,31 @@ export async function openMoleReveal(opts = {}) {
     const r = mulberry(Math.floor(rng() * 4294967296));
     poolBySlot = {};
     const finalIds = Object.entries(finalTraits);
-    await Promise.all(finalIds.map(([slot, id]) => getTrait(slot, id)));
     for (const slot of sceneJson.slotOrder) {
       const all = (sceneJson.slots[slot] || []).map((t) => t.id);
       const n = Math.min(all.length, POOL_SIZE[slot] || 1);
       const chosen = new Set(shuffle(all, r).slice(0, n));
       poolBySlot[slot] = [...chosen];
     }
+    // loading screen: always on the first roll; on a re-roll only when a model still has to be fetched
+    const need = new Map(finalIds.map(([slot, id]) => [id, slot]));
+    for (const slot of Object.keys(poolBySlot)) for (const id of poolBySlot[slot]) need.set(id, slot);
+    const missing = [...need.keys()].filter((id) => !cache.has(id)).length;
+    if (!firstTime) { rerollOnly = true; if (missing) loader.reset(); }
+    const total = Math.max(1, need.size); let got = need.size - missing;
+    setP('traits', got / total);
+    const counted = (pr) => pr.finally(() => { got++; setP('traits', got / total * 0.98); });
+    const finals = new Set(finalIds.map(([, id]) => id));
+    await Promise.all(finalIds.map(([slot, id]) => cache.has(id) ? null : counted(getTrait(slot, id))));
     const poolLoads = [];
-    for (const slot of Object.keys(poolBySlot)) for (const id of poolBySlot[slot]) poolLoads.push(getTrait(slot, id).catch(() => null));
+    for (const [id, slot] of need) if (!finals.has(id) && !cache.has(id)) poolLoads.push(counted(getTrait(slot, id).catch(() => null)));
     await Promise.all(poolLoads);
     for (const slot of Object.keys(poolBySlot)) poolBySlot[slot] = poolBySlot[slot].filter((id) => cache.has(id));
     if (closed) return;
     buildTimeline();
     loadingEl.classList.add('mr-hide');
+    if (!loader.el.hidden) { await loader.finish(); if (!closed) closeBtn.focus({ preventScroll: true }); }
+    if (closed) return;
     renderer.domElement.style.transition = '';
     tNow = 0; lastStateIdx = -2;
     renderAt(0);
@@ -648,7 +731,7 @@ export async function openMoleReveal(opts = {}) {
   function onKey(e) {
     if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); close(null); return; }
     if (e.key !== 'Tab') return;
-    const f = [...root.querySelectorAll('button')].filter((b) => !b.disabled && b.offsetParent !== null && getComputedStyle(b).visibility !== 'hidden');
+    const f = [...root.querySelectorAll(loader.el.hidden ? 'button:not(.mrl-x)' : '.mrl-x')].filter((b) => !b.disabled && b.offsetParent !== null && getComputedStyle(b).visibility !== 'hidden');
     if (!f.length) { e.preventDefault(); return; }
     const first = f[0], last = f[f.length - 1];
     if (!root.contains(document.activeElement)) { e.preventDefault(); first.focus(); }
@@ -675,6 +758,7 @@ export async function openMoleReveal(opts = {}) {
       renderer?.dispose(); renderer?.forceContextLoss();
     } catch (e) { console.warn(e); }
     cache.clear();
+    loader.remove();
     root.classList.remove('mr-in');
     inerted.forEach((el) => el.removeAttribute('inert'));
     document.documentElement.style.overflow = prevOverflow;
@@ -688,16 +772,19 @@ export async function openMoleReveal(opts = {}) {
 
   // ---- boot
   try {
-    lib = await loadLibs();
+    lib = await loadLibs(() => setP('libs', P.libs + 0.25));
+    setP('libs', 1);
     if (closed) return promise;
     sceneJson = await fetch(new URL('scene.json?v=rules1', ASSETS)).then((r) => r.json());
+    setP('scene', 1);
     sceneJson.slotOrder.forEach((slot) => { traitIndex[slot] = {}; (sceneJson.slots[slot] || []).forEach((t) => { traitIndex[slot][t.id] = t; }); });
     initThree();
     const { GLTFLoader, DRACOLoader } = lib;
     const draco = new DRACOLoader(); draco.setDecoderPath(DRACO_PATH);
     gltfLoader = new GLTFLoader(); gltfLoader.setDRACOLoader(draco);
     resize();
-    const [base] = await Promise.all([loadGLB(new URL(sceneJson.base.file, ASSETS).href), loadEnv()]);
+    const [base] = await Promise.all([loadGLB(new URL(sceneJson.base.file, ASSETS).href, undefined, fileProg('base')), loadEnv()]);
+    setP('base', 1);
     if (closed) return promise;
     baseRoot = base; scene3.add(base);
     frameModel(lib.THREE);
@@ -719,8 +806,10 @@ export async function openMoleReveal(opts = {}) {
     }
   } catch (e) {
     console.error('mole reveal failed', e);
+    loader.remove();
     loadingEl.textContent = 'the mole is asleep. try again in a moment.';
     loadingEl.classList.remove('mr-hide');
+    closeBtn.focus({ preventScroll: true });
     skipBtn.hidden = true;
   }
   return promise;

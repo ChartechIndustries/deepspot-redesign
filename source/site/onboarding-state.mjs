@@ -9,17 +9,32 @@ export const PROGRESS_KEY='deepspot-onboarding-v1';
 // Keys the onboarding writes through the existing passport (kept as strings so this file stays DOM free).
 export const PASSPORT_KEYS=[accountKey,'deepspot-passport-style-v1','deepspot-bio-look-v1','deepspot-want-to-go-v1'];
 
+/* v2 (2026-10-21): two screens. 0 = account, 1 = the passport itself (every part is a slot on the card), 2 = finish (stamp, then the passport page). */
 export const STEPS=[
  {id:'account',name:'account',skip:false},
- {id:'name',name:'name',skip:false},
- {id:'mole',name:'mole',skip:true},
- {id:'archetype',name:'archetype',skip:true},
- {id:'bio',name:'bio',skip:true},
- {id:'mark',name:'mark',skip:true},
- {id:'style',name:'style',skip:true},
- {id:'places',name:'places',skip:true}
+ {id:'passport',name:'passport',skip:false}
 ];
-export const FINISH=STEPS.length;   // step index of the finish screen
+export const FINISH=STEPS.length;   // step index of the finish moment
+
+/* the parts of the passport the user fills in by tapping them. face: which side of the card. */
+export const SLOTS=[
+ {id:'photo',face:'front',req:true,label:'your mole'},
+ {id:'name',face:'front',req:true,label:'your name'},
+ {id:'arch',face:'front',req:true,label:'your explorer type'},
+ {id:'mark',face:'front',req:false,label:'your mark'},
+ {id:'style',face:'front',req:false,label:'your style'},
+ {id:'bio',face:'back',req:false,label:'your bio'},
+ {id:'places',face:'back',req:false,label:'your places'}
+];
+/* snap = {mole:bool, name:str, username:str, arch:bool, sig:bool, style:bool, bio:str, places:number} -> {slotId: bool} */
+export function slotStates(snap={}){
+ const s=snap||{};
+ return {photo:!!s.mole,name:!!String(s.name||'').trim()&&!!String(s.username||'').trim(),arch:!!s.arch,mark:!!s.sig,style:!!s.style,bio:!!String(s.bio||'').trim(),places:Number(s.places)>0};
+}
+export function slotProgress(snap){
+ const st=slotStates(snap);
+ return {done:SLOTS.filter(x=>st[x.id]).length,total:SLOTS.length,states:st,canFinish:SLOTS.every(x=>!x.req||st[x.id]),missing:SLOTS.filter(x=>x.req&&!st[x.id]).map(x=>x.id),next:(SLOTS.find(x=>x.req&&!st[x.id])||SLOTS.find(x=>!st[x.id])||{}).id||''};
+}
 
 /* ---------- progress ---------- */
 export function normalizeProgress(raw){
@@ -29,7 +44,7 @@ export function normalizeProgress(raw){
  const ids=new Set(STEPS.map(s=>s.id));
  const list=a=>Array.isArray(a)?[...new Set(a.filter(x=>typeof x==='string'&&ids.has(x)))]:[];
  const d=v.data&&typeof v.data==='object'?v.data:{};
- return {step,done:list(v.done),skipped:list(v.skipped),data:{terms:d.terms===true,arch:d.arch===true,sign:d.sign==='name'?'name':'pad'}};
+ return {step,done:list(v.done),skipped:list(v.skipped),data:{terms:d.terms===true,arch:d.arch===true,style:d.style===true,sign:d.sign==='name'?'name':'pad'}};
 }
 const store=s=>s||(typeof localStorage!=='undefined'?localStorage:null);
 export function readProgress(storage){try{return normalizeProgress(JSON.parse(store(storage).getItem(PROGRESS_KEY)));}catch{return normalizeProgress(null);}}
