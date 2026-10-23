@@ -1,5 +1,5 @@
 (async()=>{
-const {readIDs,writeValue,subscribeStore}=await import('/site/storage.mjs');
+const {readIDs,writeValue,subscribeStore}=await import('/site/storage.mjs?v=f4e726a0');
 const categories=[['all',null],['deep spot choice','DEEP SPOT CHOICE'],['weird/funny','WEIRD/FUNNY'],['history','HISTORICAL'],['roadside stops','ROADSIDE STOPS'],['art/sculpture','ART/SCULPTURE']];
 const curatedOrder=[
  '/blog/frozen-aquarium-in-miyagi',
@@ -25,7 +25,7 @@ class FeaturedSpots extends HTMLElement{
   this.unsubscribeSaved=subscribeStore(['deepspot-saved-spots'],()=>{this.saved=new Set(readIDs('deepspot-saved-spots'));this.querySelectorAll('[data-fs-save]').forEach(b=>{const on=this.saved.has(b.dataset.fsSave);b.setAttribute('aria-pressed',on);b.setAttribute('aria-label',b.getAttribute('aria-label').replace(/^(Save|Unsave)/,on?'Unsave':'Save'));});});
   try{
    const response=await fetch('/featured-spots.json',{cache:'no-store'});if(!response.ok)throw Error();
-   this.profiles=await import('/profile/identity.mjs');this.data=await response.json();this.render();if(location.hash==='#fs-heading')this.querySelector('.fs-heading').scrollIntoView({block:'start'});
+   this.profiles=await import('/profile/identity.mjs?v=38b679eb');this.img=await import('/site/img.mjs?v=61371a3b');this.data=await response.json();this.render();if(location.hash==='#fs-heading')this.querySelector('.fs-heading').scrollIntoView({block:'start'});
   }catch{this.innerHTML='<p class="fs-error">Spots could not load. Please refresh.</p>';return}
   this.addEventListener('click',event=>{
    const tab=event.target.closest('[data-fs-tab]'),save=event.target.closest('[data-fs-save]');
@@ -85,7 +85,7 @@ class FeaturedSpots extends HTMLElement{
   const link='https://www.deepspot.io'+spot.id;
   return `<article class="fs-card ${feature?'fs-feature':'fs-standard'} ${index===0?'fs-main-feature':''}">
    <div class="fs-photo">
-    ${spot.image?`<img src="${escape(spot.image)}" alt="${escape(place)}" loading="lazy" style="object-position:${cover?.position||'center'}">`:`<div class="fs-no-photo"><span>deep<br>spot.</span><small>photo unavailable</small></div>`}
+    ${spot.image?`<img${this.img.imgAttrs(spot.image,feature?'(max-width:700px) 92vw, 640px':'(max-width:700px) 92vw, 360px')} alt="${escape(place)}" loading="lazy" style="object-position:${cover?.position||'center'}">`:`<div class="fs-no-photo"><span>deep<br>spot.</span><small>photo unavailable</small></div>`}
     <button class="fs-save" data-fs-save="${escape(spot.id)}" aria-label="${this.saved.has(spot.id)?'Unsave':'Save'} ${escape(spot.title)}" aria-pressed="${this.saved.has(spot.id)}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4Z"/></svg></button>
     ${!feature&&spot.tags.includes('DEEP SPOT CHOICE')?'<span class="fs-choice">deep spot choice</span>':''}
    </div>

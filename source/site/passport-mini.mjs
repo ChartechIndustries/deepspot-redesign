@@ -1,9 +1,9 @@
-import {esc} from './core.mjs';
-import {profileHref,profileId} from '../profile/identity.mjs';
-import {travelerStyles} from './account-state.mjs?v=icons2';
-import {cardHTML,mrz,moleSlotHTML,stampName,variety,fitBands} from '../profile/passport-edit.mjs?v=mf1';
-import {levelFor,memberLevel,travelerType,standing} from '../profile/passport-rules.mjs?v=pv2';
-import {normalizedTags} from '../browse/catalog.mjs';
+import {esc} from './core.mjs?v=149e30e7';
+import {profileHref,profileId} from '../profile/identity.mjs?v=38b679eb';
+import {travelerStyles} from './account-state.mjs?v=1c064097';
+import {cardHTML,mrz,moleSlotHTML,stampName,variety,fitBands} from '../profile/passport-edit.mjs?v=2b579d8b';
+import {levelFor,memberLevel,travelerType,standing} from '../profile/passport-rules.mjs?v=237cb584';
+import {normalizedTags} from '../browse/catalog.mjs?v=776ebad9';
 
 /* Community "participants" passports (2026-10-21). A smaller, independent copy of the profile v11 ID card (pm- classes).
    v3.1: deck -> carousel on scroll, portrait 5:7 card, archetype header, per-card variation from archetype group / rank / id hash (no randomness).

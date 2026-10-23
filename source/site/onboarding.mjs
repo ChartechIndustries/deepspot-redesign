@@ -2,14 +2,14 @@
 // Screen A = account (one screen). Then a short "issue" animation. Screen B = the passport itself: every part is a glowing
 // slot on the card (v2.1: one face, no flip; bio sits between the photo and the mark), each opening a focused bottom sheet (phone) or popover (desktop).
 // Passport data goes through the same storage the passport page reads (account draft, passport style, want-to-go).
-import {FINISH,SLOTS,slotProgress,readProgress,writeProgress,isOnboarded,markOnboarded,resetOnboarding,passwordStrength,validateUsername,suggestUsernames,takenHandles,archetypeName,validEmail} from './onboarding-state.mjs?v=ob3';
-import {accountKey,readAccount,normalizeAccount,travelerStyles} from './account-state.mjs?v=icons2';
-import {readSession,writeSession} from './gate-state.mjs?v=gate1';
-import {G_ICON,A_ICON} from './brand-icons.mjs?v=ob1';
+import {FINISH,SLOTS,slotProgress,readProgress,writeProgress,isOnboarded,markOnboarded,resetOnboarding,passwordStrength,validateUsername,suggestUsernames,takenHandles,archetypeName,validEmail} from './onboarding-state.mjs?v=058ca714';
+import {accountKey,readAccount,normalizeAccount,travelerStyles} from './account-state.mjs?v=1c064097';
+import {readSession,writeSession} from './gate-state.mjs?v=7e3c4a02';
+import {G_ICON,A_ICON} from './brand-icons.mjs?v=5af903eb';
 const MAIL_ICON='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7.5 8 6 8-6"/></svg>';
-import {readStyle,writeStyle,archCardsHTML,archGroups,styleGroupHTML,pickStyle,cardHTML,moleImgHTML,mrz,syncPreview,bindTilt,fitRows} from '../profile/passport-edit.mjs?v=mf1';
-import {padHTML,initPad,inkURL} from '../profile/sign-pad.mjs?v=pv4';
-import {escapeHTML as esc,safeReturn} from '../profile/identity.mjs';
+import {readStyle,writeStyle,archCardsHTML,archGroups,styleGroupHTML,pickStyle,cardHTML,moleImgHTML,mrz,syncPreview,bindTilt,fitRows} from '../profile/passport-edit.mjs?v=2b579d8b';
+import {padHTML,initPad,inkURL} from '../profile/sign-pad.mjs?v=128b4053';
+import {escapeHTML as esc,safeReturn} from '../profile/identity.mjs?v=38b679eb';
 
 const D=document,$=(s,r=D)=>r.querySelector(s),$$=(s,r=D)=>[...r.querySelectorAll(s)];
 const calm=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -23,14 +23,14 @@ const wait=ms=>new Promise(r=>setTimeout(r,ms));
 D.documentElement.classList.add('ob-lock');
 
 /* ---------- header (theme button only: the page is a closed flow) ---------- */
-function applyTheme(v){
- D.documentElement.dataset.theme=v;try{localStorage.setItem('deepspot-theme',v);}catch{}
+function applyTheme(v,save){
+ D.documentElement.dataset.theme=v;if(save){try{localStorage.setItem('deepspot-theme',v);}catch{}}
  const b=$('.br-theme');b.innerHTML=v==='light'?'<span aria-hidden="true">☾</span><span class="ob-tl"> dark</span>':'<span aria-hidden="true">☼</span><span class="ob-tl"> light</span>';
  b.setAttribute('aria-label',`Switch to ${v==='light'?'dark':'light'} mode`);
  const u=new URL(location.href);u.searchParams.set('theme',v);history.replaceState(null,'',u);
 }
 applyTheme(theme());
-$('.br-theme').addEventListener('click',()=>applyTheme(theme()==='dark'?'light':'dark'));
+$('.br-theme').addEventListener('click',()=>applyTheme(theme()==='dark'?'light':'dark',true));
 function toast(t){const b=$('.br-toast');b.textContent=t;b.dataset.open='true';clearTimeout(toast.t);toast.t=setTimeout(()=>b.dataset.open='false',3200);}
 
 /* ---------- entry rules ---------- */
@@ -170,7 +170,7 @@ function buildB(){
  addEventListener('resize',()=>{fit();relift();placePop();});
  if(visualViewport)visualViewport.addEventListener('resize',()=>{keyboard();relift();});
  wireDrag();
- setTimeout(()=>{import('./mole/mole-reveal.mjs?v=ld3').catch(()=>{});},600);   /* so the mole loading screen shows the instant the photo is tapped */
+ setTimeout(()=>{import('./mole/mole-reveal.mjs?v=3da3d4cc').catch(()=>{});},600);   /* so the mole loading screen shows the instant the photo is tapped */
 }
 
 /* ---------- fit the card to the screen ---------- */
@@ -421,7 +421,7 @@ function setEditing(on,id){
 async function rollMole(trig){
  let res=null;
  try{
-  const {openMoleReveal}=await import('./mole/mole-reveal.mjs?v=ld3');
+  const {openMoleReveal}=await import('./mole/mole-reveal.mjs?v=3da3d4cc');
   res=await openMoleReveal({trigger:trig});
  }catch(err){console.error(err);setTip('the mole roll could not load. try again.');return;}
  if(res){const next=saveAccount({avatarMode:'mole',mole:{traits:res.traits,png:res.png,rolledAt:res.rolledAt}});if(!next?.mole)toast('That mole picture was too large to save.');else{paint({mole:true,ck:'photo'});setTimeout(()=>stampIn(lit.photo),0);}}

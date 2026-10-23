@@ -1,9 +1,8 @@
 (() => {
   const stories = [
-    { label: 'discoveries', theme: 'paper', title: 'a prison.<br>a swimming hole.<br>same place.', description: 'At Rummu, Estonia, a flooded quarry has turned the remains of a Soviet prison into something utterly unexpected.', image: '/spots/rummu.jpg', alt: 'The abandoned buildings of Rummu rising from clear blue water', place: 'Rummu, Estonia', href: '/blog/a-soviet-prison-doubles-as-a-swimming-hole' },
-    { label: 'tours', theme: 'green', title: 'go beneath<br>the obvious.', description: 'An old quarry. Seventy years of carving. A cathedral-sized space hidden beneath Utsunomiya. Start your next detour here.', image: '/spots/oya.jpg', alt: 'Illuminated stone chambers inside Oya History Museum', place: 'Oya History Museum, Japan', href: '/blog/tochigi-underground-quarry' },
-    { label: 'community', theme: 'aqua', title: 'a good find<br>gets around.', description: 'Wayfarer put London’s ever-changing Leake Street tunnel on the map. What’s hiding in your corner of the world?', image: '/editorial-assets/spot-south-london-s-most-notable-street-art-location.jpg', alt: 'Colorful street art covering the Leake Street tunnel in London', place: 'Leake Street, London', publisher: 'Wayfarer', href: '/blog/south-london-s-most-notable-street-art-location' },
-    { label: 'featured spot', theme: 'blue', title: 'looks like art.<br>burns your trash.', description: 'Golden domes, candy-colored towers, and a very unexpected day job. Meet Osaka’s working garbage palace.', image: '/spots/maishima.jpg', alt: 'The colorful towers of Maishima Incineration Plant', place: 'Maishima, Osaka', href: '/blog/osaka-s-candy-colored-garbage-palace' }
+    { label: 'discoveries', kind: 'disc', theme: 'paper', title: 'a prison.<br>a swimming hole.<br>same place.', description: 'At Rummu, Estonia, a flooded quarry has turned the remains of a Soviet prison into something utterly unexpected.', image: '/spots/rummu.jpg', alt: 'The abandoned buildings of Rummu rising from clear blue water', place: 'Rummu, Estonia', href: '/blog/a-soviet-prison-doubles-as-a-swimming-hole' },
+    { label: 'community', kind: 'comm', theme: 'aqua', title: 'live from<br>the discord.', description: 'explorers swapping finds, tips and plans right now.' },
+    { label: 'featured spot', kind: 'feat', theme: 'blue', title: 'looks like art.<br>burns your trash.', description: 'Golden domes, candy-colored towers, and a very unexpected day job. Meet Osaka’s working garbage palace.', image: '/spots/maishima.jpg', alt: 'The colorful towers of Maishima Incineration Plant', place: 'Maishima, Osaka', href: '/blog/osaka-s-candy-colored-garbage-palace' }
   ];
   const arrow = direction => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="${direction === 'left' ? 'M19 12H5m6-6-6 6 6 6' : 'M5 12h14m-6-6 6 6-6 6'}"/></svg>`;
 
@@ -11,7 +10,12 @@
     async connectedCallback() {
       if (this.ready) return;
       this.ready = true;
-      this.profiles = await import('/profile/identity.mjs');
+      this.profiles = await import('/profile/identity.mjs?v=38b679eb');
+      this.link = await import('/site/discord-link.mjs?v=4ce108b0');
+      this.core = await import('/site/core.mjs?v=149e30e7');
+      try { this.forum = (await (await fetch('/site/content.json')).json()).forum || []; } catch { this.forum = []; }
+      this.style.setProperty('--wn-count', stories.length);
+      const {imgAttrs} = await import('/site/img.mjs?v=61371a3b');
       this.active = 0;
       this.reduced = matchMedia('(prefers-reduced-motion: reduce)');
       this.paused = this.reduced.matches;
@@ -19,9 +23,7 @@
         <div class="wn-header"><h2 id="wn-heading"><button type="button" class="wn-intro-tab" aria-label="what’s new?" aria-expanded="false" aria-controls="wn-features"><span class="wn-intro-title" aria-hidden="true">what’s <br>new?</span><span class="wn-intro-label" aria-hidden="true">what’s new?</span><span class="wn-intro-arrow" aria-hidden="true">↗</span></button></h2></div>
         <div class="wn-window" id="wn-features" tabindex="-1">${stories.map((story, i) => `<div class="wn-panel wn-${story.theme}" data-news-panel="${i}" role="group" aria-roledescription="slide" aria-label="${i + 1} of ${stories.length}: ${story.label}">
           <button type="button" class="wn-rail" data-news-open="${i}" aria-label="Show ${story.label}" aria-expanded="false" aria-controls="wn-content-${i}"><span>${story.label}</span><span class="wn-rail-arrow" aria-hidden="true">↗</span></button>
-          <div class="wn-content" id="wn-content-${i}"><div class="wn-copy"><h3>${story.title}</h3><p>${story.description}</p></div>
-            <figure class="wn-photo"><img src="${story.image}" alt="${story.alt}" loading="lazy" decoding="async"><figcaption>${story.place}${story.publisher?' · '+this.profiles.authorLink(story.publisher,{from:location.pathname+location.search+'#wn-heading'}):''}</figcaption></figure>
-            <a class="wn-readmore" href="https://www.deepspot.io${story.href}" target="_blank" rel="noopener">read more ${arrow('right')}</a>
+          <div class="wn-content wn-k-${story.kind}" id="wn-content-${i}">${story.kind === 'comm' ? this.communityHTML(story) : this.storyHTML(story, imgAttrs)}
           </div>
         </div>`).join('')}</div>
         <div class="wn-mobile-tabs" aria-label="Featured categories">${stories.map((story,i)=>`<button type="button" class="wn-${story.theme}" data-news-open="${i}" aria-pressed="${i===0}">${story.label}</button>`).join('')}</div>
@@ -66,6 +68,23 @@
       this.reduced.addEventListener('change', this.motionHandler);
       this.observer = new IntersectionObserver(entries => { this.visible = entries[0].isIntersecting; this.schedule(); }, { threshold: .2 });
       this.observer.observe(this);
+    }
+
+    storyHTML(story, imgAttrs) {
+      const credit = story.publisher ? ' · ' + this.profiles.authorLink(story.publisher, {from: location.pathname + location.search + '#wn-heading'}) : '';
+      const photo = `<figure class="wn-photo" style="--wn-bg:url('${story.image}')"><div class="wn-img"><img${imgAttrs(story.image, story.kind === 'disc' ? '(max-width:700px) 100vw, 1000px' : '(max-width:700px) 100vw, 740px')} alt="${story.alt}" loading="lazy" decoding="async"></div><figcaption>${story.place}${credit}</figcaption></figure>`;
+      const more = `<a class="wn-readmore" href="https://www.deepspot.io${story.href}" target="_blank" rel="noopener">read more ${arrow('right')}</a>`;
+      const copy = `<div class="wn-copy">${story.kind === 'feat' ? '<span class="wn-chip">featured spot</span>' : ''}<h3>${story.title}</h3><p>${story.description}</p>${more}</div>`;
+      return photo + copy;
+    }
+
+    communityHTML(story) {
+      const {DISCORD_URL, replies, msgText, clip} = this.link;
+      const {esc, localURL} = this.core;
+      const row = (f, i) => `<li class="wn-msg" style="--i:${i}">${this.profiles.avatarHTML(f.author, {className: 'wn-av'})}<div class="wn-mb"><span class="wn-m"><b>${esc(f.author)}</b><i>#${esc(f.category.replace(/\s+/g, '-'))}</i><small>${replies(f.replies)}</small></span><a href="${esc(localURL('/forum/', {id: f.id}))}">${esc(clip(msgText(f), 120))}</a></div></li>`;
+      const rows = this.forum.map(row).join('');
+      const chat = this.forum.length ? `<div class="wn-chat" role="group" aria-label="Featured messages from the forum"><div class="wn-chat-top"><b># featured-messages</b><span>from the forum</span></div><div class="wn-feed"><div class="wn-track" style="--n:${this.forum.length}"><ol class="wn-list">${rows}</ol><ol class="wn-list wn-dup" aria-hidden="true" inert>${rows}</ol></div></div></div>` : '';
+      return `<div class="wn-copy"><p class="wn-live"><span class="wn-live-dot" aria-hidden="true"></span>live now</p><h3>${story.title}</h3><p>${story.description}</p><div class="wn-actions"><a class="wn-join" href="${esc(DISCORD_URL)}" data-original target="_blank" rel="noopener">join now <span aria-hidden="true">↗</span></a><a class="wn-forum" href="${esc(localURL('/forum/'))}">open the forum ↗</a></div></div>${chat}`;
     }
 
     expand() {
@@ -114,6 +133,8 @@
           const panel = this.panels[panelIndex];
           const copy = panel.cloneNode(true);
           copy.classList.add('wn-departing');
+          const track = panel.querySelector('.wn-track');
+          if (track) { const t = copy.querySelector('.wn-track'); t.style.animation = 'none'; t.style.transform = getComputedStyle(track).transform; }
           copy.removeAttribute('data-news-panel');
           copy.setAttribute('aria-hidden', 'true');
           copy.inert = true;
@@ -152,6 +173,7 @@
 
     pauseLabel() {
       const button = this.querySelector('[data-news-pause]');
+      this.toggleAttribute('data-paused', this.paused);
       button.setAttribute('aria-label', this.paused ? 'Play features' : 'Pause features');
       button.innerHTML = this.paused ? '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="m9 6 10 6-10 6Z"/></svg>' : '<svg viewBox="0 0 24 24" aria-hidden="true"><path stroke="currentColor" stroke-width="1.5" d="M9 6v12M15 6v12"/></svg>';
     }

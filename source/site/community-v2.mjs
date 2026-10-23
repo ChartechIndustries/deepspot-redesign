@@ -1,25 +1,20 @@
-import {esc,$,$$,icon,localURL,action,saveButton,spotURL,readStore,writeStore} from './core.mjs';
-import {profileHref,profileId} from '../profile/identity.mjs';
-import {readAccount,avatarImage} from './account-state.mjs?v=icons2';
-import {COMMUNITY_METRICS} from './community-hub.mjs';
-import {avatarHTML} from '../profile/identity.mjs';
-import {passportModels,participantsHTML,wirePassports} from './passport-mini.mjs?v=fx1';
+import {esc,$,$$,icon,localURL,action,saveButton,spotURL,readStore,writeStore} from './core.mjs?v=149e30e7';
+import {profileHref,profileId} from '../profile/identity.mjs?v=38b679eb';
+import {readAccount,avatarImage} from './account-state.mjs?v=1c064097';
+import {COMMUNITY_METRICS} from './community-hub.mjs?v=7d82ced0';
+import {avatarHTML} from '../profile/identity.mjs?v=38b679eb';
+import {DISCORD_URL,replies,msgText,clip} from './discord-link.mjs?v=4ce108b0';
+import {ROAD} from './roadmap-data.mjs?v=e33f2569';
+import {passportModels,participantsHTML,wirePassports} from './passport-mini.mjs?v=29f9c027';
 
 /* Community hub v2 (2026-10-19). Real data only: leaderboard, forum snapshot, catalog. Votes live in this browser. The giveaway hero lives in giveaway-hero.mjs. */
-const DISCORD_URL='https://www.deepspot.io/community'; // TODO: replace with the real Discord invite when Charlie supplies it
 const VOTE_KEYS={spot:'deepspot-community-spot-votes-v1',poll:'deepspot-community-poll-v1',road:'deepspot-community-roadmap-v1'};
-const ROAD=[
- ['building now',[['passports','Passports + profile moles','Your explorer ID, with stamps and badges.',70],['signatures','PictoChat signatures','Draw your own passport signature.',60],['giveaways','Monthly giveaways','Prizes for the top spot hunters.',90]]],
- ['up next',[['trip-lists','Trip lists','Save spots into lists and share them.'],['offline-maps','Offline maps','Download a region before you lose signal.'],['live-meetups','Live meetups','Find explorers heading where you are.']]],
- ['considering',[['route-planner','AI route planner','String nearby spots into a day trip.'],['tldr','TL;DR summaries','The 20-second version of every story.'],['video-spots','Video spots','Short clips from people who were there.']]]
-];
 const svg=d=>`<svg viewBox="0 0 24 24" aria-hidden="true">${d}</svg>`;
 const ICO={prev:svg('<path d="M19 12H5m6-6-6 6 6 6"/>'),next:svg('<path d="M5 12h14m-6-6 6 6-6 6"/>'),pause:svg('<path d="M8 5v14M16 5v14"/>'),play:svg('<path d="M7 4.5v15l12-7.5Z"/>'),up:svg('<path d="m6 15 6-6 6 6"/>'),down:svg('<path d="m6 9 6 6 6-6"/>'),ext:svg('<path d="M7 17 17 7M8 7h9v9"/>')};
 const out=(label,url,cls='')=>`<a class="ds-button ${cls}" href="${esc(url)}" data-original target="_blank" rel="noopener">${label}${icon('arrow')}</a>`;
 const ext=(label,url,cls='cv-link')=>`<a class="${cls}" href="${esc(url)}" data-original target="_blank" rel="noopener">${label} ↗</a>`;
 export const fmt=n=>new Intl.NumberFormat('en-US').format(n);
 const reduced=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
-const clip=(t,n)=>t.length>n?t.slice(0,n).replace(/\s+\S*$/,'')+'…':t;
 const votes=k=>{const v=readStore(VOTE_KEYS[k],{});return v&&typeof v==='object'&&!Array.isArray(v)?v:{};};
 const setVote=(k,id,val)=>{const v=votes(k);if(val)v[id]=val;else delete v[id];writeStore(VOTE_KEYS[k],v);};
 const initial=n=>esc(String(n||'?').trim()[0]?.toUpperCase()||'?');
@@ -41,7 +36,6 @@ const viewerAvatar=(acct,cls='')=>{const src=avatarImage(acct);return `<span cla
 
 /* ---------- 3. discord: original content, asymmetric composition ---------- */
 /* one forum post shown as a chat message: avatar, handle, #channel, replies, the first lines of the post */
-const replies=n=>`${n} ${n===1?'reply':'replies'}`;
 const msg=f=>{const text=f.body.split(/\n\s*\n/)[0].replace(/^\s*[-*•]\s+/gm,'').replace(/\s+/g,' ').trim();
  return `<li class="dc-msg">${avatarHTML(f.author,{className:'dc-av'})}<div class="dc-mb"><span class="dc-m"><b>${esc(f.author)}</b><i>#${esc(f.category.replace(/\s+/g,'-'))}</i><small>${replies(f.replies)}</small></span><a href="${esc(localURL('/forum/',{id:f.id}))}">${esc(clip(text,150))}</a></div></li>`;};
 const PIN='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 3 6 6-3 1-4 4 .5 4.5L12 17l-5 5-1-1 5-5-2.5-2.5L13 9l1-3Z"/></svg>';
@@ -269,7 +263,7 @@ function wireVotes(scope){
 /* your vote matters: two huge numbered cards, the same loud family as the discord stage */
 const voteHTML=()=>`<section class="vm" aria-labelledby="cv-vt"><div class="vm-in"><div class="vm-l"><span class="vm-k">two ways to shape deepspot</span><h2 id="cv-vt">your vote<br>matters.</h2><p>Nothing goes on the map and nothing gets built without the community. Pick a side.</p></div><ol class="vm-r"><li><a href="#cv-sp" data-jump="cv-sp"><span class="vm-n">01</span><b>what makes<br>the map.</b><span class="vm-d">Yes or not quite on new community spots.</span><i>vote on spots ${icon('arrow')}</i></a></li><li><a href="#cv-rd" data-jump="cv-rd"><span class="vm-n">02</span><b>what we build<br>next.</b><span class="vm-d">Up or down on the roadmap.</span><i>vote on the roadmap ${icon('arrow')}</i></a></li></ol></div></section>`;
 export async function renderCommunityV2(root,data){
- const ghP=import('./giveaway-hero.mjs?v=fx1');ghP.catch(()=>{});
+ const ghP=import('./giveaway-hero.mjs?v=263a7d93');ghP.catch(()=>{});
  const dcq=new URLSearchParams(location.search).get('dc'),dcv=DCV[dcq]?dcq:'3',acct=readAccount(),gv=new URLSearchParams(location.search).get('giveaway')||'g1';
  const order=people(data).monthly.slice().sort((a,b)=>b.points-a.points),models=passportModels(data,order);
  const {renderGiveaway}=await ghP;

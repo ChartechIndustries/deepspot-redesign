@@ -1,7 +1,8 @@
 // Tours: under construction (2026-10-20, v3 per Charlie's sketch). One screen, no scroll:
 // giant "tours." title → construction mole in front of it → two green tape bands in an X across the full width
 // → roadmap pill. A blurred, inert mock tour page sits at the back. Tape text is decorative; the h1 carries the meaning.
-import {action} from './core.mjs';
+import {action} from './core.mjs?v=149e30e7';
+import {imgAttrs} from './img.mjs?v=61371a3b';
 
 const STAR='<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 2v44M2 24h44M8.5 8.5l31 31m0-31-31 31"/></svg>';
 const PHOTOS=['oya','chiatura','teufelsberg','rummu','maishima','sandchurch'];
@@ -25,7 +26,7 @@ const run=()=>Array.from({length:10},()=>`<span>under construction</span>${STAR}
 const tape=(t,i)=>`<div class="tr-tape" data-tape="${t.id}" data-roll="${t.dir<0?'rtl':'ltr'}" style="--i:${i};--x:${(t.x??.5)*100}%;--y:${t.y*100}%;--dur:${t.dur}s${t.fixed?`;--rot:${t.rot}deg`:''}"><div class="tr-run${t.dir<0?' tr-rev':''}"><div>${run()}</div><div>${run()}</div></div></div>`;
 
 function fakePage(){
- const card=p=>`<div class="tr-f-card"><img src="/spots/${p}.jpg" alt="" decoding="async"><i></i><i></i></div>`;
+ const card=p=>`<div class="tr-f-card"><img${imgAttrs('/spots/'+p+'.jpg','240px')} alt="" decoding="async"><i></i><i></i></div>`;
  return `<div class="tr-fake" aria-hidden="true" inert><div class="tr-f-chips">${'<b></b>'.repeat(5)}</div><div class="tr-f-grid">${PHOTOS.map(card).join('')}</div></div>`;
 }
 

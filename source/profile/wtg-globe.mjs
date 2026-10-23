@@ -121,7 +121,7 @@ export function mountGlobe(host,{pins=[],onSelect=()=>{},onPin=()=>{}}={}){
   for(const k of ['resolution','viewport','center','radius','yaw','pitch','cell','bg','glowC','paper','useSrc','dayStyle','clouds','time','cloudAmt','earth'])U[k]=gl.getUniformLocation(pr,k);
   const tex=(unit,im,wrap)=>{const t=gl.createTexture();gl.activeTexture(gl.TEXTURE0+unit);gl.bindTexture(gl.TEXTURE_2D,t);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,wrap);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
    if(im)gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,gl.RGB,gl.UNSIGNED_BYTE,im);else gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,1,1,0,gl.RGB,gl.UNSIGNED_BYTE,new Uint8Array([0,0,0]));};
-  Promise.all([img('/earth-day.jpg'),img('/earth-clouds.jpg')]).then(([e,c])=>{tex(0,e,gl.CLAMP_TO_EDGE);tex(1,c,gl.REPEAT);gl.uniform1i(U.earth,0);gl.uniform1i(U.clouds,1);gl.activeTexture(gl.TEXTURE0);ready=!!e;kick();});
+  Promise.all([img('/earth-day.jpg'),img('/earth-clouds.webp')]).then(([e,c])=>{tex(0,e,gl.CLAMP_TO_EDGE);tex(1,c,gl.REPEAT);gl.uniform1i(U.earth,0);gl.uniform1i(U.clouds,1);gl.activeTexture(gl.TEXTURE0);ready=!!e;kick();});
  }
  const geom=()=>{const r=Math.min(W,H)*.46*zoom;return {r,cx:W/2,cy:H/2};};
  function fit(){dpr=Math.min(devicePixelRatio||1,2);W=host.clientWidth;H=host.clientHeight;cv.width=Math.max(1,Math.round(W*dpr));cv.height=Math.max(1,Math.round(H*dpr));cv.style.width=W+'px';cv.style.height=H+'px';}

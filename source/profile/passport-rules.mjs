@@ -1,4 +1,4 @@
-import {stampArt} from './passport-art.mjs?v=pad1';
+import {stampArt} from './passport-art.mjs?v=89a3954f';
 // Passport v2 rules. Everything here is derived from real data (leaderboard points, postings); nothing is invented.
 export const POINTS={spot:50,story:100,upvote:10};
 // level = 1 + floor(sqrt(points / 40)). Level L starts at 40*(L-1)^2 points.

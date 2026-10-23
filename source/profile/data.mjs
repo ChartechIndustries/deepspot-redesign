@@ -1,7 +1,7 @@
-import {profileId} from './identity.mjs';
-import {readAccount} from '../site/account-state.mjs?v=icons2';
-import {normalizedTags} from '../browse/catalog.mjs';
-import {levelFor,memberLevel,travelerType,standing,earnedStamps} from './passport-rules.mjs?v=pv2';
+import {profileId} from './identity.mjs?v=38b679eb';
+import {readAccount} from '../site/account-state.mjs?v=1c064097';
+import {normalizedTags} from '../browse/catalog.mjs?v=776ebad9';
+import {levelFor,memberLevel,travelerType,standing,earnedStamps} from './passport-rules.mjs?v=237cb584';
 async function json(url){const response=await fetch(url);if(!response.ok)throw Error('Profile collection unavailable');return response.json();}
 /* "since" for your own passport = the month onboarding was finished (real: stored when the passport was issued) */
 const joinedLabel=()=>{try{const t=Number(localStorage.getItem('deepspot-onboarded-v1'));return t>0?new Date(t).toLocaleDateString('en-US',{month:'short',year:'numeric'}):null;}catch{return null;}};

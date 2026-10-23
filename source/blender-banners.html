@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en" data-theme="dark" data-panel-color="on">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blender banners review</title>
+<link rel="stylesheet" href="/editorial.css?v=0890017a">
+<link rel="stylesheet" href="/panel-colors.css?v=46517960">
+<link rel="stylesheet" href="/site-cta.css?v=d10cdbe8">
+<style>
+body{margin:0;padding:32px 32px 80px;background:#0b1019;color:#e8ecf2;font:14px/1.4 Arial,Helvetica,sans-serif}
+button{color:inherit}
+h1{margin:0 0 6px;font-size:28px;letter-spacing:-.5px}
+h2{margin:44px 0 16px;font-size:20px;text-transform:lowercase}
+.rv-note{margin:0 0 16px;color:#94a2b2}
+.rv-toggle{font:13px Arial,sans-serif;color:#e8ecf2;background:#16202e;border:1px solid #34404e;padding:9px 14px;cursor:pointer}
+.rv-row>div{flex:none}.rv-row{display:flex;flex-wrap:wrap;gap:26px 26px;align-items:flex-start}
+.rv-label{margin:0 0 8px;font-size:12px;color:#94a2b2}
+.rv-label a{color:#07d653}
+.rv-label b{color:#07d653;font-weight:400}
+.rv-card .ed-promos{display:block!important;width:431px;margin:0;padding:0!important;border:0!important;background:none!important}
+.rv-card .ed-promos .ed-promo{width:431px!important;height:331px!important;margin:0;border:0}
+.rv-card .ds-cta{display:block;margin:0;width:707px;border:0}
+.rv-card .ds-cta-contribute,.rv-card .ds-cta-newsletter{height:413px;box-sizing:border-box;border:0}
+.rv-card .ds-cta-newsletter{width:632px}
+.rv-old img{display:block}
+.ph .rv-card .ed-promos,.ph .rv-card .ed-promos .ed-promo{width:328px!important}
+.ph .rv-card .ed-promos .ed-promo{height:331px!important}
+.ph .rv-competition .ed-promos .ed-promo{height:371px!important}
+.ph .rv-card .ed-promo.ed-bb>img.ed-art{object-position:var(--bb-pos-p,50% 50%)}
+.ph .rv-competition .ed-promo{--bb-h:70%}
+.ph .rv-card .ds-cta,.ph .rv-card .ds-cta-newsletter{width:360px}
+.ph .rv-card .ds-cta-contribute{width:360px;height:auto;padding:26px 22px}
+.ph .rv-card .ds-cta-newsletter{height:auto;padding:26px 22px}
+.ph .rv-card .ds-cta-art,.ph .rv-card .ds-cta-newsletter .ds-cta-art{position:static;display:block;order:-1;height:200px;width:auto;max-width:100%;margin:0 auto 12px;transform:none}
+.ph .rv-card .ds-cta-has-art>h2,.ph .rv-card .ds-cta-has-art>h3,.ph .rv-card .ds-cta-has-art>p{max-width:none}
+.ph .rv-card .ds-cta h2{font-size:44px}.ph .rv-card .ds-cta h3{font-size:33px}
+.ph .rv-card .ds-cta-signup{flex-direction:column}
+.ph .rv-card .ds-cta-button{width:100%;box-sizing:border-box}
+@media(max-width:560px){body{padding:20px 16px 60px}.rv-card{max-width:100%;overflow-x:auto}}
+</style>
+</head>
+<body>
+<h1>Blender banners</h1>
+<p class="rv-note">Real card CSS. Each card links to the live home page with that art. Default is marked.</p>
+<button class="rv-toggle" id="ph">phone width: off</button>
+<div id="rows"></div>
+<script>
+const P={c1:['0% 50%','0% 85%','0% 100%'],c2:['0% 50%','0% 85%','0% 100%'],c3:['0% 50%','0% 80%','0% 100%'],w1:['100% 50%','100% 50%','65% 50%'],w2:['100% 50%','100% 50%','68% 50%'],w3:['80% 50%','80% 50%','35% 50%'],r1:['0% 50%','0% 50%','25% 50%'],r2:['0% 50%','0% 50%','25% 50%'],r3:['0% 50%','0% 50%','20% 50%']};
+const st=id=>{const p=P[id];return `--bb-pos:${p[0]};--bb-pos-t:${p[1]};--bb-pos-p:${p[2]}`};
+const promo=(k,cls,id,copy)=>`<div class="rv-card rv-${cls}"><div class="ed-promos"><article class="ed-promo ed-${cls} ed-bb" style="${st(id)}"><img class="ed-art" src="/banners/${id}.webp" alt="">${k==='w'?'<span class="ed-frame"></span><span class="ed-place">oya history museum · utsunomiya, japan</span>':''}<div class="ed-promo-copy">${copy}</div></article></div></div>`;
+const cp={competition:'<h3><span class="ed-prize">$300</span><span class="ed-prize-line">for your curiosity.</span></h3><button>the competition ↗</button>',week:'<h3>go<br><i>underground.</i></h3><button>spot of the week ↗</button>',road:'<h3>the way<br><i>forward.</i></h3><button>view our roadmap ↗</button>'};
+const cta=(k,id)=>k==='h'?`<div class="rv-card"><div class="ds-cta"><div class="ds-cta-contribute ds-cta-has-art" style="background:#3858f0"><img class="ds-cta-art" src="/banners/${id}.webp" alt=""><h2>know a<br><span style="color:#fff">hidden gem?</span></h2><p style="color:#f5f4ee">Help us map the unmapped. Share your favorite obscure spots and become part of our community of explorers worldwide.</p><a class="ds-cta-button" style="background:#07d653;color:#0b1b27">contribute a spot <span>↗</span></a></div></div></div>`:`<div class="rv-card"><div class="ds-cta"><div class="ds-cta-newsletter ds-cta-has-art"><img class="ds-cta-art" src="/banners/${id}.webp" alt=""><h3 style="color:#b8c4ff">new stories<br>every week.</h3><p>Get the latest deep spots delivered to your inbox.</p><div class="ds-cta-signup"><input placeholder="enter your email" disabled><button disabled>subscribe <span>↗</span></button></div><small>newsletter signup coming soon.</small></div></div></div>`;
+const rows=[['$300 competition','c','competition','c1',['c1','c2','c3'],'cta0'],['spot of the week','w','week','w3',['w1','w2','w3'],'promo1'],['roadmap','r','road','r1',['r1','r2','r3'],'promo2'],['know a hidden gem?','h','','h3',['h1','h2','h3'],'cta0'],['new stories every week','n','','n3',['n1','n2','n3'],'cta1']];
+const oldImg={c:['promo_1','m_promo_0'],w:['promo_2','m_promo_1'],r:['promo_3','m_promo_2'],h:['cta_0','cta_0'],n:['cta_1','cta_1']};
+const ph=()=>document.body.classList.contains('ph');
+function draw(){document.getElementById('rows').innerHTML=rows.map(([t,k,cls,def,ids])=>{
+ const old=`<div><p class="rv-label">old (screenshot)</p><div class="rv-card rv-old"><img src="/banners-old/${oldImg[k][ph()?1:0]}.webp" alt="" style="max-width:100%"></div></div>`;
+ const vs=ids.map(id=>`<div><p class="rv-label"><a href="/?bb=${id}">${id}</a> ${id===def?'<b>default</b>':''}</p>${k==='h'||k==='n'?cta(k,id):promo(k,cls,id,cp[cls])}</div>`).join('');
+ return `<h2>${t}</h2><div class="rv-row">${old}${vs}</div>`}).join('')}
+draw();
+document.getElementById('ph').onclick=e=>{document.body.classList.toggle('ph');e.target.textContent='phone width: '+(ph()?'on':'off');draw()};
+</script>
+</body>
+</html>

@@ -35,7 +35,7 @@
     syncPlayback() {
       const play = this.visible && !document.hidden && !this.userPaused && (!this.reduced.matches || this.userStarted);
       if (play) {
-        if (!this.video.getAttribute('src')) this.video.src = '/media/world-is-deeper.mp4';
+        if (!this.video.getAttribute('src')) this.video.src = (matchMedia('(max-width:650px)').matches || navigator.connection?.saveData) ? '/media/world-is-deeper-sm.mp4' : '/media/world-is-deeper.mp4';
         this.video.play().catch(() => this.updateControl());
       } else this.video.pause();
       this.updateControl();

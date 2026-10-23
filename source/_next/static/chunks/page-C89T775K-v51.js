@@ -1,5 +1,5 @@
-import { r as e, t } from "./rolldown-runtime-C60lm6uB.js";
-import { i as n, n as r, r as i } from "./framework-D_rUT4EX.js";
+import { r as e, t } from "./rolldown-runtime-C60lm6uB.js?v=ea01c2ac";
+import { i as n, n as r, r as i } from "./framework-D_rUT4EX.js?v=841f2b55";
 var a = e(n(), 1);
 var TEX_MAP = {
     day: `/earth-day.jpg`,
@@ -5976,7 +5976,7 @@ function xo({ active: e, running: t, onSelect: n, ready: r, onHover: i, selectio
             ((cloudsReady = !0), boot());
           }),
           (K.onerror = boot),
-          (K.src = `/earth-clouds.jpg`)),
+          (K.src = `/earth-clouds.webp`)),
         () => {
           window.removeEventListener('blur',cancelDrag);
           visibilityObserver.disconnect();
@@ -6190,10 +6190,12 @@ function So() {
             className: `theme-toggle`,
             type: `button`,
             "aria-label": THEME === `dark` ? `Switch to light mode` : `Switch to dark mode`,
-            children: THEME === `dark` ? `☀ Light` : `☾ Dark`,
+            children: THEME === `dark` ? `☼ light` : `☾ dark`,
             onClick: () => {
               const next = new URL(window.location.href);
-              next.searchParams.set(`theme`, THEME === `dark` ? `light` : `dark`);
+              const nextTheme = THEME === `dark` ? `light` : `dark`;
+              try { localStorage.setItem(`deepspot-theme`, nextTheme); } catch (e) {}
+              next.searchParams.set(`theme`, nextTheme);
               window.location.assign(next.href);
             },
           }),

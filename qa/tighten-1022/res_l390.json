@@ -1,0 +1,1350 @@
+[
+ {
+  "view": "l390",
+  "route": "/browse/",
+  "status": 200,
+  "ms": 8233,
+  "errs": [],
+  "fails": [],
+  "mb": 0.92,
+  "nreq": 36,
+  "top": [
+   [
+    226701,
+    "/featured-spots.json"
+   ],
+   [
+    113468,
+    "/banners/h3.webp"
+   ],
+   [
+    85980,
+    "/banners/n3.webp"
+   ],
+   [
+    43690,
+    "/editorial-assets/cards/spot-a-suburban-london-warehouse-where-old-neon-signs-get-a-new-jo"
+   ]
+  ],
+  "sw": 390,
+  "vw": 390,
+  "title": "Browse Deep Spots \u2014 DeepSpot",
+  "theme": "light",
+  "panel": "on",
+  "bodyfs": "16px",
+  "bodyff": "Arial",
+  "over": [],
+  "small": [],
+  "smallBody": [],
+  "imgs": [],
+  "stretched": [],
+  "blurry": [],
+  "dup": [],
+  "hrefs": [
+   "http://localhost:8766/browse/?theme=light",
+   "http://localhost:8766/spot/?id=tochigi-underground-quarry&theme=light",
+   "http://localhost:8766/spot/?id=a-soviet-prison-doubles-as-a-swimming-hole&theme=light",
+   "http://localhost:8766/?theme=light",
+   "http://localhost:8766/map/?theme=light",
+   "http://localhost:8766/tours/?theme=light",
+   "http://localhost:8766/community/?theme=light",
+   "http://localhost:8766/welcome/?from=%2Fbrowse%2F%3Ftheme%3Dlight&theme=light",
+   "http://localhost:8766/saved/?theme=light",
+   "http://localhost:8766/guides/?theme=light",
+   "http://localhost:8766/account/?theme=light",
+   "http://localhost:8766/contribute/?theme=light",
+   "http://localhost:8766/membership/?theme=light",
+   "http://localhost:8766/stories/?theme=light",
+   "http://localhost:8766/spot/?id=frozen-aquarium-in-miyagi&theme=light",
+   "http://localhost:8766/profile/?user=bodhi-schulz&theme=light&from=%2Fbrowse%2F%3Ftheme%3Dlight",
+   "http://localhost:8766/spot/?id=south-london-s-most-notable-street-art-location&theme=light",
+   "http://localhost:8766/profile/?user=wayfarer&theme=light&from=%2Fbrowse%2F%3Ftheme%3Dlight",
+   "http://localhost:8766/spot/?id=berlin-s-hill-of-nazi-rubble-cold-war-spies-and-graffiti&theme=light",
+   "http://localhost:8766/profile/?user=johan-swe&theme=light&from=%2Fbrowse%2F%3Ftheme%3Dlight",
+   "http://localhost:8766/spot/?id=osaka-s-candy-colored-garbage-palace&theme=light",
+   "http://localhost:8766/profile/?user=lydia&theme=light&from=%2Fbrowse%2F%3Ftheme%3Dlight",
+   "http://localhost:8766/spot/?id=the-place-in-malta-where-people-have-been-making-salt-for-centuries&theme=light",
+   "http://localhost:8766/spot/?id=a-suburban-london-warehouse-where-old-neon-signs-get-a-new-job&theme=light",
+   "http://localhost:8766/spot/?id=700-year-old-church-devoured-by-sand&theme=light",
+   "http://localhost:8766/profile/?user=six&theme=light&from=%2Fbrowse%2F%3Ftheme%3Dlight",
+   "http://localhost:8766/spot/?id=coin-operated-grandmas-and-opium-den-dioramas-are-hidden-in-this-san-francisco-museum&theme=light",
+   "http://localhost:8766/spot/?id=a-melodic-sculpture-in-the-lancashire-countryside&theme=light",
+   "http://localhost:8766/spot/?id=tomb-of-christ-in-aomori&theme=light",
+   "http://localhost:8766/mission/?theme=light",
+   "http://localhost:8766/faq/?theme=light",
+   "http://localhost:8766/privacy/?theme=light",
+   "http://localhost:8766/terms/?theme=light",
+   "http://localhost:8766/cookies/?theme=light"
+  ],
+  "devlinks": [],
+  "navs": [
+   "DEEP SPOT",
+   "Your passport",
+   "\u263e dark",
+   "color on",
+   "\u2630",
+   "Deep Spots",
+   "Stories",
+   "Guides",
+   "home",
+   "browse",
+   "tours",
+   "guides",
+   "community",
+   "your fieldbook",
+   "membership",
+   "your account"
+  ],
+  "hdr": {
+   "sel": "header.br-header",
+   "h": 85,
+   "bg": "rgba(0, 0, 0, 0)",
+   "pos": "relative"
+  },
+  "foot": {
+   "sel": "footer.br-credit",
+   "links": 2,
+   "h": 63,
+   "txt": "BS by Bodhi Schulz \u2197"
+  },
+  "toggles": [
+   "switch to dark mode \u263e dark",
+   "color accents turn panel colors off colo",
+   "save osaka\u2019s candy-colored garbage palac"
+  ],
+  "btns": {
+   "50%|30|16px|400|Arial": [
+    "a.ds-account-button"
+   ],
+   "30px|37|14px|400|Arial": [
+    "button.br-theme"
+   ],
+   "24px|34|14px|400|Arial": [
+    "button.color-toggle"
+   ],
+   "0px|38|23px|400|Arial": [
+    "button.br-menu"
+   ],
+   "0px|40|15px|400|Arial": [
+    "button.br-saved"
+   ],
+   "0px|53|16px|800|Arial": [
+    "button",
+    "button",
+    "button",
+    "button",
+    "button",
+    "button"
+   ],
+   "0px|35|16px|400|Arial": [
+    "button",
+    "button"
+   ],
+   "50%|35|16px|400|Arial": [
+    "button.br-bookmark",
+    "button.br-bookmark",
+    "button.br-bookmark",
+    "button.br-bookmark",
+    "button.br-bookmark",
+    "button.br-bookmark",
+    "button.br-bookmark",
+    "button.br-bookmark",
+    "button.br-bookmark",
+    "button.br-bookmark",
+    "button.br-bookmark",
+    "button.br-bookmark"
+   ],
+   "3px|44|16px|400|Arial": [
+    "button.br-page-direction.br-page-prev",
+    "button",
+    "button",
+    "button",
+    "button.br-page-direction.br-page-next"
+   ],
+   "3px|44|16px|700|Arial": [
+    "button"
+   ],
+   "40px|52|18px|600|Arial": [
+    "a.ds-cta-button"
+   ],
+   "3px|44|17px|600|Arial": [
+    "button"
+   ]
+  },
+  "h1": [
+   "Arial|52px \"Browse\nDeep Spots\""
+  ],
+  "h2": [
+   "Arial|27px|700|none \"Aquarium Where Every Fish\"",
+   "Arial|27px|700|none \"The Japanese Quarry That \"",
+   "Arial|27px|700|none \"South London\u2019s Most Notab\"",
+   "Arial|27px|700|none \"Berlin's Hill of Nazi Rub\"",
+   "Arial|27px|700|none \"Osaka\u2019s Candy-Colored Gar\"",
+   "Arial|27px|700|none \"A Soviet Prison Doubles a\""
+  ],
+  "tap": [
+   "a.skip-link 1x1"
+  ],
+  "ph": [
+   "coming soon"
+  ],
+  "len": 9564,
+  "axe": null
+ },
+ {
+  "view": "l390",
+  "route": "/map/",
+  "status": 200,
+  "ms": 5709,
+  "errs": [],
+  "fails": [],
+  "mb": 0.75,
+  "nreq": 37,
+  "top": [
+   [
+    226701,
+    "/featured-spots.json"
+   ],
+   [
+    147552,
+    "/site/vendor/leaflet.js?v=af9c8e3a"
+   ],
+   [
+    112554,
+    "/site/content.json"
+   ],
+   [
+    30957,
+    "/site/pages.mjs?v=605f9261"
+   ]
+  ],
+  "sw": 390,
+  "vw": 390,
+  "title": "Interactive Map \u2014 DeepSpot",
+  "theme": "light",
+  "panel": "on",
+  "bodyfs": "16px",
+  "bodyff": "Arial",
+  "over": [
+   "img.leaflet-tile.leaflet-tile-loaded r=400",
+   "img.leaflet-tile.leaflet-tile-loaded r=400"
+  ],
+  "small": [],
+  "smallBody": [],
+  "imgs": [],
+  "stretched": [],
+  "blurry": [],
+  "dup": [],
+  "hrefs": [
+   "http://localhost:8766/map/?theme=light",
+   "http://localhost:8766/spot/?theme=light&id=tochigi-underground-quarry",
+   "http://localhost:8766/spot/?theme=light&id=a-soviet-prison-doubles-as-a-swimming-hole",
+   "http://localhost:8766/?theme=light",
+   "http://localhost:8766/browse/?theme=light",
+   "http://localhost:8766/tours/?theme=light",
+   "http://localhost:8766/community/?theme=light",
+   "http://localhost:8766/welcome/?from=%2Fmap%2F%3Ftheme%3Dlight&theme=light",
+   "http://localhost:8766/saved/?theme=light",
+   "http://localhost:8766/guides/?theme=light",
+   "http://localhost:8766/account/?theme=light",
+   "http://localhost:8766/contribute/?theme=light",
+   "http://localhost:8766/membership/?theme=light",
+   "http://localhost:8766/plan-trip/?theme=light",
+   "http://localhost:8766/mission/?theme=light",
+   "http://localhost:8766/faq/?theme=light",
+   "http://localhost:8766/privacy/?theme=light",
+   "http://localhost:8766/terms/?theme=light",
+   "http://localhost:8766/cookies/?theme=light"
+  ],
+  "devlinks": [],
+  "navs": [
+   "DEEP SPOT",
+   "Your passport",
+   "\u263e dark",
+   "color on",
+   "\u2630",
+   "home",
+   "browse",
+   "tours",
+   "guides",
+   "community",
+   "your fieldbook",
+   "membership",
+   "your account",
+   "interactive map",
+   "our mission",
+   "faq"
+  ],
+  "hdr": {
+   "sel": "header.br-header",
+   "h": 85,
+   "bg": "rgba(0, 0, 0, 0)",
+   "pos": "relative"
+  },
+  "foot": {
+   "sel": "footer.ds-footer",
+   "links": 18,
+   "h": 817,
+   "txt": "DEEP SPOT Discovering the obscure, the weird, and the wonderful side of the world that you won't find in guidebooks. exp"
+  },
+  "toggles": [
+   "switch to dark mode \u263e dark",
+   "color accents turn panel colors off colo"
+  ],
+  "btns": {
+   "50%|30|16px|400|Arial": [
+    "a.ds-account-button"
+   ],
+   "30px|37|14px|400|Arial": [
+    "button.br-theme"
+   ],
+   "24px|34|14px|400|Arial": [
+    "button.color-toggle"
+   ],
+   "0px|38|23px|400|Arial": [
+    "button.br-menu"
+   ],
+   "22px|34|15.5px|400|Arial": [
+    "button.ds-chip",
+    "button.ds-chip",
+    "button.ds-chip"
+   ],
+   "30px|46|15px|600|Arial": [
+    "button#map-surprise.ds-button.secondary",
+    "a.ds-button"
+   ],
+   "0px|98|16px|400|Arial": [
+    "button.ds-map-result",
+    "button.ds-map-result",
+    "button.ds-map-result",
+    "button.ds-map-result",
+    "button.ds-map-result",
+    "button.ds-map-result",
+    "button.ds-map-result",
+    "button.ds-map-result"
+   ],
+   "0px|79|16px|400|Arial": [
+    "button.ds-map-result",
+    "button.ds-map-result"
+   ]
+  },
+  "h1": [
+   "Arial|35.1px \"A worldof detours.\""
+  ],
+  "h2": [
+   "Arial|19.5px|700|none \"explore\"",
+   "Arial|19.5px|700|none \"legal\""
+  ],
+  "tap": [
+   "a.skip-link 1x1",
+   "a 68x16",
+   "a 176x16"
+  ],
+  "ph": [],
+  "len": 2121,
+  "axe": null
+ },
+ {
+  "view": "l390",
+  "route": "/tours/",
+  "status": 200,
+  "ms": 5442,
+  "errs": [],
+  "fails": [],
+  "mb": 0.86,
+  "nreq": 41,
+  "top": [
+   [
+    113468,
+    "/banners/h3.webp"
+   ],
+   [
+    102164,
+    "/tours/tours-shadow.webp?v=art15"
+   ],
+   [
+    85980,
+    "/banners/n3.webp"
+   ],
+   [
+    85648,
+    "/tours/tours-moles.webp?v=art15"
+   ]
+  ],
+  "sw": 390,
+  "vw": 390,
+  "title": "Tours \u2014 DeepSpot",
+  "theme": "light",
+  "panel": "on",
+  "bodyfs": "16px",
+  "bodyff": "Arial",
+  "over": [],
+  "small": [],
+  "smallBody": [],
+  "imgs": [],
+  "stretched": [],
+  "blurry": [],
+  "dup": [],
+  "hrefs": [
+   "http://localhost:8766/tours/?theme=light",
+   "http://localhost:8766/spot/?theme=light&id=tochigi-underground-quarry",
+   "http://localhost:8766/spot/?theme=light&id=a-soviet-prison-doubles-as-a-swimming-hole",
+   "http://localhost:8766/?theme=light",
+   "http://localhost:8766/browse/?theme=light",
+   "http://localhost:8766/map/?theme=light",
+   "http://localhost:8766/community/?theme=light",
+   "http://localhost:8766/welcome/?from=%2Ftours%2F%3Ftheme%3Dlight&theme=light",
+   "http://localhost:8766/saved/?theme=light",
+   "http://localhost:8766/guides/?theme=light",
+   "http://localhost:8766/account/?theme=light",
+   "http://localhost:8766/contribute/?theme=light",
+   "http://localhost:8766/membership/?theme=light",
+   "http://localhost:8766/roadmap/?theme=light",
+   "http://localhost:8766/mission/?theme=light",
+   "http://localhost:8766/faq/?theme=light",
+   "http://localhost:8766/privacy/?theme=light",
+   "http://localhost:8766/terms/?theme=light",
+   "http://localhost:8766/cookies/?theme=light"
+  ],
+  "devlinks": [],
+  "navs": [
+   "DEEP SPOT",
+   "Your passport",
+   "\u263e dark",
+   "color on",
+   "\u2630"
+  ],
+  "hdr": {
+   "sel": "header.br-header",
+   "h": 85,
+   "bg": "rgba(0, 0, 0, 0)",
+   "pos": "relative"
+  },
+  "foot": {
+   "sel": "footer.ds-footer",
+   "links": 18,
+   "h": 0,
+   "txt": "DEEPSPOT Discovering the obscure, the weird, and the wonderful side of the world that you won't find in guidebooks. expl"
+  },
+  "toggles": [
+   "switch to dark mode \u263e dark",
+   "color accents turn panel colors off colo"
+  ],
+  "btns": {
+   "50%|30|16px|400|Arial": [
+    "a.ds-account-button"
+   ],
+   "30px|37|14px|400|Arial": [
+    "button.br-theme"
+   ],
+   "24px|34|14px|400|Arial": [
+    "button.color-toggle"
+   ],
+   "0px|38|23px|400|Arial": [
+    "button.br-menu"
+   ],
+   "99px|84|20px|600|Arial": [
+    "a.ds-button"
+   ]
+  },
+  "h1": [
+   "Arial|109.2px \"tours\nUnder construction.\""
+  ],
+  "h2": [],
+  "tap": [
+   "a.skip-link 1x1"
+  ],
+  "ph": [],
+  "len": 844,
+  "axe": null
+ },
+ {
+  "view": "l390",
+  "route": "/community/",
+  "status": 200,
+  "ms": 9320,
+  "errs": [
+   "w: [.WebGL-0x3984001bda00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+   "w: [.WebGL-0x3984001bda00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+   "w: [.WebGL-0x3984001bda00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+   "w: [.WebGL-0x3984001bda00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)"
+  ],
+  "fails": [],
+  "mb": 1.18,
+  "nreq": 55,
+  "top": [
+   [
+    226701,
+    "/featured-spots.json"
+   ],
+   [
+    133933,
+    "/profile/profile.css?v=1eec0e84"
+   ],
+   [
+    112554,
+    "/site/content.json"
+   ],
+   [
+    71791,
+    "/site/community-v2.css?v=0a176d01"
+   ]
+  ],
+  "sw": 390,
+  "vw": 390,
+  "title": "Community \u2014 DeepSpot",
+  "theme": "light",
+  "panel": "on",
+  "bodyfs": "16px",
+  "bodyff": "Arial",
+  "over": [],
+  "small": [],
+  "smallBody": [],
+  "imgs": [],
+  "stretched": [],
+  "blurry": [],
+  "dup": [],
+  "hrefs": [
+   "http://localhost:8766/community/?theme=light",
+   "http://localhost:8766/spot/?theme=light&id=tochigi-underground-quarry",
+   "http://localhost:8766/spot/?theme=light&id=a-soviet-prison-doubles-as-a-swimming-hole",
+   "http://localhost:8766/?theme=light",
+   "http://localhost:8766/browse/?theme=light",
+   "http://localhost:8766/map/?theme=light",
+   "http://localhost:8766/tours/?theme=light",
+   "http://localhost:8766/welcome/?from=%2Fcommunity%2F%3Ftheme%3Dlight&theme=light",
+   "http://localhost:8766/saved/?theme=light",
+   "http://localhost:8766/guides/?theme=light",
+   "http://localhost:8766/account/?theme=light",
+   "http://localhost:8766/contribute/?theme=light",
+   "http://localhost:8766/membership/?theme=light",
+   "http://localhost:8766/profile/?user=lampbane&theme=light&from=%2Fcommunity%2F%3Ftheme%3Dlight",
+   "http://localhost:8766/profile/?user=wayfarer&theme=light&from=%2Fcommunity%2F%3Ftheme%3Dlight",
+   "http://localhost:8766/profile/?user=kisekikana&theme=light&from=%2Fcommunity%2F%3Ftheme%3Dlight",
+   "http://localhost:8766/profile/?user=numberone&theme=light&from=%2Fcommunity%2F%3Ftheme%3Dlight",
+   "http://localhost:8766/profile/?user=joelle&theme=light&from=%2Fcommunity%2F%3Ftheme%3Dlight",
+   "http://localhost:8766/profile/?user=annebelle&theme=light&from=%2Fcommunity%2F%3Ftheme%3Dlight",
+   "http://localhost:8766/profile/?user=lanavelkov&theme=light&from=%2Fcommunity%2F%3Ftheme%3Dlight",
+   "http://localhost:8766/profile/?user=s4zr4ty&theme=light&from=%2Fcommunity%2F%3Ftheme%3Dlight",
+   "http://localhost:8766/profile/?user=korrgan&theme=light&from=%2Fcommunity%2F%3Ftheme%3Dlight",
+   "http://localhost:8766/profile/?user=sixbacteria&theme=light&from=%2Fcommunity%2F%3Ftheme%3Dlight",
+   "http://localhost:8766/forum/?theme=light&id=cmnoocewh0001s4uyi6agh1gm",
+   "http://localhost:8766/forum/?theme=light&id=cmnoocdlk0000s4uyw7jahytc",
+   "http://localhost:8766/forum/?theme=light&id=cmrvo19fv000004ldgzpro5kc",
+   "http://localhost:8766/forum/?theme=light&id=cmnoocfp00004s4uymae17c4h",
+   "http://localhost:8766/forum/?theme=light",
+   "http://localhost:8766/spot/?theme=light&id=frozen-aquarium-in-miyagi",
+   "http://localhost:8766/spot/?theme=light&id=south-london-s-most-notable-street-art-location",
+   "http://localhost:8766/spot/?theme=light&id=berlin-s-hill-of-nazi-rubble-cold-war-spies-and-graffiti",
+   "http://localhost:8766/spot/?theme=light&id=osaka-s-candy-colored-garbage-palace",
+   "http://localhost:8766/roadmap/?theme=light",
+   "http://localhost:8766/mission/?theme=light",
+   "http://localhost:8766/faq/?theme=light",
+   "http://localhost:8766/privacy/?theme=light",
+   "http://localhost:8766/terms/?theme=light",
+   "http://localhost:8766/cookies/?theme=light"
+  ],
+  "devlinks": [],
+  "navs": [
+   "DEEP SPOT",
+   "Your passport",
+   "\u263e dark",
+   "color on",
+   "\u2630",
+   "Vote on what we build next. \u2197",
+   "home",
+   "browse",
+   "tours",
+   "guides",
+   "community",
+   "your fieldbook",
+   "membership",
+   "your account",
+   "interactive map",
+   "our mission"
+  ],
+  "hdr": {
+   "sel": "header.br-header",
+   "h": 85,
+   "bg": "rgba(0, 0, 0, 0)",
+   "pos": "relative"
+  },
+  "foot": {
+   "sel": "footer.ds-footer",
+   "links": 18,
+   "h": 817,
+   "txt": "DEEP SPOT Discovering the obscure, the weird, and the wonderful side of the world that you won't find in guidebooks. exp"
+  },
+  "toggles": [
+   "switch to dark mode \u263e dark",
+   "color accents turn panel colors off colo",
+   "save osaka\u2019s candy-colored garbage palac"
+  ],
+  "btns": {
+   "50%|30|16px|400|Arial": [
+    "a.ds-account-button"
+   ],
+   "30px|37|14px|400|Arial": [
+    "button.br-theme"
+   ],
+   "24px|34|14px|400|Arial": [
+    "button.color-toggle"
+   ],
+   "0px|38|23px|400|Arial": [
+    "button.br-menu"
+   ],
+   "30px|62|24px|800|Arial": [
+    "a.ds-button.gv-join"
+   ],
+   "99px|52|17px|700|Arial": [
+    "button.gv-ghost"
+   ],
+   "0px|56|19px|800|Arial": [
+    "button.dc-opt",
+    "button.dc-opt",
+    "button.dc-opt",
+    "button.dc-opt"
+   ],
+   "0px|52|17px|800|Arial": [
+    "button",
+    "button",
+    "button",
+    "button"
+   ],
+   "50%|37|16px|400|Arial": [
+    "button.ds-save",
+    "button.ds-save",
+    "button.ds-save",
+    "button.ds-save",
+    "button.ds-save",
+    "button.ds-save"
+   ],
+   "99px|44|16px|700|Arial": [
+    "button",
+    "button",
+    "button",
+    "button",
+    "button",
+    "button",
+    "button",
+    "button",
+    "button",
+    "button",
+    "button",
+    "button"
+   ],
+   "30px|48|17px|600|Arial": [
+    "a.ds-button",
+    "a.ds-button.secondary"
+   ],
+   "8px|40|16px|400|Arial": [
+    "button",
+    "button",
+    "button",
+    "button",
+    "button",
+    "button",
+    "button",
+    "button",
+    "button",
+    "button",
+    "button",
+    "button",
+    "button",
+    "button",
+    "button",
+    "button",
+    "button",
+    "button",
+    "button",
+    "button",
+    "button",
+    "button",
+    "button",
+    "button"
+   ]
+  },
+  "h1": [
+   "Arial|50.7px \"DeepSpot community\""
+  ],
+  "h2": [
+   "Arial|54.6px|800|none \"the race\nfor $300.\"",
+   "Arial|44.85px|800|none \"participants.\"",
+   "Arial|56.55px|800|none \"live from\nthe discord.\"",
+   "Arial|52px|800|none \"your vote\nmatters.\"",
+   "Arial|42.9px|800|none \"community spots.\"",
+   "Arial|42.9px|800|none \"roadmap.\""
+  ],
+  "tap": [
+   "a.skip-link 1x1",
+   "a.dc-more.dv-more 150x23",
+   "a.cv-link 134x21",
+   "a.cv-link 134x21",
+   "a.cv-link 134x21",
+   "a.cv-link 134x21",
+   "a.cv-link 134x21",
+   "a.cv-link 134x21"
+  ],
+  "ph": [],
+  "len": 11084,
+  "axe": null
+ },
+ {
+  "view": "l390",
+  "route": "/welcome/",
+  "status": 200,
+  "ms": 4954,
+  "errs": [],
+  "fails": [],
+  "mb": 0.36,
+  "nreq": 19,
+  "top": [
+   [
+    133933,
+    "/profile/profile.css?v=1eec0e84"
+   ],
+   [
+    45169,
+    "/site/onboarding.mjs?v=15f73fa6"
+   ],
+   [
+    40346,
+    "/site/onboarding.css?v=bf597083"
+   ],
+   [
+    28273,
+    "/site/refinements.css?v=00dfb94d"
+   ]
+  ],
+  "sw": 390,
+  "vw": 390,
+  "title": "Make your passport \u2014 DeepSpot",
+  "theme": "light",
+  "panel": "on",
+  "bodyfs": "16px",
+  "bodyff": "Arial",
+  "over": [],
+  "small": [],
+  "smallBody": [],
+  "imgs": [],
+  "stretched": [],
+  "blurry": [],
+  "dup": [],
+  "hrefs": [
+   "http://localhost:8766/welcome/?theme=light&force=1",
+   "http://localhost:8766/",
+   "http://localhost:8766/terms/",
+   "http://localhost:8766/privacy/"
+  ],
+  "devlinks": [],
+  "navs": [
+   "DEEP SPOT",
+   "\u263e",
+   "Color accents"
+  ],
+  "hdr": {
+   "sel": "header.br-header.ob-header",
+   "h": 57,
+   "bg": "rgba(0, 0, 0, 0)",
+   "pos": "relative"
+  },
+  "foot": null,
+  "toggles": [
+   "switch to dark mode \u263e",
+   "color accents turn panel colors off"
+  ],
+  "btns": {
+   "30px|40|14px|400|Arial": [
+    "button.br-theme"
+   ],
+   "24px|40|14px|400|Arial": [
+    "button.color-toggle"
+   ],
+   "99px|76|23px|800|Arial": [
+    "button.ob-big.ob-email-btn"
+   ]
+  },
+  "h1": [
+   "Arial|41.34px \"let\u2019s get you a passport.\""
+  ],
+  "h2": [],
+  "tap": [
+   "a.skip-link 1x1"
+  ],
+  "ph": [],
+  "len": 844,
+  "axe": null
+ },
+ {
+  "view": "l390",
+  "route": "/",
+  "status": 200,
+  "ms": 10985,
+  "errs": [],
+  "fails": [],
+  "mb": 3.71,
+  "nreq": 62,
+  "top": [
+   [
+    550144,
+    "/media/world-is-deeper-sm.mp4"
+   ],
+   [
+    463087,
+    "/earth-day.jpg"
+   ],
+   [
+    361152,
+    "/earth-clouds.webp"
+   ],
+   [
+    246966,
+    "/spots/oya.jpg"
+   ]
+  ],
+  "sw": 390,
+  "vw": 390,
+  "title": "DeepSpot \u2014 Your map of the Extra Un-Ordinary",
+  "theme": "light",
+  "panel": "on",
+  "bodyfs": "16px",
+  "bodyff": "Arial",
+  "over": [
+   "span r=533",
+   "button.map-pin r=520",
+   "div.ed-story-group r=1085",
+   "article.ed-story r=729",
+   "button.ed-story-open r=728",
+   "img r=475"
+  ],
+  "small": [],
+  "smallBody": [],
+  "imgs": [],
+  "stretched": [],
+  "blurry": [],
+  "dup": [],
+  "hrefs": [
+   "http://localhost:8766/?theme=light",
+   "http://localhost:8766/browse/?theme=light",
+   "http://localhost:8766/map/?theme=light",
+   "http://localhost:8766/tours/?theme=light",
+   "http://localhost:8766/community/?theme=light",
+   "http://localhost:8766/welcome/?theme=light",
+   "http://localhost:8766/saved/?theme=light",
+   "http://localhost:8766/guides/?theme=light",
+   "http://localhost:8766/account/?theme=light",
+   "http://localhost:8766/membership/?theme=light",
+   "http://localhost:8766/contribute/?theme=light",
+   "http://localhost:8766/spot/?id=a-soviet-prison-doubles-as-a-swimming-hole&theme=light",
+   "http://localhost:8766/spot/?id=tochigi-underground-quarry&theme=light",
+   "http://localhost:8766/profile/?user=wayfarer&theme=light&from=%2F%3Ftheme%3Dlight%23wn-heading",
+   "http://localhost:8766/spot/?id=south-london-s-most-notable-street-art-location&theme=light",
+   "http://localhost:8766/spot/?id=osaka-s-candy-colored-garbage-palace&theme=light",
+   "http://localhost:8766/spot/?id=frozen-aquarium-in-miyagi&theme=light",
+   "http://localhost:8766/profile/?user=bodhi-schulz&theme=light&from=%2F%3Ftheme%3Dlight%23fs-heading",
+   "http://localhost:8766/profile/?user=wayfarer&theme=light&from=%2F%3Ftheme%3Dlight%23fs-heading",
+   "http://localhost:8766/spot/?id=berlin-s-hill-of-nazi-rubble-cold-war-spies-and-graffiti&theme=light",
+   "http://localhost:8766/profile/?user=johan-swe&theme=light&from=%2F%3Ftheme%3Dlight%23fs-heading",
+   "http://localhost:8766/profile/?user=lydia&theme=light&from=%2F%3Ftheme%3Dlight%23fs-heading",
+   "http://localhost:8766/spot/?id=the-place-in-malta-where-people-have-been-making-salt-for-centuries&theme=light",
+   "http://localhost:8766/profile/?user=lampbane&theme=light&from=%2F%3Ftheme%3Dlight%23community",
+   "http://localhost:8766/profile/?user=wayfarer&theme=light&from=%2F%3Ftheme%3Dlight%23community",
+   "http://localhost:8766/profile/?user=kisekikana&theme=light&from=%2F%3Ftheme%3Dlight%23community",
+   "http://localhost:8766/profile/?user=numberone&theme=light&from=%2F%3Ftheme%3Dlight%23community",
+   "http://localhost:8766/profile/?user=joelle&theme=light&from=%2F%3Ftheme%3Dlight%23community",
+   "http://localhost:8766/profile/?user=annebelle&theme=light&from=%2F%3Ftheme%3Dlight%23community",
+   "http://localhost:8766/leaderboard/?theme=light",
+   "http://localhost:8766/stories/?theme=light",
+   "http://localhost:8766/profile/?user=numberone&theme=light&from=%2F%3Ftheme%3Dlight%23stories",
+   "http://localhost:8766/profile/?user=kisekikana&theme=light&from=%2F%3Ftheme%3Dlight%23stories",
+   "http://localhost:8766/profile/?user=krista-watson&theme=light&from=%2F%3Ftheme%3Dlight%23stories",
+   "http://localhost:8766/mission/?theme=light",
+   "http://localhost:8766/faq/?theme=light",
+   "http://localhost:8766/privacy/?theme=light",
+   "http://localhost:8766/terms/?theme=light",
+   "http://localhost:8766/cookies/?theme=light",
+   "http://localhost:8766/?tex=day&theme=light",
+   "http://localhost:8766/?tex=night&theme=light",
+   "http://localhost:8766/?tex=day&theme=light&color=1",
+   "http://localhost:8766/?tex=night&theme=light&color=1",
+   "http://localhost:8766/?tex=neon&theme=light",
+   "http://localhost:8766/?tex=neon&theme=light&color=1"
+  ],
+  "devlinks": [],
+  "navs": [
+   "DEEP SPOT \u2733",
+   "Your passport",
+   "\u263e dark",
+   "color on",
+   "\u2630",
+   "top contributors \u2197",
+   "stories",
+   "home",
+   "browse",
+   "tours",
+   "guides",
+   "community",
+   "your fieldbook",
+   "membership",
+   "your account",
+   "interactive map"
+  ],
+  "hdr": {
+   "sel": "header.header",
+   "h": 94,
+   "bg": "rgb(246, 243, 236)",
+   "pos": "relative"
+  },
+  "foot": {
+   "sel": "footer",
+   "links": 2,
+   "h": 40,
+   "txt": "BS by Bodhi Schulz \u2197"
+  },
+  "toggles": [
+   "switch to dark mode \u263e dark",
+   "color accents turn panel colors off colo",
+   "save osaka\u2019s candy-colored garbage palac",
+   "read tuch\u00edn, the colombian town known fo"
+  ],
+  "btns": {
+   "50%|30|16px|400|Arial": [
+    "a.ds-account-button"
+   ],
+   "24px|44|14px|400|Arial": [
+    "button.theme-toggle",
+    "button.color-toggle"
+   ],
+   "0px|40|23px|400|Arial": [
+    "button.ds-home-menu"
+   ],
+   "0px|41|16px|400|Arial": [
+    "button.map-pin.is-active",
+    "button.map-pin",
+    "button.map-pin"
+   ],
+   "40px|53|16px|400|Arial": [
+    "button.explore-bar"
+   ],
+   "0px|43|18px|500|Arial": [
+    "button.wn-intro-tab"
+   ],
+   "0px|52|15px|700|Arial": [
+    "button.wn-paper"
+   ],
+   "0px|52|15px|400|Arial": [
+    "button.wn-green",
+    "button.wn-aqua",
+    "button.wn-blue"
+   ],
+   "50%|44|16px|400|Arial": [
+    "button",
+    "button",
+    "button",
+    "button.fs-save",
+    "button.fs-save",
+    "button.fs-save",
+    "button.fs-save",
+    "button.fs-save",
+    "button.fs-save"
+   ],
+   "0px|54|16px|800|Arial": [
+    "button#fs-tab-0",
+    "button#fs-tab-1",
+    "button#fs-tab-2",
+    "button#fs-tab-3",
+    "button#fs-tab-4",
+    "button#fs-tab-5"
+   ],
+   "50%|36|16px|400|Arial": [
+    "button.world-banner-motion"
+   ],
+   "50%|44|15px|400|Arial": [
+    "button.cl-motion"
+   ],
+   "0px|219|16px|400|Arial": [
+    "button.ed-story-open",
+    "button.ed-story-open",
+    "button.ed-story-open"
+   ],
+   "0px|220|16px|400|Arial": [
+    "button.ed-story-open",
+    "button.ed-story-open",
+    "button.ed-story-open"
+   ],
+   "0px|44|15px|400|Arial": [
+    "button",
+    "button",
+    "button"
+   ],
+   "40px|55|18px|600|Arial": [
+    "a.ds-cta-button"
+   ],
+   "3px|54|17px|600|Arial": [
+    "button"
+   ],
+   "0px|38|17px|400|Arial": [
+    "button"
+   ]
+  },
+  "h1": [
+   "Arial|60.06px \"Extra Un-\nOrdinary\""
+  ],
+  "h2": [
+   "Arial|18.5px|400|none \"Oya History Museum\"",
+   "Arial|16px|400|none \"what\u2019s new?\nwhat\u2019s new?\"",
+   "Arial|39.78px|750|none \"discover\n0\n1\n2\n3\n4\n5\n6\n7\n\"",
+   "Arial|28px|750|none \"the world is deeper,\nstra\"",
+   "Arial|29px|750|none \"community\"",
+   "Arial|50.7px|800|none \"the people\nbehind\nthe pin\""
+  ],
+  "tap": [
+   "a.fs-arrow 18x24",
+   "a.fs-arrow 18x24",
+   "a.fs-arrow 18x24"
+  ],
+  "ph": [
+   "coming soon"
+  ],
+  "len": 9269,
+  "axe": null
+ },
+ {
+  "view": "l390",
+  "route": "/profile/?user=wayfarer",
+  "status": 200,
+  "ms": 9713,
+  "errs": [],
+  "fails": [],
+  "mb": 1.68,
+  "nreq": 39,
+  "top": [
+   [
+    463087,
+    "/earth-day.jpg"
+   ],
+   [
+    361152,
+    "/earth-clouds.webp"
+   ],
+   [
+    226701,
+    "/featured-spots.json"
+   ],
+   [
+    133933,
+    "/profile/profile.css?v=1eec0e84"
+   ]
+  ],
+  "sw": 390,
+  "vw": 390,
+  "title": "Wayfarer \u2014 DeepSpot Passport",
+  "theme": "light",
+  "panel": "on",
+  "bodyfs": "16px",
+  "bodyff": "Arial",
+  "over": [
+   "span r=506"
+  ],
+  "small": [],
+  "smallBody": [
+   [
+    "p.pp-mono",
+    {
+     "fs": 15,
+     "t": "based on 11 of 39 postings (the ones in this colle",
+     "c": 1
+    }
+   ]
+  ],
+  "imgs": [],
+  "stretched": [],
+  "blurry": [],
+  "dup": [],
+  "hrefs": [
+   "http://localhost:8766/profile/?user=wayfarer&theme=light",
+   "http://localhost:8766/spot/?id=tochigi-underground-quarry&theme=light",
+   "http://localhost:8766/spot/?id=a-soviet-prison-doubles-as-a-swimming-hole&theme=light",
+   "http://localhost:8766/?theme=light",
+   "http://localhost:8766/browse/?theme=light",
+   "http://localhost:8766/map/?theme=light",
+   "http://localhost:8766/tours/?theme=light",
+   "http://localhost:8766/community/?theme=light",
+   "http://localhost:8766/welcome/?theme=light",
+   "http://localhost:8766/saved/?theme=light",
+   "http://localhost:8766/guides/?theme=light",
+   "http://localhost:8766/account/?theme=light",
+   "http://localhost:8766/contribute/?theme=light",
+   "http://localhost:8766/membership/?theme=light",
+   "http://localhost:8766/spot/?id=the-place-in-malta-where-people-have-been-making-salt-for-centuries&theme=light",
+   "http://localhost:8766/spot/?id=a-melodic-sculpture-in-the-lancashire-countryside&theme=light",
+   "http://localhost:8766/spot/?id=south-london-s-most-notable-street-art-location&theme=light",
+   "http://localhost:8766/spot/?id=tokyo-s-oldest-modern-astronomy-site&theme=light",
+   "http://localhost:8766/spot/?id=1-200-year-old-saxon-crosses-in-a-random-market-square&theme=light",
+   "http://localhost:8766/spot/?id=an-art-deco-masterpiece-in-west-london&theme=light",
+   "http://localhost:8766/spot/?id=the-wall-separating-neighborhoods-in-belfast&theme=light",
+   "http://localhost:8766/spot/?id=the-world-s-oldest-boat-lift&theme=light",
+   "http://localhost:8766/spot/?id=the-strange-white-structure-on-a-hill-in-east-cheshire&theme=light",
+   "http://localhost:8766/spot/?id=the-centuries-old-bridge-in-lancashire-associated-with-the-british-civil-war&theme=light",
+   "http://localhost:8766/spot/?id=the-small-fake-castle-on-top-of-a-hill-in-east-cheshire&theme=light",
+   "http://localhost:8766/browse/?q=Wayfarer&theme=light",
+   "http://localhost:8766/browse/?q=Gozo%2C+Malta&theme=light",
+   "http://localhost:8766/browse/?q=Burnley%2C+England&theme=light",
+   "http://localhost:8766/browse/?q=Leake+St%2C+London&theme=light",
+   "http://localhost:8766/browse/?q=National+Astronomy+Observatory+Japan+Mitaka+Campus&theme=light",
+   "http://localhost:8766/browse/?q=Sandbach+Crosses&theme=light",
+   "http://localhost:8766/browse/?q=Hoover+Building&theme=light",
+   "http://localhost:8766/browse/?q=Belfast+Peace+Wall&theme=light",
+   "http://localhost:8766/browse/?q=Anderton+Boat+Lift&theme=light",
+   "http://localhost:8766/browse/?q=White+Nancy&theme=light",
+   "http://localhost:8766/browse/?q=Cromwell%E2%80%99s+Bridge&theme=light",
+   "http://localhost:8766/browse/?q=Mow+Cop+Castle&theme=light",
+   "http://localhost:8766/mission/?theme=light",
+   "http://localhost:8766/faq/?theme=light",
+   "http://localhost:8766/privacy/?theme=light",
+   "http://localhost:8766/terms/?theme=light",
+   "http://localhost:8766/cookies/?theme=light"
+  ],
+  "devlinks": [],
+  "navs": [
+   "DEEP SPOT",
+   "Your passport",
+   "\u263e dark",
+   "color on",
+   "\u2630",
+   "home",
+   "browse",
+   "tours",
+   "guides",
+   "community",
+   "your fieldbook",
+   "membership",
+   "your account",
+   "interactive map",
+   "our mission",
+   "faq"
+  ],
+  "hdr": {
+   "sel": "header.br-header",
+   "h": 85,
+   "bg": "rgba(0, 0, 0, 0)",
+   "pos": "relative"
+  },
+  "foot": {
+   "sel": "footer.ds-footer",
+   "links": 18,
+   "h": 817,
+   "txt": "DEEP SPOT Discovering the obscure, the weird, and the wonderful side of the world that you won't find in guidebooks. exp"
+  },
+  "toggles": [
+   "switch to dark mode \u263e dark",
+   "color accents turn panel colors off colo"
+  ],
+  "btns": {
+   "50%|30|16px|400|Arial": [
+    "a.ds-account-button"
+   ],
+   "30px|37|14px|400|Arial": [
+    "button.br-theme"
+   ],
+   "24px|34|14px|400|Arial": [
+    "button.color-toggle"
+   ],
+   "0px|38|23px|400|Arial": [
+    "button.br-menu"
+   ],
+   "99px|41|18px|700|Arial": [
+    "button.pp-share"
+   ],
+   "99px|44|17px|800|Arial": [
+    "button.ps-followbtn"
+   ],
+   "10px 10px 0px 0px|48|17px|800|Arial": [
+    "button#pp-vt-wtg.pp-vtab",
+    "button#pp-vt-explored.pp-vtab",
+    "button#pp-vt-picks.pp-vtab",
+    "button#pp-vt-contrib.pp-vtab",
+    "button#pp-vt-items.pp-vtab"
+   ],
+   "0px|40|18px|700|Arial": [
+    "button",
+    "button"
+   ]
+  },
+  "h1": [
+   "Arial|24px \"Wayfarer\""
+  ],
+  "h2": [
+   "ui-monospace|15.25px|600|uppercase \"BIO\"",
+   "ui-monospace|15.25px|600|uppercase \"TRAVELER TYPE\"",
+   "ui-monospace|15.25px|600|uppercase \"CONTRIBUTIONS\"",
+   "Arial|19.5px|700|none \"explore\"",
+   "Arial|19.5px|700|none \"legal\""
+  ],
+  "tap": [
+   "a.skip-link 1x1"
+  ],
+  "ph": [],
+  "len": 3429,
+  "axe": null
+ },
+ {
+  "view": "l390",
+  "route": "/profile/?user=preview",
+  "status": 200,
+  "ms": 7744,
+  "errs": [],
+  "fails": [],
+  "mb": 1.55,
+  "nreq": 36,
+  "top": [
+   [
+    463087,
+    "/earth-day.jpg"
+   ],
+   [
+    361152,
+    "/earth-clouds.webp"
+   ],
+   [
+    226701,
+    "/featured-spots.json"
+   ],
+   [
+    133933,
+    "/profile/profile.css?v=1eec0e84"
+   ]
+  ],
+  "sw": 390,
+  "vw": 390,
+  "title": "Your name here \u2014 DeepSpot Passport",
+  "theme": "light",
+  "panel": "on",
+  "bodyfs": "16px",
+  "bodyff": "Arial",
+  "over": [],
+  "small": [],
+  "smallBody": [],
+  "imgs": [],
+  "stretched": [],
+  "blurry": [],
+  "dup": [],
+  "hrefs": [
+   "http://localhost:8766/profile/?user=preview&theme=light",
+   "http://localhost:8766/spot/?id=tochigi-underground-quarry&theme=light",
+   "http://localhost:8766/spot/?id=a-soviet-prison-doubles-as-a-swimming-hole&theme=light",
+   "http://localhost:8766/?theme=light",
+   "http://localhost:8766/browse/?theme=light",
+   "http://localhost:8766/map/?theme=light",
+   "http://localhost:8766/tours/?theme=light",
+   "http://localhost:8766/community/?theme=light",
+   "http://localhost:8766/welcome/?theme=light",
+   "http://localhost:8766/saved/?theme=light",
+   "http://localhost:8766/guides/?theme=light",
+   "http://localhost:8766/account/?theme=light",
+   "http://localhost:8766/contribute/?theme=light",
+   "http://localhost:8766/membership/?theme=light",
+   "http://localhost:8766/mission/?theme=light",
+   "http://localhost:8766/faq/?theme=light",
+   "http://localhost:8766/privacy/?theme=light",
+   "http://localhost:8766/terms/?theme=light",
+   "http://localhost:8766/cookies/?theme=light"
+  ],
+  "devlinks": [],
+  "navs": [
+   "DEEP SPOT",
+   "Your passport",
+   "\u263e dark",
+   "color on",
+   "\u2630",
+   "EDIT PROFILE",
+   "Settings",
+   "home",
+   "browse",
+   "tours",
+   "guides",
+   "community",
+   "your fieldbook",
+   "membership",
+   "your account",
+   "interactive map"
+  ],
+  "hdr": {
+   "sel": "header.br-header",
+   "h": 85,
+   "bg": "rgba(0, 0, 0, 0)",
+   "pos": "relative"
+  },
+  "foot": {
+   "sel": "footer.ed-foot",
+   "links": 0,
+   "h": 0,
+   "txt": "no changes yetcancelsave profile"
+  },
+  "toggles": [
+   "switch to dark mode \u263e dark",
+   "color accents turn panel colors off colo"
+  ],
+  "btns": {
+   "50%|30|16px|400|Arial": [
+    "a.ds-account-button"
+   ],
+   "30px|37|14px|400|Arial": [
+    "button.br-theme"
+   ],
+   "24px|34|14px|400|Arial": [
+    "button.color-toggle"
+   ],
+   "0px|38|23px|400|Arial": [
+    "button.br-menu"
+   ],
+   "10px|122|16px|400|Arial": [
+    "button.pp-mole.pp-mole-empty"
+   ],
+   "99px|41|18px|700|Arial": [
+    "button.pp-share"
+   ],
+   "99px|32|15.25px|600|ui-monospace": [
+    "button.pp-chipbtn.pp-editbtn"
+   ],
+   "99px|32|16px|400|Arial": [
+    "button.pp-cog"
+   ],
+   "10px 10px 0px 0px|48|17px|800|Arial": [
+    "button#pp-vt-wtg.pp-vtab",
+    "button#pp-vt-explored.pp-vtab",
+    "button#pp-vt-picks.pp-vtab",
+    "button#pp-vt-contrib.pp-vtab",
+    "button#pp-vt-items.pp-vtab"
+   ],
+   "0px|40|18px|700|Arial": [
+    "button",
+    "button"
+   ],
+   "99px|30|15.5px|700|Arial": [
+    "button.wg-chip",
+    "button.wg-chip.wg-chip-new"
+   ],
+   "99px|40|15.5px|600|Arial": [
+    "button.pp-wtg-add"
+   ]
+  },
+  "h1": [
+   "Arial|24px \"Your name here\""
+  ],
+  "h2": [
+   "ui-monospace|15.25px|600|uppercase \"BIO\"",
+   "ui-monospace|15.25px|600|uppercase \"TRAVELER TYPE\"",
+   "ui-monospace|15.25px|600|uppercase \"CONTRIBUTIONS\"",
+   "Arial|19.5px|700|none \"explore\"",
+   "Arial|19.5px|700|none \"legal\""
+  ],
+  "tap": [
+   "a.skip-link 1x1",
+   "a.pp-bio-add 75x19"
+  ],
+  "ph": [],
+  "len": 3277,
+  "axe": null
+ }
+]

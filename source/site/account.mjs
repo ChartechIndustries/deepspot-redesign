@@ -1,6 +1,6 @@
-import {esc,$,$$,icon,localURL,action,pageTitle,readStore,writeStore,keys,notify,downloadJSON,savedIDs} from './core.mjs';
-import {readSession,setState,onGate,gateOff} from './gate.mjs?v=ob1';
-import {accountKey,readAccount,normalizeAccount,travelerStyles,travelerMark,avatarImage} from './account-state.mjs?v=icons2';
+import {esc,$,$$,icon,localURL,action,pageTitle,readStore,writeStore,keys,notify,downloadJSON,savedIDs} from './core.mjs?v=149e30e7';
+import {readSession,setState,onGate,gateOff} from './gate.mjs?v=51ff4e0d';
+import {accountKey,readAccount,normalizeAccount,travelerStyles,travelerMark,avatarImage} from './account-state.mjs?v=1c064097';
 
 const live=(label,hash='')=>`<a class="ds-text-link" href="https://www.deepspot.io/profile${hash}" data-original target="_blank" rel="noopener">${label}${icon('arrow')}</a>`;
 const sections=[['progress','travel stats'],['trips','my trips'],['submissions','my submissions'],['placements','my placements'],['notifications','notifications'],['billing','membership'],['security','account settings']];
@@ -9,10 +9,10 @@ const noConnection=(heading,text,link)=>`<div class="ac-empty">${icon('star')}<h
 
 export async function renderAccount(root,data,route){
  if(route==='inbox'){
-  root.innerHTML=pageTitle('Your','inbox.','The conversations behind the discoveries.')+`<div class="ac-service-note">Your private messages stay on DeepSpot. This preview shows the inbox layout.</div><section class="ac-inbox"><div class="ac-inbox-side"><h2>messages</h2><div class="ac-empty-list">${icon('share')}<p>Connect your account to see conversations and announcements.</p><a class="ds-text-link" href="https://www.deepspot.io/inbox" data-original target="_blank" rel="noopener">open your inbox ${icon('arrow')}</a></div></div><div class="ac-inbox-reading">${icon('share')}<h2>a good conversation<br>can take you places.</h2><p>Select a conversation when your account is connected.</p></div></section>${action('back to your account','/account/','secondary')}`;return;
+  root.innerHTML=pageTitle('Your','inbox.','The conversations behind the discoveries.')+`<div class="ac-service-note">Your private messages stay on DeepSpot. This preview shows the inbox layout.</div><section class="ac-inbox"><div class="ac-inbox-side"><h2>messages</h2><div class="ac-empty-list">${icon('mail')}<p>Connect your account to see conversations and announcements.</p><a class="ds-text-link" href="https://www.deepspot.io/inbox" data-original target="_blank" rel="noopener">open your inbox ${icon('arrow')}</a></div></div><div class="ac-inbox-reading">${icon('mail')}<h2>a good conversation<br>can take you places.</h2><p>Select a conversation when your account is connected.</p></div></section>${action('back to your account','/account/','secondary')}`;return;
  }
  if(route==='invites'){
-  root.innerHTML=pageTitle('Good finds.','Better company.','Give someone a way into DeepSpot.')+`<section class="ac-invite-feature"><div><span class="ds-eyebrow">your invite keys</span><h2>leave the<br>door open.</h2><p>Share an active invite key with a friend. Each person who uses a key receives two of their own to pass on.</p><a class="ds-button" href="https://www.deepspot.io/early-access" data-original target="_blank" rel="noopener">open your invite keys ${icon('arrow')}</a></div><div class="ac-invite-art" aria-hidden="true">${travelerMark('explorer')}<span>one good<br>introduction.</span></div></section><div class="ds-three"><article><h3>copy a key.</h3><p>Find your active keys in your DeepSpot account.</p></article><article><h3>pass it on.</h3><p>Send one to someone curious. Invite keys are personal access codes.</p></article><article><h3>let them in.</h3><p>They enter the key on DeepSpot, then invite someone of their own.</p></article></div><p class="ds-note">Live keys are never copied into this preview. Availability is managed by your original account.</p>`;return;
+  root.innerHTML=pageTitle('Good finds.','Better company.','Give someone a way into DeepSpot.')+`<section class="ac-invite-feature"><div><span class="ds-eyebrow">your invite keys</span><h2>leave the<br>door open.</h2><p>Share an active invite key with a friend. Each person who uses a key receives two of their own to pass on.</p><a class="ds-button" href="https://www.deepspot.io/early-access" data-original target="_blank" rel="noopener">open your invite keys ${icon('arrow')}</a></div><div class="ac-invite-art" aria-hidden="true">${icon('key')}<span>one good<br>introduction.</span></div></section><div class="ds-three"><article><h3>copy a key.</h3><p>Find your active keys in your DeepSpot account.</p></article><article><h3>pass it on.</h3><p>Send one to someone curious. Invite keys are personal access codes.</p></article><article><h3>let them in.</h3><p>They enter the key on DeepSpot, then invite someone of their own.</p></article></div><p class="ds-note">Live keys are never copied into this preview. Availability is managed by your original account.</p>`;return;
  }
  let draft=readAccount();
  const params=new URLSearchParams(location.search);if(params.get('tab')==='profile'||!params.get('tab')){location.replace(localURL('/profile/',{user:'preview'}));return;}
@@ -24,11 +24,11 @@ export async function renderAccount(root,data,route){
  const panel=$('#account-panel');
  let rolling=false;
  /* fetch the mole roll code in the background so its loading screen shows the instant the button is tapped */
- setTimeout(()=>{import('./mole/mole-reveal.mjs?v=ld3').catch(()=>{});},2500);
+ setTimeout(()=>{import('./mole/mole-reveal.mjs?v=3da3d4cc').catch(()=>{});},2500);
  const rollMole=async trigger=>{
   if(rolling)return;rolling=true;
   try{
-   const {openMoleReveal}=await import('./mole/mole-reveal.mjs?v=ld3');
+   const {openMoleReveal}=await import('./mole/mole-reveal.mjs?v=3da3d4cc');
    const result=await openMoleReveal({trigger});
    if(result){
     collect();draft=normalizeAccount({...draft,avatarMode:'mole',mole:{traits:result.traits,png:result.png,rolledAt:result.rolledAt}});

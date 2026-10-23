@@ -55,3 +55,21 @@ html[data-theme=light] .ds-cta-button:hover{background:#59ed87}
 @media(max-width:600px){.ds-footer-nav[aria-labelledby="ds-footer-explore"] ul{grid-template-columns:1fr}.ds-forum-list>a{display:block}.ds-forum-list h3{font-size:24px;margin:12px 0}.ds-forum-list>a>span:last-child{margin-top:15px}}
 /* Audit L2: footer links are 24px tall touch targets; row pitch is unchanged */
 .ds-footer-nav a,.ds-footer-nav button{display:inline-block;padding-block:4px;min-height:24px;min-width:24px;line-height:1.1}.ds-footer-nav ul{gap:6px}.ds-footer-nav[aria-labelledby="ds-footer-explore"] ul{row-gap:4px}
+
+/* Blender banners (2026-10-22): rendered art in the two CTA panels. ?bb=h0 / n0 / old = no art. */
+.ds-cta-contribute,.ds-cta-newsletter{position:relative}
+.ds-cta-contribute{overflow:hidden}
+.ds-cta-art{position:absolute;right:clamp(10px,2vw,32px);top:50%;height:min(360px,calc(100% - 24px));width:auto;max-width:48%;object-fit:contain;transform:translateY(-50%);pointer-events:none;animation:ds-cta-float 6s ease-in-out infinite}
+.ds-cta-newsletter .ds-cta-art{height:min(240px,60%);top:clamp(14px,2.4vw,32px);transform:none;animation-name:ds-cta-float2}
+.ds-cta-has-art>h2,.ds-cta-has-art>h3,.ds-cta-has-art>p{max-width:55%}
+.ds-cta-has-art>.ds-cta-signup,.ds-cta-has-art>small{position:relative;z-index:1}
+@keyframes ds-cta-float{0%,100%{transform:translateY(-50%)}50%{transform:translateY(calc(-50% - 4px))}}
+@keyframes ds-cta-float2{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@media(min-width:801px) and (max-width:1100px){.ds-cta-art{max-width:36%;height:min(300px,calc(100% - 24px))}.ds-cta-newsletter .ds-cta-art{height:min(170px,45%)}.ds-cta-has-art>h2,.ds-cta-has-art>h3,.ds-cta-has-art>p{max-width:58%}}
+@media(max-width:650px){
+ .ds-cta-art,.ds-cta-newsletter .ds-cta-art{position:static;display:block;order:-1;height:200px;width:auto;max-width:100%;margin:0 auto 12px;transform:none;animation-name:ds-cta-float2}
+ .ds-cta-has-art>h2,.ds-cta-has-art>h3,.ds-cta-has-art>p{max-width:none}
+}
+@media(prefers-reduced-motion:reduce){.ds-cta-art{animation:none}}
+
+@media(max-width:400px){.ds-cta-button{white-space:nowrap;gap:16px}}

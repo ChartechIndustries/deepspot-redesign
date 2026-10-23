@@ -52,3 +52,5 @@ body.ps-shake{animation:ps-shake .62s cubic-bezier(.36,.07,.19,.97)}
 .pp-type .pp-legend b{margin:0;text-align:right}
 .pp-type .pp-legend em{margin:0;text-align:right}
 .pp-type .pp-catbar{margin-top:18px}
+/* tighten 10/22 (P2-16): each count stays on one line */
+.ps-counts{flex-wrap:wrap}.ps-c{white-space:nowrap}

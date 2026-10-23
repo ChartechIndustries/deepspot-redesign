@@ -1,10 +1,10 @@
 // Sign-in / paid gate (prototype: no backend, nothing is sent anywhere).
 // Reading wall on /spot/ and /story/ (signed out), action sheet for save / vote / comment / trip / submit,
 // member sheet for the photo gallery and the giveaway. State lives in gate-state.mjs.
-import {esc,localURL,icon} from './core.mjs';
-import {safeReturn} from '../profile/identity.mjs';
-import {G_ICON,A_ICON} from './brand-icons.mjs?v=ob1';
-import {OFF_KEY,readSession,writeSession,validEmail,parseGateParam,allows,SESSION_KEY} from './gate-state.mjs?v=gate1';
+import {esc,localURL,icon} from './core.mjs?v=149e30e7';
+import {safeReturn} from '../profile/identity.mjs?v=38b679eb';
+import {G_ICON,A_ICON} from './brand-icons.mjs?v=5af903eb';
+import {OFF_KEY,readSession,writeSession,validEmail,parseGateParam,allows,SESSION_KEY} from './gate-state.mjs?v=7e3c4a02';
 export {readSession,writeSession};
 
 const D=document,LOGIN='https://www.deepspot.io/login',ONBOARDED='deepspot-onboarded-v1';
@@ -26,7 +26,7 @@ window.addEventListener('storage',e=>{if(e.key===SESSION_KEY||e.key===null)emit(
 let live;const announce=text=>{live??=Object.assign(D.createElement('p'),{className:'sr-only',id:'gt-live'});live.setAttribute('role','status');if(!live.isConnected)D.body.append(live);live.textContent='';setTimeout(()=>live.textContent=text,30);};
 
 /* ---------- stylesheet (loaded only when a gate is shown) ---------- */
-let cssP;const css=()=>cssP??=new Promise(res=>{const l=D.createElement('link');l.rel='stylesheet';l.href=new URL('./gate.css?v=gate6',import.meta.url).href;l.onload=l.onerror=()=>res();D.head.append(l);});
+let cssP;const css=()=>cssP??=new Promise(res=>{const l=D.createElement('link');l.rel='stylesheet';l.href=new URL('./gate.css?v=88d08962',import.meta.url).href;l.onload=l.onerror=()=>res();D.head.append(l);});
 
 /* ---------- sheet ---------- */
 let sheet=null,opener=null,seq=0,wall=null,pageCtx=null,wallResume=null;

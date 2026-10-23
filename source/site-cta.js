@@ -3,13 +3,15 @@
   connectedCallback(){
    if(this.dataset.ready)return;
    this.dataset.ready='true';
+   const bb={h:'h3',n:'n3'};
+   (new URLSearchParams(location.search).get('bb')||'').toLowerCase().split(',').forEach(x=>{x=x.trim();if(x==='old')bb.h=bb.n=null;const m=/^([hn])([0-3])$/.exec(x);if(m)bb[m[1]]=m[2]==='0'?null:x});
    this.innerHTML=`<section class="ds-cta" aria-label="Join the DeepSpot community">
-    <div class="ds-cta-contribute">
+    <div class="ds-cta-contribute${bb.h?' ds-cta-has-art':''}">${bb.h?`<img class="ds-cta-art" src="/banners/${bb.h}.webp" alt="" loading="lazy" decoding="async">`:''}
      <h2>know a<br><span>hidden gem?</span></h2>
      <p>Help us map the unmapped. Share your favorite obscure spots and become part of our community of explorers worldwide.</p>
      <a class="ds-cta-button" href="/contribute/">contribute a spot <span aria-hidden="true">↗</span></a>
     </div>
-    <div class="ds-cta-newsletter">
+    <div class="ds-cta-newsletter${bb.n?' ds-cta-has-art':''}">${bb.n?`<img class="ds-cta-art" src="/banners/${bb.n}.webp" alt="" loading="lazy" decoding="async">`:''}
      <h3>new stories<br>every week.</h3>
      <p>Get the latest deep spots delivered to your inbox.</p>
      <div class="ds-cta-signup" role="group" aria-label="Newsletter signup preview" aria-describedby="ds-newsletter-status">
@@ -60,7 +62,7 @@
     <a href="/cookies/" target="_blank" rel="noopener">read the DeepSpot cookie policy ↗</a>
     <button class="ds-cta-button ds-cookie-done" type="button">done</button>
    </dialog>`;
-   const focusedPages=new Set(['account','inbox','invites','contribute','plan-trip','saved','map','faq','privacy','terms','cookies','membership','competition','community','sponsored']);
+   const focusedPages=new Set(['account','inbox','invites','contribute','plan-trip','saved','map','faq','privacy','terms','cookies','membership','competition','community','sponsored','profile']);
    if(focusedPages.has(document.body.dataset.page))this.querySelector('.ds-cta')?.remove();
    const cookieDialog=this.querySelector('.ds-cookie-dialog');
    this.querySelector('[data-cookie-settings]').addEventListener('click',()=>cookieDialog.showModal());

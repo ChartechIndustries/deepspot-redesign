@@ -1,7 +1,7 @@
 // DeepSpot mole profile reveal. three.js and all mole assets load only when this opens.
 // Timeline is a pure function of time (schedule + closed-form fx), so it can be seeked for QA.
 
-import { roll, equip } from './mole-rules.mjs?v=1';
+import { roll, equip } from './mole-rules.mjs?v=0e1a1ffa';
 
 const CDN = 'https://cdn.jsdelivr.net/npm/three@0.180.0';
 const DRACO_PATH = CDN + '/examples/jsm/libs/draco/gltf/';
@@ -46,7 +46,7 @@ function loadLibs(onTick) {
 }
 
 function loadCSS() {
-  const href = new URL('mole-reveal.css?v=ld3', BASE).href;
+  const href = new URL('mole-reveal.css?v=a79d0b3f', BASE).href;
   if ([...document.styleSheets].some((s) => s.href === href) || document.querySelector(`link[data-mole-css]`)) return Promise.resolve();
   return new Promise((res) => {
     const l = document.createElement('link');

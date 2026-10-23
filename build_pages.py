@@ -12,6 +12,12 @@ import sys
 SRC = os.path.join(os.path.dirname(os.path.abspath(__file__)), "source")
 TEXT = (".html", ".js", ".mjs", ".css", ".json", ".webmanifest", ".svg", ".txt", ".xml")
 SKIP_DIRS = {"backups"}
+# Dev / review pages stay in the repo (source/) but never go on the public Pages site (tighten 2026-10-22).
+DEV_FILES = [
+    "banner-variations.html", "banner-studies.css", "banner-studies.js", "blender-banners.html",
+    "discord-variations.html", "giveaway-variations.html", "gate-preview.html",
+    "promo-variations.html", "promo-variations.css", "promo-variations.js",
+]
 
 
 def main(out, base):
@@ -19,6 +25,11 @@ def main(out, base):
     if os.path.exists(out):
         shutil.rmtree(out)
     shutil.copytree(SRC, out, ignore=shutil.ignore_patterns(*SKIP_DIRS))
+    for dev in DEV_FILES:
+        try:
+            os.remove(os.path.join(out, dev))
+        except FileNotFoundError:
+            pass
     top = sorted((e for e in os.listdir(out) if not e.startswith(".")), key=len, reverse=True)
     names = "|".join(re.escape(e) for e in top)
     # "/<top-level entry>" right after a quote, backtick, ( = , or whitespace

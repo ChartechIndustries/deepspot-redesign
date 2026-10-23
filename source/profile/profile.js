@@ -1,15 +1,15 @@
-import {createPassportImage} from './passport-export.mjs?v=r22a';
-import {padHTML,initPad} from './sign-pad.mjs?v=pv4';
-import {travelerStyles,travelerMark,accountKey,readAccount,normalizeAccount} from '../site/account-state.mjs?v=icons2';
-import {memberLevels,memberRange,POINTS} from './passport-rules.mjs?v=pv2';
-import {LOOK_KEY,readLook as _readLook,readStyle as _readStyle,writeStyle,archHTML,wireArch,lookTilesHTML,styleTilesHTML,pickLook,pickStyle,mrz,moleImgHTML,stampName,cardHTML,biopHTML,syncPreview,fitPreview,bindTilt,addBioBand,fitBandText,fitBands,moleSlotHTML,variety} from './passport-edit.mjs?v=mf1';
-import {escapeHTML as esc,safeReturn} from './identity.mjs';
-import {loadProfile} from './data.mjs?v=ob1';
-import {halftoneField} from '../site/halftone-field.mjs?v=2';
-import {mountGlobe} from './wtg-globe.mjs?v=mf1';
-import {itemsFor} from './items.mjs?v=it1';
-import {followHTML,exploredHTML,picksHTML,collectionsHTML,updatesHTML,counts as psCounts,bindSocial} from './profile-social.mjs?v=ps4';
-import {readWantToGo,writeWantToGo,addItem,removeAt,moveItem,WTG_MAX,WTG_NAME_MAX} from './want-to-go.mjs?v=wtg1';
+import {createPassportImage} from './passport-export.mjs?v=f9412290';
+import {padHTML,initPad} from './sign-pad.mjs?v=128b4053';
+import {travelerStyles,travelerMark,accountKey,readAccount,normalizeAccount} from '../site/account-state.mjs?v=1c064097';
+import {memberLevels,memberRange,POINTS} from './passport-rules.mjs?v=237cb584';
+import {LOOK_KEY,readLook as _readLook,readStyle as _readStyle,writeStyle,archHTML,wireArch,lookTilesHTML,styleTilesHTML,pickLook,pickStyle,mrz,moleImgHTML,stampName,cardHTML,biopHTML,syncPreview,fitPreview,bindTilt,addBioBand,fitBandText,fitBands,moleSlotHTML,variety} from './passport-edit.mjs?v=2b579d8b';
+import {escapeHTML as esc,safeReturn} from './identity.mjs?v=38b679eb';
+import {loadProfile} from './data.mjs?v=6e391fdb';
+import {halftoneField} from '../site/halftone-field.mjs?v=a8e8e93e';
+import {mountGlobe} from './wtg-globe.mjs?v=6a2f047e';
+import {itemsFor} from './items.mjs?v=fa2288a2';
+import {followHTML,exploredHTML,picksHTML,collectionsHTML,updatesHTML,counts as psCounts,bindSocial} from './profile-social.mjs?v=a23536c4';
+import {readWantToGo,writeWantToGo,addItem,removeAt,moveItem,WTG_MAX,WTG_NAME_MAX} from './want-to-go.mjs?v=30484780';
 const $=selector=>document.querySelector(selector);
 let profile,toastTimer,exportPromise,exportImage;
 const params=new URLSearchParams(location.search);
@@ -18,15 +18,15 @@ const returnURL=new URL(returnPath,location.origin);
 const returnLabel=returnURL.pathname==='/account/'?'back to account':returnURL.pathname==='/story/'?'back to story':returnURL.pathname==='/spot/'?'back to spot':returnURL.pathname==='/stories/'?'back to stories':returnURL.pathname==='/leaderboard/'?'back to leaderboard':returnURL.pathname==='/browse/'?'back to browse':returnURL.hash==='#stories'?'back to stories':returnURL.hash==='#fs-heading'?'back to deep spots':returnURL.hash==='#wn-heading'?'back to what’s new':'community';
 $('.pp-back').textContent='← '+returnLabel;
 function notify(text){clearTimeout(toastTimer);$('.br-toast').textContent=text;$('.br-toast').dataset.open='true';toastTimer=setTimeout(()=>$('.br-toast').dataset.open='false',3000);}
-function applyTheme(value){
- document.documentElement.dataset.theme=value;try{localStorage.setItem('deepspot-theme',value);}catch{}
+function applyTheme(value,save){
+ document.documentElement.dataset.theme=value;if(save){try{localStorage.setItem('deepspot-theme',value);}catch{}}
  const light=value==='light';$('.br-theme').textContent=light?'☾ dark':'☼ light';$('.br-theme').setAttribute('aria-label',`Switch to ${light?'dark':'light'} mode`);
  const url=new URL(location.href);url.searchParams.set('theme',value);history.replaceState(null,'',url);
  document.querySelectorAll('a[href]').forEach(a=>{const dest=new URL(a.href);if(dest.origin===location.origin&&['/','/browse/'].includes(dest.pathname)){dest.searchParams.set('theme',value);a.href=dest.pathname+dest.search+dest.hash;}});
  returnURL.searchParams.set('theme',value);$('.pp-back').href=returnURL.pathname+returnURL.search+returnURL.hash;
 }
 applyTheme(document.documentElement.dataset.theme);
-$('.br-theme').addEventListener('click',()=>applyTheme(document.documentElement.dataset.theme==='dark'?'light':'dark'));
+$('.br-theme').addEventListener('click',()=>applyTheme(document.documentElement.dataset.theme==='dark'?'light':'dark',true));
 $('.br-menu').addEventListener('click',()=>{const open=$('#mobile-nav').hidden;$('#mobile-nav').hidden=!open;$('.br-menu').setAttribute('aria-expanded',String(open));$('.br-menu').setAttribute('aria-label',open?'Close navigation':'Open navigation');$('.br-menu').textContent=open?'×':'☰';if(open)$('#mobile-nav a').focus();});
 document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!$('#mobile-nav').hidden){$('.br-menu').click();$('.br-menu').focus();}});
 function profileURL(){const url=new URL('/profile/',location.origin);url.searchParams.set('user',profile.id);return url.href;}
@@ -39,13 +39,15 @@ const moleHTML=(cls='')=>moleImgHTML(profile.mole,{cls,alt:profile.name+'’s mo
 /* foil bump: a fractal-noise height map lit by an SVG point light; the light follows the pointer, so the grain catches light like a real embossed foil */
 
 const sigHTML=art=>art?`<img src="${esc(art)}" alt="${esc(profile.name)}’s mark" width="512" height="256">`:'<span>no mark yet</span>';
+/* "spots" on the card is the verified total; the type is worked out from the postings this collection holds. Say so, so the numbers agree. */
+function basisText(t){const total=profile.verified?(profile.contrib?.spots||0)+(profile.contrib?.stories||0):0;return total>t.postings?`${t.postings} of ${total} postings (the ones in this collection)`:`${t.postings} ${t.postings===1?'posting':'postings'}`;}
 function typeHTML(){
  const t=profile.type,id=(profile.localPreview&&profile.style)||t.id,style=travelerStyles.find(s=>s.id===id);
  if(!style)return empty('no type yet.','A traveler type shows up after the first posting. It is worked out from the categories of what is posted.','<a href="/contribute/" class="pp-link">add a spot ↗</a>');
  const top=t.cats.slice(0,6),rest=t.cats.slice(6).reduce((n,c)=>n+c[1],0),parts=[...top.map(([k,n],i)=>[k,n,CATS[i]]),...(rest?[['other',rest,'#8a98a6']]:[])];
  return `<div class="pp-card pp-type"><div class="pp-type-row"><span class="pp-type-mark">${travelerMark(style.id)}</span><div><h3>${esc(style.name)}.</h3><p>${esc(style.description)}</p></div></div>
  ${parts.length?`<div class="pp-catbar" role="img" aria-label="Posting categories: ${esc(parts.map(p=>p[0]+' '+p[1]).join(', '))}">${parts.map(([k,n,c])=>`<i style="flex:${n};background:${c}"></i>`).join('')}</div><ul class="pp-legend">${parts.map(([k,n,c])=>`<li><i style="background:${c}" aria-hidden="true"></i><span>${esc(k).replaceAll('/','/<wbr>')}</span> <b>${n}</b><em>${Math.round(n/parts.reduce((a,p)=>a+p[1],0)*100)}%</em></li>`).join('')}</ul>`:''}
- <p class="pp-mono">${t.postings?`based on ${t.postings} ${t.postings===1?'posting':'postings'}${t.ranked.length>1?' · also '+t.ranked.slice(1).map(([sid,n])=>esc(travelerStyles.find(s=>s.id===sid).name.replace('the ',''))+' '+n).join(' · '):''}`:'your pick · postings will refine it'}</p></div>`;
+ <p class="pp-mono">${t.postings?`based on ${basisText(t)}${t.ranked.length>1?' · also '+t.ranked.slice(1).map(([sid,n])=>esc(travelerStyles.find(s=>s.id===sid).name.replace('the ',''))+' '+n).join(' · '):''}`:'your pick · postings will refine it'}</p></div>`;
 }
 function statsHTML(){
  const lv=profile.level,st=profile.standing,dash='—';
@@ -129,7 +131,7 @@ const wgHeadHTML=()=>{const c=wgColl();return `<div class="wg-listh"><h3>${c?esc
 function wtgHTML(){
  if(!profile.localPreview)return `<div class="wg-wrap wg-solo"><div class="wg" id="wg"><div class="wg-pop" id="wg-pop" hidden></div><p class="sr-only" id="wg-card" aria-live="polite"></p></div><div class="wg-side" role="group" aria-label="Want to go">${empty('no want-to-go list yet.','Lists are not shared from live accounts yet.')}</div></div>`;
  return `<div class="wg-wrap"><div class="wg" id="wg"><div class="wg-pop" id="wg-pop" hidden></div><p class="sr-only" id="wg-card" aria-live="polite"></p></div><div class="wg-side" role="group" aria-label="Your lists">${wgListsHTML()}<form class="pp-wtg-form" id="pp-wtg-form" autocomplete="off" novalidate><label class="pp-mono" for="pp-wtg-in">add a place</label>
- <div class="pp-wtg-row"><div class="pp-wtg-combo"><input id="pp-wtg-in" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="pp-wtg-lb" maxlength="${WTG_NAME_MAX}" placeholder="a spot, a city, anywhere" enterkeyhint="done"><ul id="pp-wtg-lb" class="pp-wtg-lb" role="listbox" aria-label="Matching deep spots" hidden></ul></div><button type="submit" class="pp-wtg-add">add</button></div>
+ <div class="pp-wtg-row"><div class="pp-wtg-combo"><input id="pp-wtg-in" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="pp-wtg-lb" maxlength="${WTG_NAME_MAX}" placeholder="add a place" enterkeyhint="done"><ul id="pp-wtg-lb" class="pp-wtg-lb" role="listbox" aria-label="Matching deep spots" hidden></ul></div><button type="submit" class="pp-wtg-add">add</button></div>
  <p class="pp-fine pp-wtg-msg" id="pp-wtg-msg" role="status" aria-live="polite">${wtgStatus()}</p></form>${wgHeadHTML()}<div id="pp-wtg-list">${wtgListHTML()}</div><p class="wg-sidenote" id="wg-note2"></p></div></div>`;
 }
 function wtgRefresh(){const box=$('#pp-wtg-list');if(!box)return;box.innerHTML=wtgListHTML();const s=document.querySelector('#pp-wtg span');if(s)s.textContent=`(${wtgList.length})`;const m=$('#pp-wtg-msg');if(m&&!m.dataset.keep)m.textContent=wtgStatus();}
@@ -213,7 +215,7 @@ function render(){
   <section class="pp-sec pp-biosec" aria-labelledby="pp-bio" data-bg="${lk.bg}" data-font="${lk.font}" data-align="${lk.align}"><header class="pp-bar"><h2 id="pp-bio">bio</h2>${own?`<div class="pp-bar-acts"><button type="button" class="pp-chipbtn pp-editbtn" data-edit aria-haspopup="dialog" aria-expanded="false">edit profile</button><button type="button" class="pp-cog" data-settings aria-label="Settings" title="Settings">${COG}</button></div>`:''}</header>
    <div class="pp-body pp-bio-body" id="pp-bio-view">
     <div class="pp-bio-top">${mini}<div class="pp-bio-id"><h1 class="pp-bio-name">${esc(profile.name)}</h1><div class="ps-idrow"><span class="pp-handle">${profile.handle?'@'+esc(profile.handle):'DeepSpot contributor'}</span>${followHTML(profile,own)}</div></div>${lv?`<span class="pp-badge" role="img" aria-label="Level ${lv.level}"><b>${lv.level}</b><i>level</i></span>`:''}</div>
-    <div class="pp-bio-fit">${profile.bio?`<p class="pp-bio-text">${esc(profile.bio)}</p>`:`<p class="pp-bio-text pp-bio-empty">${own?'say something. edit profile to write your bio.':'no bio yet.'}</p>`}</div>
+    <div class="pp-bio-fit">${profile.bio?`<p class="pp-bio-text">${esc(profile.bio)}</p>`:(own?`<p class="pp-bio-text pp-bio-empty">nothing here yet. <a href="#" class="pp-bio-add" data-bio-add>add a bio</a></p>`:'')}</div>
    </div>
   </section>
   <div class="pp-statsrow">${sec('type','traveler type',null,typeHTML())}${sec('stats','contributions',null,statsHTML())}</div>
@@ -288,8 +290,8 @@ function editHTML(lk){
  const sec=(i,title,body,extra='')=>`<section class="ed-sec" id="ed-s-${ED_SECS[i][0]}" aria-labelledby="ed-h-${ED_SECS[i][0]}" data-sec="${ED_SECS[i][0]}"><h3 id="ed-h-${ED_SECS[i][0]}"><span class="ed-n" aria-hidden="true">0${i+1}</span>${title}</h3>${extra}${body}</section>`;
  return `<dialog class="pp-editdlg" id="pp-editdlg" aria-labelledby="ed-title"><form class="ed-form" id="pp-edit" novalidate>
  <div class="ed-main">
-  <aside class="ed-prev ed-stage" data-bg="${st.bg}" aria-hidden="true" inert><div class="ed-prev-in"><div class="ed-cardw"><div class="ed-scale"><div class="pp-passobj-in ed-pobj" data-foil="${st.foil}"></div></div></div>
-   ${biopHTML(lk)}</div><span class="ed-plabel">live preview</span></aside>
+  <aside class="ed-prev ed-stage" data-bg="${st.bg}"><div class="ed-prev-in" aria-hidden="true" inert><div class="ed-cardw" id="ed-pcard"><div class="ed-scale"><div class="pp-passobj-in ed-pobj" data-foil="${st.foil}"></div></div></div>
+   ${biopHTML(lk)}</div><span class="ed-plabel" aria-hidden="true">live preview</span><button type="button" class="ed-ptoggle" aria-expanded="false" aria-controls="ed-pcard">full preview</button></aside>
   <div class="ed-right">
    <div class="ed-top"><nav class="ed-index" aria-label="Edit sections">${ED_SECS.map(([id,l,sh],i)=>`<a href="#ed-s-${id}" data-ed-go="${id}" aria-label="0${i+1} ${l}" title="${l}"><b aria-hidden="true">0${i+1}</b><span aria-hidden="true">${sh}</span></a>`).join('')}</nav><button type="button" class="ed-x" data-ed-close aria-label="Close editor"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
    <h2 class="ed-title" id="ed-title">edit your passport<span>.</span></h2>
@@ -315,6 +317,7 @@ function showcaseHTML(){
 function fitBio(){
  const box=$('.pp-bio-fit'),t=box?.querySelector('.pp-bio-text');if(!t)return;
  box.style.height='';
+ if(t.classList.contains('pp-bio-empty')){t.style.fontSize='';return;}
  if(innerWidth<1100||box.clientHeight<20){t.style.fontSize='';return;}
  t.style.fontSize='16px';if(t.scrollHeight>box.clientHeight+1){box.style.height='auto';return;}   /* does not fit even small: let it wrap, never clip */
  let lo=16,hi=t.classList.contains('pp-bio-empty')?36:44;
@@ -335,6 +338,7 @@ function wireV4(){
  requestAnimationFrame(fitBio);
  const form=$('#pp-edit');if(!form)return;
  const dlg=$('#pp-editdlg'),sec=$('.pp-biosec'),btn=$('[data-edit]'),root=document.documentElement;
+ document.querySelector('[data-bio-add]')?.addEventListener('click',e=>{e.preventDefault();btn?.click();});
  const calm=matchMedia('(prefers-reduced-motion: reduce)').matches;
  const stage=dlg.querySelector('.ed-prev'),cardw=dlg.querySelector('.ed-cardw'),scale=dlg.querySelector('.ed-scale'),pobj=dlg.querySelector('.ed-pobj'),biop=dlg.querySelector('.ed-biop'),dirtyEl=dlg.querySelector('.ed-dirty'),right=dlg.querySelector('.ed-right'),main=dlg.querySelector('.ed-main');
  const arch=wireArch(form),archShow=arch.show,archSel=arch.sel;
@@ -348,7 +352,14 @@ function wireV4(){
   const dirty=snap()!==base;dirtyEl.dataset.dirty=String(dirty);dirtyEl.querySelector('b').textContent=dirty?'unsaved changes':'no changes yet';
  };
  const scroller=()=>getComputedStyle(right).display==='contents'?main:right;
- const fit=()=>{if(!dlg.open)return;const phone=innerWidth<=900;const bp=pobj.querySelector('.pp-id9-bio-t>p');if(bp)fitBandText(bp);fitPreview({stage,cardw,scale,card:pobj.firstElementChild,biop},{reserve:phone?0:150,padW:phone?64:56,maxScale:phone?.56:1,byHeight:!phone});};
+ /* phone: the preview is a small sticky strip (mini card + name) so the form is in view; "full preview" opens the big card */
+ let pexp=false;const ptog=dlg.querySelector('.ed-ptoggle');
+ const fit=()=>{if(!dlg.open)return;const phone=innerWidth<=900;const bp=pobj.querySelector('.pp-id9-bio-t>p');if(bp)fitBandText(bp);
+  main.style.setProperty('--ed-topH',(dlg.querySelector('.ed-top')?.offsetHeight||64)+'px');
+  const compact=phone&&!pexp;if(compact)stage.setAttribute('data-compact','');else stage.removeAttribute('data-compact');
+  if(compact){const c=pobj.firstElementChild;scale.style.transform='none';const nh=c.offsetHeight||620,s=104/nh;scale.style.transform=`scale(${s.toFixed(4)})`;cardw.style.width=(440*s).toFixed(1)+'px';cardw.style.height=(nh*s).toFixed(1)+'px';return;}
+  fitPreview({stage,cardw,scale,card:pobj.firstElementChild,biop},{reserve:phone?0:150,padW:phone?64:56,maxScale:phone?.56:1,byHeight:!phone});};
+ ptog.addEventListener('click',()=>{pexp=!pexp;ptog.setAttribute('aria-expanded',String(pexp));ptog.textContent=pexp?'small preview':'full preview';fit();if(pexp)main.scrollTop=0;});
  const spy=()=>{
   const sc=scroller(),top=sc.getBoundingClientRect().top+sc.clientHeight*.42;let cur=ED_SECS[0][0];
   dlg.querySelectorAll('.ed-sec').forEach(s=>{if(s.getBoundingClientRect().top<=top)cur=s.dataset.sec;});
@@ -358,7 +369,7 @@ function wireV4(){
  right.addEventListener('scroll',spy,{passive:true});main.addEventListener('scroll',spy,{passive:true});
  dlg.querySelector('.ed-index').addEventListener('click',e=>{const a=e.target.closest('[data-ed-go]');if(!a)return;e.preventDefault();const t=dlg.querySelector('#ed-s-'+a.dataset.edGo),sc=scroller();sc.scrollTo({top:sc.scrollTop+t.getBoundingClientRect().top-sc.getBoundingClientRect().top-96,behavior:calm?'auto':'smooth'});});
  const openEd=()=>{
-  if(dlg.open)return;keep=false;saved=false;form.reset();archShow(archSel());base=snap();upd();
+  if(dlg.open)return;keep=false;saved=false;pexp=false;ptog.setAttribute('aria-expanded','false');ptog.textContent='full preview';form.reset();archShow(archSel());base=snap();upd();
   dlg.showModal();root.classList.add('ed-open');btn.setAttribute('aria-expanded','true');
   right.scrollTop=0;main.scrollTop=0;fit();spy();form.name.focus({preventScroll:true});requestAnimationFrame(()=>{fit();spy();});
  };
@@ -404,7 +415,7 @@ addEventListener('resize',()=>requestAnimationFrame(fitBio));
 function fitPassport(){
  const obj=$('.pp-passobj'),pane=$('#pp-pane-pass'),field=$('.pp-field');if(!obj||!field)return;
  obj.style.zoom='';if(pane)pane.style.zoom='';fitBands(obj);
- if(innerWidth<1100){if(pane)pane.style.zoom=Math.min(1,(field.clientWidth-32)/440).toFixed(3);return;}   /* phones + tablets: the whole pane (card + share bar) shrinks to the width */
+ if(innerWidth<1100){if(pane)pane.style.zoom=Math.min(1,(field.clientWidth-8)/440).toFixed(3);return;}   /* phones + tablets: the whole pane (card + share bar) shrinks to the width */
  const st=$('.pp-stage'),cs=st?getComputedStyle(st):null,pad=cs?parseFloat(cs.paddingTop)+parseFloat(cs.paddingBottom):56,w=obj.offsetWidth,oh=obj.offsetHeight,bar=pane?.querySelector('.pp-sharebar'),barH=bar?bar.offsetHeight+parseFloat(getComputedStyle(bar).marginTop||0):0,extra=Math.max(barH,(pane?.offsetHeight||0)-oh)+8,fw=field.clientWidth-(cs?parseFloat(cs.paddingRight)+parseFloat(cs.paddingLeft):0)-40,fh=field.clientHeight-pad-extra;
  obj.style.zoom=Math.max(.4,Math.min(fw/w,fh/oh,1.75)).toFixed(3);
 }
@@ -504,10 +515,10 @@ function openSettings(){
 }
 let rolling=false;
  /* fetch the mole roll code in the background so its loading screen shows the instant the button is tapped */
- setTimeout(()=>{import('../site/mole/mole-reveal.mjs?v=ld3').catch(()=>{});},2500);
+ setTimeout(()=>{import('../site/mole/mole-reveal.mjs?v=3da3d4cc').catch(()=>{});},2500);
 async function rollMole(trigger){
  if(rolling)return;rolling=true;const dlg=$('.pp-settings'),wasOpen=dlg?.open;
- try{const {openMoleReveal}=await import('../site/mole/mole-reveal.mjs?v=ld3');if(wasOpen)dlg.close();
+ try{const {openMoleReveal}=await import('../site/mole/mole-reveal.mjs?v=3da3d4cc');if(wasOpen)dlg.close();
   const res=await openMoleReveal({trigger:trigger?.isConnected?trigger:$('[data-settings]')});
   if(res){const next=normalizeAccount({...readAccount(),avatarMode:'mole',mole:{traits:res.traits,png:res.png,rolledAt:res.rolledAt}});
    if(!next.mole)notify('That mole picture was too large to save.');

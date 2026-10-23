@@ -1,7 +1,7 @@
 // New-user onboarding: pure helpers (no DOM). Prototype only: everything stays in localStorage, nothing is sent.
-import {TAG_TYPE} from '../profile/passport-rules.mjs?v=pv2';
-import {accountKey,travelerStyles} from './account-state.mjs?v=icons2';
-import {validEmail} from './gate-state.mjs?v=gate1';
+import {TAG_TYPE} from '../profile/passport-rules.mjs?v=237cb584';
+import {accountKey,travelerStyles} from './account-state.mjs?v=1c064097';
+import {validEmail} from './gate-state.mjs?v=7e3c4a02';
 export {validEmail};
 
 export const ONBOARDED_KEY='deepspot-onboarded-v1';

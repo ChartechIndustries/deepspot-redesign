@@ -1,5 +1,5 @@
-import {accountKey,readAccount,normalizeAccount,artMaxPng} from '../site/account-state.mjs?v=icons2';
-import {escapeHTML as esc} from './identity.mjs';
+import {accountKey,readAccount,normalizeAccount,artMaxPng} from '../site/account-state.mjs?v=1c064097';
+import {escapeHTML as esc} from './identity.mjs?v=38b679eb';
 // Passport art pad. Strokes live on a 640x180 canvas (wide and short, like the passport's mark line) shown at the column width; the paper and dot grid are CSS.
 // v2.2: on save the drawing is cropped to its ink (+ small padding) so the card's mark line can scale it up to fill the line.
 export const padSize={w:640,h:180};

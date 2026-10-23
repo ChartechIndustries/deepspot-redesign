@@ -1,4 +1,4 @@
-import {esc,icon} from './core.mjs';
+import {esc,icon} from './core.mjs?v=149e30e7';
 export function galleryMarkup(photos){
  if(!photos?.length)return '';
  return `<section class="ds-photo-gallery" aria-label="Location photographs"><div class="ds-section-heading"><h2>take a closer look.</h2><span>${photos.length} ${photos.length===1?'photograph':'photographs'}</span></div><div class="ds-photo-thumbs">${photos.slice(0,3).map((p,i)=>`<button type="button" data-gallery-open="${i}" aria-label="Open photograph ${i+1} of ${photos.length}"><img src="${esc(p.src)}" alt="${esc(p.alt||'Location photograph')}" loading="lazy"><span>${i===2&&photos.length>3?'view all '+photos.length:'view photo '+(i+1)} ↗</span></button>`).join('')}</div></section>`;

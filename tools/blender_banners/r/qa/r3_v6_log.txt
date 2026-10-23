@@ -1,0 +1,21 @@
+00:03.547  cycles           | WARNING HIPEW initialization failed: Error opening HIP dynamic library
+00:22.469  render           | Saved: 'C:\Users\CharD\Desktop\DeepSpot Globe\tools\blender_banners\r\renders\r3_v6_raw.png'
+BlenderMCP addon registered
+[INFO ] services.locationservice ...............: Not adding link to MakeHuman user data, since neither explicit path nor auto-discovery is set in preferences.
+[INFO ] mpfb.init ..............................: Build info 20261010
+[INFO ] mpfb.init ..............................: Online access preference is not enabled. Not checking if MakeHuman is online.
+[INFO ] mpfb.init ..............................: MPFB initialization has finished.
+BlenderMCP addon unregistered
+LOOK AgX - Medium High Contrast AgX
+FRAC pillar 0 (0.125, 0.786) (0.127, 0.817)
+FRAC pillar 1 (0.192, 0.701) (0.194, 0.766)
+FRAC pillar 2 (0.269, 0.634) (0.271, 0.737)
+FRAC pillar 3 (0.343, 0.561) (0.344, 0.707)
+FRAC pillar 4 (0.414, 0.485) (0.413, 0.677)
+FRAC pillar 5 (0.497, 0.416) (0.493, 0.667)
+FRAC arrowtop (0.5, 0.289)
+CLIPCHECK 0 penetrating pairs
+Info: Saved as "r3.blend"
+Blender 5.2.0 LTS (hash fbe6228777e7 built 2026-07-14 01:35:40)
+
+Blender quit

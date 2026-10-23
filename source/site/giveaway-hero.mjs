@@ -1,6 +1,6 @@
-import {esc,$,$$,icon,localURL} from './core.mjs';
-import {people,fmt} from './community-v2.mjs?v=fx1';
-import {halftoneField} from './halftone-field.mjs?v=2';
+import {esc,$,$$,icon,localURL} from './core.mjs?v=149e30e7';
+import {people,fmt} from './community-v2.mjs?v=263a7d93';
+import {halftoneField} from './halftone-field.mjs?v=a8e8e93e';
 
 /* Community giveaway hero (2026-10-19): 10 race-graph versions. Real data only (content.json leaderboard, this month). Bar length = sqrt(points). */
 const PC=['#07d653','#3c60ff','#83cdce','#f2c14e'];

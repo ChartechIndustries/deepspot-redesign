@@ -1,5 +1,5 @@
-import {esc,$,$$,icon,localURL,action} from './core.mjs';
-import {profileHref,profileId} from '../profile/identity.mjs';
+import {esc,$,$$,icon,localURL,action} from './core.mjs?v=149e30e7';
+import {profileHref,profileId} from '../profile/identity.mjs?v=38b679eb';
 
 /* Community figures read from deepspot.io. Update this one constant to refresh them. */
 export const COMMUNITY_METRICS={capturedAt:'2026-10-13',capturedLabel:'Oct 13, 2026',members:151,spots:487,month:28};

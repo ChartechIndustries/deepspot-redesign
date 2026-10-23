@@ -60,11 +60,6 @@ html[data-theme=light] .globe-stage::after { color:#486477; }
   .map-pin:not(.decorative-pin)::before { content:''; position:absolute; inset:-6px; }
   .wn-section { margin-top:36px; --wn-height:600px; }
   .wn-controls button { width:44px; height:44px; padding:11px; }
-  .wn-content { padding:18px 14px; }
-  .wn-copy h3 { font-size:clamp(24px,5.7vw,31px); letter-spacing:-.8px; }
-  .wn-copy p { font-size:16px; line-height:1.4; margin-top:14px; }
-  .wn-photo { min-height:130px; }
-  .wn-readmore { min-height:40px; margin-top:10px; font-size:18.5px; }
   .fs-section { margin-bottom:36px; }
   .fs-section-heading { margin-bottom:30px; }
   .fs-heading { font-size:clamp(38px,10.2vw,60px); line-height:1.08; }
@@ -108,8 +103,6 @@ html[data-theme=light] .globe-stage::after { color:#486477; }
   .hero .pin-preview { grid-template-columns:74px minmax(0,1fr); }
   .hero .pin-preview h2 { font-size:18px; }
   .wn-section { --wn-height:650px; }
-  .wn-content { padding:18px 12px; }
-  .wn-copy h3 { font-size:23px; }
   .ed-story img { width:76px; flex-basis:76px; height:142px; }
   .ed-story-copy strong { font-size:18px; }
   .ed-promo h3 { font-size:37px; }
@@ -130,11 +123,7 @@ html[data-theme=light] .globe-stage::after { color:#486477; }
   .wn-section .wn-rail { display:none; }
   .wn-expanded .wn-intro-label { writing-mode:horizontal-tb; top:0; left:15px; height:44px; display:flex; align-items:center; transform:none; font-size:19.5px; }
   .wn-expanded .wn-intro-arrow { display:none; }
-  .wn-content { padding:22px; }
-  .wn-copy h3 { font-size:29px; }
-  .wn-copy p { font-size:17px; }
-  .wn-photo { min-height:180px; }
-  .wn-mobile-tabs { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); border:1px solid var(--wn-rule); border-top:0; }
+  .wn-mobile-tabs { display:grid; grid-template-columns:repeat(var(--wn-count,3),minmax(0,1fr)); border:1px solid var(--wn-rule); border-top:0; }
   .wn-mobile-tabs button { min-height:48px; padding:8px 4px; border:0; border-right:1px solid #0b1b2738; background:var(--wn-paper); color:#0b1b27; font:15px/1.2 Arial,sans-serif; cursor:pointer; }
   .wn-mobile-tabs button:last-child { border-right:0; color:#fff; }
   .wn-mobile-tabs button[aria-pressed=true] { box-shadow:inset 0 -3px currentColor; font-weight:700; }

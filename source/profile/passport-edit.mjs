@@ -1,8 +1,8 @@
 /* Shared passport editing pieces (2026-10-21): used by the edit-profile dialog (profile.js) and the /welcome/ onboarding.
    Archetype picker, bio look + passport style swatches, the passport card markup, live-preview sync, fit + tilt. */
-import {cropFor} from './passport-art.mjs?v=r22a';
-import {travelerStyles,travelerMark} from '../site/account-state.mjs?v=icons2';
-import {escapeHTML as esc} from './identity.mjs';
+import {cropFor} from './passport-art.mjs?v=89a3954f';
+import {travelerStyles,travelerMark} from '../site/account-state.mjs?v=1c064097';
+import {escapeHTML as esc} from './identity.mjs?v=38b679eb';
 
 export const LOOK_KEY='deepspot-bio-look-v1',STYLE_KEY='deepspot-passport-style-v1';
 export const LOOKS={bg:[['panel','plain'],['green','green'],['cobalt','cobalt'],['aqua','aqua'],['cream','paper'],['ink','ink']],font:[['display','bold'],['serif','serif'],['mono','type'],['hand','hand']],align:[['left','left'],['center','center']]};

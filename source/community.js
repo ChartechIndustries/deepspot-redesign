@@ -6,12 +6,23 @@
       this.dataset.ready = 'true';
       this.abort = new AbortController();
       try {
-        this.profiles = await import('/profile/identity.mjs');
+        this.profiles = await import('/profile/identity.mjs?v=38b679eb');
+        this.img = await import('/site/img.mjs?v=61371a3b');
         const response = await fetch('/profile/profiles.json', {signal:this.abort.signal});
         if (!response.ok) throw new Error('Community data unavailable');
         const data = await response.json();
         if (!this.isConnected) return;
-        this.people = data.profiles.filter(p => p.name && Number.isFinite(p.contributions)).sort((a,b) => b.contributions - a.contributions).slice(0,6);
+        // One source of truth: the leaderboard in content.json (same list the community race and /leaderboard/ use).
+        let board = [];
+        try { const cr = await fetch('/site/content.json', {signal:this.abort.signal}); if (cr.ok) board = (await cr.json()).leaderboard?.monthly || []; } catch (error) { if (error.name === 'AbortError') return; }
+        const keyOf = value => String(value || '').trim().toLowerCase();
+        const ranked = [];
+        board.forEach(row => {
+          const match = data.profiles.find(p => p.name && (keyOf(p.name) === keyOf(row.name) || (p.aliases || []).some(a => keyOf(a) === keyOf(row.name))));
+          if (match && Number.isFinite(row.points)) ranked.push({...match, points: row.points});
+        });
+        this.people = ranked.slice(0,6);
+        if (!this.people.length) throw new Error('Leaderboard unavailable');
         this.preview = data.preview;
         this.render();
         this.connect();
@@ -28,11 +39,11 @@
       this.innerHTML = `<header class="ed-heading cl-panel-heading"><h2>community</h2></header><section class="cl-community" aria-label="DeepSpot community">
         <div class="cl-float-field">
           <div class="cl-intro"><h2>the people<br>behind<br>the <em>pins.</em></h2></div>
-          <div class="cl-heads">${people.map((p,i) => `<a class="cl-head${i===0?' cl-active':''}" href="${escape(safeURL(p))}" data-profile="${i}" data-person="${i}" aria-label="View ${escape(p.name)}’s passport"><span class="cl-portrait"><img ${p.image?`src="${escape(p.image)}"`:""} alt="" loading="lazy" decoding="async" draggable="false"><span class="cl-initials" aria-hidden="true">${escape(p.name.split(' ').map(s=>s[0]).join(''))}</span></span></a>`).join('')}</div>
+          <div class="cl-heads">${people.map((p,i) => `<a class="cl-head${i===0?' cl-active':''}" href="${escape(safeURL(p))}" data-profile="${i}" data-person="${i}" aria-label="View ${escape(p.name)}’s passport"><span class="cl-portrait"><img ${p.image?this.img.imgAttrs(p.image,'160px'):""} alt="" loading="lazy" decoding="async" draggable="false"><span class="cl-initials" aria-hidden="true">${escape(p.name.split(' ').map(s=>s[0]).join(''))}</span></span></a>`).join('')}</div>
           <div class="cl-field-footer"><span>made by the curious.</span><button class="cl-motion" type="button" aria-label="Pause floating portraits" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6v12M15 6v12"/></svg></button></div>
         </div>
         <div class="cl-leaderboard"><header class="cl-list-heading"><h3><a href="/leaderboard/" style="color:inherit;text-decoration:none">top contributors ↗</a></h3>${this.preview?'<span class="cl-sample">sample profiles</span>':'<span class="cl-sample">oct 2026</span>'}</header>
-          <ol class="cl-list">${people.map((p,i) => `<li class="cl-row${i===0?' cl-active':''}" data-person="${i}"><a class="cl-profile-link" href="${escape(safeURL(p))}" ${p.profileUrl?'target="_blank" rel="noopener"':''} data-profile="${i}" aria-label="View ${escape(p.name)}’s profile, ${p.contributions} contributions"><span class="cl-rank">${i+1}</span><span class="cl-person"><strong>${escape(p.name)}</strong><span>view passport <i aria-hidden="true">↗</i></span></span><span class="cl-total"><strong>${p.contributions}</strong><span>contributions</span></span></a></li>`).join('')}</ol>
+          <ol class="cl-list">${people.map((p,i) => `<li class="cl-row${i===0?' cl-active':''}" data-person="${i}"><a class="cl-profile-link" href="${escape(safeURL(p))}" ${p.profileUrl?'target="_blank" rel="noopener"':''} data-profile="${i}" aria-label="View ${escape(p.name)}’s profile, ${p.points.toLocaleString('en-US')} points"><span class="cl-rank">${i+1}</span><span class="cl-person"><strong>${escape(p.name)}</strong><span>view passport <i aria-hidden="true">↗</i></span></span><span class="cl-total"><strong>${p.points.toLocaleString('en-US')}</strong><span>points</span></span></a></li>`).join('')}</ol>
         </div>
       </section>`;
       this.field = this.querySelector('.cl-float-field');

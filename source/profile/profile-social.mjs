@@ -5,7 +5,7 @@
    updates     = fixes to spot info, shown inside contributions (their "edited")
    There is no accounts backend yet: follows and lists are stored on this browser, like want-to-go.
    Other members show "not shared yet" until live accounts send this data. Counts never invent numbers. */
-import {escapeHTML as esc} from './identity.mjs';
+import {escapeHTML as esc} from './identity.mjs?v=38b679eb';
 
 const KEY={follow:'deepspot-follows-v1',explored:'deepspot-explored-v1',picks:'deepspot-picks-v1',coll:'deepspot-collections-v1'};
 const MAX={explored:200,picks:30,coll:12,collItems:40},NAME=60,WHY=120,TITLE=40;
@@ -32,7 +32,7 @@ export function followHTML(profile,own){
  const follows=read('follow').filter(x=>typeof x==='string'),on=follows.includes(profile.id);
  const followers=(Number.isFinite(profile.followers)?profile.followers:0)+(on&&!own?1:0);
  const following=own?follows.length:(Number.isFinite(profile.following)?profile.following:0);
- return `<div class="ps-follow"><p class="ps-counts"><b data-ps-followers>${fmt(followers)}</b> ${followers===1?'follower':'followers'}<span aria-hidden="true">·</span><b>${fmt(following)}</b> following</p>${own?'':`<button type="button" class="ps-followbtn" data-ps-follow aria-pressed="${on}">${on?'following ✓':'follow'}</button>`}</div>`;
+ return `<div class="ps-follow"><p class="ps-counts"><span class="ps-c"><b data-ps-followers>${fmt(followers)}</b> ${followers===1?'follower':'followers'}</span><span aria-hidden="true">·</span><span class="ps-c"><b>${fmt(following)}</b> following</span></p>${own?'':`<button type="button" class="ps-followbtn" data-ps-follow aria-pressed="${on}">${on?'following ✓':'follow'}</button>`}</div>`;
 }
 
 /* ---------- lists ---------- */

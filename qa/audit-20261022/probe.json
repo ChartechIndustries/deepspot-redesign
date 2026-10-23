@@ -1,0 +1,162 @@
+[
+ [
+  "gate spot: page ends at gate (no dead space)",
+  "FAIL",
+  "{'sh': 2475, 'gate': 'gt-sheet', 'gb': 1544, 'pos': 'fixed', 'foot': True, 'ovf': 'visible/visible'}"
+ ],
+ [
+  "gate story: page ends at gate (no dead space)",
+  "FAIL",
+  "{'sh': 3041, 'gate': 'gt-sheet', 'gb': 1544, 'pos': 'fixed', 'foot': True, 'ovf': 'visible/visible'}"
+ ],
+ [
+  "home: one hero in DOM",
+  "FAIL",
+  "{'h1': 1, 'heroes': 2, 'sh': 8836, 'fixed': []}"
+ ],
+ [
+  "home theme toggle flips theme",
+  "PASS",
+  "('dark', None, '\u2600 Light')"
+ ],
+ [
+  "home colour toggle sets panelColor=off",
+  "FAIL",
+  "(None, '')"
+ ],
+ [
+  "theme+colour carry to /community/",
+  "FAIL",
+  "['dark', 'on', 'rgb(12, 16, 27)']"
+ ],
+ [
+  "theme+colour carry to /browse/",
+  "FAIL",
+  "['dark', 'on', 'rgb(12, 16, 27)']"
+ ],
+ [
+  "theme+colour carry to /profile/?user=wayfarer",
+  "FAIL",
+  "['dark', 'on', 'rgb(12, 16, 27)']"
+ ],
+ [
+  "theme+colour carry to /welcome/",
+  "FAIL",
+  "['dark', 'on', 'rgb(12, 16, 27)']"
+ ],
+ [
+  "theme+colour carry to /map/",
+  "FAIL",
+  "['dark', 'on', 'rgb(12, 16, 27)']"
+ ],
+ [
+  "theme+colour carry back to home",
+  "FAIL",
+  "['dark', 'on']"
+ ],
+ [
+  "reduced motion: no infinite animations on /",
+  "PASS",
+  "[]"
+ ],
+ [
+  "reduced motion: no infinite animations on /community/",
+  "PASS",
+  "[]"
+ ],
+ [
+  "reduced motion: no infinite animations on /tours/",
+  "PASS",
+  "[]"
+ ],
+ [
+  "reduced motion: no infinite animations on /browse/",
+  "PASS",
+  "[]"
+ ],
+ [
+  "reduced motion: no infinite animations on /profile/?user=wayfarer",
+  "PASS",
+  "[]"
+ ],
+ [
+  "404.html renders at 390",
+  "PASS",
+  "{'sw': 390, 't': 'skip to content\\nTHIS WEEK\u2019S WEIRDEST FINDS\\nDEEP\\nSPOT\\n\u263c light\\ncolor on\\n\u2630\\nthis spot is off the map.\\n\\nThe page you wanted i', 'links': 42}"
+ ],
+ [
+  "author link /profile/?user=bodhi-schulz shows a real profile",
+  "PASS",
+  "skip to passport THIS WEEK\u2019S WEIRDEST FINDS DEEP SPOT \u263c light color on \u2630 DEEPSPOT EXPLORER PASSPORT PASAPORTE \u00b7 \u30d1\u30b9\u30dd\u30fc\u30c8 BS NAME Bodhi Schulz USER \u2014 SINCE \u2014 LEVEL contributor no bio yet. THEIR MARK NO MARK YET P<DSPBODHI<SCHULZ<<<<<<<<<<<<< DRF<<LVL01<CONTRIBUTOR"
+ ],
+ [
+  "author link /profile/?user=kris shows a real profile",
+  "PASS",
+  "skip to passport THIS WEEK\u2019S WEIRDEST FINDS DEEP SPOT \u263c light color on \u2630 DEEPSPOT EXPLORER PASSPORT PASAPORTE \u00b7 \u30d1\u30b9\u30dd\u30fc\u30c8 NO. 001 14 LVL 1st NAME Kris USER @lampbane SINCE Aug 2026 LEVEL legend no bio yet. THEIR MARK NO MARK YET 6,800 / 7,840 PTS P<DSPKRIS<<LAMPBA"
+ ],
+ [
+  "author link /profile/?user=lana-velkov shows a real profile",
+  "PASS",
+  "skip to passport THIS WEEK\u2019S WEIRDEST FINDS DEEP SPOT \u263c light color on \u2630 DEEPSPOT EXPLORER PASSPORT PASAPORTE \u00b7 \u30d1\u30b9\u30dd\u30fc\u30c8 NO. 007 3 LVL NAME Lana Velkov USER @lanavelkov SINCE Sep 2026 LEVEL scout no bio yet. THEIR MARK NO MARK YET 350 / 360 PTS P<DSPLANA<VELKOV<<"
+ ],
+ [
+  "author link /profile/?user=six shows a real profile",
+  "PASS",
+  "skip to passport THIS WEEK\u2019S WEIRDEST FINDS DEEP SPOT \u263c light color on \u2630 DEEPSPOT EXPLORER PASSPORT PASAPORTE \u00b7 \u30d1\u30b9\u30dd\u30fc\u30c8 NO. 010 3 LVL NAME Six USER @sixbacteria SINCE Aug 2026 LEVEL scout no bio yet. THEIR MARK NO MARK YET 250 / 360 PTS P<DSPSIX<<SIXBACTERIA<<<<"
+ ],
+ [
+  "follow toggles",
+  "PASS",
+  "('follow', ['following \u2713', 'true'], None)"
+ ],
+ [
+  "follow persists on reload",
+  "PASS",
+  "(['following \u2713', 'true'], 'following \u2713')"
+ ],
+ [
+  "community spot vote changes state",
+  "PASS",
+  "('yes\\nnot quite', ['\u263c light\\ncolor on\\n\u2630', 'true', 'color-toggle'])"
+ ],
+ [
+  "roadmap vote button found + clicked",
+  "PASS",
+  "['Vote up Passports + profile moles', 'vote']"
+ ],
+ [
+  "community no page errors",
+  "PASS",
+  "[]"
+ ],
+ [
+  "edit dialog opens 390",
+  "PASS",
+  "{'w': 390, 'h': 844, 'top': 0, 'focus': 'INPUT.', 'sw': 390}"
+ ],
+ [
+  "edit dialog Esc closes 390",
+  "PASS",
+  ""
+ ],
+ [
+  "profile no page errors 390",
+  "PASS",
+  "[]"
+ ],
+ [
+  "edit dialog opens 1440",
+  "PASS",
+  "{'w': 1180, 'h': 828, 'top': 36, 'focus': 'INPUT.', 'sw': 1440}"
+ ],
+ [
+  "edit dialog Esc closes 1440",
+  "PASS",
+  ""
+ ],
+ [
+  "profile no page errors 1440",
+  "PASS",
+  "[]"
+ ]
+]

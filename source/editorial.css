@@ -212,3 +212,28 @@ html[data-panel-color=on] .ed-road h3{text-shadow:none}
 @media(max-width:650px){.ed-competition{height:370px}.ed-competition .ed-entries{width:min(80%,340px);height:300px;bottom:-34px}}
 @media(max-width:650px){.ed-competition .ed-entries{width:min(70%,310px);left:44px}}
 @media(min-width:1001px){.ed-entries{left:56px;bottom:-66px;width:min(50%,270px)}}
+
+/* Blender banners (2026-10-22): rendered art fills the promo cards; copy stays HTML. ?bb=old restores old art. */
+.ed-promo.ed-bb>img.ed-art{position:absolute;inset:auto 0 0 0;z-index:0;display:block;width:100%;height:var(--bb-h,100%);max-width:none;object-fit:cover;object-position:var(--bb-pos,50% 50%);filter:none;clip-path:none;mask-image:none;-webkit-mask-image:none;transform-origin:50% 100%;transition:transform .4s ease}
+.ed-promo.ed-bb:hover>img.ed-art{transform:scale(1.03)}
+.ed-competition.ed-bb{--bb-h:82%}
+.ed-road.ed-bb{--bb-h:80%}
+.ed-promo.ed-bb:after{content:none}
+.ed-promo.ed-bb .ed-promo-copy{z-index:3}
+.ed-promos .ed-competition.ed-bb{background:#07d653;color:#0b1b27!important;--ed-badge:#3c60ff}
+.ed-promos .ed-competition.ed-bb .ed-prize{color:#0b1b27}
+.ed-promos .ed-road.ed-bb{background:#3c60ff;color:#fff!important}
+html[data-panel-color] .ed-promos .ed-road.ed-bb h3 i{color:#fff}
+.ed-promos .ed-road.ed-bb h3{text-shadow:none}
+.ed-promos .ed-week.ed-bb{background:#0b1a2e;color:#f5f4ee}
+.ed-week.ed-bb:after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(40deg,#0b1a2ef2 0%,#0b1a2ecc 30%,#0b1a2e00 64%),linear-gradient(0deg,#0b1a2ee0 0%,#0b1a2ea6 34%,#0b1a2e00 60%),linear-gradient(180deg,#0b1a2e99 0%,#0b1a2e00 30%)}
+.ed-week.ed-bb .ed-place{color:#f5f4ee;text-shadow:0 1px 10px #0b1a2e}
+.ed-week.ed-bb .ed-promo-copy{text-shadow:0 1px 14px #0b1a2e}
+.ed-week.ed-bb h3 i{color:#2fe673}
+html[data-panel-color=off] .ed-promos .ed-competition.ed-bb{background:#07d653;color:#0b1b27!important}
+html[data-panel-color=off] .ed-promos .ed-road.ed-bb{background:#3c60ff;color:#fff!important}
+@media(min-width:651px) and (max-width:1000px){.ed-competition.ed-bb{--bb-h:100%}.ed-promo.ed-bb>img.ed-art{object-position:var(--bb-pos-t,var(--bb-pos,50% 50%))}}
+@media(max-width:650px){.ed-competition.ed-bb{--bb-h:70%}.ed-promo.ed-bb>img.ed-art{object-position:var(--bb-pos-p,var(--bb-pos,50% 50%))}}
+/* Phone: fit the whole subject between the copy blocks; card bg = render bg so the art needs no cover crop */
+@media(max-width:650px){html body .ed-promos .ed-promo.ed-bb[style]{background:var(--bb-bg)}.ed-promo.ed-bb[style]>img.ed-art{inset:auto;width:auto;height:var(--pp-h);aspect-ratio:1.6;object-fit:fill;left:calc(var(--pp-tx)*100% - var(--pp-cx)*var(--pp-h)*1.6);top:calc(var(--pp-ty) - var(--pp-cy)*var(--pp-h));transform-origin:50% 50%}.ed-week.ed-bb[style]>img.ed-art{-webkit-mask-image:linear-gradient(#000 62%,#0000 100%);mask-image:linear-gradient(#000 62%,#0000 100%)}}
+@media(prefers-reduced-motion:reduce){.ed-promo.ed-bb>img.ed-art{transition:none}.ed-promo.ed-bb:hover>img.ed-art{transform:none}}

@@ -1,5 +1,5 @@
-import {esc,$,icon,action,pageTitle,spotURL,storyURL,photo,saveButton,empty,savedIDs,savedStories,trip,keys,subscribeStore,localURL} from './core.mjs';
-import {authorLink} from '../profile/identity.mjs';
+import {esc,$,icon,action,pageTitle,spotURL,storyURL,photo,saveButton,empty,savedIDs,savedStories,trip,keys,subscribeStore,localURL} from './core.mjs?v=149e30e7';
+import {authorLink} from '../profile/identity.mjs?v=38b679eb';
 export function renderFieldbook(root,{spots,stories}){
  let active=new URLSearchParams(location.search).get('tab')==='stories'?'stories':'places',query='';
  root.innerHTML=pageTitle('Your','fieldbook.','Keep the places that pull you in. Make a trip out of them when you’re ready.')+`<section class="ds-fieldbook-trip" aria-label="Your trip"></section><div class="ds-fieldbook-tools"><div class="ds-tabs" role="group" aria-label="Saved collections"><button type="button" data-fieldbook-tab="places"></button><button type="button" data-fieldbook-tab="stories"></button></div><label class="ds-search-field">${icon('search')}<input id="fieldbook-search" type="search" placeholder="Search your fieldbook…" aria-label="Search your fieldbook"></label></div><p class="ds-note">Saved on this browser.</p><div id="fieldbook-results" tabindex="-1"></div><p id="fieldbook-count" class="ds-note" role="status"></p>`;

@@ -1,7 +1,8 @@
-import {prepareCatalog,normalizedTags} from '../browse/catalog.mjs';
-import {escapeHTML,authorLink} from '../profile/identity.mjs';
-import {readValue,writeValue,readIDs,subscribeStore,savedSpotKey,savedStoryKey} from './storage.mjs';
-import {normalizeTrip,MAX_TRIP_STOPS} from './trip-state.mjs';
+import {prepareCatalog,normalizedTags} from '../browse/catalog.mjs?v=776ebad9';
+import {escapeHTML,authorLink} from '../profile/identity.mjs?v=38b679eb';
+import {readValue,writeValue,readIDs,subscribeStore,savedSpotKey,savedStoryKey} from './storage.mjs?v=f4e726a0';
+import {imgAttrs} from './img.mjs?v=61371a3b';
+import {normalizeTrip,MAX_TRIP_STOPS} from './trip-state.mjs?v=3fd4c3ad';
 export const esc=escapeHTML;
 export const $=(selector,root=document)=>root.querySelector(selector);
 export const $$=(selector,root=document)=>[...root.querySelectorAll(selector)];
@@ -14,6 +15,8 @@ export const icons={
  star:'<path d="M12 1v22M1 12h22M4 4l16 16M4 20 16 4"/>',
  plus:'<path d="M12 4v16M4 12h16"/>',
  share:'<path d="M12 16V2m-5 5 5-5 5 5M5 11H3v10h18V11h-2"/>',
+ mail:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>',
+ key:'<circle cx="8" cy="15" r="4"/><path d="m11 12 9-9m-3 3 3 3m-6 0 2 2"/>',
  route:'<circle cx="5" cy="5" r="3"/><circle cx="19" cy="19" r="3"/><path d="M8 5h8a4 4 0 0 1 0 8H8a4 4 0 0 0 0 8h8"/>'
 };
 export const icon=name=>`<svg viewBox="0 0 24 24" aria-hidden="true">${icons[name]||icons.arrow}</svg>`;
@@ -36,10 +39,10 @@ export function notify(text){let box=$('.ds-notification');if(!box){box=document
 export async function sharePage(title,url=location.href){const u=new URL(url);u.searchParams.delete('theme');u.searchParams.delete('from');const dialog=document.createElement('dialog');dialog.className='ds-share-dialog';dialog.setAttribute('aria-label','Share this page');dialog.innerHTML=`<button class="ds-dialog-close" aria-label="Close sharing">×</button><h2>pass it on.</h2><p>${esc(title)}</p><label>page link<input readonly value="${esc(u.href)}" aria-label="Shareable page link"></label><button class="ds-button" data-copy>copy link ${icon('share')}</button>${/localhost|127\.0\.0\.1/.test(u.hostname)?'<small>This local link works on this computer. Published links can be shared with anyone.</small>':''}`;document.body.append(dialog);dialog.showModal();$('.ds-dialog-close',dialog).onclick=()=>dialog.close();dialog.addEventListener('close',()=>dialog.remove());$('[data-copy]',dialog).onclick=async()=>{try{await navigator.clipboard.writeText(u.href);$('[data-copy]',dialog).textContent='link copied';}catch{$('input',dialog).select();notify('Select and copy the link above.');}};}
 let dataPromise;
 export function loadData(){return dataPromise??=Promise.all(['/featured-spots.json','/editorial-stories.json','/profile/profiles.json','/site/content.json'].map(async url=>{const r=await fetch(url);if(!r.ok)throw Error('Could not load the DeepSpot collection.');return r.json();})).then(([raw,stories,profiles,content])=>({raw,spots:prepareCatalog(raw).map(s=>({...s,...content.spots?.[s.id.split('/').pop()],tags:s.tags})),stories,profiles:profiles.profiles,content}));}
-export function photo(spot,{eager=false}={}){return spot.image?`<img src="${esc(spot.image)}" alt="${esc(spot.place||spot.title)}" loading="${eager?'eager':'lazy'}" decoding="async">`:`<div class="ds-photo-empty"><span>deep<br>spot.</span><small>photo to come</small></div>`;}
+export function photo(spot,{eager=false,sizes}={}){return spot.image?`<img${eager?` src="${esc(spot.image)}"`:imgAttrs(spot.image,sizes)} alt="${esc(spot.place||spot.title)}" loading="${eager?'eager':'lazy'}" decoding="async">`:`<div class="ds-photo-empty"><span>deep<br>spot.</span><small>photo to come</small></div>`;}
 export function spotCard(spot,index=0){return `<article class="ds-spot-card"><div class="ds-card-image"><a href="${esc(spotURL(spot))}" aria-label="Read ${esc(spot.title)}">${photo(spot,{eager:index<3})}</a>${saveButton(spot)}</div><div class="ds-card-text"><span class="ds-eyebrow">${esc(spot.tags.filter(t=>t!=='DEEP SPOT CHOICE').slice(0,2).join(' · ').toLowerCase())}</span><h3><a href="${esc(spotURL(spot))}">${esc(spot.title)}</a></h3><p>${esc(spot.place)}</p><div class="ds-card-bottom">${spot.publisher?authorLink(spot.publisher):'<span>DeepSpot collection</span>'}<a href="${esc(spotURL(spot))}" aria-label="Read ${esc(spot.title)}">${icon('arrow')}</a></div></div></article>`;}
-export function storyCard(story){return `<article class="ds-story-card"><a href="${esc(storyURL(story))}" class="ds-story-image"><img src="${esc(story.cover||'/editorial-assets/'+story.image+'.jpg')}" alt="${esc(story.title)}" loading="lazy"></a><div><span class="ds-eyebrow">${esc(story.tag)}</span><h3><a href="${esc(storyURL(story))}">${esc(story.title)}</a></h3><p>${esc(story.text)}</p><div class="ds-card-bottom">${authorLink(story.author)}<span>${story.time} min read</span></div></div></article>`;}
-export function collectionTabs(active){return `<nav class="br-content-tabs" aria-label="Explore DeepSpot collections">${[['Deep Spots','/browse/'],['Guides','/guides/']].map(([label,href])=>`<a href="${localURL(href)}" ${active===label?'aria-current="page"':''}>${label}</a>`).join('')}</nav>`;}
+export function storyCard(story){return `<article class="ds-story-card"><a href="${esc(storyURL(story))}" class="ds-story-image"><img${imgAttrs(story.cover||'/editorial-assets/'+story.image+'.jpg','(max-width:700px) 92vw, 600px')} alt="${esc(story.title)}" loading="lazy"></a><div><span class="ds-eyebrow">${esc(story.tag)}</span><h3><a href="${esc(storyURL(story))}">${esc(story.title)}</a></h3><p>${esc(story.text)}</p><div class="ds-card-bottom">${authorLink(story.author)}<span>${story.time} min read</span></div></div></article>`;}
+export function collectionTabs(active){return `<nav class="br-content-tabs" aria-label="Explore DeepSpot collections">${[['Deep Spots','/browse/'],['Stories','/stories/'],['Guides','/guides/']].map(([label,href])=>`<a href="${localURL(href)}" ${active===label?'aria-current="page"':''}>${label}</a>`).join('')}</nav>`;}
 export function pageTitle(top,highlight,description='',extra=''){return `<section class="ds-page-intro"><div>${extra}<h1>${top}<br><span>${highlight}</span></h1></div>${description?`<p>${description}</p>`:''}</section>`;}
 export function empty(title,description,link='/browse/',label='browse deep spots'){return `<div class="ds-empty"><span class="ds-empty-symbol">${icon('star')}</span><h2>${title}</h2><p>${description}</p>${action(label,link)}</div>`;}
 export function downloadJSON(data,name){const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),60000);}

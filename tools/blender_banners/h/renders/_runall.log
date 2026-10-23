@@ -1,0 +1,87 @@
+00:03.219  cycles           | WARNING HIPEW initialization failed: Error opening HIP dynamic library
+C:\Users\CharD\Desktop\DeepSpot Globe\tools\blender_banners\h\scripts\h1.py:50: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m.use_nodes = True
+BlenderMCP addon registered
+[INFO ] services.locationservice ...............: Not adding link to MakeHuman user data, since neither explicit path nor auto-discovery is set in preferences.
+[INFO ] mpfb.init ..............................: Build info 20261010
+[INFO ] mpfb.init ..............................: Online access preference is not enabled. Not checking if MakeHuman is online.
+[INFO ] mpfb.init ..............................: MPFB initialization has finished.
+BlenderMCP addon unregistered
+22:13:08 | INFO: Data are loaded, start creating Blender stuff
+22:13:08 | INFO: Blender create Mesh node Plane.001
+22:13:09 | INFO: glTF import finished in 0.09s
+22:13:09 | INFO: Data are loaded, start creating Blender stuff
+22:13:09 | INFO: Blender create Mesh node Plane.001
+22:13:09 | INFO: glTF import finished in 0.08s
+00:33.828  render           | Saved: 'C:\Users\CharD\Desktop\DeepSpot Globe\tools\blender_banners\h\renders\h1_raw.png'
+FRAME lens 303.7
+CLIPCHECK 14 penetrating pairs
+   CLIP ('SoilChunk', 'stone_01.003', 20, 0.099)
+   CLIP ('SoilChunk', 'stone_01.009', 17, 0.0985)
+   CLIP ('SoilChunk', 'stone_01.007', 379, 0.0939)
+   CLIP ('SoilChunk', 'stone_01.008', 109, 0.0911)
+   CLIP ('SoilChunk', 'stone_01.002', 8, 0.0658)
+   CLIP ('SoilChunk', 'Root2', 37, 0.0415)
+   CLIP ('SoilChunk', 'stone_01.005', 2, 0.0414)
+   CLIP ('SoilChunk', 'stone_01.006', 1, 0.0391)
+   CLIP ('SoilChunk', 'stone_01.001', 2, 0.033)
+   CLIP ('SoilChunk', 'stone_01.004', 1, 0.0204)
+   CLIP ('SoilChunk', 'Gem', 65, 0.015)
+   CLIP ('SoilChunk', 'Root0', 39, 0.0093)
+   CLIP ('SoilChunk', 'Root1', 39, 0.0093)
+   CLIP ('SoilChunk', 'Shard0', 18, 0.0042)
+CLIP [('SoilChunk', 'Gem', 65, 0.015), ('SoilChunk', 'stone_01.001', 2, 0.033), ('SoilChunk', 'stone_01.002', 8, 0.0658), ('SoilChunk', 'stone_01.003', 20, 0.099), ('SoilChunk', 'stone_01.004', 1, 0.0204), ('SoilChunk', 'stone_01.005', 2, 0.0414), ('SoilChunk', 'stone_01.006', 1, 0.0391), ('SoilChunk', 'Shard0', 18, 0.0042), ('SoilChunk', 'stone_01.007', 379, 0.0939), ('SoilChunk', 'stone_01.008', 109, 0.0911), ('SoilChunk', 'stone_01.009', 17, 0.0985), ('SoilChunk', 'Root0', 39, 0.0093), ('SoilChunk', 'Root1', 39, 0.0093), ('SoilChunk', 'Root2', 37, 0.0415)]
+Info: Saved as "h1.blend"
+Blender 5.2.0 LTS (hash fbe6228777e7 built 2026-07-14 01:35:40)
+
+Blender quit
+h1 (1600, 1600) alpha bbox (26, 167, 1569, 1576) margins 26 167 31 24
+webp 80 114 KB
+00:04.765  cycles           | WARNING HIPEW initialization failed: Error opening HIP dynamic library
+C:\Users\CharD\Desktop\DeepSpot Globe\tools\blender_banners\h\scripts\h2.py:67: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m.use_nodes = True
+00:32.547  render           | Saved: 'C:\Users\CharD\Desktop\DeepSpot Globe\tools\blender_banners\h\renders\h2_raw.png'
+BlenderMCP addon registered
+[INFO ] services.locationservice ...............: Not adding link to MakeHuman user data, since neither explicit path nor auto-discovery is set in preferences.
+[INFO ] mpfb.init ..............................: Build info 20261010
+[INFO ] mpfb.init ..............................: Online access preference is not enabled. Not checking if MakeHuman is online.
+[INFO ] mpfb.init ..............................: MPFB initialization has finished.
+BlenderMCP addon unregistered
+FRAME lens 229.0
+CLIPCHECK 0 penetrating pairs
+CLIP []
+Info: Saved as "h2.blend"
+Blender 5.2.0 LTS (hash fbe6228777e7 built 2026-07-14 01:35:40)
+
+Blender quit
+h2 (1600, 1600) alpha bbox (68, 61, 1528, 1579) margins 68 61 72 21
+webp 80 108 KB
+00:04.578  cycles           | WARNING HIPEW initialization failed: Error opening HIP dynamic library
+BlenderMCP addon registered
+[INFO ] services.locationservice ...............: Not adding link to MakeHuman user data, since neither explicit path nor auto-discovery is set in preferences.
+[INFO ] mpfb.init ..............................: Build info 20261010
+[INFO ] mpfb.init ..............................: Online access preference is not enabled. Not checking if MakeHuman is online.
+[INFO ] mpfb.init ..............................: MPFB initialization has finished.
+BlenderMCP addon unregistered
+22:14:40 | INFO: Data are loaded, start creating Blender stuff
+22:14:40 | INFO: Blender create Mesh node Plane.001
+22:14:41 | INFO: glTF import finished in 0.15s
+22:14:41 | INFO: Data are loaded, start creating Blender stuff
+22:14:41 | INFO: Blender create Mesh node Cylinder.001
+22:14:41 | INFO: glTF import finished in 0.03s
+00:33.422  render           | Saved: 'C:\Users\CharD\Desktop\DeepSpot Globe\tools\blender_banners\h\renders\h3_raw.png'
+SPADE_BB -0.5032017230987549 0.5977030396461487 -0.08405739068984985 0.08405742049217224 -0.022568460553884506 0.022995803505182266
+FRAME lens 294.4
+CLIPCHECK 4 penetrating pairs
+   CLIP ('DigSite', 'stone_01.004', 1, 0.0615)
+   CLIP ('DigSite', 'rusted_spade_01', 924, 0.0234)
+   CLIP ('DigSite', 'Gem', 105, 0.0115)
+   CLIP ('DigSite', 'Icosphere', 1, 0.0044)
+CLIP [('DigSite', 'Gem', 105, 0.0115), ('DigSite', 'stone_01.004', 1, 0.0615), ('DigSite', 'Icosphere', 1, 0.0044), ('DigSite', 'rusted_spade_01', 924, 0.0234)]
+Info: Saved as "h3.blend"
+Blender 5.2.0 LTS (hash fbe6228777e7 built 2026-07-14 01:35:40)
+
+Blender quit
+h3 (1600, 1600) alpha bbox (39, 143, 1564, 1580) margins 39 143 36 20
+webp 80 110 KB
+ALLDONE

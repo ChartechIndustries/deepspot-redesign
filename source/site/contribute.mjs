@@ -1,4 +1,4 @@
-import {esc,$,$$,icon,action,pageTitle,readStore,writeStore,keys,downloadJSON,notify,localURL} from './core.mjs';
+import {esc,$,$$,icon,action,pageTitle,readStore,writeStore,keys,downloadJSON,notify,localURL} from './core.mjs?v=149e30e7';
 const categories=['Weird/Funny','Historical','Roadside Stops','Art/Sculpture','Architecture','Sightseeing/Nature','Food & Bars','Religious','Museums','Ruins/Urbex','Retro','Culture','Myth/Legend'];
 export async function renderContribution(root,{spots}){
  const params=new URLSearchParams(location.search),saved=readStore(keys.draft,{});let type=params.get('type')||saved.type||'location';if(!['location','story','edit','photo'].includes(type))type='location';let draft={...saved,type};const ref=params.get('ref');if(ref)draft.reference=ref;
