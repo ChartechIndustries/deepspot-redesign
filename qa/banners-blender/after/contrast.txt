@@ -1,0 +1,144 @@
+dark on 1440 c1 worst 8.5 BUTTON 
+dark on 1440 c2 worst 8.8 BUTTON 
+dark on 1440 c3 worst 9.0 ed-prize 
+dark on 1440 w1 worst 7.3 ed-place 
+dark on 1440 w2 worst 8.8 I 
+dark on 1440 w3 worst 9.7 I 
+dark on 1440 r1 worst 3.8 I FAIL
+dark on 1440 r2 worst 3.8 I FAIL
+dark on 1440 r3 worst 3.8 I FAIL
+dark on 820 c1 worst 9.0 BUTTON 
+dark on 820 c2 worst 9.0 ed-prize 
+dark on 820 c3 worst 9.0 ed-prize 
+dark on 820 w1 worst 6.5 ed-place 
+dark on 820 w2 worst 9.4 I 
+dark on 820 w3 worst 9.8 I 
+dark on 820 r1 worst 3.8 I FAIL
+dark on 820 r2 worst 3.8 I FAIL
+dark on 820 r3 worst 3.8 I FAIL
+dark on 390 c1 worst 9.0 ed-prize 
+dark on 390 c2 worst 9.0 ed-prize 
+dark on 390 c3 worst 9.0 ed-prize 
+dark on 390 w1 worst 5.8 I 
+dark on 390 w2 worst 7.5 I 
+dark on 390 w3 worst 9.5 I 
+dark on 390 r1 worst 3.8 I FAIL
+dark on 390 r2 worst 3.8 I FAIL
+dark on 390 r3 worst 3.8 I FAIL
+dark on 320 c1 worst 9.0 ed-prize 
+dark on 320 c2 worst 9.0 ed-prize 
+dark on 320 c3 worst 8.8 ed-prize-line 
+dark on 320 w1 worst 6.5 I 
+dark on 320 w2 worst 8.0 I 
+dark on 320 w3 worst 9.5 I 
+dark on 320 r1 worst 3.8 I FAIL
+dark on 320 r2 worst 3.8 I FAIL
+dark on 320 r3 worst 3.8 I FAIL
+dark off 1440 c1 worst 8.5 BUTTON 
+dark off 1440 c2 worst 8.8 BUTTON 
+dark off 1440 c3 worst 9.0 ed-prize 
+dark off 1440 w1 worst 7.2 I 
+dark off 1440 w2 worst 8.7 I 
+dark off 1440 w3 worst 9.6 I 
+dark off 1440 r1 worst 4.0 I FAIL
+dark off 1440 r2 worst 4.0 I FAIL
+dark off 1440 r3 worst 4.0 I FAIL
+dark off 820 c1 worst 9.0 ed-prize 
+dark off 820 c2 worst 9.0 ed-prize 
+dark off 820 c3 worst 9.0 ed-prize 
+dark off 820 w1 worst 6.4 ed-place 
+dark off 820 w2 worst 9.4 I 
+dark off 820 w3 worst 9.8 I 
+dark off 820 r1 worst 4.0 I FAIL
+dark off 820 r2 worst 4.0 I FAIL
+dark off 820 r3 worst 4.0 I FAIL
+dark off 390 c1 worst 9.0 ed-prize 
+dark off 390 c2 worst 9.0 ed-prize 
+dark off 390 c3 worst 9.0 ed-prize 
+dark off 390 w1 worst 5.8 I 
+dark off 390 w2 worst 7.6 I 
+dark off 390 w3 worst 9.5 I 
+dark off 390 r1 worst 4.0 I FAIL
+dark off 390 r2 worst 4.0 I FAIL
+dark off 390 r3 worst 4.0 I FAIL
+dark off 320 c1 worst 9.0 ed-prize 
+dark off 320 c2 worst 9.0 ed-prize 
+dark off 320 c3 worst 8.8 ed-prize-line 
+dark off 320 w1 worst 6.5 I 
+dark off 320 w2 worst 8.0 I 
+dark off 320 w3 worst 9.5 I 
+dark off 320 r1 worst 4.0 I FAIL
+dark off 320 r2 worst 4.0 I FAIL
+dark off 320 r3 worst 4.0 I FAIL
+light on 1440 c1 worst 8.5 BUTTON 
+light on 1440 c2 worst 8.8 BUTTON 
+light on 1440 c3 worst 9.0 ed-prize 
+light on 1440 w1 worst 7.2 ed-place 
+light on 1440 w2 worst 8.8 I 
+light on 1440 w3 worst 9.7 I 
+light on 1440 r1 worst 3.8 I FAIL
+light on 1440 r2 worst 3.8 I FAIL
+light on 1440 r3 worst 3.8 I FAIL
+light on 820 c1 worst 9.0 BUTTON 
+light on 820 c2 worst 9.0 ed-prize 
+light on 820 c3 worst 9.0 ed-prize 
+light on 820 w1 worst 6.5 ed-place 
+light on 820 w2 worst 9.4 I 
+light on 820 w3 worst 9.8 I 
+light on 820 r1 worst 3.8 I FAIL
+light on 820 r2 worst 3.8 I FAIL
+light on 820 r3 worst 3.8 I FAIL
+light on 390 c1 worst 9.0 ed-prize 
+light on 390 c2 worst 9.0 ed-prize 
+light on 390 c3 worst 9.0 ed-prize 
+light on 390 w1 worst 5.9 I 
+light on 390 w2 worst 7.6 I 
+light on 390 w3 worst 9.5 I 
+light on 390 r1 worst 3.8 I FAIL
+light on 390 r2 worst 3.8 I FAIL
+light on 390 r3 worst 3.8 I FAIL
+light on 320 c1 worst 9.0 ed-prize 
+light on 320 c2 worst 9.0 ed-prize 
+light on 320 c3 worst 8.8 ed-prize-line 
+light on 320 w1 worst 6.5 I 
+light on 320 w2 worst 8.1 I 
+light on 320 w3 worst 9.5 I 
+light on 320 r1 worst 3.8 I FAIL
+light on 320 r2 worst 3.8 I FAIL
+light on 320 r3 worst 3.8 I FAIL
+light off 1440 c1 worst 8.5 BUTTON 
+light off 1440 c2 worst 8.8 BUTTON 
+light off 1440 c3 worst 9.0 ed-prize 
+light off 1440 w1 worst 7.2 I 
+light off 1440 w2 worst 8.8 I 
+light off 1440 w3 worst 9.7 I 
+light off 1440 r1 worst 4.0 I FAIL
+light off 1440 r2 worst 4.0 I FAIL
+light off 1440 r3 worst 4.0 I FAIL
+light off 820 c1 worst 9.0 ed-prize 
+light off 820 c2 worst 9.0 ed-prize 
+light off 820 c3 worst 9.0 ed-prize 
+light off 820 w1 worst 6.4 ed-place 
+light off 820 w2 worst 9.4 I 
+light off 820 w3 worst 9.8 I 
+light off 820 r1 worst 4.0 I FAIL
+light off 820 r2 worst 4.0 I FAIL
+light off 820 r3 worst 4.0 I FAIL
+light off 390 c1 worst 9.0 ed-prize 
+light off 390 c2 worst 9.0 ed-prize 
+light off 390 c3 worst 9.0 ed-prize 
+light off 390 w1 worst 5.9 I 
+light off 390 w2 worst 7.6 I 
+light off 390 w3 worst 9.4 I 
+light off 390 r1 worst 4.0 I FAIL
+light off 390 r2 worst 4.0 I FAIL
+light off 390 r3 worst 4.0 I FAIL
+light off 320 c1 worst 9.0 ed-prize 
+light off 320 c2 worst 9.0 ed-prize 
+light off 320 c3 worst 8.8 ed-prize-line 
+light off 320 w1 worst 6.5 I 
+light off 320 w2 worst 8.0 I 
+light off 320 w3 worst 9.5 I 
+light off 320 r1 worst 4.0 I FAIL
+light off 320 r2 worst 4.0 I FAIL
+light off 320 r3 worst 4.0 I FAIL

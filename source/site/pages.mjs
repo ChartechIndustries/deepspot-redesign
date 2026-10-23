@@ -61,7 +61,7 @@ async function render(data){const {spots,stories,content}=data;
  else if(route==='saved'){await (await import('./fieldbook.mjs?v=4fb9a559')).renderFieldbook(root,data);}
  else if(route==='community'){
   const people=content.leaderboard.monthly;
-  if(!['old','hub1'].includes(params.get('v'))){const {renderCommunityV2}=await import('./community-v2.mjs?v=263a7d93');await renderCommunityV2(root,data);}
+  if(!['old','hub1'].includes(params.get('v'))){const {renderCommunityV2}=await import('./community-v2.mjs?v=3c15f1d3');await renderCommunityV2(root,data);}
   else if(params.get('v')==='hub1'){const tail=`${heading('the people behind the pins.','/leaderboard/','leaderboard')}<div class="ds-people">${people.slice(0,6).map(memberCard).join('')}</div>${notice}${heading('make your mark.')}<div class="ds-three"><article>${icon('pin')}<h3>put it on the map.</h3><p>Share a spot, your photographs, and the story that makes it worth finding.</p>${action('add a spot','/contribute/','secondary')}</article><article>${icon('star')}<h3>tell the whole story.</h3><p>Go deeper into the people, history, and culture beyond the location.</p>${action('write a story','/contribute/?type=story','secondary')}</article><article>${icon('route')}<h3>connect the dots.</h3><p>Bring your finds together in a route or a collection to return to.</p>${action('plan a trip','/plan-trip/','secondary')}</article></div><section class="ds-wide-cta"><div><h2>good finds deserve<br>good company.</h2><p>Submissions, conversations, and community decisions live on DeepSpot.</p></div>${outbound('open the community','https://www.deepspot.io/community','')}</section>`;
   const {renderCommunityHub}=await import('./community-hub.mjs?v=7d82ced0');renderCommunityHub(root,data,'');}
   else{

@@ -1,0 +1,7 @@
+/* Scroll fade-in (2026-10-23). The hidden state is set by site/reveal.mjs only, so without JS everything shows.
+   The reveal itself is a Web Animation (opacity + translate), so the element's own opacity/transform stay untouched. */
+.rv{opacity:0!important;translate:0 18px!important}
+.rv.rv-flat{translate:none!important}
+.rv-run{will-change:opacity,translate}
+@media (prefers-reduced-motion:reduce){.rv,.rv.rv-flat{opacity:1!important;translate:none!important}.rv-run{will-change:auto}}
+@media print{.rv,.rv.rv-flat{opacity:1!important;translate:none!important}}

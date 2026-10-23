@@ -1,0 +1,48 @@
+home_390                 load(hidden,rv)=[13, 13] end={'hid': 0, 'rv': 0, 'anim': 0, 'sw': 390, 'iw': 390} overflow=False errs=[] axe=[]
+home_1440                load(hidden,rv)=[6, 6] end={'hid': 0, 'rv': 0, 'anim': 0, 'sw': 1440, 'iw': 1440} overflow=False errs=[] axe=[]
+home_320                 load(hidden,rv)=[13, 13] end={'hid': 0, 'rv': 0, 'anim': 0, 'sw': 320, 'iw': 320} overflow=False errs=[] axe=None
+browse_390               load(hidden,rv)=[14, 14] end={'hid': 0, 'rv': 0, 'anim': 0, 'sw': 390, 'iw': 390} overflow=False errs=[] axe=[]
+browse_1440              load(hidden,rv)=[12, 12] end={'hid': 0, 'rv': 0, 'anim': 0, 'sw': 1440, 'iw': 1440} overflow=False errs=[] axe=[]
+browse_320               load(hidden,rv)=[14, 14] end={'hid': 0, 'rv': 0, 'anim': 0, 'sw': 320, 'iw': 320} overflow=False errs=[] axe=None
+map_390                  load(hidden,rv)=[1, 1] end={'hid': 0, 'rv': 0, 'anim': 0, 'sw': 390, 'iw': 390} overflow=False errs=[] axe=[]
+map_1440                 load(hidden,rv)=[1, 1] end={'hid': 0, 'rv': 0, 'anim': 0, 'sw': 1440, 'iw': 1440} overflow=False errs=[] axe=[]
+map_320                  load(hidden,rv)=[1, 1] end={'hid': 0, 'rv': 0, 'anim': 0, 'sw': 320, 'iw': 320} overflow=False errs=[] axe=None
+community_390            load(hidden,rv)=[21, 21] end={'hid': 0, 'rv': 0, 'anim': 0, 'sw': 390, 'iw': 390} overflow=False errs=[] axe=[]
+community_1440           load(hidden,rv)=[5, 5] end={'hid': 0, 'rv': 0, 'anim': 0, 'sw': 1440, 'iw': 1440} overflow=False errs=[] axe=[]
+community_320            load(hidden,rv)=[21, 21] end={'hid': 0, 'rv': 0, 'anim': 0, 'sw': 320, 'iw': 320} overflow=False errs=[] axe=None
+profile-preview_390      load(hidden,rv)=[1, 1] end={'hid': 1, 'rv': 1, 'anim': 0, 'sw': 390, 'iw': 390} overflow=False errs=[] axe=[]
+profile-preview_1440     load(hidden,rv)=[0, 0] end={'hid': 0, 'rv': 0, 'anim': 0, 'sw': 1440, 'iw': 1440} overflow=False errs=[] axe=[]
+profile-preview_320      load(hidden,rv)=[1, 1] end={'hid': 1, 'rv': 1, 'anim': 0, 'sw': 320, 'iw': 320} overflow=False errs=[] axe=None
+profile-wayfarer_390     load(hidden,rv)=[1, 1] end={'hid': 1, 'rv': 1, 'anim': 0, 'sw': 390, 'iw': 390} overflow=False errs=[] axe=[]
+profile-wayfarer_1440    load(hidden,rv)=[0, 0] end={'hid': 0, 'rv': 0, 'anim': 0, 'sw': 1440, 'iw': 1440} overflow=False errs=[] axe=[]
+profile-wayfarer_320     load(hidden,rv)=[1, 1] end={'hid': 1, 'rv': 1, 'anim': 0, 'sw': 320, 'iw': 320} overflow=False errs=[] axe=None
+stories_390              load(hidden,rv)=[10, 10] end={'hid': 0, 'rv': 0, 'anim': 0, 'sw': 390, 'iw': 390} overflow=False errs=[] axe=[]
+stories_1440             load(hidden,rv)=[10, 10] end={'hid': 0, 'rv': 0, 'anim': 0, 'sw': 1440, 'iw': 1440} overflow=False errs=[] axe=[]
+stories_320              load(hidden,rv)=[10, 10] end={'hid': 0, 'rv': 0, 'anim': 0, 'sw': 320, 'iw': 320} overflow=False errs=[] axe=None
+story_390                load(hidden,rv)=[6, 6] end={'hid': 0, 'rv': 0, 'anim': 0, 'sw': 390, 'iw': 390} overflow=False errs=[] axe=[]
+story_1440               load(hidden,rv)=[7, 7] end={'hid': 0, 'rv': 0, 'anim': 0, 'sw': 1440, 'iw': 1440} overflow=False errs=[] axe=[]
+story_320                load(hidden,rv)=[6, 6] end={'hid': 0, 'rv': 0, 'anim': 0, 'sw': 320, 'iw': 320} overflow=False errs=[] axe=None
+spot_390                 load(hidden,rv)=[7, 7] end={'hid': 2, 'rv': 2, 'anim': 0, 'sw': 390, 'iw': 390} overflow=False errs=[] axe=[]
+Traceback (most recent call last):
+  File "C:\Users\CharD\Desktop\DeepSpot Globe\qa\reveal-1023\run.py", line 52, in <module>
+    asyncio.run(main())
+  File "C:\Users\CharD\AppData\Local\Programs\Python\Python310\lib\asyncio\runners.py", line 44, in run
+    return loop.run_until_complete(main)
+  File "C:\Users\CharD\AppData\Local\Programs\Python\Python310\lib\asyncio\base_events.py", line 646, in run_until_complete
+    return future.result()
+  File "C:\Users\CharD\Desktop\DeepSpot Globe\qa\reveal-1023\run.py", line 33, in main
+    await pg.goto(BASE+u+('&' if '?' in u else '?')+'theme=dark',wait_until='domcontentloaded')
+  File "C:\Users\CharD\AppData\Local\Programs\Python\Python310\lib\site-packages\playwright\async_api\_generated.py", line 9764, in goto
+    await self._impl_obj.goto(
+  File "C:\Users\CharD\AppData\Local\Programs\Python\Python310\lib\site-packages\playwright\_impl\_page.py", line 560, in goto
+    return await self._main_frame.goto(**locals_to_params(locals()))
+  File "C:\Users\CharD\AppData\Local\Programs\Python\Python310\lib\site-packages\playwright\_impl\_frame.py", line 156, in goto
+    await self._channel.send(
+  File "C:\Users\CharD\AppData\Local\Programs\Python\Python310\lib\site-packages\playwright\_impl\_connection.py", line 69, in send
+    return await self._connection.wrap_api_call(
+  File "C:\Users\CharD\AppData\Local\Programs\Python\Python310\lib\site-packages\playwright\_impl\_connection.py", line 563, in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+playwright._impl._errors.TimeoutError: Page.goto: Timeout 30000ms exceeded.
+Call log:
+  - navigating to "http://localhost:8766/spot/?id=akabane-haunted-bar&theme=dark", waiting until "domcontentloaded"
+

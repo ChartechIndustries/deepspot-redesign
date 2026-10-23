@@ -26,11 +26,16 @@ export function passportModels(data,monthly){
 /* ---------- card: the shared passport (profile/passport-edit.mjs), the same thing the profile page shows ---------- */
 const RANKC=['#07d653','#3c60ff','#f2c14e'];
 const sigImg=m=>m.signature?`<img src="${esc(m.signature)}" alt="" width="512" height="256" loading="lazy" decoding="async">`:'<span>no mark yet</span>';
-export function passportHTML(m,i){
- const v=variety(m.id,m.rank),dx=((i*3)%5-2)*4,dy=((i*7)%5-2)*3,dr=((i*5)%7-3);
+/* passportFace: the card with its foil wrapper, no deck item around it (also used by the home 'what's new' fan) */
+export function passportFace(m,i){
+ const v=variety(m.id,m.rank);
  const card=cardHTML({uid:'pc'+i,no:m.rank?'no. '+String(m.rank).padStart(3,'0'):'',mole:moleSlotHTML({src:m.mole,name:m.name}),lv:m.lv,arch:m.typeId||'',stamp:{name:stampName(m.typeId||''),sub:m.member||'contributor'},bio:m.bio,bioEmpty:'no bio yet.',ink:v.ink,rot:v.rot,rib:v.rib,
   name:m.name,handle:m.handle,joined:m.joined,member:m.member||'contributor',sigLabel:'their mark',sig:sigImg(m),mrz:mrz({name:m.name,handle:m.handle,joined:m.joined,member:m.member},m.rank,m.lv)});
- return `<li class="pm-item" data-pm-i="${i}" style="--i:${i};--dx:${dx}px;--dy:${dy}px;--dr:${dr}deg"><a class="pm-link" href="${esc(m.href)}" aria-label="${esc(m.name)}’s passport" draggable="false"><div class="pm-tilt pp-passobj-in" data-foil="${v.foil}" style="--pf:${m.rank&&m.rank<=3?RANKC[m.rank-1]:'#dfe6e4'}">${card}</div></a></li>`;
+ return `<div class="pm-tilt pp-passobj-in" data-foil="${v.foil}" style="--pf:${m.rank&&m.rank<=3?RANKC[m.rank-1]:'#dfe6e4'}">${card}</div>`;
+}
+export function passportHTML(m,i){
+ const dx=((i*3)%5-2)*4,dy=((i*7)%5-2)*3,dr=((i*5)%7-3);
+ return `<li class="pm-item" data-pm-i="${i}" style="--i:${i};--dx:${dx}px;--dy:${dy}px;--dr:${dr}deg"><a class="pm-link" href="${esc(m.href)}" aria-label="${esc(m.name)}’s passport" draggable="false">${passportFace(m,i)}</a></li>`;
 }
 
 /* ---------- section ---------- */

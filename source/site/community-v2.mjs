@@ -5,7 +5,7 @@ import {COMMUNITY_METRICS} from './community-hub.mjs?v=7d82ced0';
 import {avatarHTML} from '../profile/identity.mjs?v=38b679eb';
 import {DISCORD_URL,replies,msgText,clip} from './discord-link.mjs?v=4ce108b0';
 import {ROAD} from './roadmap-data.mjs?v=e33f2569';
-import {passportModels,participantsHTML,wirePassports} from './passport-mini.mjs?v=29f9c027';
+import {passportModels,participantsHTML,wirePassports} from './passport-mini.mjs?v=96713545';
 
 /* Community hub v2 (2026-10-19). Real data only: leaderboard, forum snapshot, catalog. Votes live in this browser. The giveaway hero lives in giveaway-hero.mjs. */
 const VOTE_KEYS={spot:'deepspot-community-spot-votes-v1',poll:'deepspot-community-poll-v1',road:'deepspot-community-roadmap-v1'};
@@ -263,7 +263,7 @@ function wireVotes(scope){
 /* your vote matters: two huge numbered cards, the same loud family as the discord stage */
 const voteHTML=()=>`<section class="vm" aria-labelledby="cv-vt"><div class="vm-in"><div class="vm-l"><span class="vm-k">two ways to shape deepspot</span><h2 id="cv-vt">your vote<br>matters.</h2><p>Nothing goes on the map and nothing gets built without the community. Pick a side.</p></div><ol class="vm-r"><li><a href="#cv-sp" data-jump="cv-sp"><span class="vm-n">01</span><b>what makes<br>the map.</b><span class="vm-d">Yes or not quite on new community spots.</span><i>vote on spots ${icon('arrow')}</i></a></li><li><a href="#cv-rd" data-jump="cv-rd"><span class="vm-n">02</span><b>what we build<br>next.</b><span class="vm-d">Up or down on the roadmap.</span><i>vote on the roadmap ${icon('arrow')}</i></a></li></ol></div></section>`;
 export async function renderCommunityV2(root,data){
- const ghP=import('./giveaway-hero.mjs?v=263a7d93');ghP.catch(()=>{});
+ const ghP=import('./giveaway-hero.mjs?v=3c15f1d3');ghP.catch(()=>{});
  const dcq=new URLSearchParams(location.search).get('dc'),dcv=DCV[dcq]?dcq:'3',acct=readAccount(),gv=new URLSearchParams(location.search).get('giveaway')||'g1';
  const order=people(data).monthly.slice().sort((a,b)=>b.points-a.points),models=passportModels(data,order);
  const {renderGiveaway}=await ghP;

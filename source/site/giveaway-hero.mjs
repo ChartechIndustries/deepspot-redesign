@@ -1,11 +1,11 @@
 import {esc,$,$$,icon,localURL} from './core.mjs?v=149e30e7';
-import {people,fmt} from './community-v2.mjs?v=263a7d93';
+import {people,fmt} from './community-v2.mjs?v=3c15f1d3';
 import {halftoneField} from './halftone-field.mjs?v=a8e8e93e';
 
 /* Community giveaway hero (2026-10-19): 10 race-graph versions. Real data only (content.json leaderboard, this month). Bar length = sqrt(points). */
 const PC=['#07d653','#3c60ff','#83cdce','#f2c14e'];
-const CROP={x:.2,y:.02,w:.6};
-const PRIZES=['$300','$100','$100'];
+export const CROP={x:.2,y:.02,w:.6};
+export const PRIZES=['$300','$100','$100'];
 const TICKS=[500,2000,5000];
 const NARROW=700;
 const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
@@ -21,7 +21,7 @@ export function giveawayData(data){
 }
 
 /* ---------- shared pieces ---------- */
-const mole=r=>`<span class="gv-mole">${r.mole?`<img src="${esc(r.mole)}" alt="" width="512" height="512" decoding="async">`:`<b aria-hidden="true">${esc(String(r.name||'?')[0].toUpperCase())}</b>`}</span>`;
+export const mole=r=>`<span class="gv-mole">${r.mole?`<img src="${esc(r.mole)}" alt="" width="512" height="512" decoding="async">`:`<b aria-hidden="true">${esc(String(r.name||'?')[0].toUpperCase())}</b>`}</span>`;
 const rc=(r,st='')=>`class="gv-rc${r.rank===1?' is-lead':''}${r.rank<4?` is-top is-r${r.rank}`:''}${r.p>.7?' is-hi':''}" data-rc data-i="${r.rank-1}" data-p="${r.p.toFixed(4)}" style="--p:${r.p.toFixed(4)};--pc:${PC[(r.rank-1)%4]};${st}"`;
 const pin=(r,extra='')=>`<span class="gv-pin"><span class="gv-bob"><span class="gv-name">${esc(r.name)}</span>${mole(r)}${extra}</span></span>`;
 const pts=r=>`<b class="gv-pts" data-count="${r.points}">${fmt(r.points)}</b>`;
@@ -165,6 +165,16 @@ V.g8=(D,n,now)=>{
  const flag=`<span class="gv-flag" aria-hidden="true" style="--x:${g.cx};--y:${g.cy}"><i></i><b>$300</b></span>`;
  return {move:mv,body:`<div class="gv-oval"><div class="gv-cv" style="--vb:${g.w};--mu:${g.mu};aspect-ratio:${g.w}/${g.h}">${svg}${flag}<ol class="gv-ol" aria-label="Giveaway standings, this month">${D.map(r=>ovRC(r)).join('')}</ol></div></div>`,note:`<p class="gv-note">Height = √ points: the summit is ${fmt(D[0].max)}. Rings mark ${TICKS.filter(v=>v<D[0].max).map(fmt).join(', ')} points. Each route climbs from base camp at the edge.</p>`};
 };
+
+/* ---------- home promo card (2026-10-22): the top three only, podium order 2 . 1 . 3 ----------
+   Same data (giveawayData), same sqrt height rule (r.p), same mole crop (CROP + mole) and same prizes as the hero above.
+   Styles live in editorial.css (.ed-race). Returns '' when there are no entries. */
+export const PODIUM_ORDER=[1,0,2];
+export function podiumHTML(D){
+ const top=PODIUM_ORDER.map(i=>D[i]).filter(Boolean);
+ if(!top.length)return '';
+ return `<ol class="ed-r-cols" aria-label="Giveaway standings, top three this month" style="--mx:${CROP.x};--my:${CROP.y};--mw:${CROP.w}">${top.map((r,k)=>`<li class="ed-r-col is-r${r.rank}" style="--p:${r.p.toFixed(4)};--k:${k};--pc:${PC[(r.rank-1)%4]}"><span class="ed-r-clip"><span class="ed-r-bar"></span><span class="ed-r-pin"><span class="gv-name">${esc(r.name)}</span>${mole(r)}<b class="ed-r-pts">${fmt(r.points)}</b><span class="ed-r-tag">${PRIZES[r.rank-1]}</span></span></span><span class="ed-r-rk" aria-label="rank ${r.rank}">${r.rank}</span></li>`).join('')}</ol>`;
+}
 
 /* ---------- render ---------- */
 export function renderGiveaway(root,data,variant='g1',opt={}){

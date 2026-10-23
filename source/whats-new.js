@@ -1,7 +1,7 @@
 (() => {
   const stories = [
-    { label: 'discoveries', kind: 'disc', theme: 'paper', title: 'a prison.<br>a swimming hole.<br>same place.', description: 'At Rummu, Estonia, a flooded quarry has turned the remains of a Soviet prison into something utterly unexpected.', image: '/spots/rummu.jpg', alt: 'The abandoned buildings of Rummu rising from clear blue water', place: 'Rummu, Estonia', href: '/blog/a-soviet-prison-doubles-as-a-swimming-hole' },
-    { label: 'community', kind: 'comm', theme: 'aqua', title: 'live from<br>the discord.', description: 'explorers swapping finds, tips and plans right now.' },
+    { label: 'discoveries', kind: 'disc', theme: 'paper', title: 'a pile of rubble.<br>a spy station.<br>a gallery.', description: 'Berlin’s Teufelsberg is a man-made hill of war rubble, topped by a Cold War listening station that is now a sprawling street-art canvas.', image: '/spots/teufelsberg.jpg', alt: 'White radar domes of the Teufelsberg listening station rising above walls covered in graffiti murals', place: 'Teufelsberg, Berlin', publisher: 'Johan SWE', href: '/blog/berlin-s-hill-of-nazi-rubble-cold-war-spies-and-graffiti' },
+    { label: 'community', kind: 'comm', theme: 'aqua', title: 'your profile<br>is a passport.', description: 'pick your traveler type, roll your mole, sign your mark and choose a foil.' },
     { label: 'featured spot', kind: 'feat', theme: 'blue', title: 'looks like art.<br>burns your trash.', description: 'Golden domes, candy-colored towers, and a very unexpected day job. Meet Osaka’s working garbage palace.', image: '/spots/maishima.jpg', alt: 'The colorful towers of Maishima Incineration Plant', place: 'Maishima, Osaka', href: '/blog/osaka-s-candy-colored-garbage-palace' }
   ];
   const arrow = direction => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="${direction === 'left' ? 'M19 12H5m6-6-6 6 6 6' : 'M5 12h14m-6-6 6 6-6 6'}"/></svg>`;
@@ -11,9 +11,8 @@
       if (this.ready) return;
       this.ready = true;
       this.profiles = await import('/profile/identity.mjs?v=38b679eb');
-      this.link = await import('/site/discord-link.mjs?v=4ce108b0');
       this.core = await import('/site/core.mjs?v=149e30e7');
-      try { this.forum = (await (await fetch('/site/content.json')).json()).forum || []; } catch { this.forum = []; }
+      this.passports = await this.loadPassports();
       this.style.setProperty('--wn-count', stories.length);
       const {imgAttrs} = await import('/site/img.mjs?v=61371a3b');
       this.active = 0;
@@ -42,6 +41,8 @@
       this.mobile.addEventListener('change', this.mobileHandler);
       this.mobileHandler();
       this.panels = [...this.querySelectorAll('.wn-panel')];
+      this.fitFans();
+      if ('ResizeObserver' in window) { this.sizer = new ResizeObserver(() => this.fitFans()); this.sizer.observe(this.viewport); }
       this.render(false);
       this.pauseLabel();
       this.addEventListener('click', event => {
@@ -71,20 +72,60 @@
     }
 
     storyHTML(story, imgAttrs) {
-      const credit = story.publisher ? ' · ' + this.profiles.authorLink(story.publisher, {from: location.pathname + location.search + '#wn-heading'}) : '';
-      const photo = `<figure class="wn-photo" style="--wn-bg:url('${story.image}')"><div class="wn-img"><img${imgAttrs(story.image, story.kind === 'disc' ? '(max-width:700px) 100vw, 1000px' : '(max-width:700px) 100vw, 740px')} alt="${story.alt}" loading="lazy" decoding="async"></div><figcaption>${story.place}${credit}</figcaption></figure>`;
+      const feat = story.kind === 'feat';
+      const credit = story.publisher ? '<span class="wn-sep"> · </span>' + this.profiles.authorLink(story.publisher, {from: location.pathname + location.search + '#wn-heading'}) : '';
+      // discoveries: the full 1600px original (the 800px card variant is too soft at this size). featured: card variants.
+      const attrs = story.kind === 'disc' ? ` src="${story.image}" width="1600" height="1200"` : imgAttrs(story.image, '(max-width:700px) 100vw, 740px');
+      const photo = `<figure class="wn-photo" style="--wn-bg:url('${story.image}')"><div class="wn-img"><img${attrs} alt="${story.alt}" loading="lazy" decoding="async"></div>${feat ? '' : `<figcaption>${story.place}${credit}</figcaption>`}</figure>`;
       const more = `<a class="wn-readmore" href="https://www.deepspot.io${story.href}" target="_blank" rel="noopener">read more ${arrow('right')}</a>`;
-      const copy = `<div class="wn-copy">${story.kind === 'feat' ? '<span class="wn-chip">featured spot</span>' : ''}<h3>${story.title}</h3><p>${story.description}</p>${more}</div>`;
+      const copy = `<div class="wn-copy">${feat ? '<span class="wn-chip">featured spot</span>' : ''}<h3>${story.title}</h3><p>${story.description}</p>${feat ? `<p class="wn-place">${story.place}</p>` : ''}${more}</div>`;
       return photo + copy;
     }
 
+    // Community panel: a fanned stack of real passports (same models and card as the community page "participants" deck).
+    async loadPassports() {
+      try {
+        const base = document.head;
+        for (const href of ['/profile/profile.css?v=797515c1', '/site/passport-mini.css?v=a0170d67']) {
+          if (!document.querySelector(`link[href^="${href.split('?')[0]}"]`)) { const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = href; base.append(l); }
+        }
+        const [mini, data] = await Promise.all([import('/site/passport-mini.mjs?v=96713545'), this.core.loadData()]);
+        const monthly = data.content.leaderboard.monthly.slice().sort((a, b) => b.points - a.points);
+        const models = mini.passportModels(data, monthly).filter(m => m.mole);
+        const foil = m => (m.rank === 1 ? 'gold' : m.rank && m.rank <= 3 ? 'chrome' : 'holo');
+        const gold = models.filter(m => foil(m) === 'gold'), chrome = models.filter(m => foil(m) === 'chrome'), holo = models.filter(m => foil(m) === 'holo');
+        // back to front: holo, chrome, chrome, then the gold card on top. Missing foils are skipped, extra holo cards fill in.
+        let pick = [holo[0], chrome[1], chrome[0], gold[0]].filter(Boolean);
+        for (const m of [...holo.slice(1), ...chrome, ...gold]) { if (pick.length >= 4) break; if (!pick.includes(m)) pick.unshift(m); }
+        const rots = pick.length > 3 ? [-8, -3, 4, 0] : pick.length === 3 ? [-6, 3, 0] : pick.map((_, i, a) => (i === a.length - 1 ? 0 : -4));
+        return pick.map((m, j) => ({m, j, rot: rots[j] ?? 0, html: mini.passportFace(m, 'wn' + j)}));
+      } catch { return []; }
+    }
+
     communityHTML(story) {
-      const {DISCORD_URL, replies, msgText, clip} = this.link;
       const {esc, localURL} = this.core;
-      const row = (f, i) => `<li class="wn-msg" style="--i:${i}">${this.profiles.avatarHTML(f.author, {className: 'wn-av'})}<div class="wn-mb"><span class="wn-m"><b>${esc(f.author)}</b><i>#${esc(f.category.replace(/\s+/g, '-'))}</i><small>${replies(f.replies)}</small></span><a href="${esc(localURL('/forum/', {id: f.id}))}">${esc(clip(msgText(f), 120))}</a></div></li>`;
-      const rows = this.forum.map(row).join('');
-      const chat = this.forum.length ? `<div class="wn-chat" role="group" aria-label="Featured messages from the forum"><div class="wn-chat-top"><b># featured-messages</b><span>from the forum</span></div><div class="wn-feed"><div class="wn-track" style="--n:${this.forum.length}"><ol class="wn-list">${rows}</ol><ol class="wn-list wn-dup" aria-hidden="true" inert>${rows}</ol></div></div></div>` : '';
-      return `<div class="wn-copy"><p class="wn-live"><span class="wn-live-dot" aria-hidden="true"></span>live now</p><h3>${story.title}</h3><p>${story.description}</p><div class="wn-actions"><a class="wn-join" href="${esc(DISCORD_URL)}" data-original target="_blank" rel="noopener">join now <span aria-hidden="true">↗</span></a><a class="wn-forum" href="${esc(localURL('/forum/'))}">open the forum ↗</a></div></div>${chat}`;
+      const cards = this.passports || [];
+      const n = cards.length;
+      const fan = n ? `<div class="wn-fan pp-main" style="--n:${n}" role="group" aria-label="A stack of example DeepSpot passports">${cards.map(({m, j, rot, html}) => `<a class="wn-pc pm-link" href="${esc(m.href)}" aria-label="${esc(m.name)}’s passport" draggable="false" ${j === n - 1 ? '' : 'tabindex="-1"'} style="--j:${j};--rot:${rot}deg;--top:${j === n - 1 ? 1 : 0}">${html}</a>`).join('')}</div>` : '';
+      const example = this.profiles.profileHref('wayfarer', {from: location.pathname + location.search});
+      return `<div class="wn-copy"><span class="wn-chip wn-new">new</span><h3>${story.title}</h3><p>${story.description}</p><div class="wn-actions"><a class="wn-join" href="${esc(localURL('/welcome/'))}">make yours <span aria-hidden="true">↗</span></a><a class="wn-forum" href="${esc(example)}">see an example ↗</a></div></div>${fan}`;
+    }
+
+    fitFans() {
+      this.querySelectorAll('.wn-fan').forEach(fan => {
+        const fw = fan.clientWidth, fh = fan.clientHeight, n = Number(fan.style.getPropertyValue('--n')) || 1;
+        if (!fw || !fh) return;
+        const tight = fw < 420, k = n > 1 ? (tight ? .17 : .27) : 0;
+        // card box 440 x 690, pivot at the bottom centre; the back card leans left (about 314 px at scale 1), the top card is straight.
+        const base = ((n - 1) / 2) * k * 440, L = base + (n > 3 ? 314 : n === 3 ? 291 : 220), R = base + 220;
+        const sh = (fh - (matchMedia('(max-width:800px)').matches ? 14 : 56)) / 690, sw = (fw - 16) / (L + R);
+        const s = Math.max(.15, Math.min(sh, sw));
+        fan.style.setProperty('--cs', s.toFixed(4));
+        fan.style.setProperty('--sx', (((L - R) / 2) * s).toFixed(1) + 'px');
+        fan.style.setProperty('--sp', (440 * s * k).toFixed(1) + 'px');
+        fan.style.setProperty('--ph', (690 * s).toFixed(1) + 'px');
+        fan.style.setProperty('--pw', (440 * s).toFixed(1) + 'px');
+      });
     }
 
     expand() {
@@ -189,6 +230,7 @@
       clearTimeout(this.finishTimer);
       this.departing?.forEach(copy => copy.remove());
       this.observer?.disconnect();
+      this.sizer?.disconnect();
       document.removeEventListener('visibilitychange', this.visibilityHandler);
       this.reduced?.removeEventListener('change', this.motionHandler);
       this.mobile?.removeEventListener('change', this.mobileHandler);

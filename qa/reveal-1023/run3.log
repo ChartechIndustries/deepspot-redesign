@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "C:\Users\CharD\Desktop\DeepSpot Globe\qa\reveal-1023\run.py", line 9, in <module>
+    widths=[int(a[1:]) for a in sys.argv[1:] if a.startswith('w')] or [390,1440]
+  File "C:\Users\CharD\Desktop\DeepSpot Globe\qa\reveal-1023\run.py", line 9, in <listcomp>
+    widths=[int(a[1:]) for a in sys.argv[1:] if a.startswith('w')] or [390,1440]
+ValueError: invalid literal for int() with base 10: 'elcome'
