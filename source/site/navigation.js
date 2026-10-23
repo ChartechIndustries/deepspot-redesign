@@ -29,9 +29,6 @@
   return null;
  }
  if(!document.querySelector('link[href^="/site/account-nav.css?v=28ee3cb3"]')){const accountStyle=document.createElement('link');accountStyle.rel='stylesheet';accountStyle.href='/site/account-nav.css?v=28ee3cb3';document.head.append(accountStyle);}
- /* scroll fade-in for every page (2026-10-23): stylesheet + module, see site/reveal.mjs */
- if(!document.querySelector('link[href^="/site/reveal.css?v=869cf2af"]')){const revealStyle=document.createElement('link');revealStyle.rel='stylesheet';revealStyle.href='/site/reveal.css?v=869cf2af';document.head.append(revealStyle);}
- import('/site/reveal.mjs?v=c3012e73').catch(()=>{});
  function update(root=document){
   root.querySelectorAll('.header-controls,.br-settings').forEach(controls=>{if(!controls.querySelector('.ds-fieldbook-button')){const book=document.createElement('a');book.className='ds-fieldbook-button';book.href='/saved/';book.setAttribute('aria-label','Your fieldbook');book.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4Z"/></svg>';controls.prepend(book);}if(controls.querySelector('.ds-account-button'))return;const account=document.createElement('a');account.className='ds-account-button';account.href=accountHref();account.setAttribute('aria-label','Your passport');account.title='Your passport';account.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 21v-3a7 7 0 0 1 14 0v3"/></svg>';controls.prepend(account);});
   root.querySelectorAll('a[href]').forEach(a=>{const href=destination(a);if(href&&a.getAttribute('href')!==href){a.setAttribute('href',href);if(!a.hasAttribute('download')){a.removeAttribute('target');a.removeAttribute('rel');}}});}

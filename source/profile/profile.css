@@ -904,9 +904,9 @@ html.ed-open{overflow:hidden}
 .ed-biop[data-font=hand] .ed-bt{font-family:Caveat,"Segoe Script",cursive;font-weight:600;font-size:22px;line-height:1}
 .ed-biop[data-align=center]{text-align:center}
 /* right: scrolling column */
-.ed-right{position:relative;min-width:0;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:0 56px 56px;scroll-padding-top:96px}
-.ed-top{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 -56px;padding:20px 56px 16px;background:var(--br-panel)}
-.ed-top::after{content:"";position:absolute;left:0;right:0;top:100%;height:20px;background:linear-gradient(var(--br-panel),transparent);pointer-events:none}
+.pp-editdlg .ed-right{position:relative;min-width:0;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:0 56px 56px;scroll-padding-top:96px}
+.pp-editdlg .ed-top{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 -56px;padding:20px 56px 16px;background:var(--br-panel)}
+.pp-editdlg .ed-top::after{content:"";position:absolute;left:0;right:0;top:100%;height:20px;background:linear-gradient(var(--br-panel),transparent);pointer-events:none}
 .ed-index{display:flex;gap:6px;min-width:0;overflow-x:auto;scrollbar-width:none}
 .ed-index::-webkit-scrollbar{display:none}
 .ed-index a{flex:none;display:inline-flex;align-items:center;gap:8px;height:48px;padding:0 16px 0 8px;border-radius:99px;border:1px solid transparent;text-decoration:none;color:var(--br-text);font:800 16px/1 Arial,Helvetica,sans-serif;letter-spacing:-.01em;white-space:nowrap}
@@ -1041,9 +1041,9 @@ html[data-panel-color=off] .ed-n{background:transparent;color:var(--br-text);bor
  .ed-main{display:flex;flex-direction:column;overflow-y:auto;overscroll-behavior:contain}
  .ed-prev{flex:none;border-right:0;border-bottom:1px solid var(--br-line)}
  .ed-prev-in{padding:56px 16px 24px;gap:16px}
- .ed-right{display:contents}
- .ed-top{order:-1;position:sticky;top:0;margin:0;padding:12px 16px;background:var(--br-panel);border-bottom:1px solid var(--br-line);z-index:6}
- .ed-main>.ed-top{flex:none}
+ .pp-editdlg .ed-right{display:contents}
+ .pp-editdlg .ed-top{order:-1;position:sticky;top:0;margin:0;padding:12px 16px;background:var(--br-panel);border-bottom:1px solid var(--br-line);z-index:6}
+ .pp-editdlg .ed-main>.ed-top{flex:none}
  .ed-title,.ed-sec{margin-left:16px;margin-right:16px}
  .ed-title{margin-top:32px;font-size:clamp(40px,12vw,56px)}
  .ed-sec{padding-top:32px;margin-top:32px}
@@ -1070,7 +1070,7 @@ html[data-panel-color=off] .ed-n{background:transparent;color:var(--br-text);bor
 
 /* section index: inactive items = number circle only, the active one shows its label (fits at every width); fade edges if it still scrolls */
 .ed-index a:not([aria-current]){padding-right:8px}.ed-index a:not([aria-current]) span{display:none}
-.ed-top{container-type:inline-size}
+.pp-editdlg .ed-top{container-type:inline-size}
 @container (max-width:429px){.ed-index a[aria-current]{padding-right:8px}.ed-index a[aria-current] span{display:none}}
 @container (max-width:300px){.ed-index{gap:3px}.ed-index a{padding:0 3px}.ed-index a b{min-width:28px;height:28px;padding:0}}
 .ed-index{padding:2px;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6px,#000 calc(100% - 14px),transparent);mask-image:linear-gradient(90deg,transparent,#000 6px,#000 calc(100% - 14px),transparent)}

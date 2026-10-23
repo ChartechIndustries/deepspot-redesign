@@ -86,7 +86,7 @@
     async loadPassports() {
       try {
         const base = document.head;
-        for (const href of ['/profile/profile.css?v=797515c1', '/site/passport-mini.css?v=a0170d67']) {
+        for (const href of ['/profile/profile.css?v=d1fc9dc9', '/site/passport-mini.css?v=a0170d67']) {
           if (!document.querySelector(`link[href^="${href.split('?')[0]}"]`)) { const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = href; base.append(l); }
         }
         const [mini, data] = await Promise.all([import('/site/passport-mini.mjs?v=96713545'), this.core.loadData()]);
