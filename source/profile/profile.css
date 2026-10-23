@@ -1171,3 +1171,46 @@ html[data-panel-color=off] .ed-n{background:transparent;color:var(--br-text);bor
 
 /* 2026-10-22: tab strips scroll sideways only — never up/down on phones */
 .ob-tabs,.pp-vtabs,.cv-tabs,.br-tabs,.fs-tabs{overflow-y:hidden;overscroll-behavior-x:contain;overscroll-behavior-y:none}
+
+/* ===== 2026-10-22b (spec FIX-1022B): desktop profile window never clips. The whole record scrolls; the tabs live outside the scroller. ===== */
+@media(min-width:1100px){
+ html.pp-app .pp-book{position:relative}
+ html.pp-app .pp-rec{display:flex;flex-direction:column;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain;position:relative;z-index:3;scrollbar-gutter:stable}
+ html.pp-app .pp-rec>*{flex:0 0 auto;min-width:0}
+ html.pp-app .pp-biosec,html.pp-app .pp-rec:has(.pp-tabsec[data-vt=wtg]) .pp-biosec{flex:0 0 auto!important;height:auto!important;min-height:0}
+ html.pp-app .pp-book[data-editing] .pp-biosec{flex:0 0 auto!important;height:auto!important}
+ html.pp-app .pp-biosec>.pp-body{overflow:visible}
+ html.pp-app .pp-bio-fit{height:clamp(84px,15vh,190px);min-height:0;overflow:hidden;display:flex;align-items:flex-start}
+ html.pp-app .pp-rec:has(.pp-tabsec[data-vt=wtg]) .pp-bio-fit{display:flex}
+ html.pp-app .pp-rec:has(.pp-tabsec[data-vt=wtg]) .pp-statsrow{display:grid}
+ html.pp-app .pp-statsrow .pp-body,html.pp-app .pp-rec>[aria-labelledby=pp-type]>.pp-body,html.pp-app .pp-rec>[aria-labelledby=pp-stats]>.pp-body{height:auto}
+ html.pp-app .pp-statsrow .pp-type{height:auto}
+ html.pp-app .pp-tabsec{display:block;position:static;flex:0 0 auto;min-height:0}
+ html.pp-app .pp-vpanels{height:auto;overflow:visible;container-type:normal;overscroll-behavior:auto}
+ html.pp-app #pp-vp-wtg .wg-wrap{height:auto}
+ html.pp-app #pp-vp-wtg .wg-wrap .wg,html.pp-app #pp-vp-wtg .wg{height:clamp(220px,min(44vh,27vw),460px);min-height:0}
+ html.pp-app #pp-vp-wtg .wg-side{max-height:none;height:auto;overflow:visible}
+ /* tabs: pinned to the left edge of the record, outside the scroller */
+ html.pp-app .pp-book>.pp-vtabs{position:absolute;top:auto;bottom:12px;right:calc(50% - 4px);left:auto;max-height:calc(100% - 20px);z-index:6;overflow:visible;flex-direction:column;align-items:flex-end;justify-content:flex-end;gap:6px;padding:0;border:0;background:none}
+ /* back link: top-left of the field, the tabs never reach it; the card starts below it */
+ html.pp-app .pp-tabs-back{left:12px;right:auto;top:8px}
+ html.pp-app .pp-field .pp-stage{padding:52px 56px 12px 0}
+}
+@media(min-width:1100px) and (max-height:760px){
+ html.pp-app .pp-vtab,html.pp-app .pp-vtab[aria-selected=true]{padding:9px 0;font-size:14px}
+ html.pp-app .pp-vtab{width:32px}html.pp-app .pp-vtab[aria-selected=true]{width:42px;padding:11px 0}
+ html.pp-app .pp-book>.pp-vtabs{gap:4px;bottom:8px}
+}
+@media(min-width:1100px){
+ html.pp-app .pp-bio-fit{max-height:none;flex:0 0 auto}
+ html.pp-app .pp-sharebar{margin-top:14px;gap:12px}
+ html.pp-app .pp-tabs-back{top:6px}
+ html.pp-app .pp-field .pp-stage{padding-top:44px}
+}
+@media(min-width:1100px) and (max-width:1279px){html.pp-app .pp-sharebar .pp-mono{display:none}}
+@media(min-width:1100px) and (max-height:820px){
+ html.pp-app .pp-sharebar{margin-top:10px}
+ html.pp-app .pp-sharebar .pp-mono{display:none}
+ html.pp-app .pp-sharebar .pp-share{min-height:46px;padding:0 24px;font-size:17px}
+}
+@media(min-width:1100px){html.pp-app .pp-bio-fit{height:clamp(64px,11vh,150px)}}

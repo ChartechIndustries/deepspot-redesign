@@ -8,10 +8,10 @@
 /* title sits ON the deck, above the cards. Sticker style so it reads over cream cards and over the page. */
 .pm-wrap{position:relative}
 .pm-hero{position:absolute;inset:0;z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;pointer-events:none;padding:0 16px;transition:opacity .4s ease,transform .4s ease,filter .4s ease}
-.pm h2{margin:0;padding:.04em .08em .14em;font-size:clamp(52px,10.5vw,168px);line-height:.92;letter-spacing:-.075em;font-weight:800;color:#f5f4ee;-webkit-text-stroke:.085em #0b1b27;paint-order:stroke fill;text-shadow:0 .05em 0 #0b1b27,0 .12em .35em rgba(0,0,0,.45)}
+.pm h2{margin:0;padding:.12em .34em .2em;font-size:clamp(48px,8vw,132px);line-height:.95;letter-spacing:-.06em;font-weight:800;color:#f5f4ee;background:#0b1b27;border-radius:16px;transform:rotate(-3deg);box-shadow:0 18px 40px rgba(0,0,0,.38),0 3px 8px rgba(0,0,0,.25)}
 .pm h2 span{color:#07d653}
-.pm-sub{margin:10px 0 0;padding:6px 14px;border-radius:99px;background:#0b1b27;font:700 16px/1.3 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.08em;text-transform:uppercase;color:#f5f4ee}
-.pm .pm-sub{color:#f5f4ee}
+.pm-sub{position:relative;z-index:1;margin:-.5em 0 0;padding:8px 18px;border-radius:99px;background:#07d653;transform:rotate(2deg);box-shadow:0 10px 22px rgba(0,0,0,.3);font:800 16px/1.3 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.08em;text-transform:uppercase;color:#0b1b27}
+.pm .pm-sub{color:#0b1b27}
 .pm.is-open .pm-hero{opacity:0;transform:scale(1.07);filter:blur(10px)}
 
 /* coverflow stage */
@@ -64,7 +64,8 @@
  .pm:not(.is-open) .pm-item.is-one{opacity:1}
  .pm-stage{height:calc(var(--pm-ch) * var(--pm-cs) + 28px)}
  .pm-ctl{padding:0 16px}
- .pm-sub{font-size:14px}
+ .pm-sub{font-size:13px;padding:7px 14px}
+ .pm h2{font-size:clamp(34px,11.5vw,60px);border-radius:14px}
 }
 @media(max-width:370px){.pm{--pm-cs:.72}}
 /* reduced motion: no deal, no fade. The open carousel shows at once with the title as a normal heading above it. */
@@ -73,12 +74,19 @@
  .pm-tilt{transform:none!important}
  .pm-wrap{display:flex;flex-direction:column}
  .pm-hero{order:-1;position:static;opacity:1!important;transform:none!important;filter:none!important;align-items:flex-start;text-align:left;padding:0 max(var(--ds-gutter),3.2vw) 12px}
- .pm h2{color:var(--br-text);-webkit-text-stroke:0;text-shadow:none;font-size:clamp(46px,7vw,112px)}
- .pm h2 span{color:var(--pm-gt)}
- .pm .pm-sub{background:none;padding:0;color:var(--br-muted)}
+ .pm h2{font-size:clamp(40px,7vw,112px);transform:none;box-shadow:none}
+ .pm-sub{transform:none;box-shadow:none;margin-top:10px}
+ .pm .pm-sub{color:#0b1b27}
 }
 
 /* 2026-10-21: the cards gather back into the deck when the section is out of view / not hovered */
 .pm.is-stacking .pm-item{transition:transform .6s cubic-bezier(.5,0,.3,1) calc(var(--dl,0) * 1ms),opacity .4s calc(var(--dl,0) * 1ms)}
 .pm .pm-hero{transition:opacity .45s ease,transform .45s ease,filter .45s ease}
 .pm.is-stacking .pm-hero{transition-delay:.35s}
+
+/* 2026-10-22b: slower reveal. The title label lands, holds, then fades while the cards deal (1.0 s per card). */
+.pm.is-landing:not(.is-open) .pm-hero{animation:pm-land .45s cubic-bezier(.2,.9,.3,1) backwards}
+@keyframes pm-land{from{opacity:0;transform:scale(1.08)}to{opacity:1;transform:none}}
+.pm.is-open .pm-hero{transition:opacity .7s ease,transform .7s ease,filter .7s ease}
+.pm.is-dealing .pm-item{transition:transform 1s cubic-bezier(.3,1.25,.45,1) calc(var(--dl,0) * 1ms),opacity .6s calc(var(--dl,0) * 1ms)}
+@media(prefers-reduced-motion:reduce){.pm.is-landing .pm-hero{animation:none}}

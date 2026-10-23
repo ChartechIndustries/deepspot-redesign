@@ -3,7 +3,7 @@ import {profileHref,profileId} from '../profile/identity.mjs';
 import {readAccount,avatarImage} from './account-state.mjs?v=icons2';
 import {COMMUNITY_METRICS} from './community-hub.mjs';
 import {avatarHTML} from '../profile/identity.mjs';
-import {passportModels,participantsHTML,wirePassports} from './passport-mini.mjs?v=r22a';
+import {passportModels,participantsHTML,wirePassports} from './passport-mini.mjs?v=fx1';
 
 /* Community hub v2 (2026-10-19). Real data only: leaderboard, forum snapshot, catalog. Votes live in this browser. The giveaway hero lives in giveaway-hero.mjs. */
 const DISCORD_URL='https://www.deepspot.io/community'; // TODO: replace with the real Discord invite when Charlie supplies it
@@ -269,13 +269,16 @@ function wireVotes(scope){
 /* your vote matters: two huge numbered cards, the same loud family as the discord stage */
 const voteHTML=()=>`<section class="vm" aria-labelledby="cv-vt"><div class="vm-in"><div class="vm-l"><span class="vm-k">two ways to shape deepspot</span><h2 id="cv-vt">your vote<br>matters.</h2><p>Nothing goes on the map and nothing gets built without the community. Pick a side.</p></div><ol class="vm-r"><li><a href="#cv-sp" data-jump="cv-sp"><span class="vm-n">01</span><b>what makes<br>the map.</b><span class="vm-d">Yes or not quite on new community spots.</span><i>vote on spots ${icon('arrow')}</i></a></li><li><a href="#cv-rd" data-jump="cv-rd"><span class="vm-n">02</span><b>what we build<br>next.</b><span class="vm-d">Up or down on the roadmap.</span><i>vote on the roadmap ${icon('arrow')}</i></a></li></ol></div></section>`;
 export async function renderCommunityV2(root,data){
+ const ghP=import('./giveaway-hero.mjs?v=fx1');ghP.catch(()=>{});
  const dcq=new URLSearchParams(location.search).get('dc'),dcv=DCV[dcq]?dcq:'3',acct=readAccount(),gv=new URLSearchParams(location.search).get('giveaway')||'g1';
  const order=people(data).monthly.slice().sort((a,b)=>b.points-a.points),models=passportModels(data,order);
- root.innerHTML=`<div class="cv"><h1 class="cv-sr">DeepSpot community</h1><div data-giveaway></div>${models.length?participantsHTML(models):''}${discordHTML(data.content,dcv)}${voteHTML()}<div class="cv-gut">${spotsHTML(data,acct)}${roadHTML()}</div></div>`;
+ const {renderGiveaway}=await ghP;
+ root.innerHTML=`<div class="cv${reduced()?'':' cv-pre'}"><h1 class="cv-sr">DeepSpot community</h1><div data-giveaway></div>${models.length?participantsHTML(models):''}${discordHTML(data.content,dcv)}${voteHTML()}<div class="cv-gut">${spotsHTML(data,acct)}${roadHTML()}</div></div>`;
  $$('[data-jump]',root).forEach(l=>l.addEventListener('click',e=>{const t=document.getElementById(l.dataset.jump);if(!t)return;e.preventDefault();t.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});}));
  const scope=$('.cv',root);
  wirePoll(scope);wireFeed(scope);wireDeck(scope);wireMarquee(scope);wireCounts(scope);wireSpots(scope,data,acct);wireVotes(scope);
+ renderGiveaway($('[data-giveaway]',scope),data,gv);
  const pm=$('[data-pm]',scope);if(pm)wirePassports(pm,models);
- const {renderGiveaway}=await import('./giveaway-hero.mjs?v=dcv1');renderGiveaway($('[data-giveaway]',scope),data,gv);
+ requestAnimationFrame(()=>requestAnimationFrame(()=>scope.classList.remove('cv-pre')));
  if(location.hash==='#dc'){const go=()=>document.getElementById('dc')?.scrollIntoView({block:'start'});go();setTimeout(go,700);setTimeout(go,1800);}
 }

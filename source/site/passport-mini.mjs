@@ -47,6 +47,7 @@ export function wirePassports(sec,models){
  const deck=sec.querySelector('[data-pm-deck]'),stage=sec.querySelector('[data-pm-stage]'),cards=[...deck.children],N=cards.length,open=sec.querySelector('[data-pm-open]'),num=sec.querySelector('[data-pm-n]'),live=sec.querySelector('[data-pm-live]');
  let at=0,first=true;
  const isOpen=()=>sec.classList.contains('is-open');
+ const hold=()=>{};hold.t=0;
  const lay=()=>{
   cards.forEach((li,i)=>{let k=((i-at)%N+N)%N;if(k>N/2)k-=N;const a=Math.abs(k);
    li.style.setProperty('--k',k);li.style.setProperty('--a',a);li.style.setProperty('--zi',isOpen()?50-a:N-i);
@@ -58,11 +59,12 @@ export function wirePassports(sec,models){
  };
  /* deck -> carousel: the title fades, the cards deal out of the stack with a stagger */
  const deal=()=>{
+  clearTimeout(hold.t);hold.t=0;sec.classList.remove('is-landing');
   if(isOpen())return;
   if(calm()){sec.classList.add('is-open','is-dealt');lay();return;}
-  cards.forEach((li,i)=>{let k=((i-at)%N+N)%N;if(k>N/2)k-=N;li.style.setProperty('--dl',Math.abs(k)*50+(k<0?25:0));});
+  cards.forEach((li,i)=>{let k=((i-at)%N+N)%N;if(k>N/2)k-=N;li.style.setProperty('--dl',Math.abs(k)*90+(k<0?45:0));});
   sec.classList.remove('is-stacking');sec.classList.add('is-open','is-dealing');lay();
-  clearTimeout(deal.t);deal.t=setTimeout(()=>{if(isOpen()){sec.classList.remove('is-dealing');sec.classList.add('is-dealt');}},1500);
+  clearTimeout(deal.t);deal.t=setTimeout(()=>{if(isOpen()){sec.classList.remove('is-dealing');sec.classList.add('is-dealt');}},1900);
  };
  /* back to the deck (title on top) when the section is not in view, not hovered and has no focus */
  const stack=()=>{
@@ -71,9 +73,14 @@ export function wirePassports(sec,models){
   sec.classList.remove('is-open','is-dealt','is-dealing');sec.classList.add('is-stacking');lay();
   clearTimeout(stack.t2);stack.t2=setTimeout(()=>sec.classList.remove('is-stacking'),1100);
  };
- let seen=false,hover=false;
+ let seen=false,hover=false,landed=false;
  const want=()=>seen||hover||sec.contains(document.activeElement);
- const sync=()=>{clearTimeout(sync.t);if(want()){deal();return;}sync.t=setTimeout(()=>{if(!want())stack();},700);};
+ /* the title label lands (450 ms), holds readable (1.8 s the first time, 1.2 s after), then the cards deal. Leaving view cancels the pending deal. */
+ const startHold=()=>{if(hold.t)return;sec.classList.add('is-landing');hold.t=setTimeout(deal,(landed?1200:1800)+450);landed=true;};
+ const sync=()=>{clearTimeout(sync.t);
+  if(want()){if(isOpen())return;if(calm()){deal();return;}startHold();return;}
+  if(hold.t){clearTimeout(hold.t);hold.t=0;sec.classList.remove('is-landing');}
+  sync.t=setTimeout(()=>{if(!want())stack();},700);};
  /* start watching only once the page above has settled (the hero renders after this section), else it deals on load */
  const watch=()=>new IntersectionObserver(es=>{seen=es[es.length-1].isIntersecting;sync();},{threshold:.4}).observe(sec);
  if('IntersectionObserver' in window){let y=NaN,still=0,t0=performance.now();const settle=()=>{const top=sec.getBoundingClientRect().top+scrollY;still=Math.abs(top-y)<1?still+1:0;y=top;if(still>=18||performance.now()-t0>4000)watch();else requestAnimationFrame(settle);};requestAnimationFrame(settle);}else deal();

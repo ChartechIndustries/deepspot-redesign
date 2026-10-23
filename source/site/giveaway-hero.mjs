@@ -1,5 +1,5 @@
 import {esc,$,$$,icon,localURL} from './core.mjs';
-import {people,fmt} from './community-v2.mjs?v=dcv2';
+import {people,fmt} from './community-v2.mjs?v=fx1';
 import {halftoneField} from './halftone-field.mjs?v=2';
 
 /* Community giveaway hero (2026-10-19): 10 race-graph versions. Real data only (content.json leaderboard, this month). Bar length = sqrt(points). */

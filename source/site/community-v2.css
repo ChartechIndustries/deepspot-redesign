@@ -857,3 +857,10 @@ html[data-theme=light]:not([data-panel-color=off]) .vm-l p{color:#24464a}
 
 /* 2026-10-22: tab strips scroll sideways only — never up/down on phones */
 .ob-tabs,.pp-vtabs,.cv-tabs,.br-tabs,.fs-tabs{overflow-y:hidden;overscroll-behavior-x:contain;overscroll-behavior-y:none}
+
+/* 2026-10-22b: one paint. The page is built hidden, the hero mounts, then it fades in once. Footer stays below the fold while loading. */
+body[data-page=community] .ds-page{min-height:100vh;min-height:100svh}
+.cv{transition:opacity .25s ease}
+.cv.cv-pre{opacity:0}
+@media(prefers-reduced-motion:reduce){.cv{transition:none}.cv.cv-pre{opacity:1}}
+body[data-page=community] .ds-loading{padding:24px max(16px,var(--ds-gutter,16px))}

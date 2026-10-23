@@ -314,7 +314,9 @@ function showcaseHTML(){
 }
 function fitBio(){
  const box=$('.pp-bio-fit'),t=box?.querySelector('.pp-bio-text');if(!t)return;
+ box.style.height='';
  if(innerWidth<1100||box.clientHeight<20){t.style.fontSize='';return;}
+ t.style.fontSize='16px';if(t.scrollHeight>box.clientHeight+1){box.style.height='auto';return;}   /* does not fit even small: let it wrap, never clip */
  let lo=16,hi=t.classList.contains('pp-bio-empty')?36:44;
  for(let i=0;i<14;i++){const m=(lo+hi)/2;t.style.fontSize=m+'px';if(t.scrollHeight<=box.clientHeight&&t.scrollWidth<=box.clientWidth)lo=m;else hi=m;}
  t.style.fontSize=Math.floor(lo)+'px';
@@ -403,18 +405,24 @@ function fitPassport(){
  const obj=$('.pp-passobj'),pane=$('#pp-pane-pass'),field=$('.pp-field');if(!obj||!field)return;
  obj.style.zoom='';if(pane)pane.style.zoom='';fitBands(obj);
  if(innerWidth<1100){if(pane)pane.style.zoom=Math.min(1,(field.clientWidth-32)/440).toFixed(3);return;}   /* phones + tablets: the whole pane (card + share bar) shrinks to the width */
- const w=obj.offsetWidth,extra=Math.max(0,(pane?.offsetHeight||0)-obj.offsetHeight)+16,h=obj.offsetHeight+extra,fw=field.clientWidth-120,fh=field.clientHeight-56;
- obj.style.zoom=Math.max(.7,Math.min(fw/w,fh/h,1.75)).toFixed(3);
+ const st=$('.pp-stage'),cs=st?getComputedStyle(st):null,pad=cs?parseFloat(cs.paddingTop)+parseFloat(cs.paddingBottom):56,w=obj.offsetWidth,oh=obj.offsetHeight,bar=pane?.querySelector('.pp-sharebar'),barH=bar?bar.offsetHeight+parseFloat(getComputedStyle(bar).marginTop||0):0,extra=Math.max(barH,(pane?.offsetHeight||0)-oh)+8,fw=field.clientWidth-(cs?parseFloat(cs.paddingRight)+parseFloat(cs.paddingLeft):0)-40,fh=field.clientHeight-pad-extra;
+ obj.style.zoom=Math.max(.4,Math.min(fw/w,fh/oh,1.75)).toFixed(3);
 }
 addEventListener('resize',()=>requestAnimationFrame(fitPassport));
 function moveBumpLight(e){const card=$('.pp-id9');if(!card)return;const b=card.getBoundingClientRect(),z=document.documentElement.style.zoom||1,sc=b.width/card.offsetWidth||1;
  const x=((e.clientX-b.left)/sc).toFixed(0),y=((e.clientY-b.top)/sc).toFixed(0);for(const id of ['pp-bumpl','pp-bumpl2']){const l=document.getElementById(id);if(l){l.setAttribute('x',x);l.setAttribute('y',y);}}}
+/* >=1100: the tab strip sits beside the record (outside its scroller); below that it stays inside the tab section */
+function placeTabs(){
+ const tl=$('.pp-vtabs'),book=$('.pp-book'),sec=$('.pp-tabsec');if(!tl||!book||!sec)return;
+ if(innerWidth>=1100){if(tl.parentElement!==book)book.append(tl);}else if(tl.parentElement!==sec)sec.prepend(tl);
+}
+addEventListener('resize',()=>{placeTabs();});
 function appShell(){
  const field=$('.pp-field-in'),back=$('.pp-back'),share=$('.pp-share'),pane=$('#pp-pane-pass');
  if(back&&field){back.classList.add('pp-tabs-back');field.append(back);}
  if(share&&pane&&!pane.querySelector('.pp-sharebar')){const bar=document.createElement('div');bar.className='pp-sharebar';bar.append(share);const hint=document.createElement('span');hint.className='pp-mono';hint.textContent='share it, or save it as an image';bar.append(hint);pane.append(bar);}
  $('.pp-toolbar')?.setAttribute('hidden','');
- document.documentElement.classList.add('pp-app');requestAnimationFrame(fitBio);requestAnimationFrame(fitPassport);document.fonts?.ready.then(()=>{requestAnimationFrame(fitBio);requestAnimationFrame(fitPassport);});
+ document.documentElement.classList.add('pp-app');placeTabs();requestAnimationFrame(fitBio);requestAnimationFrame(fitPassport);document.fonts?.ready.then(()=>{requestAnimationFrame(fitBio);requestAnimationFrame(fitPassport);});
  const header=document.querySelector('.br-header');
  const fit=()=>document.documentElement.style.setProperty('--pp-top',Math.max(0,Math.round(header?.getBoundingClientRect().bottom||0))+'px');
  fit();if(!window._ppFit){window._ppFit=1;addEventListener('resize',fit);}
