@@ -44,7 +44,7 @@ def main(out, base):
                                ("u.pathname==='/'||localSections.has(u.pathname.split('/')[1])",
                                 "u.pathname==='%s/'||localSections.has(u.pathname.split('/')[2])" % B),
                                ('`<a href="/${path}/?theme=', '`<a href="%s/${path}/?theme=' % B)],
-        "site/core.mjs": [("localURL('/')", "localURL('%s/')" % B), ("['home','/']", "['home','%s/']" % B),
+        "site/core.mjs": [("localURL('/')", "localURL('%s/')" % B),
                           ("export function localURL(path,params={}){",
                            "export function localURL(path,params={}){if(typeof path==='string'&&path.startsWith('/')&&!path.startsWith('%s/'))path='%s'+path;" % (B, B))],
         "site/pages.mjs": [("action('back to the globe','/')", "action('back to the globe','%s/')" % B)],
