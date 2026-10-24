@@ -1,0 +1,11 @@
+{
+  "preview": true,
+  "contributors": [
+    {"id":"maya","name":"Maya Chen","contributions":148,"image":"/deepspot-redesign/community-assets/maya.jpg","profileUrl":null},
+    {"id":"leo","name":"Leo Martin","contributions":126,"image":"/deepspot-redesign/community-assets/leo.jpg","profileUrl":null},
+    {"id":"amara","name":"Amara James","contributions":109,"image":"/deepspot-redesign/community-assets/amara.jpg","profileUrl":null},
+    {"id":"noah","name":"Noah Bennett","contributions":87,"image":"/deepspot-redesign/community-assets/noah.jpg","profileUrl":null},
+    {"id":"jules","name":"Jules Rivera","contributions":74,"image":"/deepspot-redesign/community-assets/jules.jpg","profileUrl":null},
+    {"id":"ollie","name":"Ollie Brooks","contributions":63,"image":"/deepspot-redesign/community-assets/ollie.jpg","profileUrl":null}
+  ]
+}

@@ -1,0 +1,47 @@
+/* Shared dialog (2026-10-23): see ds-dialog.mjs. Same shell look as the edit-profile dialog (.pp-editdlg): rounded panel, blurred page behind. */
+.ds-dlg-lock{overflow:hidden}
+.ds-dlg{position:fixed;inset:0;margin:auto;padding:0;width:min(760px,94vw);max-width:none;height:auto;max-height:min(86vh,860px);max-height:min(86dvh,860px);border:1px solid var(--br-line,rgba(255,255,255,.18));border-radius:28px;background:var(--br-panel,#0f1720);color:var(--br-text,#f5f4ee);box-shadow:0 48px 140px rgba(0,0,0,.55),0 8px 24px rgba(0,0,0,.25);overflow:hidden;font-family:inherit;overscroll-behavior:contain}
+.ds-dlg[open]{display:flex;flex-direction:column;animation:ds-dlg-in .35s cubic-bezier(.2,1.25,.4,1) backwards}
+.ds-dlg.is-settled[open]{animation:none}
+.ds-dlg::backdrop{background:rgba(6,10,18,.55);-webkit-backdrop-filter:blur(14px) saturate(1.1);backdrop-filter:blur(14px) saturate(1.1);animation:ds-dlg-fade .25s ease-out both}
+:root[data-theme=light] .ds-dlg{box-shadow:0 40px 110px rgba(11,27,39,.32),0 8px 24px rgba(11,27,39,.14)}
+.ds-dlg.is-leaving,.ds-dlg.is-settled.is-leaving{animation:ds-dlg-out .22s ease-in both}
+.ds-dlg.is-leaving::backdrop{animation:ds-dlg-fadeout .22s ease-in both}
+.ds-dlg-scroll{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;outline:none;-webkit-overflow-scrolling:touch}
+.ds-dlg-grab{display:none}
+/* the bar sticks while the text scrolls; the close button is a 48 px round hit area */
+.ds-dlg-bar{position:sticky;top:0;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 14px 10px clamp(22px,4vw,40px);background:var(--br-panel,#0f1720);min-height:72px}
+.ds-dlg-bar::after{content:"";position:absolute;left:0;right:0;top:100%;height:18px;background:linear-gradient(var(--br-panel,#0f1720),transparent);pointer-events:none}
+.ds-dlg-kick{font:800 15px/1.2 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--br-muted,#9aa8b4)}
+.ds-dlg-x{flex:none;width:48px;height:48px;border-radius:50%;border:2px solid currentColor;background:transparent;color:inherit;display:grid;place-items:center;padding:0;cursor:pointer;transition:background .2s,color .2s,transform .2s,border-color .2s;touch-action:manipulation}
+.ds-dlg-x svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round}
+.ds-dlg-x:hover{background:#07d653;border-color:#07d653;color:#0b1b27;transform:rotate(90deg)}
+.ds-dlg-x:focus-visible,.ds-dlg a:focus-visible,.ds-dlg button:focus-visible{outline:3px solid #07d653;outline-offset:3px}
+.ds-dlg-in{padding:6px clamp(22px,4vw,40px) clamp(28px,4vw,44px)}
+.ds-dlg-h{margin:0 0 18px;font-size:clamp(32px,4.6vw,52px);line-height:.98;letter-spacing:-.05em;font-weight:800}
+.ds-dlg-in p{margin:0 0 14px;font-size:clamp(17px,1.5vw,19px);line-height:1.55}
+.ds-dlg-in ol,.ds-dlg-in ul{margin:0 0 14px;padding-left:1.4em;font-size:clamp(17px,1.5vw,19px);line-height:1.55}
+.ds-dlg-in li{margin:0 0 10px;padding-left:.2em}
+.ds-dlg-in li::marker{font-weight:800;color:var(--ds-dlg-accent,#07d653)}
+:root[data-theme=light] .ds-dlg-in li::marker{color:#08782f}
+@keyframes ds-dlg-in{from{opacity:0;transform:translateY(18px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes ds-dlg-out{to{opacity:0;transform:translateY(12px) scale(.97)}}
+@keyframes ds-dlg-fade{from{opacity:0}to{opacity:1}}
+@keyframes ds-dlg-fadeout{to{opacity:0}}
+@keyframes ds-dlg-up{from{transform:translateY(100%)}to{transform:none}}
+@keyframes ds-dlg-down{to{transform:translateY(100%)}}
+/* phone: a full-screen sheet that slides up; drag the handle down to close */
+@media(max-width:650px){
+ .ds-dlg{inset:0;width:100vw;height:100vh;height:100dvh;max-height:none;border:0;border-radius:0;margin:0}
+ .ds-dlg[open]{animation:ds-dlg-up .35s cubic-bezier(.2,.9,.25,1) backwards}
+ .ds-dlg.is-leaving,.ds-dlg.is-settled.is-leaving{animation:ds-dlg-down .24s ease-in both}
+ .ds-dlg.is-settled:not(.is-drag){transition:transform .25s cubic-bezier(.2,.9,.25,1)}
+ .ds-dlg-grab{display:flex;justify-content:center;align-items:center;height:26px;flex:none;touch-action:none;cursor:grab;background:var(--br-panel,#0f1720)}
+ .ds-dlg-grab i{width:44px;height:5px;border-radius:9px;background:currentColor;opacity:.35}
+ .ds-dlg-bar{touch-action:none;padding:4px 12px 8px 20px;min-height:64px}
+ .ds-dlg-in{padding:4px 20px calc(28px + env(safe-area-inset-bottom))}
+}
+@media(prefers-reduced-motion:reduce){
+ .ds-dlg,.ds-dlg[open],.ds-dlg.is-leaving,.ds-dlg::backdrop,.ds-dlg.is-leaving::backdrop{animation:none!important;transition:none!important}
+ .ds-dlg-x,.ds-dlg-x:hover{transition:none;transform:none}
+}

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 460" width="960" height="460" role="img" aria-labelledby="t"><title id="t">Four connected DeepSpot milestones</title>
+<defs><pattern id="grain" width="7" height="7" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="#f7f2df" opacity=".22"/></pattern><path id="pin" d="M0 0C-23-34-65-78-65-121A65 65 0 1 1 65-121C65-78 23-34 0 0Z"/></defs>
+<path d="M47 370C168 402 235 260 340 278S490 383 600 318S711 177 850 231" stroke="#2346aa" stroke-width="9" fill="none"/>
+<g fill="#2346aa">
+<ellipse cx="128" cy="362" rx="27" ry="7"/><ellipse cx="340" cy="278" rx="27" ry="7"/><ellipse cx="600" cy="318" rx="27" ry="7"/><ellipse cx="850" cy="231" rx="27" ry="7"/>
+</g>
+<g stroke="#2346aa" stroke-width="9"><path d="M128 362V278M340 278V219M600 318V255M850 231V198"/></g>
+<g fill="#163782" opacity=".26"><use href="#pin" transform="translate(139 290)"/><use href="#pin" transform="translate(351 231)"/><use href="#pin" transform="translate(611 267)"/><use href="#pin" transform="translate(861 210)"/></g>
+<g fill="#3559b7"><use href="#pin" transform="translate(128 278)"/><use href="#pin" transform="translate(340 219)"/><use href="#pin" transform="translate(600 255)"/><use href="#pin" transform="translate(850 198)"/></g>
+<g fill="url(#grain)"><use href="#pin" transform="translate(128 278)"/><use href="#pin" transform="translate(340 219)"/><use href="#pin" transform="translate(600 255)"/><use href="#pin" transform="translate(850 198)"/></g>
+<g fill="#f7f2df"><circle cx="128" cy="157" r="25"/><circle cx="340" cy="98" r="25"/><circle cx="600" cy="134" r="25"/><circle cx="850" cy="77" r="25"/></g>
+</svg>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="400" viewBox="0 -35 960 435" role="img" aria-labelledby="t d"><title id="t">Four connected development milestones</title><desc id="d">Four tall sculptural pins rise above an angular line connecting their bases.</desc>
+<path d="M52 326L270 291L501 334L754 258L819 270" fill="none" stroke="#102d31" stroke-width="4"/>
+<g fill="#102d31"><ellipse cx="114" cy="316" rx="22" ry="5"/><ellipse cx="350" cy="306" rx="22" ry="5"/><ellipse cx="585" cy="309" rx="22" ry="5"/><ellipse cx="819" cy="270" rx="22" ry="5"/></g>
+<g stroke="#102d31" stroke-width="5" stroke-linejoin="round">
+<path d="M114 316V197M350 306V140M585 309V208M819 270V103" fill="none"/>
+<path d="M114 197C94 170 58 130 58 97A56 56 0 0 1 170 97C170 130 134 170 114 197Z" fill="#eef0d8"/>
+<path d="M350 140C330 113 294 73 294 40A56 56 0 0 1 406 40C406 73 370 113 350 140Z" fill="#2346aa"/>
+<path d="M585 208C565 181 529 141 529 108A56 56 0 0 1 641 108C641 141 605 181 585 208Z" fill="#eef0d8"/>
+<path d="M819 103C799 76 763 36 763 3A56 56 0 0 1 875 3C875 36 839 76 819 103Z" fill="#102d31" transform="translate(0 35)"/>
+</g>
+<g fill="#102d31"><circle cx="114" cy="97" r="21"/><circle cx="585" cy="108" r="21"/></g><circle cx="350" cy="40" r="21" fill="#eef0d8"/><circle cx="819" cy="38" r="21" fill="#cfff41"/>
+<g font-family="Arial,Helvetica,sans-serif" font-weight="700" font-size="13" letter-spacing="3" fill="#102d31"><text x="77" y="359">01 /</text><text x="312" y="350">02 /</text><text x="547" y="355">03 /</text><text x="781" y="316">04 /</text></g>
+</svg>

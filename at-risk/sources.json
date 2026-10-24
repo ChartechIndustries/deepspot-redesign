@@ -1,0 +1,47 @@
+[
+  {
+    "file": "maine.jpg",
+    "url": "https://wmf.imgix.net/images/dominictrapani-portlandhead-03.jpg?auto=format%2Ccompress&fit=max&w=1400",
+    "caption": "Portland Head Light during a storm",
+    "credit": "Bob Trapani Jr. (WMF caption)",
+    "source": "https://www.wmf.org/world-monuments-watch/2025",
+    "reviewed": "2026-09-14",
+    "bytes": 151616
+  },
+  {
+    "file": "namibe.jpg",
+    "url": "https://wmf.imgix.net/images/WALTER-FERNANDES%C2%A92016_ANGOLA-CINEMAS_MG_6504.jpg?auto=format%2Ccompress&fit=max&w=1400",
+    "caption": "Exterior of Cinema Studio Namibe",
+    "credit": "Walter Fernandes",
+    "source": "https://www.wmf.org/world-monuments-watch/2025",
+    "reviewed": "2026-09-14",
+    "bytes": 92936
+  },
+  {
+    "file": "serifos.jpg",
+    "url": "https://wmf.imgix.net/images/GRC_Serifos-Historic-Mining-Landscape_100_20240531_photo-by-Orestis-Karamanlis-1.JPG?auto=format%2Ccompress&fit=max&w=1400",
+    "caption": "Mining loading bridge at Mega Livadi, Serifos",
+    "credit": "Orestis Karamanlis",
+    "source": "https://www.wmf.org/world-monuments-watch/2025",
+    "reviewed": "2026-09-14",
+    "bytes": 151409
+  },
+  {
+    "file": "belchite.jpg",
+    "url": "https://wmf.imgix.net/images/ESP_RuinsOfOldBelchite_Landscape_20210202_2.jpg?auto=format%2Ccompress&fit=max&w=1400",
+    "caption": "Snow-covered ruins of Old Belchite",
+    "credit": "World Monuments Fund; photographer not specified",
+    "source": "https://www.wmf.org/world-monuments-watch/2025",
+    "reviewed": "2026-09-14",
+    "bytes": 243731
+  },
+  {
+    "file": "noto.jpg",
+    "url": "https://wmf.imgix.net/images/JPN-Noto-Peninsula-Earthquake-Heritage-Sites-03.jpg?auto=format%2Ccompress&fit=max&w=1400",
+    "caption": "Damaged historic building in Kuroshima Preservation District, Wajima",
+    "credit": "World Monuments Fund; photographer not specified",
+    "source": "https://www.wmf.org/world-monuments-watch/2025",
+    "reviewed": "2026-09-14",
+    "bytes": 200689
+  }
+]

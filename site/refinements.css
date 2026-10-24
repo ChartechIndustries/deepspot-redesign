@@ -1,0 +1,411 @@
+/* Shared finishing pass: clear hierarchy, quieter surfaces, useful mobile space. */
+:root {
+  --ds-ink-accent: #80e9a6;
+  --ds-link-ink: #a5daec;
+}
+:root[data-theme=light] {
+  --ds-ink-accent: #087e42;
+  --ds-link-ink: #2455bd;
+}
+.ds-page { padding-bottom: clamp(40px, 5vw, 76px); }
+.br-ticker > * { white-space: nowrap; }
+.ds-page-intro { padding-block: clamp(38px, 4.5vw, 68px) 36px; gap: 32px; }
+.ds-page-intro > div { min-width: 0; }
+.ds-page-intro h1 { font-size: clamp(56px, 6.8vw, 104px); line-height: .96; }
+.ds-page-intro > p { line-height: 1.65; }
+.ds-page h2, .ds-page h3, .br-card h2 { text-wrap: pretty; }
+.ds-page p { text-wrap: pretty; }
+.ds-page .ds-note { font-size: 15px; line-height: 1.65; }
+.ds-page .ds-prose a:not(.ds-button), .ds-page .ds-gallery a { color: var(--ds-link-ink); }
+.ds-page .ds-prose a.ds-button { color: #0b1b27; }
+.ds-page .ds-prose a.ds-button.secondary { color: var(--br-text); }
+:root[data-theme=light] .ds-page-intro h1 span,
+:root[data-theme=light] .br-intro h1 span { color: var(--ds-ink-accent); }
+:root[data-theme=light] .br-nav a[aria-current=page],
+:root[data-theme=light] .br-nav a:hover,
+:root[data-theme=light] .ds-tabs button[aria-pressed=true],
+:root[data-theme=light] .ds-form-status { color: var(--ds-ink-accent); }
+
+/* Tools need a title, not another landing page. */
+body:is([data-page=account], [data-page=inbox], [data-page=contribute], [data-page=plan-trip], [data-page=saved], [data-page=map], [data-page=faq], [data-page=privacy], [data-page=terms], [data-page=cookies]) .ds-page-intro {
+  padding-block: 38px 28px;
+  align-items: center;
+  border-bottom: 1px solid var(--br-line);
+  margin-bottom: 30px;
+}
+body:is([data-page=account], [data-page=inbox], [data-page=contribute], [data-page=plan-trip], [data-page=saved], [data-page=map], [data-page=faq], [data-page=privacy], [data-page=terms], [data-page=cookies]) .ds-page-intro h1 {
+  font-size: clamp(42px, 4.6vw, 72px);
+  color: var(--br-text);
+  line-height: 1.02;
+  letter-spacing: -.055em;
+}
+body:is([data-page=account], [data-page=inbox], [data-page=plan-trip], [data-page=saved], [data-page=map]) .ds-page-intro h1 br { display: none; }
+body:is([data-page=account], [data-page=inbox], [data-page=plan-trip], [data-page=saved], [data-page=map]) .ds-page-intro h1 span::before { content: ' '; }
+body:is([data-page=account], [data-page=inbox], [data-page=contribute], [data-page=plan-trip], [data-page=saved], [data-page=map], [data-page=faq], [data-page=privacy], [data-page=terms], [data-page=cookies]) .ds-page-intro h1 span { color: var(--br-text); }
+.ds-page-intro + .ds-local-status { margin-top: -10px; }
+.ds-section-heading { margin-top: clamp(44px, 5vw, 76px); }
+.ds-section-heading h2 { font-size: clamp(30px, 3.1vw, 46px); line-height: 1.08; }
+.ds-page .ds-button { min-height: 46px; line-height: 1.2; transition: background .18s, border-color .18s, transform .18s; }
+.ds-page .ds-button:hover { transform: translateY(-2px); }
+.ds-page .ds-button:active { transform: none; }
+.ds-page .ds-button.secondary { background: transparent; }
+.ds-page .ds-text-link { min-height: 32px; }
+button.ds-text-link { background: transparent; border: 0; color: inherit; padding: 0; font: inherit; cursor: pointer; }
+.ed-heading h2 a { font-size: inherit; letter-spacing: inherit; line-height: inherit; }
+.ed-shell, deepspot-world-banner { margin-inline: var(--ds-section-gutter, clamp(20px, 3.5vw, 64px)); }
+.hero .intro { max-width: 33ch; }
+.ds-home-menu { display: none; background: none; border: 0; color: inherit; font: 23px Arial,sans-serif; width: 36px; height: 40px; cursor: pointer; }
+.header .ds-home-navigation[hidden] { display: none !important; }
+.ds-search-field:focus-within { outline: 2px solid var(--br-aqua); outline-offset: 3px; }
+.ds-search-field input:focus { outline: none; }
+.ds-search-field input { min-width: 0; }
+.ds-card-image, .ds-story-image, .ds-guide-card > a { overflow: hidden; }
+.ds-card-image img, .ds-story-image img, .ds-guide-card > a > img { transition: transform .5s ease; }
+.ds-spot-card:hover .ds-card-image img, .ds-story-card:hover .ds-story-image img, .ds-guide-card:hover > a > img { transform: scale(1.025); }
+.ds-spot-card, .ds-story-card, .ds-guide-card { border-color: var(--br-line); }
+.ds-card-text h3, .ds-guide-card h3 { line-height: 1.12; }
+.ds-card-bottom { gap: 18px; }
+.ds-card-bottom > :last-child { flex-shrink: 0; }
+.ds-card-bottom .author-link { min-width: 0; }
+.ds-guide-card > a > .ds-guide-art { min-height: 0; }
+.ds-guide-card .ds-guide-art span { font-size: clamp(30px, 3vw, 46px); }
+.ds-guide-card .ds-guide-art svg { width: 65px; height: 65px; flex: none; }
+.ds-guide-card:nth-child(3n+2) .ds-guide-art { background: #263c68; color: #edf2f3; }
+.ds-guide-card:nth-child(3n+3) .ds-guide-art { background: #d5e5bd; color: #162f27; }
+:root[data-panel-color=off] .ds-guide-art { background: var(--br-card); color: var(--br-text); }
+
+/* A real numbered sequence, with titles and descriptions on the same reading axis. */
+.ds-number-list { counter-reset: route-stop; }
+.ds-number-list li {
+  counter-increment: route-stop;
+  grid-template-columns: 44px minmax(0, 1fr);
+  column-gap: 20px;
+  row-gap: 7px;
+  padding-block: 25px;
+}
+.ds-number-list li::before {
+  content: counter(route-stop, decimal-leading-zero);
+  grid-column: 1;
+  grid-row: 1 / 3;
+  color: var(--ds-ink-accent);
+  font: 500 18.5px/1.5 Arial, sans-serif;
+  padding-top: 2px;
+}
+.ds-number-list li > strong, .ds-number-list li > h3 { grid-column: 2; font-size: 21px; line-height: 1.3; }
+.ds-number-list li > p { grid-column: 2; margin: 0; }
+.ds-article-layout { gap: clamp(30px, 5vw, 80px); }
+.ds-prose { max-width: 760px; }
+.ds-story-title { margin-top: 25px; max-width: 1060px; }
+.ds-story-title h1 { line-height: 1.02; text-wrap: balance; }
+.ds-story-title .ds-meta { flex-wrap: wrap; row-gap: 12px; }
+.ds-practical { padding: 28px; align-self: start; }
+.ds-practical .ds-button { width: 100%; justify-content: space-between; }
+.ds-practical .ds-button + .ds-button { margin-top: 12px; }
+.ds-practical dd { overflow-wrap: anywhere; }
+.ds-detail-copy h1 { text-wrap: pretty; }
+
+/* Let the community be about people, with one clear invitation alongside them. */
+.ds-community-intro { grid-template-columns: 1.08fr 1fr; gap: 0; border: 1px solid var(--br-line); background: var(--br-panel); }
+.ds-community-panel { padding: clamp(28px, 4vw, 60px); border: 0; }
+.ds-community-panel h2 { font-size: clamp(43px, 5vw, 74px); line-height: .99; margin-bottom: 22px; }
+.ds-community-panel > p { max-width: 400px; margin-bottom: 28px; font-size: 18.5px; }
+:root[data-panel-color=on] .ds-community-panel { background: #83cdce; color: #0b1b27; }
+:root[data-panel-color=on] .ds-community-panel > p { color: #234851; }
+.ds-community-portraits { padding: clamp(25px, 3vw, 50px); display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); align-content: center; gap: 22px 16px; border-left: 1px solid var(--br-line); }
+.ds-community-portrait { text-decoration: none; min-width: 0; text-align: center; padding-block: 18px; }
+.ds-community-portrait:nth-child(2) { transform: translateY(-24px); }
+.ds-community-portrait:nth-child(3) { transform: translateY(16px); }
+.ds-community-portrait img, .ds-community-portrait > span { width: 100%; aspect-ratio: 1; border-radius: 50%; object-fit: cover; display: grid; place-items: center; background: #233451; color: #9ed9dc; font-size: clamp(35px, 4vw, 60px); border: 1px solid #83cdce88; margin-bottom: 18px; transition: transform .25s; }
+.ds-community-portrait:hover img, .ds-community-portrait:hover > span { transform: translateY(-5px); }
+.ds-community-portrait strong { display: block; font-size: 17px; overflow-wrap: anywhere; }
+.ds-community-portrait small { display: block; margin-top: 7px; font-size: 14px; color: var(--br-muted); }
+.ds-community-portraits > .ds-button { grid-column: 1 / -1; justify-self: center; margin-top: 20px; font-size: 15.5px; }
+.ds-person { padding: 30px 24px; }
+.ds-person p { min-height: 0; margin-bottom: 19px; }
+.ds-person img, .ds-person-initial { width: 100px; height: 100px; margin-bottom: 22px; }
+.ds-person-count { line-height: 1.1; }
+.ds-person-rank { font-variant-numeric: tabular-nums; }
+.ds-ranking tbody tr:first-child { background: color-mix(in srgb, var(--br-aqua) 7%, transparent); }
+.ds-ranking tbody tr:focus-within { background: var(--br-card); }
+
+/* Comfortable field editing and honest, concise service states. */
+.ac-service-note { padding: 12px 0; border-width: 0 0 1px; margin-bottom: 26px; }
+.ac-panel-heading h2 { font-size: clamp(32px, 3.4vw, 47px); }
+.ac-panel-heading { margin-bottom: 25px; }
+.ac-profile-form legend { font-size: 21px; }
+.ac-avatar-editor { grid-template-columns: 104px 1fr; }
+.ac-avatar-preview, .ac-avatar-preview > img { height: 104px; }
+.ac-avatar-preview > svg { width: 60px; height: 60px; }
+.ac-styles button { display: grid; grid-template-columns: 1fr; padding: 16px 12px; }
+.ac-styles svg { margin-bottom: 12px; }
+.ac-styles span { display: none; }
+.ac-save-bar { background: var(--br-bg); padding-bottom: 14px; }
+.ac-save-bar p { line-height: 1.5; }
+.ds-form label, .ds-input-label { line-height: 1.5; }
+.ds-form input:focus, .ds-form textarea:focus, .ds-form select:focus, .ds-input:focus { outline: 2px solid var(--br-aqua); outline-offset: 2px; }
+.ds-form label > small { display: block; float: none; line-height: 1.5; margin-top: 5px; }
+.ds-form textarea { resize: vertical; }
+.ds-trip-side { padding: 28px; }
+.ds-trip-side > h2 { font-size: 40px; }
+.ds-empty { padding: 45px 24px; }
+.ds-empty h2 { font-size: clamp(29px, 3.1vw, 42px); }
+.ds-empty-symbol svg { width: 40px; height: 40px; }
+.ds-empty .ds-button { margin-top: 4px; }
+
+/* Tablet navigation must retain all destinations. */
+@media (min-width:1101px) {
+  .br-mobile-nav, .header .ds-home-navigation { display: none; }
+}
+@media (max-width:1100px) {
+  .br-ticker > span:last-child { display: none; }
+  .header { position: relative; flex-wrap: nowrap; min-height: 94px; padding-block: 20px; gap: 12px; z-index: 20; }
+  .header > nav:not(.ds-home-navigation) { display: none; }
+  .header .header-controls { margin-left: auto; gap: 6px; }
+  .ds-home-menu { display: block; }
+  .header .ds-home-navigation { position: absolute; top: 100%; left: 0; right: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin: 0; padding: 12px 20px; width: auto; height: auto; overflow: visible; background: #101a27; color: #f5f4ee; border-bottom: 1px solid #354552; box-shadow: 0 16px 24px #0003; }
+  .header .ds-home-navigation a { display: flex; align-items: center; min-height: 46px; font: 18.5px Arial,sans-serif; text-transform: none; text-decoration: none; }
+  html[data-theme=light] .header .ds-home-navigation { background: #f6f3ec; color: #0b1b27; border-color: #c0c9ca; }
+}
+@media (min-width:601px) and (max-width:1100px) {
+  .br-nav { display: none; }
+  .br-settings { margin-left: auto; }
+  .br-menu { display: block; }
+}
+@media (max-width:900px) {
+  .ds-page-intro h1 { font-size: clamp(50px, 7.5vw, 76px); }
+  .ds-community-intro { grid-template-columns: 1fr 1fr; }
+  .ds-community-panel h2 { font-size: 45px; }
+  .ds-community-portraits { padding: 25px 20px; gap: 18px 10px; }
+  .ds-community-portrait strong { font-size: 15px; }
+}
+@media (max-width:600px) {
+  .ds-page-intro { padding-top: 32px; }
+  .ds-page-intro h1 { font-size: clamp(43px, 11.7vw, 66px); }
+  .ds-page-intro > p { margin-top: 18px; max-width: none; }
+  body:is([data-page=account], [data-page=inbox], [data-page=contribute], [data-page=plan-trip], [data-page=saved], [data-page=map], [data-page=faq], [data-page=privacy], [data-page=terms], [data-page=cookies]) .ds-page-intro { padding-block: 27px 22px; margin-bottom: 22px; }
+  body:is([data-page=account], [data-page=inbox], [data-page=contribute], [data-page=plan-trip], [data-page=saved], [data-page=map], [data-page=faq], [data-page=privacy], [data-page=terms], [data-page=cookies]) .ds-page-intro h1 { font-size: clamp(33px, 9vw, 48px); }
+  .ds-page-intro > p { line-height: 1.55; font-size: 16px; }
+  .ds-page .ds-section-heading { align-items: baseline; flex-wrap: wrap; gap: 12px; }
+  .ds-section-heading h2 { font-size: 31px; }
+  .ds-community-intro { grid-template-columns: 1fr; }
+  .ds-community-panel { padding: 29px 26px; }
+  .ds-community-panel h2 { font-size: 48px; }
+  .ds-community-panel > p { font-size: 17px; }
+  .ds-community-portraits { padding: 40px 25px 25px; border-left: 0; border-top: 1px solid var(--br-line); }
+  .ds-community-portrait strong { font-size: 15.5px; }
+  .ds-community-portrait small { font-size: 14px; }
+  .ds-community-portraits > .ds-button { margin-top: 0; }
+  .ds-person img, .ds-person-initial { width: 70px; height: 70px; margin: 0; }
+  .ds-person { grid-template-columns: 70px minmax(0,1fr); }
+  .ds-person p { margin-bottom: 12px; }
+  .ds-person > .ds-text-link { margin-top: 10px; }
+  .ds-number-list li { grid-template-columns: 30px minmax(0,1fr); gap: 8px 14px; padding-block: 23px; }
+  .ds-number-list li > strong, .ds-number-list li > h3 { font-size: 20px; }
+  .ds-detail-visual > img { min-height: 0; height: auto; aspect-ratio: 4 / 3; }
+  .ds-detail-copy { padding: 27px 24px; }
+  .ds-page .ds-detail-copy h1 { font-size: clamp(32px, 8.5vw, 43px); line-height: 1.06; }
+  .ds-page .ds-editorial-feature h1 { font-size: 34px; line-height: 1.05; }
+  .ds-page .ds-story-title h1 { font-size: 35px; line-height: 1.06; }
+  .ds-story-title .ds-meta { gap: 11px 17px; }
+  .ds-practical { padding: 24px; }
+  .ds-page .ds-button { gap: 18px; padding-inline: 20px; }
+  .ds-page .ds-actions { gap: 10px; }
+  .ds-page .ds-prose { font-size: 18.5px; line-height: 1.75; }
+  .ds-story-body h3 { font-size: 27px; }
+  .ds-page .ds-search-tools { gap: 14px; }
+  .ds-search-tools select { max-width: 100%; }
+  .ac-service-note { display: flex; padding: 0 0 16px; gap: 8px 20px; line-height: 1.5; }
+  .ac-service-note .ds-text-link { margin: 0; }
+  .ac-content { padding: 25px 20px; }
+  .ac-panel-heading h2 { font-size: 33px; }
+  .ac-panel-heading .ds-text-link { margin-top: 12px; }
+  .ac-avatar-editor { grid-template-columns: 74px 1fr; gap: 14px; }
+  .ac-avatar-preview, .ac-avatar-preview > img { height: 82px; }
+  .ac-styles { grid-template-columns: repeat(3, minmax(0,1fr)); }
+  .ac-styles button { padding: 14px 10px; }
+  .ac-styles button:last-child { grid-column: auto; }
+  .ac-styles strong { font-size: 14px; }
+  .ac-save-bar { gap: 12px 22px; margin-inline: -5px; padding: 16px 5px; }
+  .ac-save-bar p { display: none; }
+  .ac-save-bar:has(#account-save-status:not(:empty)) p { display: block; }
+  .ac-save-bar .ds-text-link { font-size: 14px; }
+  .ds-map-toolbar .ds-actions { display: grid; grid-template-columns: 1fr 1fr; }
+  .ds-map-toolbar .ds-button { font-size: 15px; padding-inline: 13px; }
+  .ds-map-shell { margin-top: 18px; }
+  .ds-trip-side h2 { font-size: 34px; }
+  .ds-empty { padding: 32px 22px; }
+  .br-header { gap: 10px; }
+  .br-mobile-nav { gap: 0; padding: 12px 16px; box-shadow: 0 16px 24px #0002; }
+  .br-mobile-nav a { min-height: 46px; display: flex; align-items: center; font-size: 18.5px; }
+}
+@media (max-width:360px) {
+  .header { padding-inline: 15px; }
+  .header .wordmark > span { display: none; }
+  .header .header-controls { gap: 4px; }
+  .header .theme-toggle, .header .color-toggle { padding-inline: 7px; font-size: 14px; }
+  .br-wordmark svg { display: none; }
+  .ds-person { grid-template-columns: 60px minmax(0,1fr); }
+  .ds-person img, .ds-person-initial { width: 60px; height: 60px; }
+  .ds-community-portraits { padding-inline: 16px; }
+  .ds-community-portrait strong { font-size: 15px; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .ds-page .ds-button, .ds-card-image img, .ds-story-image img, .ds-guide-card > a > img, .ds-community-portrait img, .ds-community-portrait > span { transition: none; }
+  .ds-page .ds-button:hover, .ds-community-portrait:hover img, .ds-community-portrait:hover > span { transform: none; }
+}
+
+/* Destination photographs remain part of the editorial, with a full-size reader. */
+.ds-photo-gallery { margin: 46px 0; }
+.ds-photo-gallery .ds-section-heading { margin-bottom: 16px; align-items: baseline; }
+.ds-photo-gallery .ds-section-heading h2 { font-size: clamp(24px, 3vw, 38px); }
+.ds-photo-gallery .ds-section-heading > span { font-size: 15px; color: var(--br-muted); }
+.ds-photo-thumbs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.ds-photo-thumbs button { padding: 0; overflow: hidden; background: var(--br-panel); border: 1px solid var(--br-line); color: var(--br-text); text-align: left; cursor: pointer; }
+.ds-photo-thumbs img { display: block; width: 100%; height: 150px; object-fit: cover; transition: filter .2s; }
+.ds-photo-thumbs button:hover img { filter: brightness(1.12); }
+.ds-photo-thumbs span { display: block; padding: 10px; font: 15px/1.4 Arial,sans-serif; }
+.ds-photo-dialog { width: min(1100px, 94vw); max-width: none; max-height: 94dvh; padding: 18px; color: var(--br-text); background: var(--br-bg); border: 1px solid var(--br-line); }
+.ds-photo-dialog::backdrop { background: #040912eb; }
+.ds-photo-dialog header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 14px; font-size: 16px; }
+.ds-photo-dialog button { min-width: 44px; min-height: 44px; border: 1px solid var(--br-line); background: var(--br-panel); color: var(--br-text); cursor: pointer; padding: 8px 14px; }
+.ds-photo-stage { display: grid; grid-template-columns: 44px minmax(0,1fr) 44px; gap: 12px; align-items: center; }
+.ds-photo-stage img { grid-column: 2; grid-row: 1; display: block; width: 100%; height: min(66dvh, 700px); object-fit: contain; background: #070c15; }
+.ds-photo-stage button { padding: 0; grid-row: 1; }
+.ds-photo-stage [data-photo-previous] { grid-column: 1; }
+.ds-photo-stage [data-photo-next] { grid-column: 3; }
+.ds-photo-dialog footer { font-size: 15.5px; line-height: 1.7; padding-top: 16px; overflow-wrap: anywhere; }
+.ds-photo-dialog footer a { color: var(--ds-link-ink); text-decoration: underline; }
+
+/* The fieldbook connects discovery with the next trip, rather than repeating grids. */
+.ds-fieldbook-trip { display: grid; grid-template-columns: 128px minmax(0,1fr) auto; align-items: center; gap: 26px; padding: 24px; background: var(--br-panel); border: 1px solid var(--br-line); margin: 0 0 32px; }
+.ds-fieldbook-trip-art { width: 128px; height: 116px; background: #172b38; color: #83cdce; display: grid; place-items: center; overflow: hidden; }
+.ds-fieldbook-trip-art > svg { width: 66px; height: 66px; fill: none; stroke: currentColor; stroke-width: 1; }
+.ds-fieldbook-trip-art img { width: 100%; height: 100%; object-fit: cover; }
+.ds-fieldbook-trip h2 { margin: 8px 0; font-size: clamp(25px, 3.2vw, 42px); line-height: 1.1; overflow-wrap: anywhere; }
+.ds-fieldbook-trip p { color: var(--br-muted); font-size: 16px; margin: 0; }
+.ds-fieldbook-tools { display: flex; justify-content: space-between; align-items: center; gap: 24px; border-bottom: 1px solid var(--br-line); }
+.ds-fieldbook-tools .ds-tabs { border: 0; margin: 0; padding: 0; }
+.ds-fieldbook-tools .ds-tabs button { border: 0; border-bottom: 2px solid transparent; padding: 20px 0; margin-right: 24px; white-space: nowrap; }
+.ds-fieldbook-tools .ds-tabs button[aria-pressed=true] { border-bottom-color: var(--br-green); color: var(--br-text); }
+.ds-fieldbook-tools .ds-search-field { flex: 0 1 330px; }
+.ds-fieldbook-item { display: grid; grid-template-columns: 192px minmax(0,1fr) auto; align-items: center; gap: 26px; padding: 24px 0; border-bottom: 1px solid var(--br-line); }
+.ds-fieldbook-image { display: block; height: 144px; overflow: hidden; background: var(--br-panel); }
+.ds-fieldbook-image img { width: 100%; height: 100%; object-fit: cover; }
+.ds-fieldbook-copy h2 { font-size: clamp(20px, 2vw, 29px); line-height: 1.13; letter-spacing: -.035em; margin: 9px 0; }
+.ds-fieldbook-copy p { color: var(--br-muted); font-size: 16px; margin: 0 0 12px; }
+.ds-fieldbook-copy a { color: inherit; text-decoration: none; }
+.ds-fieldbook-copy .ds-author { font-size: 15px; }
+.ds-fieldbook-actions { display: flex; align-items: center; gap: 12px; }
+.ds-fieldbook-actions .ds-save { position: static; flex: 0 0 40px; }
+.ds-fieldbook-actions .ds-button { padding: 12px 18px; font-size: 15.5px; }
+.ds-fieldbook-list > .ds-empty { margin-top: 24px; }
+.ds-empty h1 { font-size: clamp(32px, 5vw, 64px); margin: 0 0 18px; line-height: 1.05; }
+.ds-page a, .ds-page button { -webkit-tap-highlight-color: transparent; }
+.ds-photo-dialog [hidden] { display: none; }
+:root[data-panel-color=on] .ds-fieldbook-trip { background: #172b38; }
+:root[data-theme=light][data-panel-color=on] .ds-fieldbook-trip { background: #dfecec; }
+@media (max-width: 900px) {
+ .ds-fieldbook-item { grid-template-columns: 140px minmax(0,1fr); gap: 18px; }
+ .ds-fieldbook-actions { grid-column: 2; margin-top: -12px; }
+ .ds-fieldbook-image { grid-row: span 2; height: 100%; min-height: 160px; }
+ .ds-fieldbook-trip { grid-template-columns: 100px minmax(0,1fr); gap: 20px; }
+ .ds-fieldbook-trip-art { width: 100px; height: 100px; }
+ .ds-fieldbook-trip > .ds-button { grid-column: 2; justify-self: start; }
+}
+@media (max-width: 560px) {
+ .ds-photo-thumbs { gap: 7px; }
+ .ds-photo-thumbs img { height: 108px; }
+ .ds-photo-thumbs span { padding: 9px 5px; font-size: 14px; }
+ .ds-photo-gallery .ds-section-heading { display: block; }
+ .ds-photo-dialog { padding: 10px; }
+ .ds-photo-stage { grid-template-columns: 1fr 1fr; gap: 10px; }
+ .ds-photo-stage img { grid-row: 1; grid-column: 1 / -1; height: 56dvh; }
+ .ds-photo-stage button { grid-row: 2; }
+ .ds-photo-stage [data-photo-next] { grid-column: 2; }
+ .ds-fieldbook-trip { padding: 18px; grid-template-columns: 60px minmax(0,1fr); gap: 15px; }
+ .ds-fieldbook-trip-art { width: 60px; height: 76px; }
+ .ds-fieldbook-trip-art > svg { width: 40px; }
+ .ds-fieldbook-trip .ds-button { grid-column: 1 / -1; }
+ .ds-fieldbook-trip h2 { font-size: 26px; }
+ .ds-fieldbook-tools { display: block; padding-bottom: 16px; }
+ .ds-fieldbook-tools .ds-search-field { margin-top: 16px; }
+ .ds-fieldbook-item { grid-template-columns: 88px minmax(0,1fr); gap: 14px; padding: 22px 0; }
+ .ds-fieldbook-image { height: 108px; min-height: 0; grid-row: 1; }
+ .ds-fieldbook-copy .ds-eyebrow { font-size: 13px; }
+ .ds-fieldbook-copy h2 { font-size: 21px; }
+ .ds-fieldbook-copy p { font-size: 15px; }
+ .ds-fieldbook-actions { grid-column: 1 / -1; margin: 0; justify-content: flex-end; }
+}
+/* Shared headers use the same account and fieldbook controls on every route. */
+.ds-fieldbook-button { display:inline-grid; place-items:center; flex:none; width:34px; height:34px; border:1px solid #78859465; border-radius:50%; color:inherit; text-decoration:none; vertical-align:middle; }
+.ds-fieldbook-button svg { width:19px; height:19px; stroke:currentColor; stroke-width:1.5; fill:none; }
+.ds-fieldbook-button:hover { border-color:#07d653; }
+.ds-fieldbook-button:focus-visible { outline:2px solid var(--ds-link-ink); outline-offset:3px; }
+@media(max-width:600px) { .ds-fieldbook-button { display:none; } }
+/* Audit 2026-10-19 M1: small text on cobalt reaches 4.5:1. Panels with small text use #3858f0 (cream 4.99); tints become cream or white. */
+html[data-panel-color=on] .ds-wide-cta p{color:#fff}
+:root:not([data-panel-color=off]) .ds-competition-hero,:root:not([data-panel-color=off]) .ds-member-paid{background:#3858f0}
+:root:not([data-panel-color=off]) .ds-competition-hero .ds-eyebrow,:root:not([data-panel-color=off]) .ds-member-paid .ds-eyebrow{color:#f5f4ee}
+.hub .hub-slide p,.hub .hub-slide .ds-eyebrow{opacity:1}
+.hub-top1 .hub-handle,.hub-top1 .hub-meta,.hub-top1 .hub-pts small{color:#fff}
+/* Audit M6: leaderboard fits phone width, all five columns visible */
+@media(max-width:480px){.ds-ranking{min-width:0;table-layout:auto}.ds-ranking th,.ds-ranking td{padding:12px 5px;font-size:15.5px}.ds-ranking th{font-size:14px}.ds-ranking th:first-child,.ds-ranking td:first-child{padding-left:10px}.ds-ranking th:last-child,.ds-ranking td:last-child{padding-right:10px}.ds-ranking td:first-child{font-size:20px}.ds-ranking img,.ds-ranking .ds-rank-initial{width:28px;height:28px;flex:none}.ds-ranking td:nth-child(2) a{gap:7px;font-size:16px;min-width:0}.ds-ranking td:nth-child(2) a>span:last-child{min-width:0;overflow-wrap:anywhere}.ds-ranking td small{font-size:14px}}
+/* Audit L2: tap targets of at least 24px (padding offset by negative margin so layout holds) */
+.ds-page .ds-author{min-height:24px;align-items:center}
+.ds-breadcrumb a{display:inline-block;padding:7px 0;margin:-7px 0}
+.ds-card-bottom>a:last-child{display:inline-grid;place-items:center;min-width:24px;min-height:24px}
+.ds-note a{display:inline-block;padding:5px 0;margin:-5px 0}
+.ds-empty .ds-actions{justify-content:center}
+html .hub .hub-slide p,html .hub .hub-slide .ds-eyebrow{opacity:1}
+html .hub-top1 .hub-handle,html .hub-top1 .hub-meta,html .hub-top1 .hub-pts small{color:#fff;opacity:1}
+
+/* ===== tighten 10/22 ===== */
+/* P2-1 home header follows the light theme */
+html[data-theme=light] header.header{background:#f6f3ec;color:#0b1b27;border-bottom:1px solid #c0c9ca}
+html[data-theme=light] header.header .edition{color:#566878}
+/* P1-4 forum rows never push the page sideways */
+.ds-forum-list>a{grid-template-columns:minmax(0,1fr) auto}
+.ds-forum-list .ds-eyebrow,.ds-forum-list h3{overflow-wrap:break-word;min-width:0}
+@media(max-width:480px){.ds-forum-list>a{grid-template-columns:minmax(0,1fr);padding:22px 18px}.ds-forum-list h3{font-size:25px}}
+/* P2-9 browse category chips: last chip sizes to its text, fade cue on the phone scroller, one affordance (the chevron) */
+html body .br-more{max-width:none;flex:0 0 auto}
+html body .br-more select{width:auto;min-width:0;padding-right:6px;text-overflow:clip}
+@media(max-width:800px){
+ html body .br-tabs{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 34px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 34px),transparent)}
+ html body .br-tabs::after{content:'';flex:0 0 34px}
+}
+@media(max-width:600px){html body .br-more{max-width:100%}}
+/* P2-10 map: note never touches the box; phone list ends in a fade, not a cut-through row */
+html .ds-page .ds-note{margin-top:16px}
+@media(max-width:700px){
+ html .ds-map-results{padding-bottom:40px;-webkit-mask-image:linear-gradient(#000 calc(100% - 44px),transparent);mask-image:linear-gradient(#000 calc(100% - 44px),transparent)}
+}
+/* P2-13 plan trip: empty day has room around its text */
+.ds-trip-day-empty{padding:16px 18px}
+/* P2-14 light theme: the "new spots" tile gets an edge */
+:root[data-theme=light] .dcv .dv-p:not(.dv-flat){border:1px solid rgba(11,27,39,.28)}
+/* P2-11 home stories: nothing leaks outside the panel */
+.ed-stories{overflow:clip}
+/* P2-4 type floors: meta >= 14px, body >= 17px (the passport card is a scaled object and is handled separately) */
+html:root .gv-name,html:root .gv-g6 .gv-name{font-size:max(14px,var(--fn))}
+html:root .pm-sub{font-size:14px}
+html:root .ticker span:first-child,html:root .ticker span,html:root .hero .pin-preview .preview-place,html:root .pin-preview .preview-place,html:root .map-credit,html:root .cl-sample,html:root .cl-total>span,html:root .br-tags,html:root .ob-note,html:root .ed-story-copy>span,html:root .ed-story-copy small{font-size:max(14px,1em)}
+html:root .cl-total>span,html:root .map-credit,html:root .cl-sample{font-size:14px}
+html:root .ticker span:first-child{font-size:14px}
+html:root .br-tags{font-size:14px}
+html:root .ob-note{font-size:14px}
+html:root .ed-story-copy>span{font-size:14px}
+/* body copy */
+html:root .br-desc,html:root .ds-card-text>p,html:root .ds-guide-card p,html:root .ds-story-card p,html:root .ds-three p,html:root .ds-callout p,html:root .ds-draft-card p,html:root .ds-faq-aside p,html:root .ds-note,html:root .ds-local-status,html:root .ac-service-note,html:root .fs-description,html:root .gv-h1p,html:root .pin-preview p:not(.preview-place),html:root .pp-mono.pp-basis{font-size:17px}
+html:root .ds-page>section>p,html:root .ds-page>p,html:root .ds-page article>p,html:root .ds-page aside>p,html:root .ds-page .ds-prose p,html:root .ds-page .ds-article-layout p,html:root .ds-page .ds-practical p{font-size:max(17px,1em)}
+html:root .gv-cta-t p,html:root .ds-wide-cta p,html:root .pp-type-row p{font-size:17px}
+html:root .ac-service-note{font-size:17px!important}
+html:root .br-results-summary{font-size:14px}
+html:root.pp-app .pp-statsrow .pp-type-row p,html:root .pp-type-row p{font-size:17px}
+/* home light theme: text colours that sat under 4.5:1 */
+html[data-theme=light] .hero .intro{color:#46629c}
+html[data-theme=light] .map-credit,html[data-theme=light] .map-credit a{color:#556a80}
+/* followTab/tabFades (core.mjs): edge fade on sideways tab rows that have more tabs out of view */
+.has-more-right{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 44px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 44px),transparent)}
+.has-more-left{-webkit-mask-image:linear-gradient(90deg,transparent,#000 44px);mask-image:linear-gradient(90deg,transparent,#000 44px)}
+.has-more-left.has-more-right{-webkit-mask-image:linear-gradient(90deg,transparent,#000 44px,#000 calc(100% - 44px),transparent);mask-image:linear-gradient(90deg,transparent,#000 44px,#000 calc(100% - 44px),transparent)}
