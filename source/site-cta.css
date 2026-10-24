@@ -73,3 +73,6 @@ html[data-theme=light] .ds-cta-button:hover{background:#59ed87}
 @media(prefers-reduced-motion:reduce){.ds-cta-art{animation:none}}
 
 @media(max-width:400px){.ds-cta-button{white-space:nowrap;gap:16px}}
+
+/* iPad + small laptop: footer columns never overlap (brand row, then explore + legal) */
+@media(min-width:801px) and (max-width:1240px){.ds-footer-main{grid-template-columns:1.5fr 1fr;gap:36px 48px}.ds-footer-brand{grid-column:1/-1}.ds-footer-nav[aria-labelledby="ds-footer-explore"] ul{column-gap:36px}}
