@@ -1,6 +1,7 @@
 import {readIDs,writeValue,subscribeStore} from '../site/storage.mjs?v=f4e726a0';
 import {primaryCategories,prepareCatalog,filterCatalog,categoryLabel,paginateCatalog} from './catalog.mjs?v=776ebad9';
-import {authorLink} from '../profile/identity.mjs?v=38b679eb';
+import {authorLink} from '../profile/identity.mjs?v=744e89b9';
+import {followTab,tabFades} from '../site/core.mjs?v=65b48136';
 import {imgAttrs} from '../site/img.mjs?v=61371a3b';
 const $=selector=>document.querySelector(selector);
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -20,6 +21,7 @@ $('.br-tabs').innerHTML=primaryCategories.map(([label,id])=>`<button type="butto
 function sync(){
  $('#spot-search').value=state.query;$('#spot-sort').value=state.sort;
  document.querySelectorAll('[data-category]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.category===state.category)));
+ {const row=$('.br-tabs'),on=row.querySelector('[aria-pressed=true]');tabFades(row);if(on)followTab(row,on,{smooth:sync.did===true});sync.did=true;}
  $('#more-categories').value=primaryCategories.some(([,id])=>id===state.category)?'':state.category;
  $('.br-saved').setAttribute('aria-pressed',String(state.savedOnly));$('#saved-count').textContent=saved.size;
  document.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.view===state.view)));
@@ -35,7 +37,7 @@ function renderFilters(){const chips=[];if(state.category!=='all')chips.push(['c
 function render(){
  const matches=filterCatalog(data,state,saved),pagination=paginateCatalog(matches,state.page),shown=pagination.items,grid=$('#browse-results');
  state.page=pagination.page;writeURL();
- sync();renderFilters();$('#result-count').textContent=matches.length;const noun=matches.length===1?'deep spot':'deep spots';$('#result-label').textContent=state.savedOnly?'saved '+noun:state.query||state.category!=='all'?noun+' found':noun+' to discover';
+ sync();renderFilters();$('#result-count').textContent=matches.length;const noun=matches.length===1?'deep spot':'deep spots';$('#result-label').textContent=state.savedOnly?'saved '+noun:state.query||state.category!=='all'?noun+' found':noun+' to discover';const filtered=state.savedOnly||state.query.trim()||state.category!=='all';$('#pill-count').textContent=matches.length;$('#pill-label').textContent=state.savedOnly?'saved':filtered?'found':matches.length===1?'spot':'spots';
  if(!matches.length){grid.innerHTML=`<div class="br-empty"><h2>${state.savedOnly?'No saved spots found':'No deep spots found'}</h2><p>${state.savedOnly?'Tap a bookmark on any spot to keep it here.':'Try a different place, publisher, or category.'}</p><button class="br-pill" type="button" data-reset>explore all spots <span>↗</span></button></div>`;}
  else grid.innerHTML=shown.map(card).join('');
  grid.setAttribute('aria-busy','false');$('#shown-count').textContent=matches.length?`Showing ${pagination.start+1}–${pagination.start+shown.length} of ${matches.length} ${matches.length===1?'deep spot':'deep spots'}`:'';renderPages(pagination.totalPages,matches.length);

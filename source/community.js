@@ -6,7 +6,7 @@
       this.dataset.ready = 'true';
       this.abort = new AbortController();
       try {
-        this.profiles = await import('/profile/identity.mjs?v=38b679eb');
+        this.profiles = await import('/profile/identity.mjs?v=744e89b9');
         this.img = await import('/site/img.mjs?v=61371a3b');
         const response = await fetch('/profile/profiles.json', {signal:this.abort.signal});
         if (!response.ok) throw new Error('Community data unavailable');

@@ -1,5 +1,5 @@
-import {esc,$,$$,icon,localURL} from './core.mjs?v=149e30e7';
-import {people,fmt} from './community-v2.mjs?v=3c15f1d3';
+import {esc,$,$$,icon,localURL} from './core.mjs?v=65b48136';
+import {people,fmt} from './community-v2.mjs?v=3cef1f92';
 import {halftoneField} from './halftone-field.mjs?v=a8e8e93e';
 
 /* Community giveaway hero (2026-10-19): 10 race-graph versions. Real data only (content.json leaderboard, this month). Bar length = sqrt(points). */
@@ -35,7 +35,7 @@ function head(v,now,{title=true}={}){
  return `<header class="gv-head"><div class="gv-ttl"><span class="gv-kick">this month’s giveaway · ${mon(now)} ${now.getFullYear()}</span><h2 id="gv-t-${v}"${title?'':' class="cv-sr"'}>deepspot initial giveaway.</h2></div>${tools()}</header>`;
 }
 const tools=()=>`<div class="gv-tools"><span class="gv-ends"><i>ends in</i><b data-cd>—</b></span><button type="button" class="gv-ghost" data-more>read more</button><button type="button" class="gv-ghost gv-rep" data-replay>${ico.replay}<span>run it again</span></button></div>`;
-const ctaHTML=()=>`<div class="gv-cta"><div class="gv-cta-t"><h3>your spot could be next.</h3><p>Every approved spot earns 50 points, every story 100, every upvote 10. Start now and you are on the board today.</p></div><div class="gv-cta-b"><a class="ds-button gv-join" href="${esc(localURL('/contribute/'))}">join now ${icon('arrow')}</a><button type="button" class="gv-ghost" data-more>read more</button></div></div>`;
+const ctaHTML=()=>`<div class="gv-cta"><div class="gv-cta-t"><h3>your spot could be next.</h3><p data-copy="kai-8">Every approved spot earns 50 points, every upvote 10. Start now and you are on the board today.</p></div><div class="gv-cta-b"><a class="ds-button gv-join" href="${esc(localURL('/contribute/'))}">join now ${icon('arrow')}</a><button type="button" class="gv-ghost" data-more>read more</button></div></div>`;
 /* vertical plot (G1, G2, G5, G6) */
 const vplot=(D,{order,col,extra='',cls=''})=>`<p class="gv-hint" aria-hidden="true">swipe sideways to see all ten →</p><div class="gv-scroll"><div class="gv-plot ${cls}">${extra}${ticks(D,'v')}<ol class="gv-cols" aria-label="Giveaway standings, this month">${D.map((r,i)=>col(r,order?order.indexOf(i):i)).join('')}</ol></div></div>`;
 
@@ -43,9 +43,9 @@ const vplot=(D,{order,col,extra='',cls=''})=>`<p class="gv-hint" aria-hidden="tr
 function openDetails(opener){
  const d=document.createElement('dialog');d.className='gv-dialog';d.setAttribute('aria-labelledby','gv-dlg-t');
  d.innerHTML=`<button type="button" class="gv-x" aria-label="Close giveaway details">×</button><span class="gv-kick">deepspot initial giveaway</span><h2 id="gv-dlg-t">how it works.</h2>
- <p>Share spots and stories on DeepSpot. Approved ones earn points. The people with the most points this month lead the board.</p>
- <h3>how to join</h3><ol><li>Open the contribute page.</li><li>Post a new spot or tell a story.</li><li>Points count once your spot is approved and added to the map.</li></ol>
- <h3>points</h3><table><caption class="cv-sr">Points per action</caption><thead><tr><th scope="col">action</th><th scope="col">points</th></tr></thead><tbody><tr><th scope="row">share a new spot</th><td>+50</td></tr><tr><th scope="row">tell a story</th><td>+100</td></tr><tr><th scope="row">get an upvote</th><td>+10</td></tr></tbody></table>
+ <p data-copy="kai-8">Share spots on DeepSpot. Approved ones earn points. The people with the most points this month lead the board.</p>
+ <h3>how to join</h3><ol data-copy="kai-8"><li>Open the contribute page.</li><li>Post a new spot.</li><li>Points count once your spot is approved and added to the map.</li></ol>
+ <h3>points</h3><table><caption class="cv-sr">Points per action</caption><thead><tr><th scope="col">action</th><th scope="col">points</th></tr></thead><tbody><tr><th scope="row">share a new spot</th><td>+50</td></tr><tr><th scope="row">get an upvote</th><td>+10</td></tr></tbody></table>
  <h3>prizes</h3><ul><li><b>1st place:</b> $300 and a one-of-one custom character item.</li><li><b>2nd and 3rd place:</b> $100 and a character item each.</li><li><b>Every participant:</b> a character item and 3 months free (approved map spots only).</li></ul>
  <h3>dates and rules</h3><ul><li>The board runs by calendar month and resets on the 1st.</li><li>This round ends at the end of the month, in your local time: <b data-cd>—</b> left.</li><li>Prizes and point values come from the original DeepSpot giveaway page. Check its current status, eligibility, and rules before you enter.</li></ul>
  <div class="gv-dlg-links"><a class="ds-button" href="${esc(localURL('/competition/'))}">official rules ${icon('arrow')}</a><a class="gv-link" href="https://www.deepspot.io/community" data-original target="_blank" rel="noopener">original giveaway page ↗</a></div>`;
@@ -104,7 +104,7 @@ V.g1=(D,n,now)=>{
  const order=[9,7,5,3,1,0,2,4,6,8],tag=r=>r.rank<4?`<span class="gv-tag">${r.rank===1?'$300':'$100'}</span>`:'';
  const lead=`<span class="gv-spark" aria-hidden="true">${[...Array(14)].map((_,i)=>`<i style="--a:${i*360/14}deg;--c:${['#07d653','#83cdce','#3c60ff','#f5f4ee'][i%4]}"></i>`).join('')}</span>`;
  const col=(r,o)=>`<li ${rc(r,`--o:${o}`)}><span class="gv-clip"><span class="gv-bar"></span>${pin(r,`<span class="gv-puff" aria-hidden="true"></span><b class="gv-pts gv-bpts" data-count="${r.points}">${fmt(r.points)}</b>${tag(r)}${r.rank===1?lead:''}`)}</span><span class="gv-gate1">${r.rank}</span></li>`;
- const hero=`<div class="gv-hero1"><div class="gv-h1l"><span class="gv-kick">deepspot initial giveaway · ${mon(now)} ${now.getFullYear()}</span><h2 id="gv-t-g1">the race<br>for <em>$300.</em></h2><p class="gv-h1p">Post spots, tell stories, collect upvotes. Most points by ${now.toLocaleString('en-US',{month:'short'})} ${new Date(now.getFullYear(),now.getMonth()+1,0).getDate()} wins $300 and a one-of-one character item. 2nd and 3rd win $100 + an item.</p><span class="gv-ends gv-h1cd" role="timer" aria-label="Time left this month"><i>ends in</i><b data-cd>—</b></span></div></div>`;
+ const hero=`<div class="gv-hero1"><div class="gv-h1l"><span class="gv-kick gv-kick-sans" data-copy="kai-2">deepspot initial giveaway</span><h2 id="gv-t-g1">the race<br>for <em>$300.</em></h2><p class="gv-h1p" data-copy="kai-8">Post spots, collect upvotes. Most points by ${now.toLocaleString('en-US',{month:'short'})} ${new Date(now.getFullYear(),now.getMonth()+1,0).getDate()} wins $300 and a one-of-one character item. 2nd and 3rd win $100 + an item.</p><span class="gv-ends gv-h1cd" role="timer" aria-label="Time left this month"><i>${now.toLocaleString('en-US',{month:'long'}).toLowerCase()} race · ends in</i><b data-cd>—</b></span></div></div>`;
  const legend=`<ol class="gv-legend" aria-label="Standings, ranked">${D.map(r=>`<li><span class="gv-lrk">${r.rank}</span><span class="gv-thumb" style="--pc:${PC[(r.rank-1)%4]}">${r.mole?`<img src="${esc(r.mole)}" alt="" width="512" height="512" loading="lazy" decoding="async">`:''}</span><span class="gv-lname">${esc(r.name)}</span>${r.rank<4?`<em class="gv-lprize">${PRIZES[r.rank-1]}</em>`:''}<b>${fmt(r.points)}</b></li>`).join('')}</ol>`;
  return {noHead:true,race:{snap:true},body:`<div class="gv-wrap">${hero}<div class="gv-plot gv-p1"><ol class="gv-cols" aria-label="Giveaway standings, this month">${D.map((r,i)=>col(r,order.indexOf(i))).join('')}</ol></div></div>${legend}`};
 };

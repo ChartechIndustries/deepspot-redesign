@@ -61,9 +61,9 @@ export async function createPassportImage(profile,spots,url){
  mono('traveler type',X,100,13);
  const typeName=style?style.name:'no type yet';
  ctx.font='800 58px Arial, sans-serif';ctx.fillStyle=ink;ctx.fillText(typeName+'.',X,172);
- ctx.font='400 20px Arial, sans-serif';ctx.fillStyle=muted;wrap(ctx,profile.type.postings?`Based on ${(()=>{const t=profile.type.postings,total=profile.verified?(profile.contrib?.spots||0)+(profile.contrib?.stories||0):0;return total>t?t+' of '+total+' postings (the ones in this collection)':t+' '+(t===1?'posting':'postings');})()}. ${style?style.description:''}`:(style?style.description:'A type appears after the first posting.'),X,208,780,28,2);
+ ctx.font='400 20px Arial, sans-serif';ctx.fillStyle=muted;wrap(ctx,profile.type.postings?`Based on ${(()=>{const t=profile.type.postings,total=profile.verified?(profile.contrib?.spots||0):0;return total>t?t+' of '+total+' postings (the ones in this collection)':t+' '+(t===1?'posting':'postings');})()}. ${style?style.description:''}`:(style?style.description:'A type appears after the first posting.'),X,208,780,28,2);
  rule(X,262,1506,262);
- const stats=[[profile.points==null?'—':profile.points.toLocaleString('en-US'),'points'],[profile.level?profile.level.level:'—','level'],[profile.contrib.spots??'—','spots'],[profile.contrib.stories??'—','stories'],[profile.standing?.rankAll?'#'+profile.standing.rankAll:'—','all-time rank']];
+ const stats=[[profile.points==null?'—':profile.points.toLocaleString('en-US'),'points'],[profile.level?profile.level.level:'—','level'],[profile.contrib.spots??'—','spots'],[profile.standing?.rankAll?'#'+profile.standing.rankAll:'—','all-time rank']];
  stats.forEach(([v,l],i)=>{const x=X+i*158;text(String(v),x,330,50,i===0?green:ink,700);mono(l,x,360,12);});
  rule(X,392,1506,392);
  mono('postings',X,430,13);

@@ -2,14 +2,14 @@
 // Screen A = account (one screen). Then a short "issue" animation. Screen B = the passport itself: every part is a glowing
 // slot on the card (v2.1: one face, no flip; bio sits between the photo and the mark), each opening a focused bottom sheet (phone) or popover (desktop).
 // Passport data goes through the same storage the passport page reads (account draft, passport style, want-to-go).
-import {FINISH,SLOTS,slotProgress,readProgress,writeProgress,isOnboarded,markOnboarded,resetOnboarding,passwordStrength,validateUsername,suggestUsernames,takenHandles,archetypeName,validEmail} from './onboarding-state.mjs?v=058ca714';
+import {FINISH,SLOTS,slotProgress,readProgress,writeProgress,isOnboarded,markOnboarded,resetOnboarding,passwordStrength,validateUsername,suggestUsernames,takenHandles,archetypeName,validEmail} from './onboarding-state.mjs?v=b66a351d';
 import {accountKey,readAccount,normalizeAccount,travelerStyles} from './account-state.mjs?v=1c064097';
 import {readSession,writeSession} from './gate-state.mjs?v=7e3c4a02';
 import {G_ICON,A_ICON} from './brand-icons.mjs?v=5af903eb';
 const MAIL_ICON='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7.5 8 6 8-6"/></svg>';
-import {readStyle,writeStyle,archCardsHTML,archGroups,styleGroupHTML,pickStyle,cardHTML,moleImgHTML,mrz,syncPreview,bindTilt,fitRows} from '../profile/passport-edit.mjs?v=2b579d8b';
-import {padHTML,initPad,inkURL} from '../profile/sign-pad.mjs?v=128b4053';
-import {escapeHTML as esc,safeReturn} from '../profile/identity.mjs?v=38b679eb';
+import {readStyle,writeStyle,archCardsHTML,archGroups,styleGroupHTML,pickStyle,cardHTML,moleImgHTML,mrz,syncPreview,bindTilt,bindDeviceTilt,fitRows} from '../profile/passport-edit.mjs?v=b98d0bcf';
+import {padHTML,initPad,inkURL} from '../profile/sign-pad.mjs?v=7ef1440c';
+import {escapeHTML as esc,safeReturn} from '../profile/identity.mjs?v=744e89b9';
 
 const D=document,$=(s,r=D)=>r.querySelector(s),$$=(s,r=D)=>[...r.querySelectorAll(s)];
 const calm=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -18,6 +18,9 @@ const LOGIN='https://www.deepspot.io/login';
 const ARROW='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>';
 const theme=()=>D.documentElement.dataset.theme==='light'?'light':'dark';
 const popMode=()=>matchMedia('(min-width:860px) and (min-height:600px)').matches;
+const tabletTouch=()=>matchMedia('(pointer:coarse) and (min-width:700px)').matches;
+/* 7.2: on a tablet the mark sheet is a wide bottom sheet (big pad), everything else keeps the popover */
+const asPop=()=>popMode()&&!(openId==='mark'&&tabletTouch());
 const wideMode=()=>matchMedia('(min-width:1000px) and (min-height:600px) and (min-aspect-ratio:5/4)').matches;
 const wait=ms=>new Promise(r=>setTimeout(r,ms));
 D.documentElement.classList.add('ob-lock');
@@ -158,6 +161,7 @@ function buildB(){
  lit.photo=[molebox];lit.name=[rowsNow[0],rowsNow[1]];lit.arch=[rowsNow[2],stampEl];lit.bio=[bioBtn];lit.mark=[sig];lit.style=[stl];
  /* never run into the sticker with a long type name */
  bindTilt(stage,cardw,pobj);
+ bindDeviceTilt({obj:pobj,host:$('.ob-zone',B)||stage});   /* 4.2: tilts with the phone */
  /* events */
  flip.addEventListener('click',e=>{const b=e.target.closest('.ob-slot');if(b&&!finishing)openSheet(b.dataset.slot,b);});
  finBtn.addEventListener('click',finish);
@@ -434,8 +438,8 @@ function openSheet(id,trig){
  openId=id;trigger=trig;before=relevant(id);
  const sh=sheetEl(),host=hostEl(),ly=layer();
  $('#ob-sh-t',B).textContent=ed.title;host.innerHTML=ed.html();sh.dataset.open=id;sh.classList.remove('is-open','is-pop');
- sh.classList.toggle('is-pop',popMode());host.scrollTop=0;
- ly.hidden=false;ly.dataset.mode=popMode()?'pop':'sheet';
+ sh.classList.toggle('is-pop',asPop());host.scrollTop=0;
+ ly.hidden=false;ly.dataset.mode=asPop()?'pop':'sheet';
  stage.inert=true;$('.ob-bar',B).inert=true;$('.ob-header')?.setAttribute('inert','');
  setEditing(true,id);
  sh.style.maxHeight=maxSheetH()+'px';keyboard();
@@ -473,11 +477,11 @@ function onKey(e){
  else if(!e.shiftKey&&D.activeElement===last){e.preventDefault();first.focus();}
 }
 const vvH=()=>visualViewport?visualViewport.height:innerHeight;
-const maxSheetH=()=>Math.round(openId==='arch'?(popMode()?Math.min(innerHeight*.8,760,vvH()-16):Math.min(innerHeight*.92,vvH()-16)):Math.min(innerHeight*(openId==='style'&&!popMode()?(innerHeight>=780?.56:innerHeight>=640?.62:.7):.7),vvH()-16,popMode()?640:9999));
+const maxSheetH=()=>Math.round(openId==='mark'&&tabletTouch()?Math.min(innerHeight*.92,vvH()-16):openId==='arch'?(popMode()?Math.min(innerHeight*.8,760,vvH()-16):Math.min(innerHeight*.92,vvH()-16)):Math.min(innerHeight*(openId==='style'&&!popMode()?(innerHeight>=780?.56:innerHeight>=640?.62:.7):.7),vvH()-16,popMode()?640:9999));
 /* the soft keyboard on a phone: keep the sheet above it */
 function keyboard(){
  const sh=sheetEl();if(!sh||!openId)return;
- const kb=popMode()?0:Math.max(0,Math.round(innerHeight-(visualViewport?visualViewport.height+visualViewport.offsetTop:innerHeight)));
+ const kb=asPop()?0:Math.max(0,Math.round(innerHeight-(visualViewport?visualViewport.height+visualViewport.offsetTop:innerHeight)));
  sh.style.setProperty('--kb',kb+'px');sh.style.maxHeight=maxSheetH()+'px';
 }
 /* phone: the card shrinks into the space above the sheet so the live change stays visible */
@@ -491,7 +495,7 @@ function relift(){
   lift.style.transform=liftDX?`translateX(${liftDX.toFixed(1)}px)`:'';return;
  }
  liftDX=0;
- if(!openId||popMode()||!builtB){lift&&(lift.style.transform='');return;}
+ if(!openId||asPop()||!builtB){lift&&(lift.style.transform='');return;}
  const sh=sheetEl(),kb=parseInt(sh.style.getPropertyValue('--kb'))||0,h=sh.offsetHeight;
  const botY=vvH()-kb*0-h-8;
  lift.style.transition='none';lift.style.transform='';
@@ -503,7 +507,7 @@ function relift(){
 }
 /* desktop: popover next to the card, level with the slot */
 function placePop(){
- if(!openId||!popMode())return;
+ if(!openId||!asPop())return;
  const sh=sheetEl(),slot=trigger&&trigger.isConnected?trigger:slotEls[openId][0],cr0=cardw.getBoundingClientRect(),sr0=slot.getBoundingClientRect();
  const curX=new DOMMatrix(getComputedStyle(lift).transform).m41||0,dx=liftDX-curX;   /* where the card ends up once the slide finishes */
  const cr={left:cr0.left+dx,right:cr0.right+dx,width:cr0.width};const sr={left:sr0.left+dx,top:sr0.top,width:sr0.width,height:sr0.height};
@@ -520,7 +524,7 @@ function placePop(){
 /* swipe down to close (phone) */
 function wireDrag(){
  const sh=sheetEl();let d=null;
- const start=e=>{if(popMode()||e.button>0||e.target.closest('.ob-sh-x'))return;d={y:e.clientY,t:performance.now(),dy:0,id:e.pointerId};e.currentTarget.setPointerCapture?.(e.pointerId);sh.style.transition='none';};
+ const start=e=>{if(asPop()||e.button>0||e.target.closest('.ob-sh-x'))return;d={y:e.clientY,t:performance.now(),dy:0,id:e.pointerId};e.currentTarget.setPointerCapture?.(e.pointerId);sh.style.transition='none';};
  const move=e=>{if(!d||e.pointerId!==d.id)return;d.dy=Math.max(0,e.clientY-d.y);sh.style.transform=`translateY(${d.dy}px)`;};
  const end=e=>{if(!d||e.pointerId!==d.id)return;const v=d.dy/Math.max(1,performance.now()-d.t);sh.style.transition='';sh.style.transform='';const go=d.dy>90||(v>.6&&d.dy>30);d=null;if(go)closeSheet('x');};
  for(const el of [$('.ob-grab',B),$('.ob-sh-h',B)]){el.addEventListener('pointerdown',start);el.addEventListener('pointermove',move);el.addEventListener('pointerup',end);el.addEventListener('pointercancel',end);}

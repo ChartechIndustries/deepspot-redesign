@@ -1,6 +1,6 @@
-/* Restore the bento: community left, stories right, promotional covers underneath. */
-.ed-has-community .ed-top{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
-.ed-top>deepspot-community{border-right:1px solid var(--ed-line);container-type:inline-size}
+/* Home bento: community full width, promotional covers underneath (stories removed 2026-10-23). */
+.ed-has-community .ed-top{grid-template-columns:minmax(0,1fr)}
+.ed-top>deepspot-community{container-type:inline-size}
 .cl-panel-heading{height:var(--ed-header-height,90px)!important;justify-content:center;text-align:center;background:var(--cl-field);color:var(--cl-title)}
 deepspot-community{display:block;min-width:0;--cl-field:#14233a;--cl-paper:#111c29;--cl-ink:#f0f2eb;--cl-muted:#aab9c6;--cl-line:#344658;--cl-highlight:#83cdce;--cl-active:#1c3144;--cl-title:#eef1e7;--cl-accent:#07d653}
 .cl-community{display:grid;grid-template-columns:45% 55%;grid-template-rows:minmax(0,1fr);height:var(--ed-media-height,440px);color:var(--cl-ink)}
@@ -45,14 +45,10 @@ deepspot-community{display:block;min-width:0;--cl-field:#14233a;--cl-paper:#111c
 .cl-total strong{display:block;font-size:clamp(22px,4cqw,29px);font-weight:600;letter-spacing:-1px;line-height:1.05}
 .cl-total>span{display:block;font-size:13px;color:var(--cl-muted);margin-top:4px}
 .cl-profile-link:focus-visible{outline-offset:-4px!important;outline-color:var(--cl-highlight)!important}
-.ed-has-community .ed-stories{grid-template-rows:var(--ed-header-height) calc(var(--ed-media-height)/2) calc(var(--ed-media-height)/2)}
-.ed-has-community .ed-stories .ed-heading{border-top:0}
-.ed-has-community .ed-story-track{margin-left:calc((100cqw - 460px)/2)}
 .cl-unavailable{padding:60px;text-align:center}
 html[data-theme=light] deepspot-community{--cl-field:#e0e9e7;--cl-paper:#f5f3eb;--cl-ink:#152d42;--cl-muted:#526775;--cl-line:#b5c6c7;--cl-highlight:#236d52;--cl-active:#dde7e3;--cl-title:#193847;--cl-accent:#008c41}
 @media(max-width:1000px){
  .ed-has-community .ed-top{grid-template-columns:minmax(0,1fr)}
- .ed-top>deepspot-community{border-right:0;border-bottom:1px solid var(--ed-line)}
  .ed-shell .cl-motion{width:44px;height:44px;padding:12px}
  .cl-person strong{font-size:21px}.cl-total strong{font-size:27px}
  .cl-person>span{font-size:15px}.cl-total>span{font-size:14px}
@@ -67,7 +63,6 @@ html[data-theme=light] deepspot-community{--cl-field:#e0e9e7;--cl-paper:#f5f3eb;
  .ed-shell .cl-profile-link{padding:12px 18px;grid-template-columns:18px minmax(0,1fr) auto;gap:12px}
  .cl-person strong{font-size:21px}.cl-total strong{font-size:27px}
  .cl-field-footer{left:18px;right:14px;bottom:10px}
- .ed-has-community .ed-story-track{margin-left:0}
 }
 @media(max-width:380px){
  .cl-intro h2{font-size:44px}.cl-list-heading{padding-inline:14px}.cl-list-heading h3{font-size:22px}

@@ -79,3 +79,12 @@ deepspot-featured .fs-choice{font-size:15px;font-weight:700}
 
 /* 2026-10-22: tab strips scroll sideways only — never up/down on phones */
 .ob-tabs,.pp-vtabs,.cv-tabs,.br-tabs,.fs-tabs{overflow-y:hidden;overscroll-behavior-x:contain;overscroll-behavior-y:none}
+
+/* notes 1023 A 2.5: "browse all deep spots" = same size family as the hero explore button (56px tall, 20px text, 28px sides) */
+.fs-browse-link a{border:1px solid currentColor;border-radius:30px;padding-bottom:0}
+.fs-section .fs-browse-link>a[href]{box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:56px;padding:0 28px;font-size:20px;font-weight:500;line-height:1.1;text-decoration:none;text-align:center;transition:background-color .2s ease,transform .2s ease}
+.fs-section .fs-browse-link>a[href]:hover{transform:translateY(-2px)}
+.fs-section .fs-browse-link>a[href]:focus-visible{outline:3px solid #0ed957;outline-offset:3px}
+.fs-browse-link{padding:30px 22px}
+@media(max-width:650px){.fs-browse-link{padding:26px 16px}.fs-section .fs-browse-link>a[href]{width:100%;max-width:360px}}
+@media(prefers-reduced-motion:reduce){.fs-section .fs-browse-link>a[href]{transition:none}.fs-section .fs-browse-link>a[href]:hover{transform:none}}

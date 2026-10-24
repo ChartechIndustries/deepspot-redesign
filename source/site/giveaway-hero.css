@@ -552,3 +552,7 @@
 @container gv (min-width:1100px){.gv-g1 .gv-stage{--m:clamp(52px,5.1cqw,104px);--ml:clamp(76px,7.2cqw,148px);--ph:clamp(440px,38cqw,640px);--hr:clamp(168px,14cqw,236px);--fn:clamp(12.5px,1.05cqw,18px);--fp:clamp(14px,1.25cqw,22px)}}
 @container gv (max-width:650px){.gv-g1 .gv-stage,.gv-cta{padding-left:16px;padding-right:16px}}
 @container gv (min-width:1100px){.gv-g1 .gv-stage h2{font-size:clamp(34px,4.4cqw,100px)}.gv-g1 .gv-h1l{max-width:34%}}
+
+/* 2026-10-23 (5.1): the hero eyebrow is plain site sans, sentence case, no mono caps. The month lives in the countdown chip. */
+.gv .gv-kick.gv-kick-sans{font-family:inherit;font-weight:700;font-size:16px;line-height:1.3;letter-spacing:0;text-transform:none;margin-bottom:12px;color:inherit;opacity:.82}
+.gv-g1 .gv-h1cd i{white-space:nowrap}

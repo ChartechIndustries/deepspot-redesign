@@ -128,3 +128,7 @@ html[data-theme=light] .wn-window{border-color:var(--wn-frame)}
 @media(max-width:400px){.wn-k-disc figcaption .wn-sep{display:none}.wn-k-disc figcaption .ds-author{display:flex;margin-top:3px}}
 @media(max-width:480px){deepspot-news{--wn-rail:30px}.wn-rail,.wn-intro-tab{font-size:18px}.wn-k-comm .wn-copy{padding:18px 16px 0}.wn-join{height:44px;padding:0 18px;font-size:17px}.wn-forum{font-size:15px}}
 @media(prefers-reduced-motion:reduce){.wn-section,.wn-header,.wn-intro-title,.wn-intro-label,.wn-intro-arrow,.wn-window,.wn-panel,.wn-content,.wn-copy,.wn-readmore svg,.wn-join,.wn-fan .wn-pc{transition:none!important}.wn-fan .wn-pc{opacity:1;transform:translateX(calc((var(--j) - (var(--n) - 1) / 2) * var(--sp) + var(--sx,0px))) rotate(var(--rot)) scale(var(--cs))}}
+
+/* notes 1023 A 2.4: horizontal swipe; vertical scroll stays with the page */
+.wn-window{touch-action:pan-y;-webkit-user-select:none;user-select:none}
+.wn-window a,.wn-window img{-webkit-user-drag:none}

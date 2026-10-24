@@ -2,7 +2,7 @@
    Archetype picker, bio look + passport style swatches, the passport card markup, live-preview sync, fit + tilt. */
 import {cropFor} from './passport-art.mjs?v=89a3954f';
 import {travelerStyles,travelerMark} from '../site/account-state.mjs?v=1c064097';
-import {escapeHTML as esc} from './identity.mjs?v=38b679eb';
+import {escapeHTML as esc} from './identity.mjs?v=744e89b9';
 
 export const LOOK_KEY='deepspot-bio-look-v1',STYLE_KEY='deepspot-passport-style-v1';
 export const LOOKS={bg:[['panel','plain'],['green','green'],['cobalt','cobalt'],['aqua','aqua'],['cream','paper'],['ink','ink']],font:[['display','bold'],['serif','serif'],['mono','type'],['hand','hand']],align:[['left','left'],['center','center']]};
@@ -153,4 +153,78 @@ export function bindTilt(stage,cardw,pobj){
  if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
  stage.addEventListener('pointermove',e=>{if(e.pointerType!=='mouse')return;const r=cardw.getBoundingClientRect(),x=Math.max(-.5,Math.min(.5,(e.clientX-r.left)/r.width-.5)),y=Math.max(-.5,Math.min(.5,(e.clientY-r.top)/r.height-.5));pobj.style.transform=`perspective(1600px) rotateX(${(-y*9).toFixed(2)}deg) rotateY(${(x*11).toFixed(2)}deg)`;pobj.style.setProperty('--gx',((x+.5)*100).toFixed(1)+'%');pobj.style.setProperty('--gy',((y+.5)*100).toFixed(1)+'%');});
  stage.addEventListener('pointerleave',()=>{pobj.style.transform='';});
+}
+
+/* ---- 4.2 (2026-10-23): the passport tilts with the phone ----
+   bindDeviceTilt({obj, host, persp}) -> {destroy}
+   obj  : the element that leans (the .pp-passobj-in / .pm-tilt box), or a function returning it (deck: the front card). It gets
+          rotateX/Y (max 8 deg, eased 0.12 per frame), --gx/--gy (the same light the pointer drives) and .is-tilt, and every
+          [data-pml] light inside it moves. host: where the "tilt to shine" chip goes (iOS asks for permission on a tap).
+   Off for reduced motion, for mouse-only devices, while the tab is hidden or the object is off screen. One shared sensor listener.
+   The first real tilt sweeps the holo once across the card. Unsupported or denied: nothing changes, no chip. */
+const TILT_MAX=8,TILT_RANGE=24,TILT_SMOOTH=.12,TILT_KEY='deepspot-tilt-v1';
+const dev={on:false,got:false,listening:false,b0:null,g0:null,x:0,y:0,subs:new Set()};
+const tiltOK=()=>typeof window!=='undefined'&&'DeviceOrientationEvent' in window&&!matchMedia('(prefers-reduced-motion: reduce)').matches&&matchMedia('(pointer: coarse), (hover: none)').matches;
+const needsAsk=()=>typeof DeviceOrientationEvent!=='undefined'&&typeof DeviceOrientationEvent.requestPermission==='function';
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+function onOrient(e){
+ if(e.beta==null||e.gamma==null)return;
+ dev.got=true;
+ if(dev.b0===null){dev.b0=e.beta;dev.g0=e.gamma;}
+ /* the rest pose follows slowly (about 4 s), so any way of holding the phone becomes "flat" */
+ dev.b0+=(e.beta-dev.b0)*.004;dev.g0+=(e.gamma-dev.g0)*.004;
+ const db=e.beta-dev.b0,dg=e.gamma-dev.g0,a=((screen.orientation?.angle??window.orientation??0)%360+360)%360;
+ let x,y;
+ if(a===90){x=db;y=-dg;}else if(a===270){x=-db;y=dg;}else if(a===180){x=-dg;y=-db;}else{x=dg;y=db;}
+ dev.x=clamp(x/TILT_RANGE,-1,1);dev.y=clamp(y/TILT_RANGE,-1,1);
+ dev.subs.forEach(s=>s.wake());
+}
+function startSensor(){if(dev.listening)return;dev.listening=true;dev.on=true;addEventListener('deviceorientation',onOrient,true);}
+export function bindDeviceTilt({obj,host,persp=1600}={}){
+ if(!tiltOK()||!obj)return {destroy(){}};
+ const get=typeof obj==='function'?obj:()=>obj;
+ const hideChip=()=>{chip?.remove();chip=null;};
+ let x=0,y=0,raf=0,visible=true,last=null,chip=null,sweepT=null,sweptOnce=false,lx=-99,ly=-99,lt=0,dead=false;
+ const reset=el=>{if(!el)return;el.style.transform='';el.style.removeProperty('--gx');el.style.removeProperty('--gy');el.classList.remove('is-tilt');};
+ const active=()=>!dead&&dev.on&&dev.got&&visible&&document.visibilityState==='visible';
+ const light=(el,gx,gy,now)=>{const card=el.querySelector('.pp-id9')||el,w=card.offsetWidth||440,h=card.offsetHeight||620,px=gx/100*w,py=gy/100*h;
+  /* the bump light is an SVG filter: slow to repaint on phones, so it moves at most ~10 times a second and only by 10 px or more */
+  if(now-lt<100||(Math.abs(px-lx)<10&&Math.abs(py-ly)<10))return;lt=now;lx=px;ly=py;for(const l of el.querySelectorAll('[data-pml]')){l.setAttribute('x',px.toFixed(0));l.setAttribute('y',py.toFixed(0));}};
+ const frame=now=>{
+  raf=0;if(!active())return;
+  const el=get();if(!el)return;
+  if(last&&last!==el)reset(last);last=el;
+  x+=(dev.x-x)*TILT_SMOOTH;y+=(dev.y-y)*TILT_SMOOTH;
+  let gx=50+x*50,gy=50+y*50;
+  if(!sweptOnce&&Math.hypot(dev.x,dev.y)>.14&&el.dataset.foil&&el.dataset.foil!=='none'){sweptOnce=true;sweepT=now;}
+  if(sweepT!==null){const t=(now-sweepT)/900;if(t>=1)sweepT=null;else{const e=t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;gx=-10+e*120;}}
+  el.style.transform=`${persp?`perspective(${persp}px) `:''}rotateX(${(-y*TILT_MAX).toFixed(3)}deg) rotateY(${(x*TILT_MAX).toFixed(3)}deg)`;
+  el.style.setProperty('--gx',clamp(gx,-10,110).toFixed(1)+'%');el.style.setProperty('--gy',clamp(gy,0,100).toFixed(1)+'%');
+  el.classList.add('is-tilt');light(el,clamp(gx,0,100),gy,now);
+  if(Math.abs(dev.x-x)>.002||Math.abs(dev.y-y)>.002||sweepT!==null)raf=requestAnimationFrame(frame);
+ };
+ const sub={wake(){if(chip&&dev.got)hideChip();if(!raf&&active())raf=requestAnimationFrame(frame);}};
+ dev.subs.add(sub);
+ const io='IntersectionObserver' in window&&host?new IntersectionObserver(es=>{visible=es.some(e=>e.isIntersecting);if(!visible)reset(last);else sub.wake();},{threshold:.1}):null;io?.observe(host);
+ const vis=()=>{if(document.visibilityState==='hidden')reset(last);else sub.wake();};document.addEventListener('visibilitychange',vis);
+  const showChip=()=>{
+  if(chip||!host||dead)return;
+  chip=document.createElement('button');chip.type='button';chip.className='pp-tiltchip';chip.innerHTML='tilt to shine <i aria-hidden="true">&#10022;</i>';
+  chip.addEventListener('click',async()=>{
+   try{const r=await DeviceOrientationEvent.requestPermission();
+    if(r==='granted'){try{localStorage.setItem(TILT_KEY,'granted');}catch{}startSensor();hideChip();}
+    else{try{localStorage.setItem(TILT_KEY,'denied');}catch{}hideChip();}}
+   catch{hideChip();}
+  });
+  host.appendChild(chip);
+ };
+ let stored='';try{stored=localStorage.getItem(TILT_KEY)||'';}catch{}
+ if(needsAsk()){
+  if(stored==='denied'){/* asked before, said no: stay quiet */}
+  else{
+   if(stored==='granted')startSensor();            /* iOS keeps the grant for the session; if no data arrives the chip comes back */
+   setTimeout(()=>{if(!dev.got&&!dead)showChip();},stored==='granted'?900:0);
+  }
+ }else startSensor();                                  /* Android / others: no prompt */
+ return {destroy(){dead=true;dev.subs.delete(sub);io?.disconnect();document.removeEventListener('visibilitychange',vis);hideChip();reset(last);}};
 }

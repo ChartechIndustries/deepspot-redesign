@@ -2,10 +2,10 @@
  /* onboarding (2026-10-21): the account button opens /welcome/ until onboarding is finished; ?onboard=1 on any page force-opens it for review */
  const onboarded=()=>{try{return !!localStorage.getItem('deepspot-onboarded-v1');}catch{return false;}};
  const passportHref='/profile/?user=preview';
- const welcomeHref=force=>{const u=new URLSearchParams(),here=location.pathname+location.search.replace(/[?&]onboard=1/,'').replace(/^&/,'?');if(location.pathname!=='/welcome/'&&location.pathname!=='/'&&/^\/(browse|spot|story|stories|guides|guide|community|leaderboard|saved|plan-trip|map|tours|account|inbox|invites)\//.test(location.pathname))u.set('from',here);if(force)u.set('force','1');u.set('theme',document.documentElement.dataset.theme==='light'?'light':'dark');return '/welcome/?'+u;};
+ const welcomeHref=force=>{const u=new URLSearchParams(),here=location.pathname+location.search.replace(/[?&]onboard=1/,'').replace(/^&/,'?');if(location.pathname!=='/welcome/'&&location.pathname!=='/'&&/^\/(browse|spot|guides|guide|community|leaderboard|saved|plan-trip|map|tours|account|inbox|invites)\//.test(location.pathname))u.set('from',here);if(force)u.set('force','1');u.set('theme',document.documentElement.dataset.theme==='light'?'light':'dark');return '/welcome/?'+u;};
  if(new URLSearchParams(location.search).get('onboard')==='1'&&location.pathname!=='/welcome/'){location.replace(welcomeHref(true));return;}
  const accountHref=()=>onboarded()?passportHref:welcomeHref(false);
- const localSections=new Set(['welcome','browse','map','adventures','stories','tours','guides','community','app','mission','faq','privacy','terms','cookies','contribute','saved','plan-trip','leaderboard','membership','competition','roadmap','profile','account','forum','guide','story','spot','sponsored','inbox','invites']);
+ const localSections=new Set(['welcome','browse','map','adventures','tours','guides','community','app','mission','faq','privacy','terms','cookies','contribute','saved','plan-trip','leaderboard','membership','competition','roadmap','profile','account','forum','guide','spot','sponsored','inbox','invites']);
  let available=null;
  const getTheme=()=>document.documentElement.dataset.theme==='light'?'light':'dark';
  function destination(anchor){
@@ -15,9 +15,8 @@
   const official=/^(www\.)?deepspot\.io$/.test(u.hostname),parts=u.pathname.split('/').filter(Boolean);
   if(official){
    if(parts[0]==='blog'&&parts[1]&&available?.spots.includes(parts[1]))u=new URL('/spot/?id='+encodeURIComponent(parts[1]),location.origin);
-   else if(parts[0]==='stories'&&parts[1]){if(!available?.stories[parts[1]])return null;u=new URL('/story/?id='+encodeURIComponent(available.stories[parts[1]]),location.origin);}
    else if(parts[0]==='user'&&parts[1]){if(!available?.profiles[parts[1]])return null;u=new URL('/profile/?user='+encodeURIComponent(available.profiles[parts[1]]),location.origin);}
-   else if(parts[0]==='browse'&&['stories','guides'].includes(u.searchParams.get('tab')))u=new URL('/'+u.searchParams.get('tab')+'/',location.origin);
+   else if(parts[0]==='browse'&&['guides'].includes(u.searchParams.get('tab')))u=new URL('/'+u.searchParams.get('tab')+'/',location.origin);
    else if(parts[0]==='map'&&u.searchParams.get('adventure')){if(!available?.guides.includes(u.searchParams.get('adventure')))return null;u=new URL('/guide/?id='+encodeURIComponent(u.searchParams.get('adventure')),location.origin);}
    else if(parts[0]==='map'&&u.searchParams.get('slug')&&!available?.mapped.includes(u.searchParams.get('slug')))return null;
    else if(parts[0]==='profile')u=new URL('/account/',location.origin);
@@ -37,7 +36,7 @@
   if(!controls||header.querySelector('.ds-home-menu'))return;
   const button=document.createElement('button');button.className='ds-home-menu';button.type='button';button.textContent='☰';button.setAttribute('aria-label','Open navigation');button.setAttribute('aria-expanded','false');button.setAttribute('aria-controls','ds-home-navigation');
   const nav=document.createElement('nav');nav.id='ds-home-navigation';nav.className='ds-home-navigation';nav.hidden=true;nav.setAttribute('aria-label','Mobile navigation');
-  nav.innerHTML=[['browse','browse'],['map','map'],['tours','tours'],['guides','guides'],['community','community'],['your fieldbook','saved'],['your account','account'],['membership','membership'],['contribute','contribute']].map(([label,path])=>`<a href="/${path}/?theme=${getTheme()}">${label}</a>`).join('');
+  nav.innerHTML=[['browse','browse'],['map','map'],['tours','tours'],['community','community'],['your account','account']].map(([label,path])=>`<a href="/${path}/?theme=${getTheme()}">${label}</a>`).join('');
   button.onclick=()=>{nav.hidden=!nav.hidden;button.setAttribute('aria-expanded',String(!nav.hidden));button.setAttribute('aria-label',nav.hidden?'Open navigation':'Close navigation');button.textContent=nav.hidden?'☰':'×';if(!nav.hidden)nav.querySelector('a').focus();};
   header.addEventListener('keydown',e=>{if(e.key==='Escape'&&!nav.hidden){button.click();button.focus();}});
   controls.append(button);header.append(nav);

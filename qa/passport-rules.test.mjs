@@ -31,7 +31,7 @@ test('traveler type comes from posting categories',()=>{
  assert.equal(travelerType([spot('FOOD & BARS'),spot('SHOPPING')]).id,'forager');
  assert.equal(travelerType([spot('ARCHITECTURE'),spot('ARCHITECTURE')]).id,'architect');
  assert.equal(travelerType([spot('RUINS/URBEX')]).id,'urbex-rat');
- assert.equal(travelerType([{kind:'story',tag:'history & folklore'}]).id,'folklorist');
+ assert.equal(travelerType([{kind:'story',tag:'history & folklore'}]).id,null);   // old story records are ignored
  assert.equal(travelerType([spot('UNKNOWN TAG')]).id,null);
 });
 test('ties go to the first style in the list',()=>{
@@ -47,5 +47,5 @@ test('stamps are earned by real rules only',()=>{
  const ids=x=>earnedStamps(x).filter(s=>s.earned).map(s=>s.id);
  assert.deepEqual(ids(p(0,0)),[]);assert.deepEqual(ids({contrib:{spots:null,stories:null},records:[]}),[]);
  assert.deepEqual(ids(p(6,0)),['first-find']);assert.deepEqual(ids(p(39,0,['DEEP SPOT CHOICE'])),['first-find','deep-spot-choice','ten-spots']);
- assert.deepEqual(ids(p(0,1)),['first-find','story-writer']);
+ assert.deepEqual(ids(p(0,1)),[]);   // stories no longer count
 });

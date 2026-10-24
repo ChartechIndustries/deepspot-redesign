@@ -6,7 +6,7 @@
 <title>Giveaway hero variations — DeepSpot</title>
 <script>try{const q=new URLSearchParams(location.search);document.documentElement.dataset.theme=q.get('theme')||localStorage.getItem('deepspot-theme')||'dark';if(q.get('panel')==='off')localStorage.setItem('deepspot-panel-colors','off');else if(q.get('panel')==='on')localStorage.removeItem('deepspot-panel-colors');}catch{}</script>
 <link rel="icon" href="/site/app-icon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="/site-cta.css?v=d10cdbe8"><link rel="stylesheet" href="/panel-colors.css?v=46517960"><link rel="stylesheet" href="/browse/browse.css?v=15ffdd97"><link rel="stylesheet" href="/site/pages.css?v=55e784a9"><link rel="stylesheet" href="/site/finishing.css?v=6195465a"><link rel="stylesheet" href="/site/community-v2.css?v=0a176d01"><link rel="stylesheet" href="/site/giveaway-hero.css?v=23c06655">
+<link rel="stylesheet" href="/site-cta.css?v=d10cdbe8"><link rel="stylesheet" href="/panel-colors.css?v=46517960"><link rel="stylesheet" href="/browse/browse.css?v=e4779082"><link rel="stylesheet" href="/site/pages.css?v=55e784a9"><link rel="stylesheet" href="/site/finishing.css?v=6195465a"><link rel="stylesheet" href="/site/community-v2.css?v=3109a647"><link rel="stylesheet" href="/site/giveaway-hero.css?v=0e5edf68">
 <script src="/panel-colors.js?v=a5b1151d"></script>
 <style>
 body{margin:0;background:var(--br-bg);color:var(--br-text);font:15px/1.45 Arial,Helvetica,sans-serif}
@@ -32,8 +32,8 @@ body{margin:0;background:var(--br-bg);color:var(--br-text);font:15px/1.45 Arial,
 <div id="list"></div>
 </main>
 <script type="module">
-import {loadData} from '/site/core.mjs?v=149e30e7';
-import {renderGiveaway,VARIANTS} from '/site/giveaway-hero.mjs?v=3c15f1d3';
+import {loadData} from '/site/core.mjs?v=65b48136';
+import {renderGiveaway,VARIANTS} from '/site/giveaway-hero.mjs?v=3cef1f92';
 const data=await loadData(),list=document.getElementById('list');
 document.getElementById('jump').innerHTML=VARIANTS.map(([k,n])=>`<a href="#${k}">${k.toUpperCase()}</a>`).join(' ');
 list.innerHTML=VARIANTS.map(([k,n])=>`<section id="${k}"><h2><b>${k.toUpperCase()}</b> · ${n}</h2><div class="cv"><div class="gvr-frame" data-frame="${k}"></div></div></section>`).join('');

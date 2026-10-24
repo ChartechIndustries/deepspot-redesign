@@ -25,7 +25,7 @@ class FeaturedSpots extends HTMLElement{
   this.unsubscribeSaved=subscribeStore(['deepspot-saved-spots'],()=>{this.saved=new Set(readIDs('deepspot-saved-spots'));this.querySelectorAll('[data-fs-save]').forEach(b=>{const on=this.saved.has(b.dataset.fsSave);b.setAttribute('aria-pressed',on);b.setAttribute('aria-label',b.getAttribute('aria-label').replace(/^(Save|Unsave)/,on?'Unsave':'Save'));});});
   try{
    const response=await fetch('/featured-spots.json',{cache:'no-store'});if(!response.ok)throw Error();
-   this.profiles=await import('/profile/identity.mjs?v=38b679eb');this.img=await import('/site/img.mjs?v=61371a3b');this.data=await response.json();this.render();if(location.hash==='#fs-heading')this.querySelector('.fs-heading').scrollIntoView({block:'start'});
+   this.profiles=await import('/profile/identity.mjs?v=744e89b9');this.img=await import('/site/img.mjs?v=61371a3b');this.data=await response.json();try{this.catalog=await import('/browse/catalog.mjs?v=776ebad9')}catch{this.catalog=null}this.render();if(location.hash==='#fs-heading')this.querySelector('.fs-heading').scrollIntoView({block:'start'});
   }catch{this.innerHTML='<p class="fs-error">Spots could not load. Please refresh.</p>';return}
   this.addEventListener('click',event=>{
    const tab=event.target.closest('[data-fs-tab]'),save=event.target.closest('[data-fs-save]');
@@ -99,7 +99,8 @@ class FeaturedSpots extends HTMLElement{
  }
  render(){
   const spots=this.selected();
-  const count=this.data.filter(spot=>!spot.title.startsWith('PART OF:')).length;
+  /* one number: the same list browse counts (browse/catalog.mjs prepareCatalog) */
+  let count;try{count=this.catalog.prepareCatalog(this.data).length}catch{count=this.data.filter(spot=>spot.id?.startsWith('/blog/')&&spot.title&&!spot.title.startsWith('PART OF:')).length}
   this.innerHTML=`<section class="fs-section" aria-labelledby="fs-heading"><div class="fs-section-heading"><h2 class="fs-heading" id="fs-heading" aria-label="discover ${count} deepspots"><span aria-hidden="true">discover</span><span class="fs-count" aria-hidden="true">${this.countMarkup(count)}</span><span class="fs-heading-word" aria-hidden="true">deepspots</span></h2></div><div class="fs-box">
    <div class="fs-tabs" role="tablist" aria-label="Deep spot categories">${categories.map(([label],index)=>`<button id="fs-tab-${index}" role="tab" aria-selected="${index===this.active}" aria-controls="fs-panel" tabindex="${index===this.active?0:-1}" data-fs-tab="${index}">${label}</button>`).join('')}</div>
    <div id="fs-panel" role="tabpanel" aria-labelledby="fs-tab-${this.active}" class="fs-grid">

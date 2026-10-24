@@ -40,7 +40,7 @@ test('verified public names resolve to one passport with the correct credited wo
  globalThis.fetch=async path=>({ok:true,json:async()=>JSON.parse(await readFile(new URL('../source'+path,import.meta.url),'utf8'))});
  for(const [alias,id,name] of [['kris','lampbane','Kris'],['lana-velkov','lanavelkov','Lana Velkov'],['lydia','korrgan','Lydia'],['six','sixbacteria','Six'],['saz','s4zr4ty','SAZ']]){
   const profile=await loadProfile(alias);assert.equal(profile.id,id);assert.equal(profile.name,name);
-  assert.ok(profile.image);assert.ok(profile.records.length>0,alias+' must have credited work');
+  assert.ok(profile.image);if(alias!=='saz')assert.ok(profile.records.length>0,alias+' must have credited work');   // saz's only credited work was a story (removed 2026-10-23)
   assert.deepEqual((await loadProfile(id)).records,profile.records);
  }
 });

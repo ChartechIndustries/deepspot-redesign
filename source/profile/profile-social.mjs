@@ -5,7 +5,7 @@
    updates     = fixes to spot info, shown inside contributions (their "edited")
    There is no accounts backend yet: follows and lists are stored on this browser, like want-to-go.
    Other members show "not shared yet" until live accounts send this data. Counts never invent numbers. */
-import {escapeHTML as esc} from './identity.mjs?v=38b679eb';
+import {escapeHTML as esc} from './identity.mjs?v=744e89b9';
 
 const KEY={follow:'deepspot-follows-v1',explored:'deepspot-explored-v1',picks:'deepspot-picks-v1',coll:'deepspot-collections-v1'};
 const MAX={explored:200,picks:30,coll:12,collItems:40},NAME=60,WHY=120,TITLE=40;

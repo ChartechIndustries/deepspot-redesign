@@ -34,7 +34,7 @@ html[data-panel-color=off] .pp-main{--pp-g:var(--br-accent);--pp-gt:var(--br-acc
 .pp-id-body{display:grid;grid-template-columns:132px minmax(0,1fr);gap:16px}
 .pp-molebox{position:relative;width:132px;height:132px}
 .pp-mole{display:block;position:relative;width:100%;height:100%;border-radius:10px;background:var(--pf,#dfe6e4);overflow:hidden;container-type:size}
-.pp-mole>img{position:absolute;display:block;max-width:none;height:auto;width:calc(100cqw/var(--mw));left:calc(-100cqw*var(--mx)/var(--mw));top:calc(-100cqw*var(--my)/var(--mw))}
+.pp-mole>img{position:absolute;display:block;max-width:none;height:auto;width:calc(100%/var(--mw));left:calc(-100%*var(--mx)/var(--mw));top:calc(-100%*var(--my)/var(--mw))}/* 2026-10-23 (7.1): % of the square box, not cqw. Safari mis-sizes cqw inside CSS zoom (fitPassport zooms the card), which moved the face on iPad */
 .pp-mole-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;border:1px dashed var(--pp-inkm);background:transparent;color:var(--pp-ink);text-decoration:none;font:600 15px/1.3 var(--pp-mono);letter-spacing:.08em;text-transform:uppercase;text-align:center}
 .pp-mole-empty b{font:800 40px/1 Arial,Helvetica,sans-serif;letter-spacing:-.06em}.pp-mole-empty svg{width:40px;height:40px;fill:none;stroke:currentColor;stroke-width:1.2;stroke-linecap:round}
 .pp-mole-mini.pp-mole-empty{border-style:solid;border-color:var(--br-line);color:var(--br-text)}.pp-mole-mini.pp-mole-empty b{font-size:24px}
@@ -350,8 +350,9 @@ a.pp-wtg-link:hover img{transform:scale(1.04)}
 }
 @media(max-width:1099px){
  .pp-tabsec{grid-template-columns:1fr}
- .pp-vtabs{flex-direction:row;overflow-x:auto;padding:12px 12px 0;border-right:0;border-bottom:1px solid var(--br-line)}
- .pp-vtab{border-radius:10px 10px 0 0;margin:0 0 -1px;white-space:nowrap;flex:none}
+ .pp-vtabs{flex-direction:row;overflow-x:auto;padding:12px 12px 0;border-right:0;border-bottom:1px solid var(--br-line);gap:var(--pp-tab-gap,8px);scrollbar-width:none;-webkit-overflow-scrolling:touch}
+ .pp-vtabs::-webkit-scrollbar{display:none}
+ .pp-vtab{border-radius:10px 10px 0 0;margin:0 0 -1px;white-space:nowrap;flex:none;padding:0 var(--pp-tab-pad,16px)}
  .pp-bio-text:not(.pp-bio-empty){font-size:clamp(24px,6vw,40px)}
  .pp-edit-grid{grid-template-columns:1fr}
 }
@@ -1251,3 +1252,43 @@ html[data-panel-color=off] .ed-n{background:transparent;color:var(--br-text);bor
 /* issued stamp lands on the bottom strip of the card; the toast is as wide as its text */
 .pp-issued{left:66%;top:90%}
 body[data-page=profile] .br-toast{width:max-content}
+
+/* 4.1 (2026-10-23): edge fades only while the tab row is the sideways one */
+@media(min-width:1100px){.pp-vtabs.has-more-left,.pp-vtabs.has-more-right{-webkit-mask-image:none;mask-image:none}}
+
+/* 4.2 (2026-10-23): "tilt to shine" chip (iOS asks for motion permission on a tap). Sits at the top centre of the passport stage. */
+.pp-tiltchip{position:absolute;left:50%;top:10px;translate:-50% 0;z-index:30;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border:0;border-radius:999px;background:#07d653;color:#0b1b27;font:800 16px/1 Arial,Helvetica,sans-serif;letter-spacing:-.01em;white-space:nowrap;cursor:pointer;box-shadow:0 6px 16px -6px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.5);touch-action:manipulation;-webkit-tap-highlight-color:transparent;animation:pp-chipin .35s cubic-bezier(.2,.8,.3,1) both}
+.pp-tiltchip i{font-style:normal;font-size:15px}
+.pp-tiltchip:active{scale:.96}
+@media(max-width:520px){.pp-tiltchip{left:12px;translate:none}}
+@media(min-width:1100px){.pp-tiltchip{left:auto;right:14px;translate:none}}
+.pp-tiltchip:focus-visible{outline:3px solid #fff;outline-offset:2px}
+@keyframes pp-chipin{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.pp-tiltchip{animation:none}}
+
+/* ===== 7.2 (2026-10-23): mark pad on iPad / touch. No selection, no callout, no double-tap zoom, palm-safe ===== */
+.pp-markcard,.sp-paper,.sp-tools,.sp-palette,.sp-status{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
+.sp-paper{touch-action:none}.sp-paper canvas{touch-action:none;-webkit-user-drag:none}
+.sp-tools,.sp-palette,.sp-chip,.sp-swatch,.sp-group{touch-action:manipulation}
+@media(pointer:coarse){
+ .sp-chip{height:44px;padding:0 14px}
+ .sp-tools{gap:10px}
+ .sp-palette{gap:10px}
+ .sp-swatch{min-width:34px;min-height:34px}
+ .sp-swatch[aria-pressed=true]{outline-width:3px}
+}
+@media(pointer:coarse) and (min-width:700px){
+ .sp-palette{grid-template-columns:repeat(12,minmax(0,44px));justify-content:start}
+ .sp-swatch{min-width:0;min-height:0}
+}
+/* the profile mark tab on a tablet: a wide pad (>= 600 px) instead of the 440 px card pane */
+@media(pointer:coarse) and (min-width:700px){
+ html.pp-app .pp-field #pp-pane-mark,.pp-field #pp-pane-mark{width:min(760px,calc(100% - 48px));max-width:none}
+}
+@media(pointer:coarse) and (min-width:1100px){html.pp-app .pp-field #pp-pane-mark{width:calc(100% - 56px)}html.pp-app #pp-pane-mark .pp-markcard{padding:18px}}
+
+/* 2026-10-23 stories removed: three stat tiles (points, spots, rank). 3 across where there was room for 4; 2 + 1 full-width where there was room for 2. */
+.pp-tiles.pp-t3,html.pp-app .pp-tiles.pp-t3{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(max-width:650px){.pp-tiles.pp-t3,html.pp-app .pp-tiles.pp-t3{grid-template-columns:repeat(2,minmax(0,1fr))}.pp-tiles.pp-t3>div:last-child{grid-column:1/-1}}
+.pp-statsrow .pp-tiles.pp-t3,html.pp-app .pp-statsrow .pp-tiles.pp-t3,html.pp-app .pp-rec>[aria-labelledby=pp-stats] .pp-tiles.pp-t3{grid-template-columns:repeat(2,minmax(0,1fr))}
+.pp-statsrow .pp-tiles.pp-t3>div:last-child,html.pp-app .pp-rec>[aria-labelledby=pp-stats] .pp-tiles.pp-t3>div:last-child{grid-column:1/-1}

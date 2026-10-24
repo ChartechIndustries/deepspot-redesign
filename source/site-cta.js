@@ -12,7 +12,7 @@
      <a class="ds-cta-button" href="/contribute/">contribute a spot <span aria-hidden="true">↗</span></a>
     </div>
     <div class="ds-cta-newsletter${bb.n?' ds-cta-has-art':''}">${bb.n?`<img class="ds-cta-art" src="/banners/${bb.n}.webp" alt="" loading="lazy" decoding="async">`:''}
-     <h3>new stories<br>every week.</h3>
+     <h3 data-copy="kai-7">the weekly<br>find.</h3>
      <p>Get the latest deep spots delivered to your inbox.</p>
      <div class="ds-cta-signup" role="group" aria-label="Newsletter signup preview" aria-describedby="ds-newsletter-status">
       <label class="ds-sr-only" for="ds-newsletter-email">Email address</label>

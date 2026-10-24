@@ -3,27 +3,27 @@
   "view": "d320",
   "route": "/browse/",
   "status": 200,
-  "ms": 7406,
+  "ms": 7857,
   "errs": [],
   "fails": [],
-  "mb": 4.73,
-  "nreq": 33,
+  "mb": 0.93,
+  "nreq": 38,
   "top": [
    [
-    717076,
-    "/spots/tomb.jpg"
+    226701,
+    "/featured-spots.json"
    ],
    [
-    648557,
-    "/editorial-assets/spot-south-london-s-most-notable-street-art-location.jpg"
+    113468,
+    "/banners/h3.webp"
    ],
    [
-    486290,
-    "/editorial-assets/spot-a-suburban-london-warehouse-where-old-neon-signs-get-a-new-job.jpg"
+    85980,
+    "/banners/n3.webp"
    ],
    [
-    375411,
-    "/spots/srt.jpg"
+    43690,
+    "/editorial-assets/cards/spot-a-suburban-london-warehouse-where-old-neon-signs-get-a-new-jo"
    ]
   ],
   "sw": 320,
@@ -34,34 +34,8 @@
   "bodyfs": "16px",
   "bodyff": "Arial",
   "over": [],
-  "small": [
-   [
-    "span",
-    {
-     "fs": 13,
-     "t": "amusement parks",
-     "c": 23
-    }
-   ],
-   [
-    "span#result-label",
-    {
-     "fs": 13,
-     "t": "deep spots to discover",
-     "c": 1
-    }
-   ]
-  ],
-  "smallBody": [
-   [
-    "p.br-desc",
-    {
-     "fs": 16,
-     "t": "Instead of fish tanks, each fish here is frozen, u",
-     "c": 12
-    }
-   ]
-  ],
+  "small": [],
+  "smallBody": [],
   "imgs": [],
   "stretched": [],
   "blurry": [],
@@ -76,11 +50,7 @@
    "http://localhost:8766/community/?theme=dark",
    "http://localhost:8766/welcome/?from=%2Fbrowse%2F%3Ftheme%3Ddark&theme=dark",
    "http://localhost:8766/saved/?theme=dark",
-   "http://localhost:8766/guides/?theme=dark",
    "http://localhost:8766/account/?theme=dark",
-   "http://localhost:8766/contribute/?theme=dark",
-   "http://localhost:8766/membership/?theme=dark",
-   "http://localhost:8766/stories/?theme=dark",
    "http://localhost:8766/spot/?id=frozen-aquarium-in-miyagi&theme=dark",
    "http://localhost:8766/profile/?user=bodhi-schulz&theme=dark&from=%2Fbrowse%2F%3Ftheme%3Ddark",
    "http://localhost:8766/spot/?id=south-london-s-most-notable-street-art-location&theme=dark",
@@ -96,6 +66,9 @@
    "http://localhost:8766/spot/?id=coin-operated-grandmas-and-opium-den-dioramas-are-hidden-in-this-san-francisco-museum&theme=dark",
    "http://localhost:8766/spot/?id=a-melodic-sculpture-in-the-lancashire-countryside&theme=dark",
    "http://localhost:8766/spot/?id=tomb-of-christ-in-aomori&theme=dark",
+   "http://localhost:8766/contribute/?theme=dark",
+   "http://localhost:8766/guides/?theme=dark",
+   "http://localhost:8766/membership/?theme=dark",
    "http://localhost:8766/mission/?theme=dark",
    "http://localhost:8766/faq/?theme=dark",
    "http://localhost:8766/privacy/?theme=dark",
@@ -109,9 +82,6 @@
    "\u263c light",
    "color on",
    "\u2630",
-   "Deep Spots",
-   "Stories",
-   "Guides",
    "home",
    "browse",
    "tours",
@@ -119,7 +89,10 @@
    "community",
    "your fieldbook",
    "membership",
-   "your account"
+   "your account",
+   "interactive map",
+   "our mission",
+   "faq"
   ],
   "hdr": {
    "sel": "header.br-header",
@@ -190,7 +163,7 @@
    "3px|44|16px|700|Arial": [
     "button"
    ],
-   "40px|70|18px|600|Arial": [
+   "40px|52|18px|600|Arial": [
     "a.ds-cta-button"
    ],
    "3px|44|17px|600|Arial": [
@@ -198,7 +171,7 @@
    ]
   },
   "h1": [
-   "Arial|44px \"Browse\nDeep Spots\""
+   "Arial|44px \"Browse\nDeep Spots \n369\nspots\""
   ],
   "h2": [
    "Arial|24px|700|none \"Aquarium Where Every Fish\"",
@@ -214,18 +187,18 @@
   "ph": [
    "coming soon"
   ],
-  "len": 8749,
+  "len": 9183,
   "axe": null
  },
  {
   "view": "d320",
   "route": "/spot/?id=tochigi-underground-quarry",
   "status": 200,
-  "ms": 5806,
+  "ms": 5863,
   "errs": [],
   "fails": [],
-  "mb": 2.68,
-  "nreq": 36,
+  "mb": 2.85,
+  "nreq": 39,
   "top": [
    [
     648557,
@@ -269,10 +242,7 @@
    "http://localhost:8766/community/?theme=dark",
    "http://localhost:8766/welcome/?from=%2Fspot%2F%3Fid%3Dtochigi-underground-quarry%26theme%3Ddark&theme=dark",
    "http://localhost:8766/saved/?theme=dark",
-   "http://localhost:8766/guides/?theme=dark",
    "http://localhost:8766/account/?theme=dark",
-   "http://localhost:8766/contribute/?theme=dark",
-   "http://localhost:8766/membership/?theme=dark",
    "http://localhost:8766/profile/?user=bodhi-schulz&theme=dark&from=%2Fspot%2F%3Fid%3Dtochigi-underground-quarry%26theme%3Ddark",
    "http://localhost:8766/contribute/?type=edit&ref=tochigi-underground-quarry&theme=dark",
    "http://localhost:8766/map/?spot=tochigi-underground-quarry&theme=dark",
@@ -280,6 +250,9 @@
    "http://localhost:8766/profile/?user=wayfarer&theme=dark&from=%2Fspot%2F%3Fid%3Dtochigi-underground-quarry%26theme%3Ddark",
    "http://localhost:8766/spot/?theme=dark&id=berlin-s-hill-of-nazi-rubble-cold-war-spies-and-graffiti",
    "http://localhost:8766/profile/?user=johan-swe&theme=dark&from=%2Fspot%2F%3Fid%3Dtochigi-underground-quarry%26theme%3Ddark",
+   "http://localhost:8766/contribute/?theme=dark",
+   "http://localhost:8766/guides/?theme=dark",
+   "http://localhost:8766/membership/?theme=dark",
    "http://localhost:8766/mission/?theme=dark",
    "http://localhost:8766/faq/?theme=dark",
    "http://localhost:8766/privacy/?theme=dark",
@@ -358,11 +331,11 @@
   "view": "d320",
   "route": "/map/",
   "status": 200,
-  "ms": 5694,
+  "ms": 5843,
   "errs": [],
   "fails": [],
-  "mb": 0.73,
-  "nreq": 32,
+  "mb": 0.72,
+  "nreq": 36,
   "top": [
    [
     226701,
@@ -370,15 +343,15 @@
    ],
    [
     147552,
-    "/site/vendor/leaflet.js"
+    "/site/vendor/leaflet.js?v=af9c8e3a"
    ],
    [
-    112554,
+    82789,
     "/site/content.json"
    ],
    [
-    31288,
-    "/site/pages.mjs"
+    29566,
+    "/site/pages.css?v=55e784a9"
    ]
   ],
   "sw": 320,
@@ -389,27 +362,15 @@
   "bodyfs": "16px",
   "bodyff": "Arial",
   "over": [
-   "img.leaflet-tile.leaflet-tile-loaded r=537"
+   "img.leaflet-tile.leaflet-tile-loaded r=364",
+   "img.leaflet-tile.leaflet-tile-loaded r=364",
+   "div.leaflet-marker-icon.ds-map-marker r=329",
+   "div.ds-map-pin r=332",
+   "div.leaflet-marker-icon.ds-map-marker r=324",
+   "div.ds-map-pin r=327"
   ],
   "small": [],
-  "smallBody": [
-   [
-    "p",
-    {
-     "fs": 16,
-     "t": "Explore the destinations from the globe. Pick a pi",
-     "c": 1
-    }
-   ],
-   [
-    "p.ds-note",
-    {
-     "fs": 15,
-     "t": "10 destinations have verified coordinates in this ",
-     "c": 1
-    }
-   ]
-  ],
+  "smallBody": [],
   "imgs": [],
   "stretched": [],
   "blurry": [],
@@ -424,11 +385,10 @@
    "http://localhost:8766/community/?theme=dark",
    "http://localhost:8766/welcome/?from=%2Fmap%2F%3Ftheme%3Ddark&theme=dark",
    "http://localhost:8766/saved/?theme=dark",
-   "http://localhost:8766/guides/?theme=dark",
    "http://localhost:8766/account/?theme=dark",
-   "http://localhost:8766/contribute/?theme=dark",
-   "http://localhost:8766/membership/?theme=dark",
    "http://localhost:8766/plan-trip/?theme=dark",
+   "http://localhost:8766/guides/?theme=dark",
+   "http://localhost:8766/membership/?theme=dark",
    "http://localhost:8766/mission/?theme=dark",
    "http://localhost:8766/faq/?theme=dark",
    "http://localhost:8766/privacy/?theme=dark",
@@ -518,34 +478,34 @@
    "a 176x16"
   ],
   "ph": [],
-  "len": 2217,
+  "len": 2254,
   "axe": null
  },
  {
   "view": "d320",
   "route": "/tours/",
   "status": 200,
-  "ms": 5242,
+  "ms": 5209,
   "errs": [],
   "fails": [],
-  "mb": 2.43,
-  "nreq": 37,
+  "mb": 0.86,
+  "nreq": 41,
   "top": [
    [
-    519726,
-    "/spots/chiatura.jpg"
+    113468,
+    "/banners/h3.webp"
    ],
    [
-    343575,
-    "/spots/teufelsberg.jpg"
+    102164,
+    "/tours/tours-shadow.webp?v=art15"
    ],
    [
-    305516,
-    "/spots/rummu.jpg"
+    85980,
+    "/banners/n3.webp"
    ],
    [
-    293395,
-    "/spots/maishima.jpg"
+    85648,
+    "/tours/tours-moles.webp?v=art15"
    ]
   ],
   "sw": 320,
@@ -572,11 +532,11 @@
    "http://localhost:8766/community/?theme=dark",
    "http://localhost:8766/welcome/?from=%2Ftours%2F%3Ftheme%3Ddark&theme=dark",
    "http://localhost:8766/saved/?theme=dark",
-   "http://localhost:8766/guides/?theme=dark",
    "http://localhost:8766/account/?theme=dark",
-   "http://localhost:8766/contribute/?theme=dark",
-   "http://localhost:8766/membership/?theme=dark",
    "http://localhost:8766/roadmap/?theme=dark",
+   "http://localhost:8766/contribute/?theme=dark",
+   "http://localhost:8766/guides/?theme=dark",
+   "http://localhost:8766/membership/?theme=dark",
    "http://localhost:8766/mission/?theme=dark",
    "http://localhost:8766/faq/?theme=dark",
    "http://localhost:8766/privacy/?theme=dark",
@@ -639,188 +599,32 @@
   "view": "d320",
   "route": "/stories/",
   "status": 200,
-  "ms": 8027,
+  "ms": 8073,
   "errs": [],
   "fails": [],
-  "mb": 3.63,
-  "nreq": 40,
+  "mb": 0.93,
+  "nreq": 39,
   "top": [
-   [
-    864851,
-    "/editorial-assets/boundary.jpg"
-   ],
-   [
-    664409,
-    "/site/assets/story-moscow.jpg"
-   ],
-   [
-    284000,
-    "/editorial-assets/hats.jpg"
-   ],
-   [
-    249244,
-    "/editorial-assets/witches.jpg"
-   ]
-  ],
-  "sw": 320,
-  "vw": 320,
-  "title": "Browse Stories \u2014 DeepSpot",
-  "theme": "dark",
-  "panel": "on",
-  "bodyfs": "16px",
-  "bodyff": "Arial",
-  "over": [],
-  "small": [],
-  "smallBody": [
-   [
-    "p",
-    {
-     "fs": 16,
-     "t": "This Greenlandic delicacy might be surprising and ",
-     "c": 5
-    }
-   ]
-  ],
-  "imgs": [],
-  "stretched": [],
-  "blurry": [],
-  "dup": [],
-  "hrefs": [
-   "http://localhost:8766/stories/?theme=dark",
-   "http://localhost:8766/spot/?theme=dark&id=tochigi-underground-quarry",
-   "http://localhost:8766/spot/?theme=dark&id=a-soviet-prison-doubles-as-a-swimming-hole",
-   "http://localhost:8766/?theme=dark",
-   "http://localhost:8766/browse/?theme=dark",
-   "http://localhost:8766/map/?theme=dark",
-   "http://localhost:8766/tours/?theme=dark",
-   "http://localhost:8766/community/?theme=dark",
-   "http://localhost:8766/welcome/?from=%2Fstories%2F%3Ftheme%3Ddark&theme=dark",
-   "http://localhost:8766/saved/?theme=dark",
-   "http://localhost:8766/guides/?theme=dark",
-   "http://localhost:8766/account/?theme=dark",
-   "http://localhost:8766/contribute/?theme=dark",
-   "http://localhost:8766/membership/?theme=dark",
-   "http://localhost:8766/story/?theme=dark&id=basement",
-   "http://localhost:8766/profile/?user=numberone&theme=dark&from=%2Fstories%2F%3Ftheme%3Ddark",
-   "http://localhost:8766/story/?theme=dark&id=moscow",
-   "http://localhost:8766/story/?theme=dark&id=boundary",
-   "http://localhost:8766/profile/?user=kisekikana&theme=dark&from=%2Fstories%2F%3Ftheme%3Ddark",
-   "http://localhost:8766/story/?theme=dark&id=shark",
-   "http://localhost:8766/profile/?user=krista-watson&theme=dark&from=%2Fstories%2F%3Ftheme%3Ddark",
-   "http://localhost:8766/story/?theme=dark&id=hats",
-   "http://localhost:8766/story/?theme=dark&id=ama",
-   "http://localhost:8766/story/?theme=dark&id=melon",
-   "http://localhost:8766/story/?theme=dark&id=lake",
-   "http://localhost:8766/story/?theme=dark&id=witches",
-   "http://localhost:8766/profile/?user=saz&theme=dark&from=%2Fstories%2F%3Ftheme%3Ddark",
-   "http://localhost:8766/mission/?theme=dark",
-   "http://localhost:8766/faq/?theme=dark",
-   "http://localhost:8766/privacy/?theme=dark",
-   "http://localhost:8766/terms/?theme=dark",
-   "http://localhost:8766/cookies/?theme=dark"
-  ],
-  "devlinks": [],
-  "navs": [
-   "DEEP SPOT",
-   "Your passport",
-   "\u263c light",
-   "Color accents",
-   "\u2630",
-   "Deep Spots",
-   "Guides",
-   "home",
-   "browse",
-   "tours",
-   "guides",
-   "community",
-   "your fieldbook",
-   "membership",
-   "your account",
-   "interactive map"
-  ],
-  "hdr": {
-   "sel": "header.br-header",
-   "h": 79,
-   "bg": "rgba(0, 0, 0, 0)",
-   "pos": "relative"
-  },
-  "foot": {
-   "sel": "footer.ds-footer",
-   "links": 18,
-   "h": 817,
-   "txt": "DEEP SPOT Discovering the obscure, the weird, and the wonderful side of the world that you won't find in guidebooks. exp"
-  },
-  "toggles": [
-   "switch to light mode \u263c light",
-   "color accents turn panel colors off"
-  ],
-  "btns": {
-   "50%|30|16px|400|Arial": [
-    "a.ds-account-button"
-   ],
-   "30px|33|14px|400|Arial": [
-    "button.br-theme"
-   ],
-   "24px|33|14px|400|Arial": [
-    "button.color-toggle"
-   ],
-   "0px|38|23px|400|Arial": [
-    "button.br-menu"
-   ],
-   "40px|70|18px|600|Arial": [
-    "a.ds-cta-button"
-   ],
-   "3px|44|17px|600|Arial": [
-    "button"
-   ]
-  },
-  "h1": [
-   "Arial|43px \"Browse\nStories\""
-  ],
-  "h2": [
-   "Arial|44px|750|none \"know a\nhidden gem?\"",
-   "Arial|19.5px|700|none \"explore\"",
-   "Arial|19.5px|700|none \"legal\""
-  ],
-  "tap": [
-   "a.skip-link 1x1"
-  ],
-  "ph": [
-   "coming soon"
-  ],
-  "len": 8468,
-  "axe": null
- },
- {
-  "view": "d320",
-  "route": "/story/?id=shark",
-  "status": 200,
-  "ms": 6311,
-  "errs": [],
-  "fails": [],
-  "mb": 1.89,
-  "nreq": 35,
-  "top": [
-   [
-    664409,
-    "/site/assets/story-moscow.jpg"
-   ],
    [
     226701,
     "/featured-spots.json"
    ],
    [
-    217386,
-    "/editorial-assets/shark.jpg"
+    113468,
+    "/banners/h3.webp"
    ],
    [
-    196472,
-    "/site/assets/story-basement.webp"
+    85980,
+    "/banners/n3.webp"
+   ],
+   [
+    43690,
+    "/editorial-assets/cards/spot-a-suburban-london-warehouse-where-old-neon-signs-get-a-new-jo"
    ]
   ],
   "sw": 320,
   "vw": 320,
-  "title": "Fermented Shark: It's What's for Dinner in Greenland \u2014 DeepSpot",
+  "title": "Browse Deep Spots \u2014 DeepSpot",
   "theme": "dark",
   "panel": "on",
   "bodyfs": "16px",
@@ -833,25 +637,34 @@
   "blurry": [],
   "dup": [],
   "hrefs": [
-   "http://localhost:8766/story/?id=shark&theme=dark",
-   "http://localhost:8766/spot/?theme=dark&id=tochigi-underground-quarry",
-   "http://localhost:8766/spot/?theme=dark&id=a-soviet-prison-doubles-as-a-swimming-hole",
-   "http://localhost:8766/?theme=dark",
    "http://localhost:8766/browse/?theme=dark",
+   "http://localhost:8766/spot/?id=tochigi-underground-quarry&theme=dark",
+   "http://localhost:8766/spot/?id=a-soviet-prison-doubles-as-a-swimming-hole&theme=dark",
+   "http://localhost:8766/?theme=dark",
    "http://localhost:8766/map/?theme=dark",
    "http://localhost:8766/tours/?theme=dark",
    "http://localhost:8766/community/?theme=dark",
-   "http://localhost:8766/welcome/?from=%2Fstory%2F%3Fid%3Dshark%26theme%3Ddark&theme=dark",
+   "http://localhost:8766/welcome/?from=%2Fbrowse%2F%3Ftheme%3Ddark&theme=dark",
    "http://localhost:8766/saved/?theme=dark",
-   "http://localhost:8766/guides/?theme=dark",
    "http://localhost:8766/account/?theme=dark",
+   "http://localhost:8766/spot/?id=frozen-aquarium-in-miyagi&theme=dark",
+   "http://localhost:8766/profile/?user=bodhi-schulz&theme=dark&from=%2Fbrowse%2F%3Ftheme%3Ddark",
+   "http://localhost:8766/spot/?id=south-london-s-most-notable-street-art-location&theme=dark",
+   "http://localhost:8766/profile/?user=wayfarer&theme=dark&from=%2Fbrowse%2F%3Ftheme%3Ddark",
+   "http://localhost:8766/spot/?id=berlin-s-hill-of-nazi-rubble-cold-war-spies-and-graffiti&theme=dark",
+   "http://localhost:8766/profile/?user=johan-swe&theme=dark&from=%2Fbrowse%2F%3Ftheme%3Ddark",
+   "http://localhost:8766/spot/?id=osaka-s-candy-colored-garbage-palace&theme=dark",
+   "http://localhost:8766/profile/?user=lydia&theme=dark&from=%2Fbrowse%2F%3Ftheme%3Ddark",
+   "http://localhost:8766/spot/?id=the-place-in-malta-where-people-have-been-making-salt-for-centuries&theme=dark",
+   "http://localhost:8766/spot/?id=a-suburban-london-warehouse-where-old-neon-signs-get-a-new-job&theme=dark",
+   "http://localhost:8766/spot/?id=700-year-old-church-devoured-by-sand&theme=dark",
+   "http://localhost:8766/profile/?user=six&theme=dark&from=%2Fbrowse%2F%3Ftheme%3Ddark",
+   "http://localhost:8766/spot/?id=coin-operated-grandmas-and-opium-den-dioramas-are-hidden-in-this-san-francisco-museum&theme=dark",
+   "http://localhost:8766/spot/?id=a-melodic-sculpture-in-the-lancashire-countryside&theme=dark",
+   "http://localhost:8766/spot/?id=tomb-of-christ-in-aomori&theme=dark",
    "http://localhost:8766/contribute/?theme=dark",
+   "http://localhost:8766/guides/?theme=dark",
    "http://localhost:8766/membership/?theme=dark",
-   "http://localhost:8766/stories/?theme=dark",
-   "http://localhost:8766/profile/?user=krista-watson&theme=dark&from=%2Fstory%2F%3Fid%3Dshark%26theme%3Ddark",
-   "http://localhost:8766/story/?theme=dark&id=basement",
-   "http://localhost:8766/profile/?user=numberone&theme=dark&from=%2Fstory%2F%3Fid%3Dshark%26theme%3Ddark",
-   "http://localhost:8766/story/?theme=dark&id=moscow",
    "http://localhost:8766/mission/?theme=dark",
    "http://localhost:8766/faq/?theme=dark",
    "http://localhost:8766/privacy/?theme=dark",
@@ -863,12 +676,19 @@
    "DEEP SPOT",
    "Your passport",
    "\u263c light",
-   "Color accents",
+   "color on",
    "\u2630",
-   "stories",
-   "KW by Krista Watson",
-   "share",
-   "save story"
+   "home",
+   "browse",
+   "tours",
+   "guides",
+   "community",
+   "your fieldbook",
+   "membership",
+   "your account",
+   "interactive map",
+   "our mission",
+   "faq"
   ],
   "hdr": {
    "sel": "header.br-header",
@@ -877,14 +697,15 @@
    "pos": "relative"
   },
   "foot": {
-   "sel": "footer.ds-footer",
-   "links": 18,
-   "h": 0,
-   "txt": "DEEPSPOT Discovering the obscure, the weird, and the wonderful side of the world that you won't find in guidebooks. expl"
+   "sel": "footer.br-credit",
+   "links": 2,
+   "h": 63,
+   "txt": "BS by Bodhi Schulz \u2197"
   },
   "toggles": [
    "switch to light mode \u263c light",
-   "color accents turn panel colors off"
+   "color accents turn panel colors off colo",
+   "save osaka\u2019s candy-colored garbage palac"
   ],
   "btns": {
    "50%|30|16px|400|Arial": [
@@ -899,42 +720,272 @@
    "0px|38|23px|400|Arial": [
     "button.br-menu"
    ],
-   "0px|32|14px|400|Arial": [
-    "button.ds-text-link",
-    "button.ds-text-link"
+   "0px|39|14px|400|Arial": [
+    "button.br-saved"
    ],
-   "30px|60|20px|800|Arial": [
-    "button.ds-button.gt-go"
+   "0px|53|16px|800|Arial": [
+    "button",
+    "button",
+    "button",
+    "button",
+    "button",
+    "button"
    ],
-   "30px|56|18px|700|Arial": [
-    "a.ds-button.secondary",
-    "a.ds-button.secondary"
+   "0px|31|16px|400|Arial": [
+    "button",
+    "button"
+   ],
+   "50%|35|16px|400|Arial": [
+    "button.br-bookmark",
+    "button.br-bookmark",
+    "button.br-bookmark",
+    "button.br-bookmark",
+    "button.br-bookmark",
+    "button.br-bookmark",
+    "button.br-bookmark",
+    "button.br-bookmark",
+    "button.br-bookmark",
+    "button.br-bookmark",
+    "button.br-bookmark",
+    "button.br-bookmark"
+   ],
+   "3px|44|16px|400|Arial": [
+    "button.br-page-direction.br-page-prev",
+    "button",
+    "button",
+    "button",
+    "button.br-page-direction.br-page-next"
+   ],
+   "3px|44|16px|700|Arial": [
+    "button"
+   ],
+   "40px|52|18px|600|Arial": [
+    "a.ds-cta-button"
+   ],
+   "3px|44|17px|600|Arial": [
+    "button"
    ]
   },
   "h1": [
-   "Arial|35px \"Fermented Shark: It's What's f\""
+   "Arial|44px \"Browse\nDeep Spots \n369\nspots\""
   ],
   "h2": [
-   "Arial|40px|800|none \"create a free account,\nor\""
+   "Arial|24px|700|none \"Aquarium Where Every Fish\"",
+   "Arial|24px|700|none \"The Japanese Quarry That \"",
+   "Arial|24px|700|none \"South London\u2019s Most Notab\"",
+   "Arial|24px|700|none \"Berlin's Hill of Nazi Rub\"",
+   "Arial|24px|700|none \"Osaka\u2019s Candy-Colored Gar\"",
+   "Arial|24px|700|none \"A Soviet Prison Doubles a\""
   ],
   "tap": [
-   "a.skip-link 1x1",
-   "a 92x17",
-   "a 151x19"
+   "a.skip-link 1x1"
   ],
-  "ph": [],
-  "len": 3151,
+  "ph": [
+   "coming soon"
+  ],
+  "len": 9183,
+  "axe": null
+ },
+ {
+  "view": "d320",
+  "route": "/story/?id=shark",
+  "status": 200,
+  "ms": 8097,
+  "errs": [],
+  "fails": [],
+  "mb": 0.93,
+  "nreq": 39,
+  "top": [
+   [
+    226701,
+    "/featured-spots.json"
+   ],
+   [
+    113468,
+    "/banners/h3.webp"
+   ],
+   [
+    85980,
+    "/banners/n3.webp"
+   ],
+   [
+    43690,
+    "/editorial-assets/cards/spot-a-suburban-london-warehouse-where-old-neon-signs-get-a-new-jo"
+   ]
+  ],
+  "sw": 320,
+  "vw": 320,
+  "title": "Browse Deep Spots \u2014 DeepSpot",
+  "theme": "dark",
+  "panel": "on",
+  "bodyfs": "16px",
+  "bodyff": "Arial",
+  "over": [],
+  "small": [],
+  "smallBody": [],
+  "imgs": [],
+  "stretched": [],
+  "blurry": [],
+  "dup": [],
+  "hrefs": [
+   "http://localhost:8766/browse/?theme=dark",
+   "http://localhost:8766/spot/?id=tochigi-underground-quarry&theme=dark",
+   "http://localhost:8766/spot/?id=a-soviet-prison-doubles-as-a-swimming-hole&theme=dark",
+   "http://localhost:8766/?theme=dark",
+   "http://localhost:8766/map/?theme=dark",
+   "http://localhost:8766/tours/?theme=dark",
+   "http://localhost:8766/community/?theme=dark",
+   "http://localhost:8766/welcome/?from=%2Fbrowse%2F%3Ftheme%3Ddark&theme=dark",
+   "http://localhost:8766/saved/?theme=dark",
+   "http://localhost:8766/account/?theme=dark",
+   "http://localhost:8766/spot/?id=frozen-aquarium-in-miyagi&theme=dark",
+   "http://localhost:8766/profile/?user=bodhi-schulz&theme=dark&from=%2Fbrowse%2F%3Ftheme%3Ddark",
+   "http://localhost:8766/spot/?id=south-london-s-most-notable-street-art-location&theme=dark",
+   "http://localhost:8766/profile/?user=wayfarer&theme=dark&from=%2Fbrowse%2F%3Ftheme%3Ddark",
+   "http://localhost:8766/spot/?id=berlin-s-hill-of-nazi-rubble-cold-war-spies-and-graffiti&theme=dark",
+   "http://localhost:8766/profile/?user=johan-swe&theme=dark&from=%2Fbrowse%2F%3Ftheme%3Ddark",
+   "http://localhost:8766/spot/?id=osaka-s-candy-colored-garbage-palace&theme=dark",
+   "http://localhost:8766/profile/?user=lydia&theme=dark&from=%2Fbrowse%2F%3Ftheme%3Ddark",
+   "http://localhost:8766/spot/?id=the-place-in-malta-where-people-have-been-making-salt-for-centuries&theme=dark",
+   "http://localhost:8766/spot/?id=a-suburban-london-warehouse-where-old-neon-signs-get-a-new-job&theme=dark",
+   "http://localhost:8766/spot/?id=700-year-old-church-devoured-by-sand&theme=dark",
+   "http://localhost:8766/profile/?user=six&theme=dark&from=%2Fbrowse%2F%3Ftheme%3Ddark",
+   "http://localhost:8766/spot/?id=coin-operated-grandmas-and-opium-den-dioramas-are-hidden-in-this-san-francisco-museum&theme=dark",
+   "http://localhost:8766/spot/?id=a-melodic-sculpture-in-the-lancashire-countryside&theme=dark",
+   "http://localhost:8766/spot/?id=tomb-of-christ-in-aomori&theme=dark",
+   "http://localhost:8766/contribute/?theme=dark",
+   "http://localhost:8766/guides/?theme=dark",
+   "http://localhost:8766/membership/?theme=dark",
+   "http://localhost:8766/mission/?theme=dark",
+   "http://localhost:8766/faq/?theme=dark",
+   "http://localhost:8766/privacy/?theme=dark",
+   "http://localhost:8766/terms/?theme=dark",
+   "http://localhost:8766/cookies/?theme=dark"
+  ],
+  "devlinks": [],
+  "navs": [
+   "DEEP SPOT",
+   "Your passport",
+   "\u263c light",
+   "color on",
+   "\u2630",
+   "home",
+   "browse",
+   "tours",
+   "guides",
+   "community",
+   "your fieldbook",
+   "membership",
+   "your account",
+   "interactive map",
+   "our mission",
+   "faq"
+  ],
+  "hdr": {
+   "sel": "header.br-header",
+   "h": 79,
+   "bg": "rgba(0, 0, 0, 0)",
+   "pos": "relative"
+  },
+  "foot": {
+   "sel": "footer.br-credit",
+   "links": 2,
+   "h": 63,
+   "txt": "BS by Bodhi Schulz \u2197"
+  },
+  "toggles": [
+   "switch to light mode \u263c light",
+   "color accents turn panel colors off colo",
+   "save osaka\u2019s candy-colored garbage palac"
+  ],
+  "btns": {
+   "50%|30|16px|400|Arial": [
+    "a.ds-account-button"
+   ],
+   "30px|33|14px|400|Arial": [
+    "button.br-theme"
+   ],
+   "24px|33|14px|400|Arial": [
+    "button.color-toggle"
+   ],
+   "0px|38|23px|400|Arial": [
+    "button.br-menu"
+   ],
+   "0px|39|14px|400|Arial": [
+    "button.br-saved"
+   ],
+   "0px|53|16px|800|Arial": [
+    "button",
+    "button",
+    "button",
+    "button",
+    "button",
+    "button"
+   ],
+   "0px|31|16px|400|Arial": [
+    "button",
+    "button"
+   ],
+   "50%|35|16px|400|Arial": [
+    "button.br-bookmark",
+    "button.br-bookmark",
+    "button.br-bookmark",
+    "button.br-bookmark",
+    "button.br-bookmark",
+    "button.br-bookmark",
+    "button.br-bookmark",
+    "button.br-bookmark",
+    "button.br-bookmark",
+    "button.br-bookmark",
+    "button.br-bookmark",
+    "button.br-bookmark"
+   ],
+   "3px|44|16px|400|Arial": [
+    "button.br-page-direction.br-page-prev",
+    "button",
+    "button",
+    "button",
+    "button.br-page-direction.br-page-next"
+   ],
+   "3px|44|16px|700|Arial": [
+    "button"
+   ],
+   "40px|52|18px|600|Arial": [
+    "a.ds-cta-button"
+   ],
+   "3px|44|17px|600|Arial": [
+    "button"
+   ]
+  },
+  "h1": [
+   "Arial|44px \"Browse\nDeep Spots \n369\nspots\""
+  ],
+  "h2": [
+   "Arial|24px|700|none \"Aquarium Where Every Fish\"",
+   "Arial|24px|700|none \"The Japanese Quarry That \"",
+   "Arial|24px|700|none \"South London\u2019s Most Notab\"",
+   "Arial|24px|700|none \"Berlin's Hill of Nazi Rub\"",
+   "Arial|24px|700|none \"Osaka\u2019s Candy-Colored Gar\"",
+   "Arial|24px|700|none \"A Soviet Prison Doubles a\""
+  ],
+  "tap": [
+   "a.skip-link 1x1"
+  ],
+  "ph": [
+   "coming soon"
+  ],
+  "len": 9183,
   "axe": null
  },
  {
   "view": "d320",
   "route": "/guides/",
   "status": 200,
-  "ms": 7059,
+  "ms": 7209,
   "errs": [],
   "fails": [],
-  "mb": 1.53,
-  "nreq": 34,
+  "mb": 1.7,
+  "nreq": 37,
   "top": [
    [
     373768,
@@ -949,7 +1000,7 @@
     "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&q=80"
    ],
    [
-    120255,
+    120253,
     "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800&q=80"
    ]
   ],
@@ -962,16 +1013,7 @@
   "bodyff": "Arial",
   "over": [],
   "small": [],
-  "smallBody": [
-   [
-    "p",
-    {
-     "fs": 16,
-     "t": "From postwar black markets and lantern-lit yokocho",
-     "c": 8
-    }
-   ]
-  ],
+  "smallBody": [],
   "imgs": [],
   "stretched": [],
   "blurry": [],
@@ -988,8 +1030,6 @@
    "http://localhost:8766/welcome/?from=%2Fguides%2F%3Ftheme%3Ddark&theme=dark",
    "http://localhost:8766/saved/?theme=dark",
    "http://localhost:8766/account/?theme=dark",
-   "http://localhost:8766/contribute/?theme=dark",
-   "http://localhost:8766/membership/?theme=dark",
    "http://localhost:8766/guide/?theme=dark&id=bodhi-s-list-of-retro-shopping-streets-and-drinking-alleys",
    "http://localhost:8766/guide/?theme=dark&id=tas-aizu-samurai-cultural-tour",
    "http://localhost:8766/guide/?theme=dark&id=cmnqua6nj0005u8uyfv6h8dds",
@@ -998,6 +1038,8 @@
    "http://localhost:8766/guide/?theme=dark&id=cmnqua5mf0002u8uy2ua3zeh5",
    "http://localhost:8766/guide/?theme=dark&id=cmnqua58f0001u8uyl3nwv1qv",
    "http://localhost:8766/plan-trip/?theme=dark",
+   "http://localhost:8766/contribute/?theme=dark",
+   "http://localhost:8766/membership/?theme=dark",
    "http://localhost:8766/mission/?theme=dark",
    "http://localhost:8766/faq/?theme=dark",
    "http://localhost:8766/privacy/?theme=dark",
@@ -1011,8 +1053,6 @@
    "\u263c light",
    "Color accents",
    "\u2630",
-   "Deep Spots",
-   "Guides",
    "home",
    "browse",
    "tours",
@@ -1021,7 +1061,9 @@
    "your fieldbook",
    "membership",
    "your account",
-   "interactive map"
+   "interactive map",
+   "our mission",
+   "faq"
   ],
   "hdr": {
    "sel": "header.br-header",
@@ -1055,7 +1097,7 @@
    "30px|48|17px|600|Arial": [
     "a.ds-button"
    ],
-   "40px|70|18px|600|Arial": [
+   "40px|52|18px|600|Arial": [
     "a.ds-cta-button"
    ],
    "3px|44|17px|600|Arial": [
@@ -1077,18 +1119,18 @@
   "ph": [
    "coming soon"
   ],
-  "len": 6198,
+  "len": 6595,
   "axe": null
  },
  {
   "view": "d320",
   "route": "/guide/?id=tas-aizu-samurai-cultural-tour",
   "status": 200,
-  "ms": 7824,
+  "ms": 7373,
   "errs": [],
   "fails": [],
-  "mb": 1.15,
-  "nreq": 31,
+  "mb": 1.32,
+  "nreq": 34,
   "top": [
    [
     373768,
@@ -1103,8 +1145,8 @@
     "https://images.unsplash.com/photo-1578469645742-46cae010e5d4?w=800&q=80"
    ],
    [
-    112554,
-    "/site/content.json"
+    113468,
+    "/banners/h3.webp"
    ]
   ],
   "sw": 320,
@@ -1116,24 +1158,7 @@
   "bodyff": "Arial",
   "over": [],
   "small": [],
-  "smallBody": [
-   [
-    "p.ds-note",
-    {
-     "fs": 15,
-     "t": "Timing and distance are the source guide\u2019s estimat",
-     "c": 1
-    }
-   ],
-   [
-    "p",
-    {
-     "fs": 16,
-     "t": "From postwar black markets and lantern-lit yokocho",
-     "c": 3
-    }
-   ]
-  ],
+  "smallBody": [],
   "imgs": [],
   "stretched": [],
   "blurry": [],
@@ -1149,14 +1174,14 @@
    "http://localhost:8766/community/?theme=dark",
    "http://localhost:8766/welcome/?from=%2Fguide%2F%3Fid%3Dtas-aizu-samurai-cultural-tour%26theme%3Ddark&theme=dark",
    "http://localhost:8766/saved/?theme=dark",
-   "http://localhost:8766/guides/?theme=dark",
    "http://localhost:8766/account/?theme=dark",
-   "http://localhost:8766/contribute/?theme=dark",
-   "http://localhost:8766/membership/?theme=dark",
+   "http://localhost:8766/guides/?theme=dark",
    "http://localhost:8766/plan-trip/?theme=dark",
    "http://localhost:8766/guide/?theme=dark&id=bodhi-s-list-of-retro-shopping-streets-and-drinking-alleys",
    "http://localhost:8766/guide/?theme=dark&id=cmnqua6nj0005u8uyfv6h8dds",
    "http://localhost:8766/guide/?theme=dark&id=cmnqua6c40004u8uyp36ulwir",
+   "http://localhost:8766/contribute/?theme=dark",
+   "http://localhost:8766/membership/?theme=dark",
    "http://localhost:8766/mission/?theme=dark",
    "http://localhost:8766/faq/?theme=dark",
    "http://localhost:8766/privacy/?theme=dark",
@@ -1221,7 +1246,7 @@
    "30px|48|15.5px|600|Arial": [
     "a.ds-button.secondary"
    ],
-   "40px|70|18px|600|Arial": [
+   "40px|52|18px|600|Arial": [
     "a.ds-cta-button"
    ],
    "3px|44|17px|600|Arial": [
@@ -1245,34 +1270,34 @@
   "ph": [
    "coming soon"
   ],
-  "len": 6570,
+  "len": 6911,
   "axe": null
  },
  {
   "view": "d320",
   "route": "/adventures/",
   "status": 200,
-  "ms": 5373,
+  "ms": 5487,
   "errs": [],
   "fails": [],
-  "mb": 2.43,
-  "nreq": 38,
+  "mb": 0.86,
+  "nreq": 42,
   "top": [
    [
-    519726,
-    "/spots/chiatura.jpg"
+    113468,
+    "/banners/h3.webp"
    ],
    [
-    343575,
-    "/spots/teufelsberg.jpg"
+    102164,
+    "/tours/tours-shadow.webp?v=art15"
    ],
    [
-    305516,
-    "/spots/rummu.jpg"
+    85980,
+    "/banners/n3.webp"
    ],
    [
-    293395,
-    "/spots/maishima.jpg"
+    85648,
+    "/tours/tours-moles.webp?v=art15"
    ]
   ],
   "sw": 320,
@@ -1299,11 +1324,11 @@
    "http://localhost:8766/community/?theme=dark",
    "http://localhost:8766/welcome/?from=%2Ftours%2F%3Ftheme%3Ddark&theme=dark",
    "http://localhost:8766/saved/?theme=dark",
-   "http://localhost:8766/guides/?theme=dark",
    "http://localhost:8766/account/?theme=dark",
-   "http://localhost:8766/contribute/?theme=dark",
-   "http://localhost:8766/membership/?theme=dark",
    "http://localhost:8766/roadmap/?theme=dark",
+   "http://localhost:8766/contribute/?theme=dark",
+   "http://localhost:8766/guides/?theme=dark",
+   "http://localhost:8766/membership/?theme=dark",
    "http://localhost:8766/mission/?theme=dark",
    "http://localhost:8766/faq/?theme=dark",
    "http://localhost:8766/privacy/?theme=dark",
@@ -1366,27 +1391,27 @@
   "view": "d320",
   "route": "/saved/",
   "status": 200,
-  "ms": 5837,
+  "ms": 5651,
   "errs": [],
   "fails": [],
-  "mb": 0.57,
-  "nreq": 29,
+  "mb": 0.53,
+  "nreq": 30,
   "top": [
    [
     226701,
     "/featured-spots.json"
    ],
    [
-    112554,
+    82789,
     "/site/content.json"
    ],
    [
-    31288,
-    "/site/pages.mjs"
+    29566,
+    "/site/pages.css?v=55e784a9"
    ],
    [
-    29566,
-    "/site/pages.css"
+    29353,
+    "/site/refinements.css?v=313dfb8f"
    ]
   ],
   "sw": 320,
@@ -1398,16 +1423,7 @@
   "bodyff": "Arial",
   "over": [],
   "small": [],
-  "smallBody": [
-   [
-    "p",
-    {
-     "fs": 16,
-     "t": "Keep the places that pull you in. Make a trip out ",
-     "c": 1
-    }
-   ]
-  ],
+  "smallBody": [],
   "imgs": [],
   "stretched": [],
   "blurry": [],
@@ -1422,11 +1438,10 @@
    "http://localhost:8766/tours/?theme=dark",
    "http://localhost:8766/community/?theme=dark",
    "http://localhost:8766/welcome/?from=%2Fsaved%2F%3Ftheme%3Ddark&theme=dark",
-   "http://localhost:8766/guides/?theme=dark",
    "http://localhost:8766/account/?theme=dark",
-   "http://localhost:8766/contribute/?theme=dark",
-   "http://localhost:8766/membership/?theme=dark",
    "http://localhost:8766/plan-trip/?theme=dark",
+   "http://localhost:8766/guides/?theme=dark",
+   "http://localhost:8766/membership/?theme=dark",
    "http://localhost:8766/mission/?theme=dark",
    "http://localhost:8766/faq/?theme=dark",
    "http://localhost:8766/privacy/?theme=dark",
@@ -1484,10 +1499,6 @@
    "30px|48|17px|600|Arial": [
     "a.ds-button",
     "a.ds-button"
-   ],
-   "0px|62|17px|400|Arial": [
-    "button",
-    "button"
    ]
   },
   "h1": [
@@ -1503,34 +1514,34 @@
    "a.skip-link 1x1"
   ],
   "ph": [],
-  "len": 1980,
+  "len": 1924,
   "axe": null
  },
  {
   "view": "d320",
   "route": "/plan-trip/",
   "status": 200,
-  "ms": 6085,
+  "ms": 5958,
   "errs": [],
   "fails": [],
-  "mb": 0.57,
-  "nreq": 29,
+  "mb": 0.54,
+  "nreq": 30,
   "top": [
    [
     226701,
     "/featured-spots.json"
    ],
    [
-    112554,
+    82789,
     "/site/content.json"
    ],
    [
-    31288,
-    "/site/pages.mjs"
+    29566,
+    "/site/pages.css?v=55e784a9"
    ],
    [
-    29566,
-    "/site/pages.css"
+    29353,
+    "/site/refinements.css?v=313dfb8f"
    ]
   ],
   "sw": 320,
@@ -1542,32 +1553,7 @@
   "bodyff": "Arial",
   "over": [],
   "small": [],
-  "smallBody": [
-   [
-    "p",
-    {
-     "fs": 16,
-     "t": "A place to collect your detours. Make a day of it,",
-     "c": 1
-    }
-   ],
-   [
-    "p.ds-local-status",
-    {
-     "fs": 14,
-     "t": "Your trip saves on this browser. Share or download",
-     "c": 1
-    }
-   ],
-   [
-    "p.ds-note",
-    {
-     "fs": 15,
-     "t": "Stops are arranged in your chosen order. Journey t",
-     "c": 1
-    }
-   ]
-  ],
+  "smallBody": [],
   "imgs": [],
   "stretched": [],
   "blurry": [],
@@ -1583,9 +1569,8 @@
    "http://localhost:8766/community/?theme=dark",
    "http://localhost:8766/welcome/?from=%2Fplan-trip%2F%3Ftheme%3Ddark&theme=dark",
    "http://localhost:8766/saved/?theme=dark",
-   "http://localhost:8766/guides/?theme=dark",
    "http://localhost:8766/account/?theme=dark",
-   "http://localhost:8766/contribute/?theme=dark",
+   "http://localhost:8766/guides/?theme=dark",
    "http://localhost:8766/membership/?theme=dark",
    "http://localhost:8766/mission/?theme=dark",
    "http://localhost:8766/faq/?theme=dark",
@@ -1663,34 +1648,34 @@
    "a.skip-link 1x1"
   ],
   "ph": [],
-  "len": 2734,
+  "len": 2804,
   "axe": null
  },
  {
   "view": "d320",
   "route": "/contribute/",
   "status": 200,
-  "ms": 6769,
+  "ms": 6738,
   "errs": [],
   "fails": [],
-  "mb": 0.57,
-  "nreq": 29,
+  "mb": 0.54,
+  "nreq": 30,
   "top": [
    [
     226701,
     "/featured-spots.json"
    ],
    [
-    112554,
+    82789,
     "/site/content.json"
    ],
    [
-    31288,
-    "/site/pages.mjs"
+    29566,
+    "/site/pages.css?v=55e784a9"
    ],
    [
-    29566,
-    "/site/pages.css"
+    29353,
+    "/site/refinements.css?v=313dfb8f"
    ]
   ],
   "sw": 320,
@@ -1702,16 +1687,7 @@
   "bodyff": "Arial",
   "over": [],
   "small": [],
-  "smallBody": [
-   [
-    "p",
-    {
-     "fs": 16,
-     "t": "A place, a story, a detail everyone else missed. P",
-     "c": 3
-    }
-   ]
-  ],
+  "smallBody": [],
   "imgs": [],
   "stretched": [],
   "blurry": [],
@@ -1727,8 +1703,8 @@
    "http://localhost:8766/community/?theme=dark",
    "http://localhost:8766/welcome/?theme=dark",
    "http://localhost:8766/saved/?theme=dark",
-   "http://localhost:8766/guides/?theme=dark",
    "http://localhost:8766/account/?theme=dark",
+   "http://localhost:8766/guides/?theme=dark",
    "http://localhost:8766/membership/?theme=dark",
    "http://localhost:8766/mission/?theme=dark",
    "http://localhost:8766/faq/?theme=dark",
@@ -1785,7 +1761,6 @@
     "button.br-menu"
    ],
    "0px|50|17px|400|Arial": [
-    "button",
     "button"
    ],
    "30px|48|15.5px|600|Arial": [
@@ -1808,39 +1783,39 @@
    "a.skip-link 1x1"
   ],
   "ph": [],
-  "len": 5138,
+  "len": 5215,
   "axe": null
  },
  {
   "view": "d320",
   "route": "/account/",
   "status": 200,
-  "ms": 5199,
+  "ms": 5221,
   "errs": [
-   "w: [.WebGL-0x419c001b8400]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
-   "w: [.WebGL-0x419c001ba200]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
-   "w: [.WebGL-0x419c001b8400]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
-   "w: [.WebGL-0x419c001b8400]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)"
+   "w: [.WebGL-0x301c001b1c00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+   "w: [.WebGL-0x301c017a0c00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+   "w: [.WebGL-0x301c001b1c00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+   "w: [.WebGL-0x301c001b1c00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)"
   ],
   "fails": [],
-  "mb": 2.7,
-  "nreq": 66,
+  "mb": 1.28,
+  "nreq": 68,
   "top": [
    [
-    965676,
-    "/earth-clouds.jpg"
-   ],
-   [
-    463087,
-    "/earth-day.jpg"
-   ],
-   [
     226701,
     "/featured-spots.json"
    ],
    [
     226701,
     "/featured-spots.json"
+   ],
+   [
+    137584,
+    "/profile/profile.css?v=44525062"
+   ],
+   [
+    82789,
+    "/site/content.json"
    ]
   ],
   "sw": 320,
@@ -1851,16 +1826,7 @@
   "bodyfs": "16px",
   "bodyff": "Arial",
   "over": [],
-  "small": [
-   [
-    "span",
-    {
-     "fs": 13.5,
-     "t": "explorer passport",
-     "c": 2
-    }
-   ]
-  ],
+  "small": [],
   "smallBody": [],
   "imgs": [],
   "stretched": [],
@@ -1880,7 +1846,12 @@
    "http://localhost:8766/guides/?theme=dark",
    "http://localhost:8766/account/?theme=dark",
    "http://localhost:8766/contribute/?theme=dark",
-   "http://localhost:8766/membership/?theme=dark"
+   "http://localhost:8766/membership/?theme=dark",
+   "http://localhost:8766/mission/?theme=dark",
+   "http://localhost:8766/faq/?theme=dark",
+   "http://localhost:8766/privacy/?theme=dark",
+   "http://localhost:8766/terms/?theme=dark",
+   "http://localhost:8766/cookies/?theme=dark"
   ],
   "devlinks": [],
   "navs": [
@@ -1890,7 +1861,16 @@
    "color on",
    "\u2630",
    "EDIT PROFILE",
-   "Settings"
+   "Settings",
+   "home",
+   "browse",
+   "tours",
+   "guides",
+   "community",
+   "your fieldbook",
+   "membership",
+   "your account",
+   "interactive map"
   ],
   "hdr": {
    "sel": "header.br-header",
@@ -1921,10 +1901,10 @@
    "0px|38|23px|400|Arial": [
     "button.br-menu"
    ],
-   "10px|89|16px|400|Arial": [
+   "10px|97|16px|400|Arial": [
     "button.pp-mole.pp-mole-empty"
    ],
-   "99px|30|18px|700|Arial": [
+   "99px|33|18px|700|Arial": [
     "button.pp-share"
    ],
    "99px|32|15.25px|600|ui-monospace": [
@@ -1958,40 +1938,43 @@
   "h2": [
    "ui-monospace|15.25px|600|uppercase \"BIO\"",
    "ui-monospace|15.25px|600|uppercase \"TRAVELER TYPE\"",
-   "ui-monospace|15.25px|600|uppercase \"CONTRIBUTIONS\""
+   "ui-monospace|15.25px|600|uppercase \"CONTRIBUTIONS\"",
+   "Arial|19.5px|700|none \"explore\"",
+   "Arial|19.5px|700|none \"legal\""
   ],
   "tap": [
-   "a.skip-link 1x1"
+   "a.skip-link 1x1",
+   "a.pp-bio-add 75x19"
   ],
   "ph": [],
-  "len": 2498,
+  "len": 3333,
   "axe": null
  },
  {
   "view": "d320",
   "route": "/inbox/",
   "status": 200,
-  "ms": 5661,
+  "ms": 5694,
   "errs": [],
   "fails": [],
-  "mb": 0.61,
-  "nreq": 31,
+  "mb": 0.58,
+  "nreq": 32,
   "top": [
    [
     226701,
     "/featured-spots.json"
    ],
    [
-    112554,
+    82789,
     "/site/content.json"
    ],
    [
-    31288,
-    "/site/pages.mjs"
+    29566,
+    "/site/pages.css?v=55e784a9"
    ],
    [
-    29566,
-    "/site/pages.css"
+    29353,
+    "/site/refinements.css?v=313dfb8f"
    ]
   ],
   "sw": 320,
@@ -2003,16 +1986,7 @@
   "bodyff": "Arial",
   "over": [],
   "small": [],
-  "smallBody": [
-   [
-    "div.ac-service-note",
-    {
-     "fs": 15,
-     "t": "Your private messages stay on DeepSpot. This previ",
-     "c": 1
-    }
-   ]
-  ],
+  "smallBody": [],
   "imgs": [],
   "stretched": [],
   "blurry": [],
@@ -2028,9 +2002,8 @@
    "http://localhost:8766/community/?theme=dark",
    "http://localhost:8766/welcome/?from=%2Finbox%2F%3Ftheme%3Ddark&theme=dark",
    "http://localhost:8766/saved/?theme=dark",
-   "http://localhost:8766/guides/?theme=dark",
    "http://localhost:8766/account/?theme=dark",
-   "http://localhost:8766/contribute/?theme=dark",
+   "http://localhost:8766/guides/?theme=dark",
    "http://localhost:8766/membership/?theme=dark",
    "http://localhost:8766/mission/?theme=dark",
    "http://localhost:8766/faq/?theme=dark",
@@ -2103,34 +2076,34 @@
    "a.skip-link 1x1"
   ],
   "ph": [],
-  "len": 1991,
+  "len": 2025,
   "axe": null
  },
  {
   "view": "d320",
   "route": "/invites/",
   "status": 200,
-  "ms": 5849,
+  "ms": 5836,
   "errs": [],
   "fails": [],
-  "mb": 0.61,
-  "nreq": 31,
+  "mb": 0.58,
+  "nreq": 32,
   "top": [
    [
     226701,
     "/featured-spots.json"
    ],
    [
-    112554,
+    82789,
     "/site/content.json"
    ],
    [
-    31288,
-    "/site/pages.mjs"
+    29566,
+    "/site/pages.css?v=55e784a9"
    ],
    [
-    29566,
-    "/site/pages.css"
+    29353,
+    "/site/refinements.css?v=313dfb8f"
    ]
   ],
   "sw": 320,
@@ -2142,16 +2115,7 @@
   "bodyff": "Arial",
   "over": [],
   "small": [],
-  "smallBody": [
-   [
-    "p.ds-note",
-    {
-     "fs": 15,
-     "t": "Live keys are never copied into this preview. Avai",
-     "c": 1
-    }
-   ]
-  ],
+  "smallBody": [],
   "imgs": [],
   "stretched": [],
   "blurry": [],
@@ -2167,9 +2131,8 @@
    "http://localhost:8766/community/?theme=dark",
    "http://localhost:8766/welcome/?from=%2Finvites%2F%3Ftheme%3Ddark&theme=dark",
    "http://localhost:8766/saved/?theme=dark",
-   "http://localhost:8766/guides/?theme=dark",
    "http://localhost:8766/account/?theme=dark",
-   "http://localhost:8766/contribute/?theme=dark",
+   "http://localhost:8766/guides/?theme=dark",
    "http://localhost:8766/membership/?theme=dark",
    "http://localhost:8766/mission/?theme=dark",
    "http://localhost:8766/faq/?theme=dark",
@@ -2241,34 +2204,34 @@
    "a.skip-link 1x1"
   ],
   "ph": [],
-  "len": 2581,
+  "len": 2592,
   "axe": null
  },
  {
   "view": "d320",
   "route": "/community/",
   "status": 200,
-  "ms": 8777,
+  "ms": 9380,
   "errs": [],
   "fails": [],
   "mb": 1.55,
-  "nreq": 60,
+  "nreq": 63,
   "top": [
    [
     226701,
     "/featured-spots.json"
    ],
    [
-    132511,
-    "/profile/profile.css?v=fx3"
-   ],
-   [
-    112554,
-    "/site/content.json"
+    137584,
+    "/profile/profile.css?v=44525062"
    ],
    [
     93082,
     "/editorial-assets/cards/spot-south-london-s-most-notable-street-art-location.webp"
+   ],
+   [
+    83118,
+    "/editorial-assets/cards/oya.webp"
    ]
   ],
   "sw": 320,
@@ -2279,55 +2242,24 @@
   "bodyfs": "16px",
   "bodyff": "Arial",
   "over": [
-   "li.pm-item.is-front r=323",
-   "a.pm-link r=323",
-   "div.pm-tilt.pp-passobj-in r=323",
-   "div.pp-card.pp-idcard r=323"
+   "div.gv-h1l r=369",
+   "span.gv-kick.gv-kick-sans r=369",
+   "h2#gv-t-g1 r=369",
+   "p.gv-h1p r=369",
+   "span.gv-ends.gv-h1cd r=369",
+   "b r=354"
   ],
   "small": [
    [
-    "span.gv-name",
-    {
-     "fs": 11.5,
-     "t": "Kris",
-     "c": 3
-    }
-   ],
-   [
     "span",
     {
-     "fs": 13.5,
-     "t": "explorer passport",
-     "c": 2
-    }
-   ],
-   [
-    "p.pm-sub",
-    {
      "fs": 13,
-     "t": "10 explorers in this month\u2019s race",
+     "t": "come say hi",
      "c": 1
     }
    ]
   ],
-  "smallBody": [
-   [
-    "p.gv-h1p",
-    {
-     "fs": 16,
-     "t": "Post spots, tell stories, collect upvotes. Most po",
-     "c": 1
-    }
-   ],
-   [
-    "p",
-    {
-     "fs": 16,
-     "t": "Every approved spot earns 50 points, every story 1",
-     "c": 1
-    }
-   ]
-  ],
+  "smallBody": [],
   "imgs": [],
   "stretched": [],
   "blurry": [],
@@ -2342,10 +2274,8 @@
    "http://localhost:8766/tours/?theme=dark",
    "http://localhost:8766/welcome/?from=%2Fcommunity%2F%3Ftheme%3Ddark&theme=dark",
    "http://localhost:8766/saved/?theme=dark",
-   "http://localhost:8766/guides/?theme=dark",
    "http://localhost:8766/account/?theme=dark",
    "http://localhost:8766/contribute/?theme=dark",
-   "http://localhost:8766/membership/?theme=dark",
    "http://localhost:8766/profile/?user=lampbane&theme=dark&from=%2Fcommunity%2F%3Ftheme%3Ddark",
    "http://localhost:8766/profile/?user=wayfarer&theme=dark&from=%2Fcommunity%2F%3Ftheme%3Ddark",
    "http://localhost:8766/profile/?user=kisekikana&theme=dark&from=%2Fcommunity%2F%3Ftheme%3Ddark",
@@ -2366,6 +2296,8 @@
    "http://localhost:8766/spot/?theme=dark&id=berlin-s-hill-of-nazi-rubble-cold-war-spies-and-graffiti",
    "http://localhost:8766/spot/?theme=dark&id=osaka-s-candy-colored-garbage-palace",
    "http://localhost:8766/roadmap/?theme=dark",
+   "http://localhost:8766/guides/?theme=dark",
+   "http://localhost:8766/membership/?theme=dark",
    "http://localhost:8766/mission/?theme=dark",
    "http://localhost:8766/faq/?theme=dark",
    "http://localhost:8766/privacy/?theme=dark",
@@ -2427,6 +2359,9 @@
    "99px|52|17px|700|Arial": [
     "button.gv-ghost"
    ],
+   "99px|44|16px|400|Arial": [
+    "button.pm-deal"
+   ],
    "0px|58|19px|800|Arial": [
     "button.dc-opt",
     "button.dc-opt",
@@ -2485,6 +2420,12 @@
     "button",
     "button",
     "button",
+    "button",
+    "button",
+    "button",
+    "button",
+    "button",
+    "button",
     "button"
    ]
   },
@@ -2501,7 +2442,7 @@
   ],
   "tap": [
    "a.skip-link 1x1",
-   "a.dc-more.dv-more 150x23",
+   "a.dc-more.ch-more 150x23",
    "a.cv-link 134x21",
    "a.cv-link 134x21",
    "a.cv-link 134x21",
@@ -2510,18 +2451,18 @@
    "a.cv-link 134x21"
   ],
   "ph": [],
-  "len": 10501,
+  "len": 11258,
   "axe": null
  },
  {
   "view": "d320",
   "route": "/leaderboard/",
   "status": 200,
-  "ms": 6312,
+  "ms": 6280,
   "errs": [],
   "fails": [],
-  "mb": 1.51,
-  "nreq": 37,
+  "mb": 1.68,
+  "nreq": 40,
   "top": [
    [
     251680,
@@ -2549,16 +2490,7 @@
   "bodyff": "Arial",
   "over": [],
   "small": [],
-  "smallBody": [
-   [
-    "p",
-    {
-     "fs": 16,
-     "t": "The DeepSpot competition rewards the discoveries t",
-     "c": 1
-    }
-   ]
-  ],
+  "smallBody": [],
   "imgs": [],
   "stretched": [],
   "blurry": [],
@@ -2574,10 +2506,7 @@
    "http://localhost:8766/community/?theme=dark",
    "http://localhost:8766/welcome/?from=%2Fleaderboard%2F%3Ftheme%3Ddark&theme=dark",
    "http://localhost:8766/saved/?theme=dark",
-   "http://localhost:8766/guides/?theme=dark",
    "http://localhost:8766/account/?theme=dark",
-   "http://localhost:8766/contribute/?theme=dark",
-   "http://localhost:8766/membership/?theme=dark",
    "http://localhost:8766/profile/?user=kris&theme=dark&from=%2Fleaderboard%2F%3Ftheme%3Ddark",
    "http://localhost:8766/profile/?user=wayfarer&theme=dark&from=%2Fleaderboard%2F%3Ftheme%3Ddark",
    "http://localhost:8766/profile/?user=kisekikana&theme=dark&from=%2Fleaderboard%2F%3Ftheme%3Ddark",
@@ -2589,6 +2518,9 @@
    "http://localhost:8766/profile/?user=lydia&theme=dark&from=%2Fleaderboard%2F%3Ftheme%3Ddark",
    "http://localhost:8766/profile/?user=six&theme=dark&from=%2Fleaderboard%2F%3Ftheme%3Ddark",
    "http://localhost:8766/competition/?theme=dark",
+   "http://localhost:8766/contribute/?theme=dark",
+   "http://localhost:8766/guides/?theme=dark",
+   "http://localhost:8766/membership/?theme=dark",
    "http://localhost:8766/mission/?theme=dark",
    "http://localhost:8766/faq/?theme=dark",
    "http://localhost:8766/privacy/?theme=dark",
@@ -2650,7 +2582,7 @@
    "30px|48|17px|600|Arial": [
     "a.ds-button"
    ],
-   "40px|70|18px|600|Arial": [
+   "40px|52|18px|600|Arial": [
     "a.ds-cta-button"
    ],
    "3px|44|17px|600|Arial": [
@@ -2672,34 +2604,34 @@
   "ph": [
    "coming soon"
   ],
-  "len": 3669,
+  "len": 3776,
   "axe": null
  },
  {
   "view": "d320",
   "route": "/competition/",
   "status": 200,
-  "ms": 6446,
+  "ms": 6137,
   "errs": [],
   "fails": [],
-  "mb": 0.21,
-  "nreq": 24,
+  "mb": 0.22,
+  "nreq": 26,
   "top": [
    [
-    31288,
-    "/site/pages.mjs"
-   ],
-   [
     29566,
-    "/site/pages.css"
+    "/site/pages.css?v=55e784a9"
    ],
    [
-    25360,
-    "/site/refinements.css?v=5"
+    29353,
+    "/site/refinements.css?v=313dfb8f"
    ],
    [
-    20029,
-    "/browse/browse.css?v=tab1"
+    28261,
+    "/site/pages.mjs?v=da88bfc7"
+   ],
+   [
+    21684,
+    "/browse/browse.css?v=e4779082"
    ]
   ],
   "sw": 320,
@@ -2711,16 +2643,7 @@
   "bodyff": "Arial",
   "over": [],
   "small": [],
-  "smallBody": [
-   [
-    "p",
-    {
-     "fs": 16,
-     "t": "The DeepSpot Initial Giveaway rewards the people a",
-     "c": 2
-    }
-   ]
-  ],
+  "smallBody": [],
   "imgs": [],
   "stretched": [],
   "blurry": [],
@@ -2736,11 +2659,11 @@
    "http://localhost:8766/community/?theme=dark",
    "http://localhost:8766/welcome/?theme=dark",
    "http://localhost:8766/saved/?theme=dark",
-   "http://localhost:8766/guides/?theme=dark",
    "http://localhost:8766/account/?theme=dark",
    "http://localhost:8766/contribute/?theme=dark",
-   "http://localhost:8766/membership/?theme=dark",
    "http://localhost:8766/leaderboard/?theme=dark",
+   "http://localhost:8766/guides/?theme=dark",
+   "http://localhost:8766/membership/?theme=dark",
    "http://localhost:8766/mission/?theme=dark",
    "http://localhost:8766/faq/?theme=dark",
    "http://localhost:8766/privacy/?theme=dark",
@@ -2820,58 +2743,46 @@
    "a.skip-link 1x1"
   ],
   "ph": [],
-  "len": 3570,
+  "len": 3481,
   "axe": null
  },
  {
   "view": "d320",
   "route": "/forum/",
   "status": 200,
-  "ms": 6177,
+  "ms": 6256,
   "errs": [],
   "fails": [],
-  "mb": 0.56,
-  "nreq": 28,
+  "mb": 0.73,
+  "nreq": 31,
   "top": [
    [
     226701,
     "/featured-spots.json"
    ],
    [
-    112554,
+    113468,
+    "/banners/h3.webp"
+   ],
+   [
+    85980,
+    "/banners/n3.webp"
+   ],
+   [
+    82789,
     "/site/content.json"
-   ],
-   [
-    31288,
-    "/site/pages.mjs"
-   ],
-   [
-    29566,
-    "/site/pages.css"
    ]
   ],
-  "sw": 353,
+  "sw": 320,
   "vw": 320,
   "title": "Community Forum \u2014 DeepSpot",
   "theme": "dark",
   "panel": "on",
   "bodyfs": "16px",
   "bodyff": "Arial",
-  "over": [
-   "span.ds-eyebrow r=353",
-   "span r=353"
-  ],
+  "over": [],
   "small": [],
-  "smallBody": [
-   [
-    "p.ds-note",
-    {
-     "fs": 15,
-     "t": "Discussion snapshot from October 8, 2026. Open a t",
-     "c": 1
-    }
-   ]
-  ],
+  "smallBody": [],
   "imgs": [],
   "stretched": [],
   "blurry": [],
@@ -2887,15 +2798,15 @@
    "http://localhost:8766/community/?theme=dark",
    "http://localhost:8766/welcome/?theme=dark",
    "http://localhost:8766/saved/?theme=dark",
-   "http://localhost:8766/guides/?theme=dark",
    "http://localhost:8766/account/?theme=dark",
-   "http://localhost:8766/contribute/?theme=dark",
-   "http://localhost:8766/membership/?theme=dark",
    "http://localhost:8766/roadmap/?theme=dark",
    "http://localhost:8766/forum/?theme=dark&id=cmnoocewh0001s4uyi6agh1gm",
    "http://localhost:8766/forum/?theme=dark&id=cmnoocdlk0000s4uyw7jahytc",
    "http://localhost:8766/forum/?theme=dark&id=cmrvo19fv000004ldgzpro5kc",
    "http://localhost:8766/forum/?theme=dark&id=cmnoocfp00004s4uymae17c4h",
+   "http://localhost:8766/contribute/?theme=dark",
+   "http://localhost:8766/guides/?theme=dark",
+   "http://localhost:8766/membership/?theme=dark",
    "http://localhost:8766/mission/?theme=dark",
    "http://localhost:8766/faq/?theme=dark",
    "http://localhost:8766/privacy/?theme=dark",
@@ -2954,7 +2865,7 @@
     "button",
     "button"
    ],
-   "40px|70|18px|600|Arial": [
+   "40px|52|18px|600|Arial": [
     "a.ds-cta-button"
    ],
    "3px|44|17px|600|Arial": [
@@ -2976,34 +2887,34 @@
   "ph": [
    "coming soon"
   ],
-  "len": 3419,
+  "len": 3750,
   "axe": null
  },
  {
   "view": "d320",
   "route": "/mission/",
   "status": 200,
-  "ms": 6803,
+  "ms": 6899,
   "errs": [],
   "fails": [],
-  "mb": 0.46,
-  "nreq": 25,
+  "mb": 0.66,
+  "nreq": 29,
   "top": [
    [
     246966,
     "/spots/oya.jpg"
    ],
    [
-    31288,
-    "/site/pages.mjs"
+    113468,
+    "/banners/h3.webp"
+   ],
+   [
+    85980,
+    "/banners/n3.webp"
    ],
    [
     29566,
-    "/site/pages.css"
-   ],
-   [
-    25360,
-    "/site/refinements.css?v=5"
+    "/site/pages.css?v=55e784a9"
    ]
   ],
   "sw": 320,
@@ -3015,16 +2926,7 @@
   "bodyff": "Arial",
   "over": [],
   "small": [],
-  "smallBody": [
-   [
-    "p",
-    {
-     "fs": 16,
-     "t": "A living archive of the forgotten, the peculiar, a",
-     "c": 1
-    }
-   ]
-  ],
+  "smallBody": [],
   "imgs": [],
   "stretched": [],
   "blurry": [],
@@ -3040,9 +2942,9 @@
    "http://localhost:8766/community/?theme=dark",
    "http://localhost:8766/welcome/?theme=dark",
    "http://localhost:8766/saved/?theme=dark",
-   "http://localhost:8766/guides/?theme=dark",
    "http://localhost:8766/account/?theme=dark",
    "http://localhost:8766/contribute/?theme=dark",
+   "http://localhost:8766/guides/?theme=dark",
    "http://localhost:8766/membership/?theme=dark",
    "http://localhost:8766/faq/?theme=dark",
    "http://localhost:8766/privacy/?theme=dark",
@@ -3103,7 +3005,7 @@
    "30px|48|15.5px|600|Arial": [
     "a.ds-button"
    ],
-   "40px|70|18px|600|Arial": [
+   "40px|52|18px|600|Arial": [
     "a.ds-cta-button"
    ],
    "3px|44|17px|600|Arial": [
@@ -3127,34 +3029,34 @@
   "ph": [
    "coming soon"
   ],
-  "len": 4337,
+  "len": 4748,
   "axe": null
  },
  {
   "view": "d320",
   "route": "/faq/",
   "status": 200,
-  "ms": 5700,
+  "ms": 5697,
   "errs": [],
   "fails": [],
-  "mb": 0.21,
-  "nreq": 24,
+  "mb": 0.22,
+  "nreq": 26,
   "top": [
    [
-    31288,
-    "/site/pages.mjs"
-   ],
-   [
     29566,
-    "/site/pages.css"
+    "/site/pages.css?v=55e784a9"
    ],
    [
-    25360,
-    "/site/refinements.css?v=5"
+    29353,
+    "/site/refinements.css?v=313dfb8f"
    ],
    [
-    20029,
-    "/browse/browse.css?v=tab1"
+    28261,
+    "/site/pages.mjs?v=da88bfc7"
+   ],
+   [
+    21684,
+    "/browse/browse.css?v=e4779082"
    ]
   ],
   "sw": 320,
@@ -3182,9 +3084,8 @@
    "http://localhost:8766/community/?theme=dark",
    "http://localhost:8766/welcome/?theme=dark",
    "http://localhost:8766/saved/?theme=dark",
-   "http://localhost:8766/guides/?theme=dark",
    "http://localhost:8766/account/?theme=dark",
-   "http://localhost:8766/contribute/?theme=dark",
+   "http://localhost:8766/guides/?theme=dark",
    "http://localhost:8766/membership/?theme=dark",
    "http://localhost:8766/mission/?theme=dark",
    "http://localhost:8766/privacy/?theme=dark",
@@ -3251,34 +3152,34 @@
    "a.skip-link 1x1"
   ],
   "ph": [],
-  "len": 1974,
+  "len": 1977,
   "axe": null
  },
  {
   "view": "d320",
   "route": "/membership/",
   "status": 200,
-  "ms": 7454,
+  "ms": 6327,
   "errs": [],
   "fails": [],
-  "mb": 0.21,
-  "nreq": 24,
+  "mb": 0.22,
+  "nreq": 26,
   "top": [
    [
-    31288,
-    "/site/pages.mjs"
-   ],
-   [
     29566,
-    "/site/pages.css"
+    "/site/pages.css?v=55e784a9"
    ],
    [
-    25360,
-    "/site/refinements.css?v=5"
+    29353,
+    "/site/refinements.css?v=313dfb8f"
    ],
    [
-    20029,
-    "/browse/browse.css?v=tab1"
+    28261,
+    "/site/pages.mjs?v=da88bfc7"
+   ],
+   [
+    21684,
+    "/browse/browse.css?v=e4779082"
    ]
   ],
   "sw": 320,
@@ -3306,9 +3207,8 @@
    "http://localhost:8766/community/?theme=dark",
    "http://localhost:8766/welcome/?theme=dark",
    "http://localhost:8766/saved/?theme=dark",
-   "http://localhost:8766/guides/?theme=dark",
    "http://localhost:8766/account/?theme=dark",
-   "http://localhost:8766/contribute/?theme=dark",
+   "http://localhost:8766/guides/?theme=dark",
    "http://localhost:8766/mission/?theme=dark",
    "http://localhost:8766/faq/?theme=dark",
    "http://localhost:8766/privacy/?theme=dark",
@@ -3382,34 +3282,34 @@
    "a.skip-link 1x1"
   ],
   "ph": [],
-  "len": 3647,
+  "len": 3657,
   "axe": null
  },
  {
   "view": "d320",
   "route": "/app/",
   "status": 200,
-  "ms": 9333,
+  "ms": 8295,
   "errs": [],
   "fails": [],
-  "mb": 14.09,
-  "nreq": 64,
+  "mb": 4.59,
+  "nreq": 80,
   "top": [
    [
-    5597290,
-    "/media/world-is-deeper.mp4"
+    550144,
+    "/media/world-is-deeper-sm.mp4"
    ],
    [
-    965676,
-    "/earth-clouds.jpg"
+    463087,
+    "/earth-day.jpg"
    ],
    [
-    864851,
-    "/editorial-assets/boundary.jpg"
+    361152,
+    "/earth-clouds.webp"
    ],
    [
-    664409,
-    "/site/assets/story-moscow.jpg"
+    343575,
+    "/spots/teufelsberg.jpg"
    ]
   ],
   "sw": 320,
@@ -3420,43 +3320,49 @@
   "bodyfs": "16px",
   "bodyff": "Arial",
   "over": [
-   "span r=517",
-   "div.header-controls r=344",
-   "button.ds-home-menu r=344",
-   "button.map-pin r=432",
-   "div.ed-story-group r=875",
-   "article.ed-story r=589"
+   "span r=533",
+   "div.header-controls r=340",
+   "button.ds-home-menu r=340",
+   "button.map-pin r=474"
   ],
   "small": [
+   [
+    "span.ed-r-tag",
+    {
+     "fs": 12.5,
+     "t": "$100",
+     "c": 3
+    }
+   ],
+   [
+    "figcaption",
+    {
+     "fs": 13,
+     "t": "Teufelsberg, Berlin",
+     "c": 1
+    }
+   ],
    [
     "span",
     {
      "fs": 13,
-     "t": "THIS WEEK\u2019S WEIRDEST FINDS",
+     "t": "by",
      "c": 1
     }
    ],
    [
-    "p.preview-place",
+    "strong",
     {
      "fs": 13,
-     "t": "Utsunomiya, Japan",
+     "t": "Johan SWE",
      "c": 1
     }
    ],
    [
-    "div.map-credit",
+    "span.gv-name",
     {
-     "fs": 13,
-     "t": "Earth imagery \u00b7 Three.js / NASA",
-     "c": 1
-    }
-   ],
-   [
-    "span.cl-sample",
-    {
-     "fs": 13,
-     "t": "oct 2026",
+     "fs": 12.5,
+     "t": "Wayfarer",
      "c": 1
     }
    ]
@@ -3465,17 +3371,9 @@
    [
     "p",
     {
-     "fs": 15,
-     "t": "A hand-carved quarry the size of a stadium, now an",
-     "c": 1
-    }
-   ],
-   [
-    "p.fs-description",
-    {
      "fs": 16,
-     "t": "A man-made rubble mountain, once Nazi ruins and So",
-     "c": 3
+     "t": "Berlin\u2019s Teufelsberg is a man-made hill of war rub",
+     "c": 1
     }
    ]
   ],
@@ -3491,33 +3389,33 @@
    "http://localhost:8766/community/?theme=dark",
    "http://localhost:8766/welcome/?theme=dark",
    "http://localhost:8766/saved/?theme=dark",
-   "http://localhost:8766/guides/?theme=dark",
    "http://localhost:8766/account/?theme=dark",
-   "http://localhost:8766/membership/?theme=dark",
-   "http://localhost:8766/contribute/?theme=dark",
-   "http://localhost:8766/spot/?id=a-soviet-prison-doubles-as-a-swimming-hole&theme=dark",
-   "http://localhost:8766/spot/?id=tochigi-underground-quarry&theme=dark",
-   "http://localhost:8766/profile/?user=wayfarer&theme=dark&from=%2F%3Ftheme%3Ddark%23wn-heading",
-   "http://localhost:8766/spot/?id=south-london-s-most-notable-street-art-location&theme=dark",
+   "http://localhost:8766/map/?spot=tochigi-underground-quarry&theme=dark",
+   "http://localhost:8766/profile/?user=johan-swe&theme=dark&from=%2F%3Ftheme%3Ddark%23wn-heading",
+   "http://localhost:8766/spot/?id=berlin-s-hill-of-nazi-rubble-cold-war-spies-and-graffiti&theme=dark",
+   "http://localhost:8766/profile/?user=wayfarer&theme=dark&from=%2F%3Ftheme%3Ddark",
+   "http://localhost:8766/profile/?user=numberone&theme=dark&from=%2F%3Ftheme%3Ddark",
+   "http://localhost:8766/profile/?user=kisekikana&theme=dark&from=%2F%3Ftheme%3Ddark",
+   "http://localhost:8766/profile/?user=lampbane&theme=dark&from=%2F%3Ftheme%3Ddark",
    "http://localhost:8766/spot/?id=osaka-s-candy-colored-garbage-palace&theme=dark",
    "http://localhost:8766/spot/?id=frozen-aquarium-in-miyagi&theme=dark",
    "http://localhost:8766/profile/?user=bodhi-schulz&theme=dark&from=%2F%3Ftheme%3Ddark%23fs-heading",
+   "http://localhost:8766/spot/?id=tochigi-underground-quarry&theme=dark",
+   "http://localhost:8766/spot/?id=south-london-s-most-notable-street-art-location&theme=dark",
    "http://localhost:8766/profile/?user=wayfarer&theme=dark&from=%2F%3Ftheme%3Ddark%23fs-heading",
-   "http://localhost:8766/spot/?id=berlin-s-hill-of-nazi-rubble-cold-war-spies-and-graffiti&theme=dark",
    "http://localhost:8766/profile/?user=johan-swe&theme=dark&from=%2F%3Ftheme%3Ddark%23fs-heading",
    "http://localhost:8766/profile/?user=lydia&theme=dark&from=%2F%3Ftheme%3Ddark%23fs-heading",
    "http://localhost:8766/spot/?id=the-place-in-malta-where-people-have-been-making-salt-for-centuries&theme=dark",
+   "http://localhost:8766/profile/?user=lampbane&theme=dark&from=%2F%3Ftheme%3Ddark%23community",
    "http://localhost:8766/profile/?user=wayfarer&theme=dark&from=%2F%3Ftheme%3Ddark%23community",
    "http://localhost:8766/profile/?user=kisekikana&theme=dark&from=%2F%3Ftheme%3Ddark%23community",
    "http://localhost:8766/profile/?user=numberone&theme=dark&from=%2F%3Ftheme%3Ddark%23community",
    "http://localhost:8766/profile/?user=joelle&theme=dark&from=%2F%3Ftheme%3Ddark%23community",
    "http://localhost:8766/profile/?user=annebelle&theme=dark&from=%2F%3Ftheme%3Ddark%23community",
-   "http://localhost:8766/profile/?user=lanavelkov&theme=dark&from=%2F%3Ftheme%3Ddark%23community",
    "http://localhost:8766/leaderboard/?theme=dark",
-   "http://localhost:8766/stories/?theme=dark",
-   "http://localhost:8766/profile/?user=numberone&theme=dark&from=%2F%3Ftheme%3Ddark%23stories",
-   "http://localhost:8766/profile/?user=kisekikana&theme=dark&from=%2F%3Ftheme%3Ddark%23stories",
-   "http://localhost:8766/profile/?user=krista-watson&theme=dark&from=%2F%3Ftheme%3Ddark%23stories",
+   "http://localhost:8766/contribute/?theme=dark",
+   "http://localhost:8766/guides/?theme=dark",
+   "http://localhost:8766/membership/?theme=dark",
    "http://localhost:8766/mission/?theme=dark",
    "http://localhost:8766/faq/?theme=dark",
    "http://localhost:8766/privacy/?theme=dark",
@@ -3534,11 +3432,10 @@
   "navs": [
    "DEEP SPOT",
    "Your passport",
-   "\u2600 Light",
+   "\u263c light",
    "color on",
    "\u2630",
    "top contributors \u2197",
-   "stories",
    "home",
    "browse",
    "tours",
@@ -3547,7 +3444,8 @@
    "your fieldbook",
    "membership",
    "your account",
-   "interactive map"
+   "interactive map",
+   "our mission"
   ],
   "hdr": {
    "sel": "header.header",
@@ -3562,10 +3460,9 @@
    "txt": "BS by Bodhi Schulz \u2197"
   },
   "toggles": [
-   "switch to light mode \u2600 light",
+   "switch to light mode \u263c light",
    "color accents turn panel colors off colo",
-   "save osaka\u2019s candy-colored garbage palac",
-   "read tuch\u00edn, the colombian town known fo"
+   "save osaka\u2019s candy-colored garbage palac"
   ],
   "btns": {
    "50%|30|16px|400|Arial": [
@@ -3583,9 +3480,6 @@
     "button.map-pin",
     "button.map-pin"
    ],
-   "40px|50|16px|400|Arial": [
-    "button.explore-bar"
-   ],
    "0px|43|18px|500|Arial": [
     "button.wn-intro-tab"
    ],
@@ -3593,7 +3487,6 @@
     "button.wn-paper"
    ],
    "0px|52|15px|400|Arial": [
-    "button.wn-green",
     "button.wn-aqua",
     "button.wn-blue"
    ],
@@ -3622,22 +3515,10 @@
    "50%|44|15px|400|Arial": [
     "button.cl-motion"
    ],
-   "0px|219|16px|400|Arial": [
-    "button.ed-story-open",
-    "button.ed-story-open",
-    "button.ed-story-open"
-   ],
-   "0px|220|16px|400|Arial": [
-    "button.ed-story-open",
-    "button.ed-story-open",
-    "button.ed-story-open"
-   ],
    "0px|44|15px|400|Arial": [
-    "button",
-    "button",
     "button"
    ],
-   "40px|82|18px|600|Arial": [
+   "40px|55|18px|600|Arial": [
     "a.ds-cta-button"
    ],
    "3px|54|17px|600|Arial": [
@@ -3661,39 +3542,41 @@
   "tap": [
    "a.fs-arrow 18x24",
    "a.fs-arrow 18x24",
-   "a.fs-arrow 18x24"
+   "a.fs-arrow 18x24",
+   "button 117x22",
+   "button 124x23"
   ],
   "ph": [
    "coming soon"
   ],
-  "len": 8839,
+  "len": 8801,
   "axe": null
  },
  {
   "view": "d320",
   "route": "/roadmap/",
   "status": 200,
-  "ms": 6529,
+  "ms": 7213,
   "errs": [],
   "fails": [],
-  "mb": 0.32,
-  "nreq": 25,
+  "mb": 0.52,
+  "nreq": 29,
   "top": [
+   [
+    113468,
+    "/banners/h3.webp"
+   ],
    [
     107830,
     "/roadmap-mountain.webp"
    ],
    [
-    31288,
-    "/site/pages.mjs"
+    85980,
+    "/banners/n3.webp"
    ],
    [
     29566,
-    "/site/pages.css"
-   ],
-   [
-    25360,
-    "/site/refinements.css?v=5"
+    "/site/pages.css?v=55e784a9"
    ]
   ],
   "sw": 320,
@@ -3705,16 +3588,7 @@
   "bodyff": "Arial",
   "over": [],
   "small": [],
-  "smallBody": [
-   [
-    "p",
-    {
-     "fs": 16,
-     "t": "Built with the community. These are the projects m",
-     "c": 2
-    }
-   ]
-  ],
+  "smallBody": [],
   "imgs": [],
   "stretched": [],
   "blurry": [],
@@ -3730,9 +3604,9 @@
    "http://localhost:8766/community/?theme=dark",
    "http://localhost:8766/welcome/?theme=dark",
    "http://localhost:8766/saved/?theme=dark",
-   "http://localhost:8766/guides/?theme=dark",
    "http://localhost:8766/account/?theme=dark",
    "http://localhost:8766/contribute/?theme=dark",
+   "http://localhost:8766/guides/?theme=dark",
    "http://localhost:8766/membership/?theme=dark",
    "http://localhost:8766/mission/?theme=dark",
    "http://localhost:8766/faq/?theme=dark",
@@ -3791,7 +3665,7 @@
    "30px|48|15.5px|600|Arial": [
     "a.ds-button.secondary"
    ],
-   "40px|70|18px|600|Arial": [
+   "40px|52|18px|600|Arial": [
     "a.ds-cta-button"
    ],
    "3px|44|17px|600|Arial": [
@@ -3802,12 +3676,12 @@
    "Arial|43px \"The way\nforward.\""
   ],
   "h2": [
-   "Arial|34px|750|none \"community groups\"",
-   "Arial|34px|750|none \"hidden secrets\"",
-   "Arial|34px|750|none \"travel quests\"",
-   "Arial|34px|750|none \"live events\"",
-   "Arial|34px|750|none \"AI point-of-interest rout\"",
-   "Arial|34px|750|none \"TL;DR summaries\""
+   "Arial|34px|750|none \"Passports + profile moles\"",
+   "Arial|34px|750|none \"PictoChat signatures\"",
+   "Arial|34px|750|none \"Monthly giveaways\"",
+   "Arial|34px|750|none \"Trip lists\"",
+   "Arial|34px|750|none \"Offline maps\"",
+   "Arial|34px|750|none \"Live meetups\""
   ],
   "tap": [
    "a.skip-link 1x1"
@@ -3815,34 +3689,34 @@
   "ph": [
    "coming soon"
   ],
-  "len": 4429,
+  "len": 5820,
   "axe": null
  },
  {
   "view": "d320",
   "route": "/sponsored/",
   "status": 200,
-  "ms": 6008,
+  "ms": 5992,
   "errs": [],
   "fails": [],
-  "mb": 0.5,
-  "nreq": 25,
+  "mb": 0.51,
+  "nreq": 27,
   "top": [
    [
     293395,
     "/spots/maishima.jpg"
    ],
    [
-    31288,
-    "/site/pages.mjs"
-   ],
-   [
     29566,
-    "/site/pages.css"
+    "/site/pages.css?v=55e784a9"
    ],
    [
-    25360,
-    "/site/refinements.css?v=5"
+    29353,
+    "/site/refinements.css?v=313dfb8f"
+   ],
+   [
+    28261,
+    "/site/pages.mjs?v=da88bfc7"
    ]
   ],
   "sw": 320,
@@ -3854,16 +3728,7 @@
   "bodyff": "Arial",
   "over": [],
   "small": [],
-  "smallBody": [
-   [
-    "p",
-    {
-     "fs": 16,
-     "t": "Have a partnership in mind? Tell the DeepSpot team",
-     "c": 1
-    }
-   ]
-  ],
+  "smallBody": [],
   "imgs": [],
   "stretched": [],
   "blurry": [],
@@ -3879,9 +3744,8 @@
    "http://localhost:8766/community/?theme=dark",
    "http://localhost:8766/welcome/?theme=dark",
    "http://localhost:8766/saved/?theme=dark",
-   "http://localhost:8766/guides/?theme=dark",
    "http://localhost:8766/account/?theme=dark",
-   "http://localhost:8766/contribute/?theme=dark",
+   "http://localhost:8766/guides/?theme=dark",
    "http://localhost:8766/membership/?theme=dark",
    "http://localhost:8766/mission/?theme=dark",
    "http://localhost:8766/faq/?theme=dark",
@@ -3953,34 +3817,34 @@
    "a.skip-link 1x1"
   ],
   "ph": [],
-  "len": 1955,
+  "len": 1984,
   "axe": null
  },
  {
   "view": "d320",
   "route": "/privacy/",
   "status": 200,
-  "ms": 7390,
+  "ms": 7347,
   "errs": [],
   "fails": [],
-  "mb": 0.56,
-  "nreq": 28,
+  "mb": 0.53,
+  "nreq": 29,
   "top": [
    [
     226701,
     "/featured-spots.json"
    ],
    [
-    112554,
+    82789,
     "/site/content.json"
    ],
    [
-    31288,
-    "/site/pages.mjs"
+    29566,
+    "/site/pages.css?v=55e784a9"
    ],
    [
-    29566,
-    "/site/pages.css"
+    29353,
+    "/site/refinements.css?v=313dfb8f"
    ]
   ],
   "sw": 320,
@@ -4008,12 +3872,11 @@
    "http://localhost:8766/community/?theme=dark",
    "http://localhost:8766/welcome/?theme=dark",
    "http://localhost:8766/saved/?theme=dark",
-   "http://localhost:8766/guides/?theme=dark",
    "http://localhost:8766/account/?theme=dark",
-   "http://localhost:8766/contribute/?theme=dark",
-   "http://localhost:8766/membership/?theme=dark",
    "http://localhost:8766/terms/?theme=dark",
    "http://localhost:8766/cookies/?theme=dark",
+   "http://localhost:8766/guides/?theme=dark",
+   "http://localhost:8766/membership/?theme=dark",
    "http://localhost:8766/mission/?theme=dark",
    "http://localhost:8766/faq/?theme=dark"
   ],
@@ -4081,34 +3944,34 @@
    "a.skip-link 1x1"
   ],
   "ph": [],
-  "len": 6838,
+  "len": 6872,
   "axe": null
  },
  {
   "view": "d320",
   "route": "/terms/",
   "status": 200,
-  "ms": 7476,
+  "ms": 7678,
   "errs": [],
   "fails": [],
-  "mb": 0.56,
-  "nreq": 28,
+  "mb": 0.53,
+  "nreq": 29,
   "top": [
    [
     226701,
     "/featured-spots.json"
    ],
    [
-    112554,
+    82789,
     "/site/content.json"
    ],
    [
-    31288,
-    "/site/pages.mjs"
+    29566,
+    "/site/pages.css?v=55e784a9"
    ],
    [
-    29566,
-    "/site/pages.css"
+    29353,
+    "/site/refinements.css?v=313dfb8f"
    ]
   ],
   "sw": 320,
@@ -4136,12 +3999,11 @@
    "http://localhost:8766/community/?theme=dark",
    "http://localhost:8766/welcome/?theme=dark",
    "http://localhost:8766/saved/?theme=dark",
-   "http://localhost:8766/guides/?theme=dark",
    "http://localhost:8766/account/?theme=dark",
-   "http://localhost:8766/contribute/?theme=dark",
-   "http://localhost:8766/membership/?theme=dark",
    "http://localhost:8766/privacy/?theme=dark",
    "http://localhost:8766/cookies/?theme=dark",
+   "http://localhost:8766/guides/?theme=dark",
+   "http://localhost:8766/membership/?theme=dark",
    "http://localhost:8766/mission/?theme=dark",
    "http://localhost:8766/faq/?theme=dark"
   ],
@@ -4209,34 +4071,34 @@
    "a.skip-link 1x1"
   ],
   "ph": [],
-  "len": 7848,
+  "len": 7881,
   "axe": null
  },
  {
   "view": "d320",
   "route": "/cookies/",
   "status": 200,
-  "ms": 6644,
+  "ms": 6614,
   "errs": [],
   "fails": [],
-  "mb": 0.56,
-  "nreq": 28,
+  "mb": 0.53,
+  "nreq": 29,
   "top": [
    [
     226701,
     "/featured-spots.json"
    ],
    [
-    112554,
+    82789,
     "/site/content.json"
    ],
    [
-    31288,
-    "/site/pages.mjs"
+    29566,
+    "/site/pages.css?v=55e784a9"
    ],
    [
-    29566,
-    "/site/pages.css"
+    29353,
+    "/site/refinements.css?v=313dfb8f"
    ]
   ],
   "sw": 320,
@@ -4248,16 +4110,7 @@
   "bodyff": "Arial",
   "over": [],
   "small": [],
-  "smallBody": [
-   [
-    "p",
-    {
-     "fs": 16,
-     "t": "This version stores your theme, saved spots, trip,",
-     "c": 1
-    }
-   ]
-  ],
+  "smallBody": [],
   "imgs": [],
   "stretched": [],
   "blurry": [],
@@ -4273,12 +4126,11 @@
    "http://localhost:8766/community/?theme=dark",
    "http://localhost:8766/welcome/?theme=dark",
    "http://localhost:8766/saved/?theme=dark",
-   "http://localhost:8766/guides/?theme=dark",
    "http://localhost:8766/account/?theme=dark",
-   "http://localhost:8766/contribute/?theme=dark",
-   "http://localhost:8766/membership/?theme=dark",
    "http://localhost:8766/privacy/?theme=dark",
    "http://localhost:8766/terms/?theme=dark",
+   "http://localhost:8766/guides/?theme=dark",
+   "http://localhost:8766/membership/?theme=dark",
    "http://localhost:8766/mission/?theme=dark",
    "http://localhost:8766/faq/?theme=dark"
   ],
@@ -4346,34 +4198,34 @@
    "a.skip-link 1x1"
   ],
   "ph": [],
-  "len": 4719,
+  "len": 4810,
   "axe": null
  },
  {
   "view": "d320",
   "route": "/welcome/",
   "status": 200,
-  "ms": 5205,
+  "ms": 4862,
   "errs": [],
   "fails": [],
-  "mb": 0.35,
-  "nreq": 20,
+  "mb": 0.37,
+  "nreq": 19,
   "top": [
    [
-    132511,
-    "/profile/profile.css?v=fx3"
+    137584,
+    "/profile/profile.css?v=44525062"
    ],
    [
-    45103,
-    "/site/onboarding.mjs?v=mf1"
+    45581,
+    "/site/onboarding.mjs?v=2d350432"
    ],
    [
-    40346,
-    "/site/onboarding.css?v=mf2"
+    41851,
+    "/site/onboarding.css?v=a1d77722"
    ],
    [
-    25360,
-    "/site/refinements.css?v=5"
+    29353,
+    "/site/refinements.css?v=313dfb8f"
    ]
   ],
   "sw": 320,
@@ -4384,16 +4236,7 @@
   "bodyfs": "16px",
   "bodyff": "Arial",
   "over": [],
-  "small": [
-   [
-    "p.ob-note",
-    {
-     "fs": 13,
-     "t": "preview: accounts connect at launch. you",
-     "c": 1
-    }
-   ]
-  ],
+  "small": [],
   "smallBody": [],
   "imgs": [],
   "stretched": [],
@@ -4448,7 +4291,7 @@
   "view": "d320",
   "route": "/nope-404/",
   "status": 404,
-  "ms": 3732,
+  "ms": 3640,
   "errs": [
    "e: Failed to load resource: the server responded with a status of 404 (File not found)"
   ],
@@ -4506,27 +4349,27 @@
   "view": "d320",
   "route": "/",
   "status": 200,
-  "ms": 9205,
+  "ms": 9119,
   "errs": [],
   "fails": [],
-  "mb": 15.59,
-  "nreq": 67,
+  "mb": 4.59,
+  "nreq": 79,
   "top": [
    [
-    5597290,
-    "/media/world-is-deeper.mp4"
+    550144,
+    "/media/world-is-deeper-sm.mp4"
    ],
    [
-    965676,
-    "/earth-clouds.jpg"
+    463087,
+    "/earth-day.jpg"
    ],
    [
-    864851,
-    "/editorial-assets/boundary.jpg"
+    361152,
+    "/earth-clouds.webp"
    ],
    [
-    664409,
-    "/site/assets/story-moscow.jpg"
+    343575,
+    "/spots/teufelsberg.jpg"
    ]
   ],
   "sw": 320,
@@ -4537,43 +4380,49 @@
   "bodyfs": "16px",
   "bodyff": "Arial",
   "over": [
-   "span r=517",
-   "div.header-controls r=344",
-   "button.ds-home-menu r=344",
-   "button.map-pin r=432",
-   "div.ed-story-group r=875",
-   "article.ed-story r=589"
+   "span r=533",
+   "div.header-controls r=340",
+   "button.ds-home-menu r=340",
+   "button.map-pin r=474"
   ],
   "small": [
+   [
+    "span.ed-r-tag",
+    {
+     "fs": 12.5,
+     "t": "$100",
+     "c": 3
+    }
+   ],
+   [
+    "figcaption",
+    {
+     "fs": 13,
+     "t": "Teufelsberg, Berlin",
+     "c": 1
+    }
+   ],
    [
     "span",
     {
      "fs": 13,
-     "t": "THIS WEEK\u2019S WEIRDEST FINDS",
+     "t": "by",
      "c": 1
     }
    ],
    [
-    "p.preview-place",
+    "strong",
     {
      "fs": 13,
-     "t": "Utsunomiya, Japan",
+     "t": "Johan SWE",
      "c": 1
     }
    ],
    [
-    "div.map-credit",
+    "span.gv-name",
     {
-     "fs": 13,
-     "t": "Earth imagery \u00b7 Three.js / NASA",
-     "c": 1
-    }
-   ],
-   [
-    "span.cl-sample",
-    {
-     "fs": 13,
-     "t": "oct 2026",
+     "fs": 12.5,
+     "t": "Wayfarer",
      "c": 1
     }
    ]
@@ -4582,17 +4431,9 @@
    [
     "p",
     {
-     "fs": 15,
-     "t": "A hand-carved quarry the size of a stadium, now an",
-     "c": 1
-    }
-   ],
-   [
-    "p.fs-description",
-    {
      "fs": 16,
-     "t": "A man-made rubble mountain, once Nazi ruins and So",
-     "c": 3
+     "t": "Berlin\u2019s Teufelsberg is a man-made hill of war rub",
+     "c": 1
     }
    ]
   ],
@@ -4608,33 +4449,33 @@
    "http://localhost:8766/community/?theme=dark",
    "http://localhost:8766/welcome/?theme=dark",
    "http://localhost:8766/saved/?theme=dark",
-   "http://localhost:8766/guides/?theme=dark",
    "http://localhost:8766/account/?theme=dark",
-   "http://localhost:8766/membership/?theme=dark",
-   "http://localhost:8766/contribute/?theme=dark",
-   "http://localhost:8766/spot/?id=a-soviet-prison-doubles-as-a-swimming-hole&theme=dark",
-   "http://localhost:8766/spot/?id=tochigi-underground-quarry&theme=dark",
-   "http://localhost:8766/profile/?user=wayfarer&theme=dark&from=%2F%3Ftheme%3Ddark%23wn-heading",
-   "http://localhost:8766/spot/?id=south-london-s-most-notable-street-art-location&theme=dark",
+   "http://localhost:8766/map/?spot=tochigi-underground-quarry&theme=dark",
+   "http://localhost:8766/profile/?user=johan-swe&theme=dark&from=%2F%3Ftheme%3Ddark%23wn-heading",
+   "http://localhost:8766/spot/?id=berlin-s-hill-of-nazi-rubble-cold-war-spies-and-graffiti&theme=dark",
+   "http://localhost:8766/profile/?user=wayfarer&theme=dark&from=%2F%3Ftheme%3Ddark",
+   "http://localhost:8766/profile/?user=numberone&theme=dark&from=%2F%3Ftheme%3Ddark",
+   "http://localhost:8766/profile/?user=kisekikana&theme=dark&from=%2F%3Ftheme%3Ddark",
+   "http://localhost:8766/profile/?user=lampbane&theme=dark&from=%2F%3Ftheme%3Ddark",
    "http://localhost:8766/spot/?id=osaka-s-candy-colored-garbage-palace&theme=dark",
    "http://localhost:8766/spot/?id=frozen-aquarium-in-miyagi&theme=dark",
    "http://localhost:8766/profile/?user=bodhi-schulz&theme=dark&from=%2F%3Ftheme%3Ddark%23fs-heading",
+   "http://localhost:8766/spot/?id=tochigi-underground-quarry&theme=dark",
+   "http://localhost:8766/spot/?id=south-london-s-most-notable-street-art-location&theme=dark",
    "http://localhost:8766/profile/?user=wayfarer&theme=dark&from=%2F%3Ftheme%3Ddark%23fs-heading",
-   "http://localhost:8766/spot/?id=berlin-s-hill-of-nazi-rubble-cold-war-spies-and-graffiti&theme=dark",
    "http://localhost:8766/profile/?user=johan-swe&theme=dark&from=%2F%3Ftheme%3Ddark%23fs-heading",
    "http://localhost:8766/profile/?user=lydia&theme=dark&from=%2F%3Ftheme%3Ddark%23fs-heading",
    "http://localhost:8766/spot/?id=the-place-in-malta-where-people-have-been-making-salt-for-centuries&theme=dark",
+   "http://localhost:8766/profile/?user=lampbane&theme=dark&from=%2F%3Ftheme%3Ddark%23community",
    "http://localhost:8766/profile/?user=wayfarer&theme=dark&from=%2F%3Ftheme%3Ddark%23community",
    "http://localhost:8766/profile/?user=kisekikana&theme=dark&from=%2F%3Ftheme%3Ddark%23community",
    "http://localhost:8766/profile/?user=numberone&theme=dark&from=%2F%3Ftheme%3Ddark%23community",
    "http://localhost:8766/profile/?user=joelle&theme=dark&from=%2F%3Ftheme%3Ddark%23community",
    "http://localhost:8766/profile/?user=annebelle&theme=dark&from=%2F%3Ftheme%3Ddark%23community",
-   "http://localhost:8766/profile/?user=lanavelkov&theme=dark&from=%2F%3Ftheme%3Ddark%23community",
    "http://localhost:8766/leaderboard/?theme=dark",
-   "http://localhost:8766/stories/?theme=dark",
-   "http://localhost:8766/profile/?user=numberone&theme=dark&from=%2F%3Ftheme%3Ddark%23stories",
-   "http://localhost:8766/profile/?user=kisekikana&theme=dark&from=%2F%3Ftheme%3Ddark%23stories",
-   "http://localhost:8766/profile/?user=krista-watson&theme=dark&from=%2F%3Ftheme%3Ddark%23stories",
+   "http://localhost:8766/contribute/?theme=dark",
+   "http://localhost:8766/guides/?theme=dark",
+   "http://localhost:8766/membership/?theme=dark",
    "http://localhost:8766/mission/?theme=dark",
    "http://localhost:8766/faq/?theme=dark",
    "http://localhost:8766/privacy/?theme=dark",
@@ -4651,11 +4492,10 @@
   "navs": [
    "DEEP SPOT",
    "Your passport",
-   "\u2600 Light",
+   "\u263c light",
    "color on",
    "\u2630",
    "top contributors \u2197",
-   "stories",
    "home",
    "browse",
    "tours",
@@ -4664,7 +4504,8 @@
    "your fieldbook",
    "membership",
    "your account",
-   "interactive map"
+   "interactive map",
+   "our mission"
   ],
   "hdr": {
    "sel": "header.header",
@@ -4679,10 +4520,9 @@
    "txt": "BS by Bodhi Schulz \u2197"
   },
   "toggles": [
-   "switch to light mode \u2600 light",
+   "switch to light mode \u263c light",
    "color accents turn panel colors off colo",
-   "save osaka\u2019s candy-colored garbage palac",
-   "read tuch\u00edn, the colombian town known fo"
+   "save osaka\u2019s candy-colored garbage palac"
   ],
   "btns": {
    "50%|30|16px|400|Arial": [
@@ -4700,9 +4540,6 @@
     "button.map-pin",
     "button.map-pin"
    ],
-   "40px|50|16px|400|Arial": [
-    "button.explore-bar"
-   ],
    "0px|43|18px|500|Arial": [
     "button.wn-intro-tab"
    ],
@@ -4710,7 +4547,6 @@
     "button.wn-paper"
    ],
    "0px|52|15px|400|Arial": [
-    "button.wn-green",
     "button.wn-aqua",
     "button.wn-blue"
    ],
@@ -4739,22 +4575,10 @@
    "50%|44|15px|400|Arial": [
     "button.cl-motion"
    ],
-   "0px|219|16px|400|Arial": [
-    "button.ed-story-open",
-    "button.ed-story-open",
-    "button.ed-story-open"
-   ],
-   "0px|220|16px|400|Arial": [
-    "button.ed-story-open",
-    "button.ed-story-open",
-    "button.ed-story-open"
-   ],
    "0px|44|15px|400|Arial": [
-    "button",
-    "button",
     "button"
    ],
-   "40px|82|18px|600|Arial": [
+   "40px|55|18px|600|Arial": [
     "a.ds-cta-button"
    ],
    "3px|54|17px|600|Arial": [
@@ -4778,39 +4602,41 @@
   "tap": [
    "a.fs-arrow 18x24",
    "a.fs-arrow 18x24",
-   "a.fs-arrow 18x24"
+   "a.fs-arrow 18x24",
+   "button 117x22",
+   "button 124x23"
   ],
   "ph": [
    "coming soon"
   ],
-  "len": 8839,
+  "len": 8801,
   "axe": null
  },
  {
   "view": "d320",
   "route": "/profile/?user=wayfarer",
   "status": 200,
-  "ms": 6882,
+  "ms": 7192,
   "errs": [],
   "fails": [],
-  "mb": 2.28,
-  "nreq": 40,
+  "mb": 1.68,
+  "nreq": 42,
   "top": [
-   [
-    965676,
-    "/earth-clouds.jpg"
-   ],
    [
     463087,
     "/earth-day.jpg"
+   ],
+   [
+    361152,
+    "/earth-clouds.webp"
    ],
    [
     226701,
     "/featured-spots.json"
    ],
    [
-    132511,
-    "/profile/profile.css?v=fx3"
+    137584,
+    "/profile/profile.css?v=44525062"
    ]
   ],
   "sw": 320,
@@ -4821,24 +4647,15 @@
   "bodyfs": "16px",
   "bodyff": "Arial",
   "over": [
-   "span r=506"
+   "span r=501"
   ],
-  "small": [
-   [
-    "span",
-    {
-     "fs": 13.5,
-     "t": "explorer passport",
-     "c": 2
-    }
-   ]
-  ],
+  "small": [],
   "smallBody": [
    [
     "p.pp-mono",
     {
      "fs": 15,
-     "t": "based on 11 postings \u00b7 also architect 6 \u00b7 artsy fa",
+     "t": "based on 11 of 39 postings (the ones in this colle",
      "c": 1
     }
    ]
@@ -4884,7 +4701,12 @@
    "http://localhost:8766/browse/?q=Anderton+Boat+Lift&theme=dark",
    "http://localhost:8766/browse/?q=White+Nancy&theme=dark",
    "http://localhost:8766/browse/?q=Cromwell%E2%80%99s+Bridge&theme=dark",
-   "http://localhost:8766/browse/?q=Mow+Cop+Castle&theme=dark"
+   "http://localhost:8766/browse/?q=Mow+Cop+Castle&theme=dark",
+   "http://localhost:8766/mission/?theme=dark",
+   "http://localhost:8766/faq/?theme=dark",
+   "http://localhost:8766/privacy/?theme=dark",
+   "http://localhost:8766/terms/?theme=dark",
+   "http://localhost:8766/cookies/?theme=dark"
   ],
   "devlinks": [],
   "navs": [
@@ -4892,7 +4714,18 @@
    "Your passport",
    "\u263c light",
    "color on",
-   "\u2630"
+   "\u2630",
+   "home",
+   "browse",
+   "tours",
+   "guides",
+   "community",
+   "your fieldbook",
+   "membership",
+   "your account",
+   "interactive map",
+   "our mission",
+   "faq"
   ],
   "hdr": {
    "sel": "header.br-header",
@@ -4900,7 +4733,12 @@
    "bg": "rgba(0, 0, 0, 0)",
    "pos": "relative"
   },
-  "foot": null,
+  "foot": {
+   "sel": "footer.ds-footer",
+   "links": 18,
+   "h": 817,
+   "txt": "DEEP SPOT Discovering the obscure, the weird, and the wonderful side of the world that you won't find in guidebooks. exp"
+  },
   "toggles": [
    "switch to light mode \u263c light",
    "color accents turn panel colors off colo"
@@ -4918,7 +4756,7 @@
    "0px|38|23px|400|Arial": [
     "button.br-menu"
    ],
-   "99px|30|18px|700|Arial": [
+   "99px|33|18px|700|Arial": [
     "button.pp-share"
    ],
    "99px|44|17px|800|Arial": [
@@ -4942,40 +4780,42 @@
   "h2": [
    "ui-monospace|15.25px|600|uppercase \"BIO\"",
    "ui-monospace|15.25px|600|uppercase \"TRAVELER TYPE\"",
-   "ui-monospace|15.25px|600|uppercase \"CONTRIBUTIONS\""
+   "ui-monospace|15.25px|600|uppercase \"CONTRIBUTIONS\"",
+   "Arial|19.5px|700|none \"explore\"",
+   "Arial|19.5px|700|none \"legal\""
   ],
   "tap": [
    "a.skip-link 1x1"
   ],
   "ph": [],
-  "len": 2583,
+  "len": 3423,
   "axe": null
  },
  {
   "view": "d320",
   "route": "/profile/?user=preview",
   "status": 200,
-  "ms": 7096,
+  "ms": 7157,
   "errs": [],
   "fails": [],
-  "mb": 2.15,
-  "nreq": 37,
+  "mb": 1.58,
+  "nreq": 40,
   "top": [
-   [
-    965676,
-    "/earth-clouds.jpg"
-   ],
    [
     463087,
     "/earth-day.jpg"
+   ],
+   [
+    361152,
+    "/earth-clouds.webp"
    ],
    [
     226701,
     "/featured-spots.json"
    ],
    [
-    132511,
-    "/profile/profile.css?v=fx3"
+    137584,
+    "/profile/profile.css?v=44525062"
    ]
   ],
   "sw": 320,
@@ -4986,16 +4826,7 @@
   "bodyfs": "16px",
   "bodyff": "Arial",
   "over": [],
-  "small": [
-   [
-    "span",
-    {
-     "fs": 13.5,
-     "t": "explorer passport",
-     "c": 2
-    }
-   ]
-  ],
+  "small": [],
   "smallBody": [],
   "imgs": [],
   "stretched": [],
@@ -5015,7 +4846,12 @@
    "http://localhost:8766/guides/?theme=dark",
    "http://localhost:8766/account/?theme=dark",
    "http://localhost:8766/contribute/?theme=dark",
-   "http://localhost:8766/membership/?theme=dark"
+   "http://localhost:8766/membership/?theme=dark",
+   "http://localhost:8766/mission/?theme=dark",
+   "http://localhost:8766/faq/?theme=dark",
+   "http://localhost:8766/privacy/?theme=dark",
+   "http://localhost:8766/terms/?theme=dark",
+   "http://localhost:8766/cookies/?theme=dark"
   ],
   "devlinks": [],
   "navs": [
@@ -5025,7 +4861,16 @@
    "color on",
    "\u2630",
    "EDIT PROFILE",
-   "Settings"
+   "Settings",
+   "home",
+   "browse",
+   "tours",
+   "guides",
+   "community",
+   "your fieldbook",
+   "membership",
+   "your account",
+   "interactive map"
   ],
   "hdr": {
    "sel": "header.br-header",
@@ -5056,10 +4901,10 @@
    "0px|38|23px|400|Arial": [
     "button.br-menu"
    ],
-   "10px|89|16px|400|Arial": [
+   "10px|97|16px|400|Arial": [
     "button.pp-mole.pp-mole-empty"
    ],
-   "99px|30|18px|700|Arial": [
+   "99px|33|18px|700|Arial": [
     "button.pp-share"
    ],
    "99px|32|15.25px|600|ui-monospace": [
@@ -5093,13 +4938,16 @@
   "h2": [
    "ui-monospace|15.25px|600|uppercase \"BIO\"",
    "ui-monospace|15.25px|600|uppercase \"TRAVELER TYPE\"",
-   "ui-monospace|15.25px|600|uppercase \"CONTRIBUTIONS\""
+   "ui-monospace|15.25px|600|uppercase \"CONTRIBUTIONS\"",
+   "Arial|19.5px|700|none \"explore\"",
+   "Arial|19.5px|700|none \"legal\""
   ],
   "tap": [
-   "a.skip-link 1x1"
+   "a.skip-link 1x1",
+   "a.pp-bio-add 75x19"
   ],
   "ph": [],
-  "len": 2498,
+  "len": 3333,
   "axe": null
  }
 ]

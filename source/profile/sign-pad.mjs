@@ -1,9 +1,17 @@
 import {accountKey,readAccount,normalizeAccount,artMaxPng} from '../site/account-state.mjs?v=1c064097';
-import {escapeHTML as esc} from './identity.mjs?v=38b679eb';
+import {escapeHTML as esc} from './identity.mjs?v=744e89b9';
 // Passport art pad. Strokes live on a 640x180 canvas (wide and short, like the passport's mark line) shown at the column width; the paper and dot grid are CSS.
 // v2.2: on save the drawing is cropped to its ink (+ small padding) so the card's mark line can scale it up to fill the line.
 export const padSize={w:640,h:180};
 export const inkPad=6;
+/* 7.2 (2026-10-23): the pad grows on touch devices. tablet (iPad) 720x320 shown at the full sheet width (>= 720x300 landscape, >= 600x260 portrait),
+   phone 640x300 (the old 640x180 was a 100 px strip), mouse devices keep 640x180. The drawing is cropped to its ink on save, so the size never changes the card. */
+export function padSizeFor(){
+ try{
+  if(matchMedia('(pointer: coarse)').matches)return matchMedia('(min-width: 700px)').matches?{w:720,h:320}:{w:640,h:300};
+ }catch{}
+ return padSize;
+}
 /* crop a canvas to the bounds of its drawn ink (alpha > 8) + padding; returns a PNG data URL, or '' when blank */
 export function inkCanvas(cv,pad=inkPad){
  const W=cv.width,H=cv.height,d=cv.getContext('2d',{willReadFrequently:true}).getImageData(0,0,W,H).data;
@@ -29,38 +37,49 @@ const icons={
 const icon=name=>`<svg viewBox="0 0 24 24" aria-hidden="true">${icons[name]}</svg>`;
 const tool=(id,label,pressed,cls='')=>`<button type="button" class="sp-chip${cls}" data-tool="${id}"${pressed===undefined?'':` aria-pressed="${pressed}"`}>${icon(id)}<span>${label}</span></button>`;
 export function padHTML(profile){
- const edit=!!profile.localPreview,name=esc(profile.name);
+ const edit=!!profile.localPreview,name=esc(profile.name),sz=edit?padSizeFor():padSize;
  const top=`<div class="pp-id-top"><span>deepspot · ${edit?'my mark':'their mark'}</span><span>${edit?'draw · save':'read only'}</span></div>`;
  if(!edit&&!profile.signatureArt)return `<div class="pp-card pp-markcard" id="pp-pad" data-mode="empty">${top}<div class="sp-paper sp-empty"><svg viewBox="0 0 24 24" aria-hidden="true">${icons.free}</svg><strong>no art yet.</strong><span>${name} hasn’t drawn a mark on this passport.</span></div></div>`;
- const paper=`<div class="sp-paper">${edit?`<canvas width="${padSize.w}" height="${padSize.h}" role="img" aria-label="Drawing canvas for your passport art. Draw with a mouse, finger or pen."></canvas>`:`<img src="${esc(profile.signatureArt)}" alt="${name}’s passport drawing" width="${padSize.w}" height="${padSize.h}">`}</div>`;
+ const paper=`<div class="sp-paper"${edit?` style="aspect-ratio:${sz.w}/${sz.h}"`:''}>${edit?`<canvas width="${sz.w}" height="${sz.h}" role="img" aria-label="Drawing canvas for your passport art. Draw with a mouse, finger or pen."></canvas>`:`<img src="${esc(profile.signatureArt)}" alt="${name}’s passport drawing" width="${padSize.w}" height="${padSize.h}">`}</div>`;
  return `<div class="pp-card pp-markcard" id="pp-pad" data-mode="${edit?'edit':'view'}">${top}${paper}${edit?`<div class="sp-tools" role="toolbar" aria-label="Drawing tools"><div class="sp-group" role="group" aria-label="Brush">${tool('free','smooth',true)}${tool('pixel','pixel',false)}${tool('erase','eraser',false)}</div><div class="sp-group" role="group" aria-label="Size">${tool('small','small',true)}${tool('big','big',false)}</div><div class="sp-group" role="group" aria-label="Actions">${tool('undo','undo')}${tool('clear','clear')}${tool('save','save',undefined,' sp-save')}</div></div><div class="sp-palette" role="group" aria-label="Colors">${colors.map(([n,c],i)=>`<button type="button" class="sp-swatch" style="--c:${c}" data-color="${c}" aria-label="${n}" title="${n}" aria-pressed="${i===0}"></button>`).join('')}</div><p class="sp-status" role="status" aria-live="polite">Pick a brush and draw.</p>`:''}</div>`;
 }
 export function initPad(root,{art,onSave}={}){
  const cv=root.querySelector('canvas');if(!cv)return;
- const ctx=cv.getContext('2d',{willReadFrequently:true}),{w:W,h:H}=padSize,$=s=>root.querySelector(s),$$=s=>[...root.querySelectorAll(s)];
- const st={mode:'free',big:false,erase:false,color:colors[0][1]},undo=[];let drag=null,dirty=false,clearTimer;
+ const ctx=cv.getContext('2d',{willReadFrequently:true}),W=cv.width,H=cv.height,$=s=>root.querySelector(s),$$=s=>[...root.querySelectorAll(s)];
+ const st={mode:'free',big:false,erase:false,color:colors[0][1]},undo=[];let drag=null,dirty=false,clearTimer,penUntil=0;
  const status=text=>$('.sp-status').textContent=text;
  const press=(sel,on)=>$$(sel).forEach(b=>b.setAttribute('aria-pressed',String(on(b))));
  const sync=()=>{$('[data-tool=undo]').disabled=!undo.length;};
  const arm=on=>{const b=$('[data-tool=clear]');clearTimeout(clearTimer);b.dataset.confirm=on?'true':'';b.querySelector('span').textContent=on?'sure?':'clear';if(on){status('Press clear again to erase everything.');clearTimer=setTimeout(()=>{arm(false);status('Clear cancelled.');},3500);}};
  const push=()=>{undo.push(ctx.getImageData(0,0,W,H));if(undo.length>20)undo.shift();sync();};
- const pos=e=>{const r=cv.getBoundingClientRect();return {x:(e.clientX-r.left)*W/r.width,y:(e.clientY-r.top)*H/r.height,p:e.pointerType==='pen'&&e.pressure>0?.35+e.pressure*.9:1};};
- const width=p=>(st.erase?(st.big?24:10):(st.big?11:4))*p;
+ const pos=(e,prev)=>{const r=cv.getBoundingClientRect(),raw=e.pointerType==='pen'&&e.pressure>0?.35+e.pressure*.9:1;return {x:(e.clientX-r.left)*W/r.width,y:(e.clientY-r.top)*H/r.height,p:prev?prev.p+(raw-prev.p)*.45:raw};};   /* pen: pressure -> line width, eased so the line has no steps */
+ const width=p=>(st.erase?(st.big?24:10):(st.big?11:4))*p*Math.max(1,W/640);
  const cells=(cx,cy)=>{const n=st.erase?(st.big?4:2):(st.big?2:1),o=n>1?n/2:0;if(st.erase)ctx.clearRect((cx-o)*4,(cy-o)*4,n*4,n*4);else ctx.fillRect((cx-o)*4,(cy-o)*4,n*4,n*4);};
  const cellAt=p=>[Math.floor(p.x/4),Math.floor(p.y/4)];
  function line(a,b){let [x0,y0]=a;const [x1,y1]=b,dx=Math.abs(x1-x0),dy=-Math.abs(y1-y0),sx=x0<x1?1:-1,sy=y0<y1?1:-1;let err=dx+dy;for(;;){cells(x0,y0);if(x0===x1&&y0===y1)break;const e2=2*err;if(e2>=dy){err+=dy;x0+=sx;}if(e2<=dx){err+=dx;y0+=sy;}}}
  const style=()=>{ctx.globalCompositeOperation=st.erase&&st.mode==='free'?'destination-out':'source-over';ctx.strokeStyle=ctx.fillStyle=st.erase?'#000':st.color;ctx.lineCap=ctx.lineJoin='round';};
+ /* palm rejection: while a pen is down, and for 2.5 s after it lifts, touch contacts are ignored; a pen that lands while a touch stroke runs
+    takes over (the touch stroke is undone); very wide contacts (a palm) are ignored */
+ const isPalm=e=>e.pointerType==='touch'&&(Math.max(e.width||0,e.height||0)>40||performance.now()<penUntil);
  function down(e){
-  if(e.button>0||drag)return;e.preventDefault();cv.setPointerCapture(e.pointerId);arm(false);push();style();
-  const p=pos(e);drag={id:e.pointerId,last:p,mid:p,cell:cellAt(p)};
+  if(e.button>0)return;e.preventDefault();
+  if(e.pointerType==='pen')penUntil=performance.now()+2500;
+  if(drag){
+   if(e.pointerType==='pen'&&drag.type==='touch'){ctx.globalCompositeOperation='source-over';const snap=undo.pop();if(snap)ctx.putImageData(snap,0,0);try{cv.releasePointerCapture(drag.id);}catch{}drag=null;sync();}
+   else return;
+  }
+  if(isPalm(e))return;
+  cv.setPointerCapture(e.pointerId);arm(false);push();style();
+  const p=pos(e);drag={id:e.pointerId,type:e.pointerType,last:p,mid:p,cell:cellAt(p)};
   if(st.mode==='pixel')cells(...drag.cell);else{ctx.lineWidth=width(p.p);ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(p.x+.01,p.y);ctx.stroke();}
   dirty=true;
  }
  function move(e){
   if(!drag||e.pointerId!==drag.id)return;
+  if(drag.type==='pen')penUntil=performance.now()+2500;
   const list=e.getCoalescedEvents?.();
   for(const ev of (list&&list.length?list:[e])){
-   const p=pos(ev);
+   const p=pos(ev,drag.last);
    if(st.mode==='pixel'){const c=cellAt(p);if(c[0]!==drag.cell[0]||c[1]!==drag.cell[1]){line(drag.cell,c);drag.cell=c;}}
    else{const mid={x:(drag.last.x+p.x)/2,y:(drag.last.y+p.y)/2};ctx.lineWidth=width(p.p);ctx.beginPath();ctx.moveTo(drag.mid.x,drag.mid.y);ctx.quadraticCurveTo(drag.last.x,drag.last.y,mid.x,mid.y);ctx.stroke();drag.mid=mid;}
    drag.last=p;
@@ -68,10 +87,15 @@ export function initPad(root,{art,onSave}={}){
  }
  function up(e){
   if(!drag||e.pointerId!==drag.id)return;
+  if(drag.type==='pen')penUntil=performance.now()+2500;
   if(st.mode==='free'){ctx.lineWidth=width(drag.last.p);ctx.beginPath();ctx.moveTo(drag.mid.x,drag.mid.y);ctx.lineTo(drag.last.x,drag.last.y);ctx.stroke();}
   ctx.globalCompositeOperation='source-over';drag=null;status('Unsaved. Press save to keep it.');
  }
  cv.addEventListener('pointerdown',down);cv.addEventListener('pointermove',move);cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);cv.addEventListener('contextmenu',e=>e.preventDefault());
+ /* 7.2: no text selection / callout / drag image on the pad, and no double-tap zoom on the tool buttons (CSS does the same: touch-action) */
+ for(const t of ['selectstart','dragstart','gesturestart'])root.addEventListener(t,e=>{if(e.target.closest?.('.sp-paper,.sp-tools,.sp-palette,.sp-status'))e.preventDefault();});
+ root.addEventListener('dblclick',e=>{if(e.target.closest?.('.sp-tools,.sp-palette'))e.preventDefault();});
+ root.querySelector('.sp-paper')?.addEventListener('pointerdown',e=>{if(e.target!==cv)e.preventDefault();});
  const blank=()=>{const d=ctx.getImageData(0,0,W,H).data;for(let i=3;i<d.length;i+=4)if(d[i])return false;return true;};
  function encode(){const c=inkCanvas(cv);if(!c)return '';let url=c.toDataURL('image/png');if(url.length<artMaxPng)return url;const t=document.createElement('canvas');t.width=Math.max(1,c.width>>1);t.height=Math.max(1,c.height>>1);t.getContext('2d').drawImage(c,0,0,t.width,t.height);url=t.toDataURL('image/png');return url.length<artMaxPng?url:'';}
  function save(){

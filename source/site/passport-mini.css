@@ -15,11 +15,11 @@
 .pm.is-open .pm-hero{opacity:0;transform:scale(1.07);filter:blur(10px)}
 
 /* coverflow stage */
-.pm-stage{position:relative;height:calc(var(--pm-ch) * var(--pm-cs) * 1.14 + 20px);perspective:1500px;perspective-origin:50% 40%;touch-action:pan-y;cursor:pointer;user-select:none;-webkit-user-select:none}
+.pm-stage{position:relative;height:calc(var(--pm-ch) * var(--pm-cs) * 1.14 + 20px);outline:none;perspective:1500px;perspective-origin:50% 40%;touch-action:pan-y;cursor:pointer;user-select:none;-webkit-user-select:none}
 .pm.is-open .pm-stage{cursor:grab}
 .pm-stage.is-drag{cursor:grabbing!important}
 .pm-deck{list-style:none;margin:0;padding:0;position:absolute;left:50%;top:50%;width:0;height:0;transform-style:preserve-3d}
-.pm-item{--X:calc(var(--k,0) * 308px * var(--pm-cs));--Y:0px;--Z:calc(var(--a,0) * -60px);--RY:clamp(-36deg,var(--k,0) * -18deg,36deg);--RZ:0deg;--S:calc(var(--pm-cs) * (1.14 - var(--a,0) * .13));
+.pm-item{--X:0px;--Y:0px;--Z:0px;--RY:0deg;--RZ:0deg;--S:var(--pm-cs);
  position:absolute;left:calc(var(--pm-cw) / -2);top:calc(var(--pm-ch) / -2);width:var(--pm-cw);height:var(--pm-ch);z-index:var(--zi,1);
  transform:translateX(var(--X)) translateY(var(--Y)) translateZ(var(--Z)) rotateY(var(--RY)) rotate(var(--RZ)) scale(var(--S));
  transition:transform .7s cubic-bezier(.2,.9,.25,1),opacity .5s;transform-style:preserve-3d;cursor:pointer}
@@ -27,15 +27,18 @@
 .pm:not(.is-open) .pm-item{--X:var(--dx);--Y:var(--dy);--Z:calc(var(--i) * -3px);--RY:0deg;--RZ:var(--dr);--S:var(--pm-cs)}
 /* the deal: staggered, ease-out with a small overshoot */
 .pm.is-dealing .pm-item{transition:transform .8s cubic-bezier(.3,1.35,.45,1) calc(var(--dl,0) * 1ms),opacity .5s calc(var(--dl,0) * 1ms)}
-.pm-stage.is-drag .pm-item{transition-duration:.35s;cursor:grabbing}
-.pm.is-open .pm-item.is-off{opacity:0;pointer-events:none}
+/* open: passport-mini.mjs writes --tx --ty --tz --ry --rz --sc --fo --zi --lf for every card on every frame (drag, spring, arrows) */
+.pm.is-open .pm-item{--X:var(--tx,0px);--Y:var(--ty,0px);--Z:var(--tz,0px);--RY:var(--ry,0deg);--RZ:var(--rz,0deg);--S:var(--sc,.74);opacity:var(--fo,1)}
+.pm.is-open .pm-item.is-gone{pointer-events:none}
+.pm.is-live .pm-item{transition:none!important}
+.pm-stage.is-drag .pm-item{cursor:grabbing}
 .pm-link{display:block;width:100%;height:100%;color:#0b1b27;text-decoration:none;-webkit-user-drag:none}
 .pm-link img{-webkit-user-drag:none}
 .pm-link:focus-visible{outline:none}
 .pm-tilt{display:block;width:100%;height:100%;transform-style:preserve-3d;will-change:transform;filter:drop-shadow(0 26px 30px rgba(0,0,0,.5))}
 :root[data-theme=light] .pm-tilt{filter:drop-shadow(0 22px 26px rgba(11,27,39,.24))}
-.pm-item:not(.is-front) .pm-tilt{filter:drop-shadow(0 16px 20px rgba(0,0,0,.4))}
-:root[data-theme=light] .pm-item:not(.is-front) .pm-tilt{filter:drop-shadow(0 14px 18px rgba(11,27,39,.2))}
+.pm.is-open .pm-item .pm-tilt{filter:drop-shadow(0 calc(10px + 18px * var(--lf,0)) calc(14px + 16px * var(--lf,0)) rgba(0,0,0,calc(.34 + .18 * var(--lf,0))))}
+:root[data-theme=light] .pm.is-open .pm-item .pm-tilt{filter:drop-shadow(0 calc(9px + 15px * var(--lf,0)) calc(12px + 14px * var(--lf,0)) rgba(11,27,39,calc(.15 + .1 * var(--lf,0))))}
 .pm:not(.is-open) .pm-tilt{filter:drop-shadow(0 4px 6px rgba(0,0,0,.4))}
 
 /* the card fills its slot; the tilt wrapper is the profile's .pp-passobj-in (foil, glare and grain hang off it) */
@@ -54,14 +57,9 @@
 .pm-open{position:absolute;right:max(var(--ds-gutter),3.2vw);top:50%;transform:translateY(-50%);font:700 16px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.06em;text-transform:uppercase;color:inherit;text-decoration:underline;text-underline-offset:5px;text-decoration-color:var(--pm-g);text-decoration-thickness:2px;padding:12px 0}
 .pm-open:hover{color:var(--pm-gt)}
 
-@media(max-width:1000px){.pm-item{--X:calc(var(--k,0) * 264px * var(--pm-cs));--S:calc(var(--pm-cs) * (1.1 - var(--a,0) * .13))}}
 @media(max-width:900px){.pm-open{position:static;transform:none;width:100%;text-align:center;order:5}.pm-ctl{flex-wrap:wrap;row-gap:0}}
 @media(max-width:650px){
  .pm{--pm-cs:.8;padding-top:24px}
- .pm-item.is-one{opacity:0;pointer-events:none}
- .pm-item{--X:calc(var(--k,0) * 180px * var(--pm-cs));--Z:0px;--RY:0deg;--S:var(--pm-cs)}
- .pm:not(.is-open) .pm-item{--X:var(--dx);--S:var(--pm-cs)}
- .pm:not(.is-open) .pm-item.is-one{opacity:1}
  .pm-stage{height:calc(var(--pm-ch) * var(--pm-cs) + 28px)}
  .pm-ctl{padding:0 16px}
  .pm-sub{font-size:13px;padding:7px 14px}
@@ -90,3 +88,27 @@
 .pm.is-open .pm-hero{transition:opacity .7s ease,transform .7s ease,filter .7s ease}
 .pm.is-dealing .pm-item{transition:transform 1s cubic-bezier(.3,1.25,.45,1) calc(var(--dl,0) * 1ms),opacity .6s calc(var(--dl,0) * 1ms)}
 @media(prefers-reduced-motion:reduce){.pm.is-landing .pm-hero{animation:none}}
+
+
+/* ---------- 2026-10-23 (5.2 / 5.7) ---------- */
+/* the title sits on the deck; its button is the only part that takes clicks (the deck under it takes the rest) */
+.pm-deal{pointer-events:auto;position:relative;z-index:2;margin-top:14px;min-height:44px;padding:10px 18px;border-radius:99px;border:2px solid #f5f4ee;background:#f5f4ee;color:#0b1b27;box-shadow:0 8px 20px rgba(0,0,0,.35);font-family:inherit;font-weight:700;font-size:16px;line-height:1.2;cursor:pointer;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);transition:background .2s,color .2s,border-color .2s}
+.pm-deal:hover,.pm-deal:focus-visible{background:var(--pm-g);border-color:var(--pm-g);color:#0b1b27}
+.pm-deal-t{display:none}
+@media(hover:none),(pointer:coarse){.pm-deal-m{display:none}.pm-deal-t{display:inline}}
+.pm.is-open .pm-hero{visibility:hidden;transition:opacity .7s ease,transform .7s ease,filter .7s ease,visibility 0s .7s}
+.pm.is-open .pm-deal{pointer-events:none}
+/* peek: the mouse over the closed deck fans the cards a little */
+.pm.is-peek:not(.is-open) .pm-item{--X:calc((var(--i) - var(--pm-c,4.5)) * 30px * var(--pm-cs) * 1.15);--Y:calc(var(--dy) - 8px + (var(--i) - var(--pm-c,4.5)) * (var(--i) - var(--pm-c,4.5)) * .5px);--RZ:calc((var(--i) - var(--pm-c,4.5)) * 2.6deg);transition:transform .45s cubic-bezier(.2,.9,.25,1)}
+.pm:not(.is-open) .pm-stage{cursor:pointer}
+/* deal again */
+.pm-again{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border-radius:99px;border:2px solid currentColor;background:transparent;color:inherit;font-family:inherit;font-weight:700;font-size:16px;line-height:1;cursor:pointer;transition:background .2s,color .2s,border-color .2s}
+.pm-again svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .5s}
+.pm-again:hover{background:var(--pm-g);border-color:var(--pm-g);color:#0b1b27}
+.pm-again:hover svg{transform:rotate(-200deg)}
+/* the counter ticks when the card changes */
+.pm-count b{display:inline-block}
+.pm-count b.is-tick{animation:pm-tick .32s cubic-bezier(.2,1.4,.4,1)}
+@keyframes pm-tick{0%{transform:translateY(-6px) scale(1.25);opacity:.4}100%{transform:none;opacity:1}}
+@media(max-width:650px){.pm-ctl{flex-wrap:wrap;row-gap:10px}.pm-deal{font-size:15px}}
+@media(prefers-reduced-motion:reduce){.pm-count b.is-tick{animation:none}.pm-again svg{transition:none}.pm.is-open .pm-hero{visibility:visible}.pm.is-open .pm-deal{display:none}.pm-deal{transition:none}}

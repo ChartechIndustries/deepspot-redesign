@@ -1,7 +1,7 @@
 // Tours: under construction (2026-10-20, v3 per Charlie's sketch). One screen, no scroll:
 // giant "tours." title → construction mole in front of it → two green tape bands in an X across the full width
 // → roadmap pill. A blurred, inert mock tour page sits at the back. Tape text is decorative; the h1 carries the meaning.
-import {action} from './core.mjs?v=149e30e7';
+import {action} from './core.mjs?v=65b48136';
 import {imgAttrs} from './img.mjs?v=61371a3b';
 
 const STAR='<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 2v44M2 24h44M8.5 8.5l31 31m0-31-31 31"/></svg>';
@@ -68,7 +68,7 @@ export function renderTours(root){
  /* every time the page opens: start zoomed in on the main tape (turned level so UNDER CONSTRUCTION reads), then snap out to the full comp */
  if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
   const W=stage.clientWidth,H=stage.clientHeight,a=stage.querySelector('[data-tape="a"]'),cs=getComputedStyle(a),h=a.offsetHeight;
-  const oy=parseFloat(a.style.getPropertyValue('--y'))/100*H,z=Math.max(1.8,Math.min(.55*H/h,W/(4*h)));
+  const oy=parseFloat(a.style.getPropertyValue('--y'))/100*H,z=Math.max(1.8,Math.min(.72*H/h,W/(3.3*h)));
   const cam=stage.querySelector('.tr-cam');cam.style.setProperty('--ox',W/2+'px');cam.style.setProperty('--oy',oy+'px');cam.style.setProperty('--r0',cs.getPropertyValue('--rot'));cam.style.setProperty('--z0',z.toFixed(2));
   stage.classList.add('tr-zoom');
   cam.addEventListener('animationend',e=>{if(e.animationName==='tr-pull'){stage.classList.remove('tr-zoom');fit();}},{once:true});

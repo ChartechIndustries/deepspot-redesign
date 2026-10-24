@@ -26,3 +26,16 @@ body .br-credit .ds-author{font-size:16px}
 
 /* 2026-10-22: tab strips scroll sideways only — never up/down on phones */
 .ob-tabs,.pp-vtabs,.cv-tabs,.br-tabs,.fs-tabs{overflow-y:hidden;overscroll-behavior-x:contain;overscroll-behavior-y:none}
+
+/* 2026-10-23 notes 3.2: count bubble next to the title; the toolbar copy is screen-reader only */
+.br-intro h1 .br-count{display:inline-flex;align-items:baseline;gap:.3em;margin-left:.18em;padding:.28em .75em .3em;border:2px solid var(--br-green);border-radius:999px;font-size:20px;font-weight:800;letter-spacing:0;line-height:1;color:var(--br-green);white-space:nowrap;vertical-align:baseline;font-variant-numeric:tabular-nums}
+.br-intro h1 .br-count b{font-weight:800}.br-intro h1 .br-count i{font-style:normal;font-weight:700;color:var(--br-text)}
+.br-toolbar .br-display{margin-left:auto}
+@media(max-width:800px){.br-intro h1 .br-count{font-size:17px}}
+@media(max-width:360px){.br-intro h1 .br-count{font-size:15px}}
+/* notes 3.1: fades come from followTab/tabFades (has-more-*), not a fixed mask; override the always-on phone mask in refinements.css */
+@media(max-width:800px){html body .br-tabs[data-fades]::after{flex:0 0 12px}}
+html body .br-tabs[data-fades]{-webkit-mask-image:none;mask-image:none}
+html body .br-tabs[data-fades].has-more-right{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 44px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 44px),transparent)}
+html body .br-tabs[data-fades].has-more-left{-webkit-mask-image:linear-gradient(90deg,transparent,#000 44px);mask-image:linear-gradient(90deg,transparent,#000 44px)}
+html body .br-tabs[data-fades].has-more-left.has-more-right{-webkit-mask-image:linear-gradient(90deg,transparent,#000 44px,#000 calc(100% - 44px),transparent);mask-image:linear-gradient(90deg,transparent,#000 44px,#000 calc(100% - 44px),transparent)}

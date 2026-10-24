@@ -66,5 +66,8 @@ html[data-theme=light] .tr-art-shadow{opacity:.55}
 .tr-zoom .tr-cam{transform-origin:var(--ox) var(--oy);animation:tr-pull .55s cubic-bezier(.85,0,.15,1) .9s both}
 @keyframes tr-cta-in{from{opacity:0;translate:0 12px}}
 .tr-zoom~.tr-cta,.tr-stage.tr-zoom .tr-cta{animation:tr-cta-in .3s ease-out 1.3s both}
+/* first frames: only the tape is on screen; the blurred page and the 3D word fade in while the camera pulls back (2026-10-23) */
+.tr-zoom .tr-fake,.tr-zoom .tr-art{animation:tr-reveal .5s ease-out .95s both}
+@keyframes tr-reveal{from{opacity:0}}
 @keyframes tr-pull{from{transform:translate(calc(50% - var(--ox)),calc(50% - var(--oy))) rotate(calc(-1 * var(--r0))) scale(var(--z0))}to{transform:none}}
-@media(prefers-reduced-motion:reduce){.tr-zoom .tr-cam{animation:none}}
+@media(prefers-reduced-motion:reduce){.tr-zoom .tr-cam,.tr-zoom .tr-fake,.tr-zoom .tr-art{animation:none}}

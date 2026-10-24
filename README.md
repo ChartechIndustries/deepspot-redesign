@@ -346,3 +346,17 @@ Open /banner-variations.html for ten independently styled banner sections beneat
 - QA `qa/reveal-1023/` (smoke_lead.py, stuck.py). Cards under the signed-out reading wall (`body.gt-walled`) stay hidden by design (the wall clips them).
 - 2026-10-23: scroll fade-in REVERTED (Charlie: "horrible"). Files kept in `_archive/reveal-1023/`, include removed from `site/navigation.js`.
 - 2026-10-23 bento fix: home's what's-new passport fan loads `profile/profile.css`, whose edit-dialog rules `.ed-top`/`.ed-right` collided with the home editorial bento (`.ed-top` = the bento row) and squeezed the community column to 1px. Those rules are now scoped to `.pp-editdlg`. Keep the `ed-` prefix for editorial only; new profile classes need a `pp-` prefix.
+
+## Launch plan + UX audit (2026-10-23)
+- `LAUNCH-PLAN-2026-10-23.md`: plan for Charlie's Notes.docx (Discord #files), device-tagged (phone/tablet/desktop), parked items (speed + flicker until the Vercel merge), copy items that wait for Kai, hidden-gem render v2, 3-week schedule.
+- `UX-AUDIT-2026-10-23.md`: critical design/UX audit + "simple but unique" notes. Shots `qa/ux-audit-1023/` (`cap.py [ptd] [filter]`, `sheet.py <p|t|d> <per-row>`).
+
+## Charlie's notes round (2026-10-23, spec `V1-NOTES-SPEC.md`, items in `LAUNCH-PLAN-2026-10-23.md`)
+- Four builders in parallel with strict file ownership (A home, B nav/browse/tours, C community, D profile/iPad), then E removed stories. Reports + shots: `qa/notes-1023/A..E/`. Backups: `backups/before-notes-1023/`, `backups/before-stories-removal-1023/`.
+- Home: phone pin "dots" fixed (touch-target rule drew the ground dot at the pin corner), place card centred on phone/tablet (desktop: beside the pin, never on it), explore = link to `/map/?spot=<slug>` (pin bounce first; map flies + opens the card), what's-new swipe (1:1 drag, 20% / flick, spring), bigger browse-all button, one spot count (`prepareCatalog`) on home + browse.
+- Nav: burger = browse, map, tours, community, your account (three menu lists: navigation.js, core.mjs SiteHeader, browse/index.html). Browse: tabs follow (`followTab`/`tabFades` in core.mjs, `.has-more-*` in refinements.css), count pill after the title, collection tab row removed. Tours: opens on the tape only, then pulls back.
+- Community: plain eyebrow + month in the countdown chip, deck drag/spring/arrow flights, chat-style feed (`LIVE_SOURCE` in discord-link.mjs), guidelines modal (`site/ds-dialog.mjs/.css`, shared dialog shell, `#guidelines`), tighter join tile, "two ways…" kicker gone, deck deals on hover/click/tap + "deal again".
+- Profile/iPad: tabs follow + peek + one nudge; passport tilt (`bindDeviceTilt` in passport-edit.mjs, iOS "tilt to shine" chip); iPad crop bug = `cqw` inside CSS `zoom` in Safari → percent sizing (profile.css); mark pad = wide sheet on tablet, no selection, no double-tap zoom, pen pressure, palm rejection.
+- Stories removed everywhere; `/stories/` + `/story/` redirect to `/browse/`; data in `_archive/stories-1023/`. Storage key `deepspot-saved-stories` kept for old data. Dead `.ed-story*`/`.ds-story*` CSS left.
+- Copy for Kai: `COPY-FOR-KAI.md` (`data-copy="kai-<n>"` tags).
+- Needs Charlie on real devices: deck flick, banner flick, tilt direction + iOS permission, Pencil pressure/palm window.

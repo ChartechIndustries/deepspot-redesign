@@ -1,11 +1,12 @@
-import {esc,$,$$,icon,localURL,action,saveButton,spotURL,readStore,writeStore} from './core.mjs?v=149e30e7';
-import {profileHref,profileId} from '../profile/identity.mjs?v=38b679eb';
+import {esc,$,$$,icon,localURL,action,saveButton,spotURL,readStore,writeStore} from './core.mjs?v=65b48136';
+import {profileHref,profileId} from '../profile/identity.mjs?v=744e89b9';
 import {readAccount,avatarImage} from './account-state.mjs?v=1c064097';
-import {COMMUNITY_METRICS} from './community-hub.mjs?v=7d82ced0';
-import {avatarHTML} from '../profile/identity.mjs?v=38b679eb';
-import {DISCORD_URL,replies,msgText,clip} from './discord-link.mjs?v=4ce108b0';
-import {ROAD} from './roadmap-data.mjs?v=e33f2569';
-import {passportModels,participantsHTML,wirePassports} from './passport-mini.mjs?v=96713545';
+import {COMMUNITY_METRICS} from './community-hub.mjs?v=ad66847a';
+import {avatarHTML} from '../profile/identity.mjs?v=744e89b9';
+import {DISCORD_URL,replies,msgText,clip,LIVE_SOURCE,ago} from './discord-link.mjs?v=a0f6b693';
+import {openDialog} from './ds-dialog.mjs?v=679eaf46';
+import {ROAD} from './roadmap-data.mjs?v=12791076';
+import {passportModels,participantsHTML,wirePassports} from './passport-mini.mjs?v=f7927419';
 
 /* Community hub v2 (2026-10-19). Real data only: leaderboard, forum snapshot, catalog. Votes live in this browser. The giveaway hero lives in giveaway-hero.mjs. */
 const VOTE_KEYS={spot:'deepspot-community-spot-votes-v1',poll:'deepspot-community-poll-v1',road:'deepspot-community-roadmap-v1'};
@@ -63,7 +64,7 @@ export const DC_VARIANTS=[
  ['1','classic+','The original three columns, refined: equal cards under the cobalt bar, bigger type, clearer order.'],
  ['2','chat window','One big Discord-style app window: channel list, live feed in the middle, poll on the right.'],
  ['3','bento','Tiles of different sizes: two giant stat tiles, a tall feed, a wide poll, the pinned note, a green join tile.'],
- ['4','newspaper','Editorial front page: masthead, the pinned post as the lead story, a reader poll, the feed as a wire column.'],
+ ['4','newspaper','Editorial front page: masthead, the pinned post as the lead item, a reader poll, the feed as a wire column.'],
  ['5','ticker + stage','A scrolling ticker of messages on top, then a big centred poll with the stats and the pinned post beside it.'],
  ['6','phone mock','A big phone shows the feed like a real chat. Huge title, stats, poll and join sit on the left.'],
  ['7','stacked cards','Feed messages as a fanned stack of cards that deal forward one at a time. Poll and pinned note beside it.'],
@@ -76,14 +77,17 @@ const dcParts=content=>{
  const href=f=>esc(localURL('/forum/',{id:f.id}));
  const options=(poll?.body||'').split('\n').map(l=>l.match(/^\s*[-*•]\s+(.+)$/)?.[1]?.trim()).filter(Boolean);
  const pv=votes('poll')[poll?.id],pollTitle=(poll?.title||'').replace(/^poll:\s*/i,'');
- const kick='<span class="dc-kick"><i class="dc-live" aria-hidden="true"></i>live now</span>';
- const h=(cls='')=>`<h2 id="cv-dct" class="dv-h ${cls}">live from <span class="dv-br">the discord.</span></h2>`;
+ const kick=`<span class="dc-kick"><i class="dc-live" aria-hidden="true"></i><span data-copy="kai-4">${LIVE_SOURCE?'live now':'latest posts'}</span></span>`;
+ const h=(cls='')=>`<h2 id="cv-dct" class="dv-h ${cls}" data-copy="kai-5">live from <span class="dv-br">the discord.</span></h2>`;
  const stat=(n,l)=>`<p class="dv-stat"><b data-count="${n}">${fmt(n)}</b><span>${l}</span></p>`;
  const stats=(cls='')=>`<div class="dv-stats ${cls}">${stat(COMMUNITY_METRICS.month,'new spots this month')}${stat(COMMUNITY_METRICS.members,'members')}</div>`;
  const join=(cls='')=>`<a class="dv-join ${cls}" href="${esc(DISCORD_URL)}" data-original target="_blank" rel="noopener">join now ${icon('arrow')}</a>`;
  const rep=n=>replies(n);
  const pin=(c='dv-p',cls='')=>ann?`<article class="dv-pin ${c} ${cls}"><div class="dv-k"><span class="dv-tag"><i class="dv-pinic" aria-hidden="true">${PIN}</i>#announcements</span><span>pinned</span></div><h3>${esc(ann.title)}</h3><p>${esc(clip(ann.body.split(/\n\s*\n/)[0].replace(/\s+/g,' ').trim(),170))}</p><div class="dv-f"><span>${rep(ann.replies)}</span><a href="${href(ann)}">read it ↗</a></div></article>`:'';
  const pollH=(c='dv-t',cls='')=>poll?`<article class="dv-poll ${c} ${cls}" data-poll="${esc(poll.id)}"><div class="dv-k"><span class="dv-tag dv-pl">#polls</span><span>open</span></div><h3>${esc(pollTitle)}</h3><div class="dc-opts" role="group" aria-label="${esc(pollTitle)}">${options.map((o,i)=>`<button type="button" class="dc-opt" data-opt="${i}" aria-pressed="${pv===i}"><span class="dc-fill" aria-hidden="true"></span><span class="dv-on" aria-hidden="true">${String(i+1).padStart(2,'0')}</span><span class="dc-opt-t">${esc(o)}</span><span class="dc-opt-m">${CHECK}<span>your vote</span></span></button>`).join('')}</div><div class="dv-f"><span>${rep(poll.replies)} on the forum</span><a href="${href(poll)}">vote on the forum ↗</a></div></article>`:'';
+ const chan=f=>f.category.replace(/\s+/g,'-');
+ const chatRow=f=>{const t=ago(f);return `<li class="ch-row" data-fid="${esc(f.id)}">${avatarHTML(f.author,{className:'ch-av'})}<div class="ch-b"><div class="ch-m"><b>${esc(f.author)}</b><i>#${esc(chan(f))}</i>${t?`<time datetime="${esc(new Date(Date.parse(f.date||f.createdAt||f.postedAt)).toISOString())}">${t}</time>`:''}</div><a class="ch-bub" href="${href(f)}"><span class="ch-t">${esc(clip(msgText(f),150))}</span></a><small>${replies(f.replies)}</small></div></li>`;};
+ const chat=`<header class="ch-head"><span class="ch-dot" aria-hidden="true"></span><div><h3 data-copy="kai-4">${LIVE_SOURCE?'live from the discord':'latest from the discord'}</h3><em>${fmt(COMMUNITY_METRICS.members)} members</em></div></header><ol class="ch-list" data-chat-list aria-label="Latest posts from the forum">${forum.map(chatRow).join('')}</ol><a class="dc-more ch-more" href="${esc(localURL('/forum/'))}">open the forum ↗</a>`;
  const more=`<a class="dc-more dv-more" href="${esc(localURL('/forum/'))}">open the forum ↗</a>`;
  const feed=(cls='')=>`<div class="dv-feed ${cls}"><ol class="dc-feed" data-feed aria-label="Featured messages from the forum">${forum.map(f=>msg(f)).join('')}</ol></div>`;
  const clone=f=>msg(f).replace('<li class="dc-msg">','<li class="dc-msg" aria-hidden="true">').replace('<a href','<a tabindex="-1" href');
@@ -93,7 +97,7 @@ const dcParts=content=>{
   return `<div class="dv-mq" data-mq data-dir="${dir}"><div class="dv-mq-track"><ul class="dv-mq-set">${real}${rest}</ul><ul class="dv-mq-set" aria-hidden="true">${Array.from({length:reps},()=>cl).join('')}</ul></div></div>`;};
  const deck=`<div class="dv-deck" data-deck><ol class="dv-deckl" data-deckl aria-label="Featured messages from the forum">${forum.map(f=>msg(f)).join('')}</ol><div class="dv-deckc"><span data-deckn>1 of ${forum.length}</span><button type="button" class="dv-next" data-decknext>next message ${icon('arrow')}</button></div></div>`;
  const ticker=`<div class="dv-tk" data-mq data-dir="l" aria-label="Featured messages from the forum"><div class="dv-mq-track">${[0,1,2].map(k=>`<ul class="dv-mq-set"${k?' aria-hidden="true"':''}>${[...forum,...forum].map((f,i)=>{const t=f.body.split(/\n\s*\n/)[0].replace(/^\s*[-*•]\s+/gm,'').replace(/\s+/g,' ').trim();return `<li><a ${k||i>=forum.length?'tabindex="-1" ':''}href="${href(f)}"><b>${esc(f.author)}</b><i>#${esc(f.category.replace(/\s+/g,'-'))}</i>${esc(clip(t,84))}</a></li>`;}).join('')}</ul>`).join('')}</div></div>`;
- return {forum,ann,poll,kick,h,stat,stats,join,pin,pollH,more,feed,mq,chans,href,deck,ticker,rep};
+ return {forum,ann,poll,kick,h,stat,stats,join,pin,pollH,more,feed,mq,chans,href,deck,ticker,rep,chat,chatRow};
 };
 const DCV={
  1:P=>`<header class="dv-bar dv-c"><div class="dv-ttl">${P.kick}${P.h()}</div>${P.stats()}${P.join()}</header>
@@ -107,7 +111,7 @@ const DCV={
  3:P=>`<div class="dv-bento"><div class="dv-tile dv-c dv-t-title">${P.kick}${P.h()}</div>
   <div class="dv-tile dv-p dv-t-s1">${P.stat(COMMUNITY_METRICS.month,'new spots this month')}</div>
   <div class="dv-tile dv-i dv-t-s2">${P.stat(COMMUNITY_METRICS.members,'members')}</div>
-  <section class="dv-tile dv-t dv-t-feed" aria-label="featured messages"><div class="dv-ch"><h3>featured messages</h3><em>from the forum</em></div>${P.feed()}${P.more}</section>
+  <section class="dv-tile dv-t dv-t-feed ch" aria-label="${LIVE_SOURCE?'live from the discord':'latest from the discord'}" data-chat>${P.chat}</section>
   ${P.pollH('dv-t','dv-tile dv-t-poll')}
   ${P.pin('dv-a2','dv-tile dv-t-pin')}
   <a class="dv-tile dv-g dv-t-join" href="${esc(DISCORD_URL)}" data-original target="_blank" rel="noopener"><span>come say hi</span><b>join now</b>${icon('arrow')}</a></div>`,
@@ -219,6 +223,63 @@ function wireMarquee(scope){
   if('IntersectionObserver'in window)new IntersectionObserver(([en])=>{seen=en.isIntersecting;sync();},{threshold:.05}).observe(m);else{seen=true;sync();}
  });
 }
+
+/* ---------- 5.3 the chat: real forum posts arrive one at a time, with a typing row first ----------
+   Real data only (content.json forum[]), cycled slowly. Paused on hover/touch/focus, when off screen or in a hidden tab. Reduced motion = static list.
+   The label says "latest", not "live", until LIVE_SOURCE is true (discord-link.mjs). */
+function wireChat(scope,forum,rowHTML){
+ const box=$('[data-chat]',scope),list=box&&$('[data-chat-list]',box);if(!list||forum.length<2||reduced())return;
+ const MAX=4,ease='cubic-bezier(.2,.9,.25,1)';let next=0,timer=0,typ=null,hold=false,touch=0,seen=false,k=0;
+ const html=(f)=>{const t=document.createElement('template');t.innerHTML=rowHTML(f).trim();return t.content.firstElementChild;};
+ /* FLIP: rows that stay slide to their new place instead of jumping */
+ const flip=(fn)=>{const kids=[...list.children],before=new Map(kids.map(e=>[e,e.getBoundingClientRect().top]));fn();
+  for(const e of kids){if(!e.isConnected)continue;const dy=before.get(e)-e.getBoundingClientRect().top;if(Math.abs(dy)>.5)e.animate([{transform:`translateY(${dy}px)`},{transform:'none'}],{duration:460,easing:ease});}};
+ const pop=(e,from=14)=>e.animate([{opacity:0,transform:`translateY(${from}px) scale(.95)`},{opacity:1,transform:'none'}],{duration:380,easing:'cubic-bezier(.2,1.3,.4,1)'});
+ const typingRow=(f)=>{const li=html(f);li.classList.add('ch-typing');li.removeAttribute('data-fid');li.setAttribute('aria-hidden','true');
+  li.querySelector('.ch-m i').textContent='is typing';li.querySelector('.ch-m time')?.remove();li.querySelector('small')?.remove();
+  li.querySelector('.ch-bub').outerHTML='<span class="ch-bub ch-dots"><i></i><i></i><i></i></span>';return li;};
+ const clearTyping=()=>{if(typ){typ.remove();typ=null;}};
+ const step=()=>{const f=forum[next%forum.length];
+  flip(()=>{while(list.children.length>=MAX)list.firstElementChild.remove();typ=typingRow(f);list.append(typ);});pop(typ,10);
+  timer=setTimeout(()=>{if(!typ)return;const row=html(f);
+   flip(()=>{typ.remove();typ=null;list.append(row);});pop(row);
+   next++;k++;schedule(6000+(k%3)*1000);},1200);};
+ const schedule=(ms)=>{clearTimeout(timer);timer=0;if(hold||!seen||document.hidden)return;timer=setTimeout(step,ms);};
+ const pause=()=>{clearTimeout(timer);timer=0;clearTyping();};
+ const sync=()=>{if(hold||!seen||document.hidden)pause();else if(!timer)schedule(2600);};
+ box.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse'){hold=true;sync();}});box.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse'){hold=false;sync();}});
+ /* touch: the feed waits while a finger is on it and for a few seconds after */
+ box.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse')return;hold=true;sync();clearTimeout(touch);});
+ const release=e=>{if(e.pointerType==='mouse')return;clearTimeout(touch);touch=setTimeout(()=>{hold=false;sync();},5000);};
+ box.addEventListener('pointerup',release);box.addEventListener('pointercancel',release);
+ box.addEventListener('focusin',()=>{hold=true;sync();});box.addEventListener('focusout',e=>{if(!box.contains(e.relatedTarget)){hold=false;sync();}});
+ document.addEventListener('visibilitychange',sync);
+ /* the first row was a snapshot; next arrival is the post after the last one shown */
+ next=forum.length%forum.length;
+ if('IntersectionObserver'in window)new IntersectionObserver(([en])=>{seen=en.isIntersecting;sync();},{threshold:.3}).observe(box);
+}
+
+/* ---------- 5.4 community guidelines = a dialog (ds-dialog.mjs). Text is the forum post, unchanged. ---------- */
+const guideOf=content=>content.forum.find(f=>f.category==='announcement'&&/guidelines/i.test(f.title));
+function guideBody(body){
+ const out=[];let ol=null;
+ for(const raw of String(body).split('\n')){const line=raw.trim();if(!line){ol=null;continue;}
+  const m=line.match(/^\d+\.\s+(.*)$/);
+  if(m){if(!ol){ol=[];out.push(ol);}ol.push(m[1]);}else{ol=null;out.push(line);}}
+ return out.map(x=>Array.isArray(x)?`<ol>${x.map(i=>`<li>${esc(i)}</li>`).join('')}</ol>`:`<p>${esc(x)}</p>`).join('');
+}
+function openGuide(content,opener){
+ const g=guideOf(content);if(!g)return;
+ openDialog({id:'guidelines',hash:'guidelines',kicker:'#announcements',title:esc(g.title),html:guideBody(g.body),opener,label:'Close community guidelines'});
+}
+function wireGuide(scope,content){
+ const g=guideOf(content);if(!g)return;
+ scope.addEventListener('click',e=>{const a=e.target.closest('a[href]');if(!a||e.defaultPrevented||e.metaKey||e.ctrlKey||e.shiftKey||e.button)return;
+  let u;try{u=new URL(a.href,location.href);}catch{return;}if(!u.pathname.includes('/forum')||u.searchParams.get('id')!==g.id)return;
+  e.preventDefault();openGuide(content,a);});
+ if(location.hash==='#guidelines')requestAnimationFrame(()=>openGuide(content,null));
+ addEventListener('hashchange',()=>{if(location.hash==='#guidelines')openGuide(content,null);});
+}
 function wirePoll(scope){
  const art=$('[data-poll]',scope);if(!art)return;const id=art.dataset.poll;
  $$('[data-opt]',art).forEach(b=>b.onclick=()=>{const i=Number(b.dataset.opt),cur=votes('poll')[id];const val=cur===i?null:i;setVote('poll',id,val);$$('[data-opt]',art).forEach(x=>x.setAttribute('aria-pressed',String(Number(x.dataset.opt)===val)));});
@@ -261,16 +322,16 @@ function wireVotes(scope){
 }
 
 /* your vote matters: two huge numbered cards, the same loud family as the discord stage */
-const voteHTML=()=>`<section class="vm" aria-labelledby="cv-vt"><div class="vm-in"><div class="vm-l"><span class="vm-k">two ways to shape deepspot</span><h2 id="cv-vt">your vote<br>matters.</h2><p>Nothing goes on the map and nothing gets built without the community. Pick a side.</p></div><ol class="vm-r"><li><a href="#cv-sp" data-jump="cv-sp"><span class="vm-n">01</span><b>what makes<br>the map.</b><span class="vm-d">Yes or not quite on new community spots.</span><i>vote on spots ${icon('arrow')}</i></a></li><li><a href="#cv-rd" data-jump="cv-rd"><span class="vm-n">02</span><b>what we build<br>next.</b><span class="vm-d">Up or down on the roadmap.</span><i>vote on the roadmap ${icon('arrow')}</i></a></li></ol></div></section>`;
+const voteHTML=()=>`<section class="vm" aria-labelledby="cv-vt"><div class="vm-in"><div class="vm-l"><h2 id="cv-vt">your vote<br>matters.</h2><p>Nothing goes on the map and nothing gets built without the community. Pick a side.</p></div><ol class="vm-r"><li><a href="#cv-sp" data-jump="cv-sp"><span class="vm-n">01</span><b>what makes<br>the map.</b><span class="vm-d">Yes or not quite on new community spots.</span><i>vote on spots ${icon('arrow')}</i></a></li><li><a href="#cv-rd" data-jump="cv-rd"><span class="vm-n">02</span><b>what we build<br>next.</b><span class="vm-d">Up or down on the roadmap.</span><i>vote on the roadmap ${icon('arrow')}</i></a></li></ol></div></section>`;
 export async function renderCommunityV2(root,data){
- const ghP=import('./giveaway-hero.mjs?v=3c15f1d3');ghP.catch(()=>{});
+ const ghP=import('./giveaway-hero.mjs?v=3cef1f92');ghP.catch(()=>{});
  const dcq=new URLSearchParams(location.search).get('dc'),dcv=DCV[dcq]?dcq:'3',acct=readAccount(),gv=new URLSearchParams(location.search).get('giveaway')||'g1';
  const order=people(data).monthly.slice().sort((a,b)=>b.points-a.points),models=passportModels(data,order);
  const {renderGiveaway}=await ghP;
  root.innerHTML=`<div class="cv${reduced()?'':' cv-pre'}"><h1 class="cv-sr">DeepSpot community</h1><div data-giveaway></div>${models.length?participantsHTML(models):''}${discordHTML(data.content,dcv)}${voteHTML()}<div class="cv-gut">${spotsHTML(data,acct)}${roadHTML()}</div></div>`;
  $$('[data-jump]',root).forEach(l=>l.addEventListener('click',e=>{const t=document.getElementById(l.dataset.jump);if(!t)return;e.preventDefault();t.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});}));
  const scope=$('.cv',root);
- wirePoll(scope);wireFeed(scope);wireDeck(scope);wireMarquee(scope);wireCounts(scope);wireSpots(scope,data,acct);wireVotes(scope);
+ wirePoll(scope);wireFeed(scope);{const P=dcv==='3'?dcParts(data.content):null;if(P)wireChat(scope,P.forum,P.chatRow);}wireGuide(scope,data.content);wireDeck(scope);wireMarquee(scope);wireCounts(scope);wireSpots(scope,data,acct);wireVotes(scope);
  renderGiveaway($('[data-giveaway]',scope),data,gv);
  const pm=$('[data-pm]',scope);if(pm)wirePassports(pm,models);
  requestAnimationFrame(()=>requestAnimationFrame(()=>scope.classList.remove('cv-pre')));

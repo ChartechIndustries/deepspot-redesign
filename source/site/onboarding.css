@@ -402,3 +402,26 @@ body:has(.ob-sheet[data-open=style].is-open) .ob-tip{opacity:0;visibility:hidden
 
 /* 2026-10-22: tab strips scroll sideways only — never up/down on phones */
 .ob-tabs,.pp-vtabs,.cv-tabs,.br-tabs,.fs-tabs{overflow-y:hidden;overscroll-behavior-x:contain;overscroll-behavior-y:none}
+
+/* ===== 7.2 (2026-10-23): signing the mark on iPad / touch ===== */
+.ob-sheet[data-open=mark],.ob-sheet[data-open=mark] .ob-sh-b{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.ob-sheet[data-open=mark] .ob-sh-b input,.ob-sheet[data-open=mark] .ob-sh-b textarea{-webkit-user-select:text;user-select:text}
+.ob-sheet[data-open=mark] .sp-paper{touch-action:none}
+.ob-sheet[data-open=mark] :is(.ob-ghost,.ob-sh-done,.ob-sh-x,.sp-chip,.sp-swatch){touch-action:manipulation}
+/* tablet: the mark sheet is a wide sheet (never the 400 px popover): a pad of at least 720x300 (landscape) / 600x260 (portrait) */
+@media(pointer:coarse) and (min-width:700px){
+ .ob-sheet[data-open=mark]{left:50%;right:auto;width:min(100%,1000px);translate:-50% 0}
+ .ob-sheet[data-open=mark] .ob-sh-b{align-items:stretch;padding:6px 24px 16px}
+ .ob-sheet[data-open=mark] .ob-pad .pp-markcard{padding:16px}
+ .ob-layer[data-mode=sheet] .ob-sheet[data-open=mark] .ob-pad .pp-id-top{display:flex}
+ .ob-sheet[data-open=mark] .sp-paper{width:100%;max-width:calc((100dvh - 460px) * 2.25);min-width:min(100%,600px);margin-inline:auto}
+ .ob-sheet[data-open=mark] .sp-tools{justify-content:space-between;margin-top:14px}
+ .ob-sheet[data-open=mark] .sp-chip{font-size:15px;letter-spacing:.06em;padding:0 16px;gap:8px}
+ .ob-layer[data-mode=sheet] .ob-sheet[data-open=mark] .sp-status{position:static;width:auto;height:auto;margin:12px 0 0;clip:auto;overflow:visible;white-space:normal}
+ .ob-layer[data-mode=sheet] .ob-sheet[data-open=mark] :is(.sp-tools,.sp-palette){margin-top:14px}
+ .ob-layer[data-mode=sheet] .ob-sheet[data-open=mark] .sp-palette{gap:10px}
+}
+/* phone: a taller pad (set in sign-pad.mjs), the same compact sheet */
+@media(pointer:coarse) and (max-width:699px){
+ .ob-layer[data-mode=sheet] .ob-sheet[data-open=mark] .sp-chip{height:44px}
+}

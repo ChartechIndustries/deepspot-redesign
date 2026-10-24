@@ -5580,6 +5580,7 @@ function yo({ className: e, ...t }) {
 var bo = [
   {
     name: `Oya History Museum`,
+    slug: `tochigi-underground-quarry`,
     place: `Utsunomiya, Japan`,
     lat: 36.639,
     lon: 139.8207,
@@ -5588,6 +5589,7 @@ var bo = [
   },
   {
     name: `Xwejni Salt Pans`,
+    slug: `the-place-in-malta-where-people-have-been-making-salt-for-centuries`,
     place: `Gozo, Malta`,
     lat: 36.079,
     lon: 14.258,
@@ -5596,6 +5598,7 @@ var bo = [
   },
   {
     name: `Musée Mécanique`,
+    slug: `coin-operated-grandmas-and-opium-den-dioramas-are-hidden-in-this-san-francisco-museum`,
     place: `San Francisco, USA`,
     lat: 37.809,
     lon: -122.416,
@@ -5604,6 +5607,7 @@ var bo = [
   },
   {
     name: `Maishima Incineration Plant`,
+    slug: `osaka-s-candy-colored-garbage-palace`,
     place: `Osaka, Japan`,
     lat: 34.665,
     lon: 135.397,
@@ -5612,6 +5616,7 @@ var bo = [
   },
   {
     name: `Tomb of Christ`,
+    slug: `tomb-of-christ-in-aomori`,
     place: `Shingō, Aomori, Japan`,
     lat: 40.44,
     lon: 141.175,
@@ -5620,6 +5625,7 @@ var bo = [
   },
   {
     name: `Rummu Quarry`,
+    slug: `a-soviet-prison-doubles-as-a-swimming-hole`,
     place: `Rummu, Estonia`,
     lat: 59.223,
     lon: 24.216,
@@ -5628,6 +5634,7 @@ var bo = [
   },
   {
     name: `The Sand-Covered Church`,
+    slug: `700-year-old-church-devoured-by-sand`,
     place: `Skagen, Denmark`,
     lat: 57.704,
     lon: 10.548,
@@ -5636,6 +5643,7 @@ var bo = [
   },
   {
     name: `Chiatura Cable Cars`,
+    slug: `the-city-of-cable-cars-frozen-in-time`,
     place: `Chiatura, Georgia`,
     lat: 42.29,
     lon: 43.284,
@@ -5644,6 +5652,7 @@ var bo = [
   },
   {
     name: `Teufelsberg`,
+    slug: `berlin-s-hill-of-nazi-rubble-cold-war-spies-and-graffiti`,
     place: `Berlin, Germany`,
     lat: 52.498,
     lon: 13.241,
@@ -5652,6 +5661,7 @@ var bo = [
   },
   {
     name: `Singing Ringing Tree`,
+    slug: `a-melodic-sculpture-in-the-lancashire-countryside`,
     place: `Burnley, England`,
     lat: 53.769,
     lon: -2.266,
@@ -5877,6 +5887,12 @@ function xo({ active: e, running: t, onSelect: n, ready: r, onHover: i, selectio
               lastRequest=selection.current.stamp;
               ((lastActive = act), (yawFrom = d));
               let e = bo[act].lon + 45;
+              if (compact()) {
+                const g0 = geometry(), la0 = bo[act].lat * Math.PI / 180,
+                  sd = (n * 0.5 - g0.cx) / ((g0.radius + 22) * Math.cos(la0)),
+                  dd = Math.asin(Math.max(-1, Math.min(1, sd))) * 180 / Math.PI;
+                e = bo[act].lon - Math.max(-40, Math.min(-12, dd));
+              }
               ((yawTo = d + ((((e - d) % 360 + 540) % 360) - 180)),
                 (tStart = r),
                 (revealStarted = !1),
@@ -5954,12 +5970,20 @@ function xo({ active: e, running: t, onSelect: n, ready: r, onHover: i, selectio
                       : `5`),
                 h.current.card === t && u.current && !compact())
               ) {
-                let e = x,
-                  t = S,
-                  r = Math.max(16, Math.min(n - e - 16, p + 34)),
-                  a = Math.max(12, Math.min(i - t - 65, g - t - 34));
-                ((u.current.style.left = r + `px`),
-                  (u.current.style.top = a + `px`));
+                const cw = x, ch = S, ph = r.offsetHeight || 56;
+                let cl = Math.max(16, Math.min(n - cw - 16, p - cw / 2)),
+                  ct = g - ph - ch - 12;
+                if (ct < 12) {
+                  ct = g + 40;
+                  if (ct + ch > i - 12) {
+                    /* no room above or below the pin: put the card beside it, level with the pin */
+                    cl = p + 40 + cw <= n - 16 ? p + 40 : Math.max(16, p - 40 - cw);
+                    ct = g - ph / 2 - ch / 2;
+                  }
+                }
+                ct = Math.max(12, Math.min(i - ch - 12, ct));
+                ((u.current.style.left = cl + `px`),
+                  (u.current.style.top = ct + `px`));
               }
             });
           };
@@ -6145,6 +6169,15 @@ function So() {
       return () => clearInterval(e);
     }, [n, s, l, i, e]));
   let d = bo[e];
+  const exploreGo = (ev) => {
+    if (ev.button !== 0 || ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey) return;
+    ev.preventDefault();
+    const href = ev.currentTarget.getAttribute(`href`);
+    if (window.matchMedia(`(prefers-reduced-motion: reduce)`).matches) { window.location.assign(href); return; }
+    const pin = document.querySelectorAll(`.globe-stage .map-pin:not(.decorative-pin)`)[e];
+    if (pin) { pin.classList.remove(`is-dropping`); void pin.offsetWidth; pin.classList.add(`is-dropping`); }
+    setTimeout(() => window.location.assign(href), 240);
+  };
   return (0, Y.jsxs)(`main`, {
     children: [
       (0, Y.jsxs)(`div`, {
@@ -6247,9 +6280,10 @@ function So() {
                   ` Discover a world you never knew existed.`,
                 ],
               }),
-              (0, Y.jsxs)(`button`, {
+              (0, Y.jsxs)(`a`, {
                 className: `explore-bar`,
-                onClick: () => c(!0),
+                href: `/map/?spot=` + d.slug,
+                onClick: exploreGo,
                 children: [
                   (0, Y.jsxs)(`span`, {
                     children: [

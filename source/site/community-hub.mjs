@@ -1,5 +1,5 @@
-import {esc,$,$$,icon,localURL,action} from './core.mjs?v=149e30e7';
-import {profileHref,profileId} from '../profile/identity.mjs?v=38b679eb';
+import {esc,$,$$,icon,localURL,action} from './core.mjs?v=65b48136';
+import {profileHref,profileId} from '../profile/identity.mjs?v=744e89b9';
 
 /* Community figures read from deepspot.io. Update this one constant to refresh them. */
 export const COMMUNITY_METRICS={capturedAt:'2026-10-13',capturedLabel:'Oct 13, 2026',members:151,spots:487,month:28};
@@ -80,21 +80,21 @@ function forumSection(content){
 /* ---------- leaderboard ---------- */
 /* Read from deepspot.io/leaderboard on 2026-10-13. This Month and All Time were identical on the source that day. */
 export const LEADERBOARD={capturedAt:'2026-10-13',capturedLabel:'Oct 13, 2026',rows:[
- {name:'Kris',handle:'lampbane',spots:143,stories:0,points:13650},
- {name:'Wayfarer',handle:'wayfarer',spots:39,stories:0,points:2100},
- {name:'kisekikana',handle:'kisekikana',spots:19,stories:1,points:1025},
- {name:'Joelle',handle:'joelle',spots:11,stories:0,points:700},
- {name:'NumberOne',handle:'numberone',spots:11,stories:2,points:700},
- {name:'Lana Velkov',handle:'lanavelkov',spots:11,stories:0,points:550},
- {name:'Annebelle',handle:'annebelle',spots:7,stories:0,points:350},
- {name:'SAZ',handle:'s4zr4ty',spots:1,stories:0,points:325},
- {name:'Lydia',handle:'korrgan',spots:6,stories:0,points:300},
- {name:'Six',handle:'sixbacteria',spots:5,stories:0,points:250}
+ {name:'Kris',handle:'lampbane',spots:143,points:13650},
+ {name:'Wayfarer',handle:'wayfarer',spots:39,points:2100},
+ {name:'kisekikana',handle:'kisekikana',spots:19,points:1025},
+ {name:'Joelle',handle:'joelle',spots:11,points:700},
+ {name:'NumberOne',handle:'numberone',spots:11,points:700},
+ {name:'Lana Velkov',handle:'lanavelkov',spots:11,points:550},
+ {name:'Annebelle',handle:'annebelle',spots:7,points:350},
+ {name:'SAZ',handle:'s4zr4ty',spots:1,points:325},
+ {name:'Lydia',handle:'korrgan',spots:6,points:300},
+ {name:'Six',handle:'sixbacteria',spots:5,points:250}
 ]};
 function boardHTML(content){
  const imgs=new Map([...(content.leaderboard?.monthly||[]),...(content.leaderboard?.allTime||[])].map(p=>[p.name,p.image]));
  const avatar=r=>{const src=imgs.get(r.name);return src?`<img src="${esc(src)}" alt="" loading="lazy" decoding="async">`:`<span aria-hidden="true">${esc(r.name[0].toUpperCase())}</span>`;};
- const meta=r=>`${r.spots} ${r.spots===1?'spot':'spots'} · ${r.stories} ${r.stories===1?'story':'stories'}`;
+ const meta=r=>`${r.spots} ${r.spots===1?'spot':'spots'}`;
  const rows=LEADERBOARD.rows,link=r=>esc(profileHref(profileId(r.name)));
  const top=rows.slice(0,3).map((r,i)=>`<a class="hub-top hub-top${i+1}" href="${link(r)}"><span class="hub-rank">${i+1}</span><span class="hub-av">${avatar(r)}</span><strong>${esc(r.name)}</strong><span class="hub-handle">@${esc(r.handle)}</span><b class="hub-pts">${fmt(r.points)}<small>points</small></b><span class="hub-meta">${meta(r)}</span></a>`).join('');
  const rest=rows.slice(3).map((r,i)=>`<a class="hub-lrow" href="${link(r)}"><span class="hub-rank">${i+4}</span><span class="hub-av">${avatar(r)}</span><span class="hub-lname"><strong>${esc(r.name)}</strong><span class="hub-handle">@${esc(r.handle)}</span></span><span class="hub-meta">${meta(r)}</span><b class="hub-pts">${fmt(r.points)}</b></a>`).join('');
@@ -104,7 +104,7 @@ function leaderboardSection(content){
  const body=boardHTML(content);
  return `<section class="hub-board" data-boardtabs><div class="hub-feedhead"><div class="ds-section-heading"><h2>top explorers.</h2></div><div class="ds-tabs hub-tabs" role="group" aria-label="Leaderboard period"><button type="button" data-board-tab="month" aria-pressed="true">this month</button><button type="button" data-board-tab="all" aria-pressed="false">all time</button></div></div>
  <div data-board-panel="month">${body}</div><div data-board-panel="all" hidden>${body}</div>
- <div class="hub-board-foot"><p class="hub-how"><b>how points work</b> spot +50 · story +100 · upvote +10</p>${action('full leaderboard','/leaderboard/','secondary')}</div>
+ <div class="hub-board-foot"><p class="hub-how" data-copy="kai-8"><b>how points work</b> spot +50 · upvote +10</p>${action('full leaderboard','/leaderboard/','secondary')}</div>
  <p class="ds-note">Leaderboard read from DeepSpot, ${LEADERBOARD.capturedLabel}. This month and all time showed the same ranking that day.</p></section>`;
 }
 

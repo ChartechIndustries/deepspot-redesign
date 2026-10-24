@@ -1,21 +1,21 @@
-import {createPassportImage} from './passport-export.mjs?v=f9412290';
-import {padHTML,initPad} from './sign-pad.mjs?v=128b4053';
+import {createPassportImage} from './passport-export.mjs?v=ec97e2db';
+import {padHTML,initPad} from './sign-pad.mjs?v=7ef1440c';
 import {travelerStyles,travelerMark,accountKey,readAccount,normalizeAccount} from '../site/account-state.mjs?v=1c064097';
-import {memberLevels,memberRange,POINTS} from './passport-rules.mjs?v=237cb584';
-import {LOOK_KEY,readLook as _readLook,readStyle as _readStyle,writeStyle,archHTML,wireArch,lookTilesHTML,styleTilesHTML,pickLook,pickStyle,mrz,moleImgHTML,stampName,cardHTML,biopHTML,syncPreview,fitPreview,bindTilt,addBioBand,fitBandText,fitBands,moleSlotHTML,variety} from './passport-edit.mjs?v=2b579d8b';
-import {escapeHTML as esc,safeReturn} from './identity.mjs?v=38b679eb';
-import {loadProfile} from './data.mjs?v=6e391fdb';
+import {memberLevels,memberRange,POINTS} from './passport-rules.mjs?v=dcb74f9b';
+import {LOOK_KEY,readLook as _readLook,readStyle as _readStyle,writeStyle,archHTML,wireArch,lookTilesHTML,styleTilesHTML,pickLook,pickStyle,mrz,moleImgHTML,stampName,cardHTML,biopHTML,syncPreview,fitPreview,bindTilt,bindDeviceTilt,addBioBand,fitBandText,fitBands,moleSlotHTML,variety} from './passport-edit.mjs?v=b98d0bcf';
+import {escapeHTML as esc,safeReturn} from './identity.mjs?v=744e89b9';
+import {loadProfile} from './data.mjs?v=dadc8591';
 import {halftoneField} from '../site/halftone-field.mjs?v=a8e8e93e';
 import {mountGlobe} from './wtg-globe.mjs?v=6a2f047e';
 import {itemsFor} from './items.mjs?v=fa2288a2';
-import {followHTML,exploredHTML,picksHTML,collectionsHTML,updatesHTML,counts as psCounts,bindSocial} from './profile-social.mjs?v=a23536c4';
+import {followHTML,exploredHTML,picksHTML,collectionsHTML,updatesHTML,counts as psCounts,bindSocial} from './profile-social.mjs?v=8360e813';
 import {readWantToGo,writeWantToGo,addItem,removeAt,moveItem,WTG_MAX,WTG_NAME_MAX} from './want-to-go.mjs?v=30484780';
 const $=selector=>document.querySelector(selector);
 let profile,toastTimer,exportPromise,exportImage;
 const params=new URLSearchParams(location.search);
 const returnPath=safeReturn(params.get('from'))||'/community/';
 const returnURL=new URL(returnPath,location.origin);
-const returnLabel=returnURL.pathname==='/account/'?'back to account':returnURL.pathname==='/story/'?'back to story':returnURL.pathname==='/spot/'?'back to spot':returnURL.pathname==='/stories/'?'back to stories':returnURL.pathname==='/leaderboard/'?'back to leaderboard':returnURL.pathname==='/browse/'?'back to browse':returnURL.hash==='#stories'?'back to stories':returnURL.hash==='#fs-heading'?'back to deep spots':returnURL.hash==='#wn-heading'?'back to what’s new':'community';
+const returnLabel=returnURL.pathname==='/account/'?'back to account':returnURL.pathname==='/spot/'?'back to spot':returnURL.pathname==='/leaderboard/'?'back to leaderboard':returnURL.pathname==='/browse/'?'back to browse':returnURL.hash==='#fs-heading'?'back to deep spots':returnURL.hash==='#wn-heading'?'back to what’s new':'community';
 $('.pp-back').textContent='← '+returnLabel;
 function notify(text){clearTimeout(toastTimer);$('.br-toast').textContent=text;$('.br-toast').dataset.open='true';toastTimer=setTimeout(()=>$('.br-toast').dataset.open='false',3000);}
 function applyTheme(value,save){
@@ -40,7 +40,7 @@ const moleHTML=(cls='')=>moleImgHTML(profile.mole,{cls,alt:profile.name+'’s mo
 
 const sigHTML=art=>art?`<img src="${esc(art)}" alt="${esc(profile.name)}’s mark" width="512" height="256">`:'<span>no mark yet</span>';
 /* "spots" on the card is the verified total; the type is worked out from the postings this collection holds. Say so, so the numbers agree. */
-function basisText(t){const total=profile.verified?(profile.contrib?.spots||0)+(profile.contrib?.stories||0):0;return total>t.postings?`${t.postings} of ${total} postings (the ones in this collection)`:`${t.postings} ${t.postings===1?'posting':'postings'}`;}
+function basisText(t){const total=profile.verified?(profile.contrib?.spots||0):0;return total>t.postings?`${t.postings} of ${total} postings (the ones in this collection)`:`${t.postings} ${t.postings===1?'posting':'postings'}`;}
 function typeHTML(){
  const t=profile.type,id=(profile.localPreview&&profile.style)||t.id,style=travelerStyles.find(s=>s.id===id);
  if(!style)return empty('no type yet.','A traveler type shows up after the first posting. It is worked out from the categories of what is posted.','<a href="/contribute/" class="pp-link">add a spot ↗</a>');
@@ -51,15 +51,15 @@ function typeHTML(){
 }
 function statsHTML(){
  const lv=profile.level,st=profile.standing,dash='—';
- const tiles=[[profile.points==null?dash:fmt(profile.points),'points','pp-hot'],[profile.contrib.spots??dash,'spots',''],[profile.contrib.stories??dash,'stories',''],[st?.rankMonth?'#'+st.rankMonth:dash,'rank this month','']];
+ const tiles=[[profile.points==null?dash:fmt(profile.points),'points','pp-hot'],[profile.contrib.spots??dash,'spots',''],[st?.rankMonth?'#'+st.rankMonth:dash,'rank this month','']];
  const idx=lv?memberLevels.map(([from],i)=>memberLevels[i+1]?lv.level>=from&&lv.level<memberLevels[i+1][0]:lv.level>=from).indexOf(true):-1;
- return `<dl class="pp-tiles">${tiles.map(([v,l,c])=>`<div class="pp-card ${c}${v===dash?' pp-nil':''}"><dt>${l}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl>
+ return `<dl class="pp-tiles pp-t3">${tiles.map(([v,l,c])=>`<div class="pp-card ${c}${v===dash?' pp-nil':''}"><dt>${l}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl>
  <ol class="pp-ladder" aria-label="Member levels">${memberLevels.map(([from,name],i)=>`<li${i===idx?' aria-current="step"':''}>${esc(name)} <span>lvl ${memberRange(i)}</span></li>`).join('')}</ol>
- <p class="pp-fine">Level = 1 + √(points ÷ 40). You earn +${POINTS.spot} points for an approved spot, +${POINTS.story} for a story and +${POINTS.upvote} for each upvote.</p>`;
+ <p class="pp-fine" data-copy="kai-8">Level = 1 + √(points ÷ 40). You earn +${POINTS.spot} points for an approved spot and +${POINTS.upvote} for each upvote.</p>`;
 }
 function postingsHTML(){
- const list=profile.records,card=r=>`<li class="pp-post"${list.indexOf(r)>5?' data-extra hidden':''}><a href="${esc(r.href)}"><span class="pp-post-img">${r.image?`<img src="${esc(r.card||r.image)}" data-orig="${esc(r.image)}" alt="" width="400" height="300" loading="lazy" decoding="async">`:'<span class="pp-no-photo" aria-hidden="true">deep<br>spot.</span>'}</span><span class="pp-post-copy"><span class="pp-mono">${esc(r.place||'')}</span><strong>${esc(r.name)}</strong><span class="pp-post-tags">${r.kind==='story'?`<i>story · ${esc(r.tag||'')}</i>`:r.tags.filter(t=>t!=='DEEP SPOT CHOICE').slice(0,2).map(t=>`<i>${esc(t.toLowerCase())}</i>`).join('')+(r.tags.includes('DEEP SPOT CHOICE')?'<i class="pp-choice">deep spot choice</i>':'')}</span></span></a></li>`;
- if(!list.length)return empty(profile.localPreview?'nothing posted yet.':'no postings in this collection.',profile.localPreview?'Your spots and stories will fill this page when your account is connected.':'This explorer’s postings are not in the saved collection yet.',profile.localPreview?'<a href="/contribute/" class="pp-link">add a spot ↗</a>':`<a href="/browse/?q=${encodeURIComponent(profile.name)}" class="pp-link">search for ${esc(profile.name)} ↗</a>`);
+ const list=profile.records,card=r=>`<li class="pp-post"${list.indexOf(r)>5?' data-extra hidden':''}><a href="${esc(r.href)}"><span class="pp-post-img">${r.image?`<img src="${esc(r.card||r.image)}" data-orig="${esc(r.image)}" alt="" width="400" height="300" loading="lazy" decoding="async">`:'<span class="pp-no-photo" aria-hidden="true">deep<br>spot.</span>'}</span><span class="pp-post-copy"><span class="pp-mono">${esc(r.place||'')}</span><strong>${esc(r.name)}</strong><span class="pp-post-tags">${r.tags.filter(t=>t!=='DEEP SPOT CHOICE').slice(0,2).map(t=>`<i>${esc(t.toLowerCase())}</i>`).join('')+(r.tags.includes('DEEP SPOT CHOICE')?'<i class="pp-choice">deep spot choice</i>':'')}</span></span></a></li>`;
+ if(!list.length)return empty(profile.localPreview?'nothing posted yet.':'no postings in this collection.',profile.localPreview?'<i data-copy="kai-8" style="font-style:inherit">Your spots will fill this page when your account is connected.</i>':'This explorer’s postings are not in the saved collection yet.',profile.localPreview?'<a href="/contribute/" class="pp-link">add a spot ↗</a>':`<a href="/browse/?q=${encodeURIComponent(profile.name)}" class="pp-link">search for ${esc(profile.name)} ↗</a>`);
  return `<ul class="pp-posts">${list.map(card).join('')}</ul><a class="pp-link pp-all" href="/browse/?q=${encodeURIComponent(profile.name)}">all spots by ${esc(profile.name)} ↗</a>`;
 }
 function stampsHTML(){
@@ -324,17 +324,60 @@ function fitBio(){
  for(let i=0;i<14;i++){const m=(lo+hi)/2;t.style.fontSize=m+'px';if(t.scrollHeight<=box.clientHeight&&t.scrollWidth<=box.clientWidth)lo=m;else hi=m;}
  t.style.fontSize=Math.floor(lo)+'px';
 }
-function selectVT(id,focus){
- document.querySelectorAll('.pp-vtab').forEach(b=>{const on=b.dataset.vt===id;b.setAttribute('aria-selected',String(on));b.tabIndex=on?0:-1;if(on&&focus)b.focus();});
+/* 4.1 (2026-10-23): the sideways tab row on phones + tablets. Follows the selection (core.mjs followTab), edge fades (tabFades),
+   a half-cut tab on load (peek: the gap is solved so the first cut-off tab shows about half), one short nudge on the first visit. */
+const TAB_NUDGE_KEY='deepspot-profile-tabs-nudged-v1';
+let tabCore=null;
+const loadTabCore=()=>tabCore??=import('../site/core.mjs?v=65b48136').catch(()=>null);
+const rowMode=()=>innerWidth<1100;
+function peekTabs(row){
+ row.style.removeProperty('--pp-tab-gap');row.style.removeProperty('--pp-tab-pad');
+ if(!rowMode()||row.scrollWidth<=row.clientWidth+2)return;
+ const tabs=[...row.querySelectorAll('.pp-vtab')],cs=getComputedStyle(row),padL=parseFloat(cs.paddingLeft)||0,W=row.clientWidth,g0=parseFloat(cs.columnGap)||8;
+ /* tab padding shrinks 16 -> 10px, only as far as needed, so the first cut-off tab can show about half of itself */
+ let g=-1,fit=false;
+ for(let pad=16;pad>=10;pad--){
+  row.style.setProperty('--pp-tab-pad',pad+'px');row.style.removeProperty('--pp-tab-gap');
+  if(row.scrollWidth<=row.clientWidth+2){fit=true;break;}
+  const w=tabs.map(t=>t.offsetWidth);let k=-1,sum=0;
+  for(let i=0;i<tabs.length;i++){const left=padL+sum+i*g0;if(left+w[i]>W+1){k=i;break;}sum+=w[i];}
+  if(k<1){fit=true;break;}
+  g=(W-8-w[k]/2-padL-sum)/k;
+  if(g>=4)break;
+ }
+ if(!fit)row.style.setProperty('--pp-tab-gap',Math.max(4,Math.min(18,g)).toFixed(1)+'px');
+}
+function nudgeTabs(row){
+ if(!rowMode()||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+ try{if(localStorage.getItem(TAB_NUDGE_KEY))return;}catch{return;}
+ const run=()=>{
+  if(document.visibilityState!=='visible'||!rowMode()||row.scrollLeft>2||row.scrollWidth<=row.clientWidth+8)return;
+  try{localStorage.setItem(TAB_NUDGE_KEY,'1');}catch{}
+  const t0=performance.now(),D=600,A=40;let stop=false;
+  const halt=()=>{stop=true;};['pointerdown','touchstart','wheel','keydown'].forEach(ev=>row.addEventListener(ev,halt,{once:true,passive:true}));
+  const step=now=>{if(stop)return;const t=Math.min(1,(now-t0)/D);row.scrollLeft=A*Math.sin(Math.PI*t)**1.2;if(t<1)requestAnimationFrame(step);else row.scrollLeft=0;};
+  requestAnimationFrame(step);
+ };
+ const io=new IntersectionObserver(es=>{if(es.some(e=>e.isIntersecting)){io.disconnect();setTimeout(run,450);}},{threshold:.9});io.observe(row);
+}
+function initTabRow(row){
+ peekTabs(row);
+ let tm;addEventListener('resize',()=>{clearTimeout(tm);tm=setTimeout(()=>{peekTabs(row);if(rowMode())loadTabCore().then(c=>c?.tabFades(row));},120);});
+ document.fonts?.ready.then(()=>peekTabs(row));
+ if(rowMode())loadTabCore().then(c=>{c?.tabFades(row);});
+ nudgeTabs(row);
+}
+function selectVT(id,focus,follow){
+ document.querySelectorAll('.pp-vtab').forEach(b=>{const on=b.dataset.vt===id;b.setAttribute('aria-selected',String(on));b.tabIndex=on?0:-1;if(on&&focus)b.focus({preventScroll:!!follow});if(on&&follow&&rowMode())loadTabCore().then(c=>c?.followTab(b.parentElement,b));});
  document.querySelectorAll('.pp-vpanel').forEach(p=>p.hidden=p.id!=='pp-vp-'+id);$('.pp-tabsec').dataset.vt=id;if(id==='wtg')requestAnimationFrame(wgSync);requestAnimationFrame(fitBio);
 }
 function wireV4(){
  selectVT('wtg');
  const tl=$('.pp-vtabs');
- tl.addEventListener('click',e=>{const b=e.target.closest('.pp-vtab');if(b)selectVT(b.dataset.vt);});
+ tl.addEventListener('click',e=>{const b=e.target.closest('.pp-vtab');if(b)selectVT(b.dataset.vt,false,true);});initTabRow(tl);
  tl.addEventListener('keydown',e=>{const ids=[...document.querySelectorAll('.pp-vtab')].map(b=>b.dataset.vt),cur=ids.indexOf($('.pp-vtab[aria-selected=true]').dataset.vt);let n=null;
   if(e.key==='ArrowDown'||e.key==='ArrowRight')n=(cur+1)%ids.length;else if(e.key==='ArrowUp'||e.key==='ArrowLeft')n=(cur-1+ids.length)%ids.length;else if(e.key==='Home')n=0;else if(e.key==='End')n=ids.length-1;
-  if(n!==null){e.preventDefault();selectVT(ids[n],true);}});
+  if(n!==null){e.preventDefault();selectVT(ids[n],true,true);}});
  requestAnimationFrame(fitBio);
  const form=$('#pp-edit');if(!form)return;
  const dlg=$('#pp-editdlg'),sec=$('.pp-biosec'),btn=$('[data-edit]'),root=document.documentElement;
@@ -445,6 +488,8 @@ function appShell(){
  const kick=()=>{if(!raf)raf=requestAnimationFrame(loop);};
  stage.addEventListener('pointermove',e=>{if(e.pointerType!=='mouse'||calm.matches)return;const r=obj.getBoundingClientRect();tx=Math.max(-.6,Math.min(.6,(e.clientX-r.left)/r.width-.5));ty=Math.max(-.6,Math.min(.6,(e.clientY-r.top)/r.height-.5));obj.classList.add('is-tilt');kick();moveBumpLight(e);});
  stage.addEventListener('pointerleave',()=>{tx=0;ty=0;obj.classList.remove('is-tilt');kick();});
+ /* 4.2: phones + tablets lean the passport with the device (iOS: "tilt to shine" chip asks first) */
+ bindDeviceTilt({obj,host:stage});
 }
 
 /* ---------- want-to-go globe ---------- */

@@ -1,8 +1,8 @@
 // Sign-in / paid gate (prototype: no backend, nothing is sent anywhere).
-// Reading wall on /spot/ and /story/ (signed out), action sheet for save / vote / comment / trip / submit,
+// Reading wall on /spot/ (signed out), action sheet for save / vote / comment / trip / submit,
 // member sheet for the photo gallery and the giveaway. State lives in gate-state.mjs.
-import {esc,localURL,icon} from './core.mjs?v=149e30e7';
-import {safeReturn} from '../profile/identity.mjs?v=38b679eb';
+import {esc,localURL,icon} from './core.mjs?v=65b48136';
+import {safeReturn} from '../profile/identity.mjs?v=744e89b9';
 import {G_ICON,A_ICON} from './brand-icons.mjs?v=5af903eb';
 import {OFF_KEY,readSession,writeSession,validEmail,parseGateParam,allows,SESSION_KEY} from './gate-state.mjs?v=7e3c4a02';
 export {readSession,writeSession};
@@ -36,9 +36,9 @@ const note='<p class="gt-note">preview: accounts connect at launch</p>';
 /* two-tone display heading like the site's page titles: text after the comma (or the last word) in green */
 const twoTone=h=>{const t=esc(h),c=t.indexOf(', ');if(c>0)return `${t.slice(0,c+1)} <em>${t.slice(c+2)}</em>`;const w=t.lastIndexOf(' ');return w>0?`${t.slice(0,w)} <em>${t.slice(w+1)}</em>`:`<em>${t}</em>`;};
 const CHECK='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>';
-const perks=list=>`<ul class="gt-perks">${list.map(x=>`<li>${CHECK}<span>${x}</span></li>`).join('')}</ul>`;
+const perks=list=>`<ul class="gt-perks">${list.map(x=>`<li${x.startsWith("read every")?' data-copy="kai-8"':""}>${CHECK}<span>${x}</span></li>`).join('')}</ul>`;
 function freeHTML(kind,heading){
- return `${kind==='wall'?'':'<button class="gt-x" type="button" data-gt-x aria-label="Close">×</button>'}<div class="gt-grid"><div class="gt-a"><p class="gt-k">deepspot · free account</p><h2 class="gt-h" id="gt-h" tabindex="-1">${twoTone(heading)}</h2><p class="gt-b" id="gt-b">It’s free, and it takes ten seconds.</p>${perks(['read every spot and story in full','keep a fieldbook and plan trips','vote on what makes the map'])}</div><div class="gt-c"><form class="gt-form" novalidate><label class="gt-l" for="gt-email">email address</label><input class="gt-input" id="gt-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com" aria-describedby="gt-err" required><p class="gt-err" id="gt-err"></p><button class="ds-button gt-go" type="submit">continue ${icon('arrow')}</button></form><p class="gt-or"><span>or</span></p><div class="gt-prov"><a class="ds-button secondary gt-p" href="${LOGIN}" data-original target="_blank" rel="noopener">${G_ICON}continue with Google</a><a class="ds-button secondary gt-p" href="${LOGIN}" data-original target="_blank" rel="noopener">${A_ICON}continue with Apple</a></div><p class="gt-legal">${legal}</p><p class="gt-foot">want unlimited photos and giveaway entries? <a href="${esc(localURL('/membership/'))}">see membership ↗</a></p>${note}</div></div>`;
+ return `${kind==='wall'?'':'<button class="gt-x" type="button" data-gt-x aria-label="Close">×</button>'}<div class="gt-grid"><div class="gt-a"><p class="gt-k">deepspot · free account</p><h2 class="gt-h" id="gt-h" tabindex="-1">${twoTone(heading)}</h2><p class="gt-b" id="gt-b">It’s free, and it takes ten seconds.</p>${perks(['read every spot in full','keep a fieldbook and plan trips','vote on what makes the map'])}</div><div class="gt-c"><form class="gt-form" novalidate><label class="gt-l" for="gt-email">email address</label><input class="gt-input" id="gt-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com" aria-describedby="gt-err" required><p class="gt-err" id="gt-err"></p><button class="ds-button gt-go" type="submit">continue ${icon('arrow')}</button></form><p class="gt-or"><span>or</span></p><div class="gt-prov"><a class="ds-button secondary gt-p" href="${LOGIN}" data-original target="_blank" rel="noopener">${G_ICON}continue with Google</a><a class="ds-button secondary gt-p" href="${LOGIN}" data-original target="_blank" rel="noopener">${A_ICON}continue with Apple</a></div><p class="gt-legal">${legal}</p><p class="gt-foot">want unlimited photos and giveaway entries? <a href="${esc(localURL('/membership/'))}">see membership ↗</a></p>${note}</div></div>`;
 }
 const memberHTML=()=>`<button class="gt-x" type="button" data-gt-x aria-label="Close">×</button><div class="gt-grid"><div class="gt-a"><p class="gt-k">deepspot · founding member</p><h2 class="gt-h" id="gt-h" tabindex="-1">go <em>deeper.</em></h2><p class="gt-price" aria-label="1 dollar per week">$1<small>/ week</small></p><p class="gt-b" id="gt-b">Billed monthly. Cancel any time.</p></div><div class="gt-c">${perks(['unlimited spot photos','an entry in every monthly giveaway','the early supporter badge on your passport'])}<a class="ds-button gt-go" href="${esc(localURL('/membership/'))}">become a founding member ${icon('arrow')}</a><p class="gt-foot gt-foot-m">you are signed in${readSession().email?' as '+esc(readSession().email):''}.</p><button class="gt-ghost" type="button" data-gt-member>preview: mark me as a member</button>${note}</div></div>`;
 
@@ -117,7 +117,7 @@ function nudge(text){
 let bypass=false;
 const run=fn=>{bypass=true;try{fn();}finally{bypass=false;}};
 const RULES=[
- {sel:'[data-save-spot],[data-save-story]',verb:'save this',when:el=>el.getAttribute('aria-pressed')!=='true'},
+ {sel:'[data-save-spot]',verb:'save this',when:el=>el.getAttribute('aria-pressed')!=='true'},
  {sel:'[data-v-yes],[data-v-no],[data-ud],[data-opt]',verb:'vote'},
  {sel:'.cv-cmt a',verb:'comment'},
  {sel:'#trip-share',verb:'share this trip'},
@@ -184,9 +184,9 @@ function layoutWall(){
 export async function wallReading(root,{kind='spot'}={}){
  pageCtx={root,kind};
  if(gateOff()||allows(gateState(),'free')||wall)return;
- const article=$(kind==='story'?'.ds-story-body':'.ds-article-layout .ds-prose',root);if(!article)return;
+ const article=$('.ds-article-layout .ds-prose',root);if(!article)return;
  await css();if(gateOff()||allows(gateState(),'free')||wall)return;
- const ps=[...article.querySelectorAll('p')].filter(p=>!p.closest('.ds-callout,.ds-photo-gallery')),n=kind==='story'?3:2;
+ const ps=[...article.querySelectorAll('p')].filter(p=>!p.closest('.ds-callout,.ds-photo-gallery')),n=2;
  let cut=ps[Math.min(n,ps.length)-1]||article.firstElementChild||article;while(cut.parentElement&&cut.parentElement!==article)cut=cut.parentElement;
  const nodes=[];for(let el=cut;el&&el!==root;el=el.parentElement)for(let s=el.nextElementSibling;s;s=s.nextElementSibling)nodes.push(s);
  nodes.forEach(x=>x.setAttribute('inert',''));
